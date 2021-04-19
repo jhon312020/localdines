@@ -1,0 +1,182 @@
+/* ==========================================================================
+	#General
+========================================================================== */
+#pjWrapper .pjFdVerticalTop { vertical-align: top; }
+#pjWrapper .pjFdCursorPointer { cursor: pointer; }
+#pjWrapper .pjFdContainer{
+	position: relative;
+}
+
+#pjWrapper .fdBtnLogout,
+#pjWrapper .fdBtnAccount{margin-left: 15px;}
+
+#pjWrapper .pjFdContainer .fdLoader{
+	display: none;
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	z-index: 9999;
+	background: url([URL]app/web/img/frontend/pj-preloader.gif) no-repeat scroll center center rgba(153, 153, 153, 0.3);
+    left: 0;
+    position: absolute;
+    top: 0;
+}
+
+#pjWrapper .pjFdColCustom { padding-right: 9px; padding-left: 0; }
+#pjWrapper .pjFdColCustom .form-control { padding-right: 0; padding-left: 0; }
+
+/* ==========================================================================
+	#pjFdNav
+========================================================================== */
+#pjWrapper .pjFdNav .pjFdBtn { text-align: left; }
+#pjWrapper .pjFdNav .pjFdBtnActive { color: #337ab7; }
+#pjWrapper .fdButtonDisabled { cursor: default; opacity: .65;}
+#pjWrapper .pjFdPanelLeft .panel { overflow: inherit !important; }
+
+/* ==========================================================================
+	#pjFdTimePicker
+========================================================================== */
+#pjWrapper .pjFdTimePicker { position: relative; }
+#pjWrapper .pjFdTimePicker .input-group-addon { border-right: 0; border-radius: 4px 0 0 4px !important; }
+#pjWrapper .bootstrap-timepicker-widget { max-width: 190px; }
+
+/* ==========================================================================
+	#pjFdAccourdion
+========================================================================== */
+#pjWrapper .pjFdAccourdionOuterHead > .panel-title > [aria-expanded="true"] .fa-plus { display: none; }
+#pjWrapper .pjFdAccourdionOuterHead > .panel-title > [aria-expanded="false"] .fa-plus { display: inline-block; }
+#pjWrapper .pjFdAccourdionOuterHead > .panel-title > [aria-expanded="true"] .fa-minus { display: inline-block; }
+#pjWrapper .pjFdAccourdionOuterHead > .panel-title > [aria-expanded="false"] .fa-minus { display: none; }
+
+#pjWrapper .pjFdPanelLeft .panel-group .panel-heading { padding: 0; }
+#pjWrapper .pjFdPanelLeft .panel-group .panel-heading a { display: block; padding: 15px 20px; }
+#pjWrapper .pjFdPanelRight .pjFdPanelHead .lead { vertical-align: middle; }
+
+#pjWrapper .panel-default > .pjFdAccourdionOuterHead { border-radius: 4px; }
+#pjWrapper .pjFdProductsType[aria-expanded="true"] { border-radius: 4px 4px 0 0; }
+#pjWrapper .pjFdProductsType[aria-expanded="false"] { border-radius: 4px; }
+
+#pjWrapper .pjFdPanelLeft .panel-group .panel-heading a[aria-expanded="true"] { border-radius: 4px 4px 0 0; }
+#pjWrapper .pjFdPanelLeft .panel-group .panel-heading a[aria-expanded="false"] { border-radius: 4px; }
+
+/* ==========================================================================
+	#pjFdProducts
+========================================================================== */
+#pjWrapper .pjFdProductBody { padding-bottom: 0; }
+#pjWrapper .pjFdProductMeta { margin-bottom: 0; }
+#pjWrapper .pjFdProductMeta td { vertical-align: middle !important; }
+
+#pjWrapper .pjFdContainer .pjFdBtnOrder { padding: 6px 0; text-align: center; }
+
+/* ==========================================================================
+	#pjFdPanelLeft
+========================================================================== */
+#pjWrapper .pjFdPanelLeft .panel { overflow: hidden; }
+
+/* ==========================================================================
+	#pjFdPanelRight
+========================================================================== */
+#pjWrapper .pjFdPanelRight .alert { border: 1px solid #ded8d8; border-right: 0; border-left: 0; border-radius: 0; }
+#pjWrapper .pjFdPanelRight .alert-dismissible { padding-right: 15px; }
+#pjWrapper .pjFdPanelRight .alert-dismissable .close,
+#pjWrapper .pjFdPanelRight .alert-dismissible .close { top: 0; /*right: -30px;*/ right: 5px; }
+#pjWrapper .pjFdPanelRight .form-control { padding: 6px 7px; }
+
+/* ==========================================================================
+	#pjFdCounter
+========================================================================== */
+#pjWrapper .pjFdCounter .form-control { padding: 6px 5px; text-align: center; }
+#pjWrapper .pjFdCounter .btn { padding: 6px; }
+#pjWrapper .pjFdCounter.input-group-sm > .form-control,
+#pjWrapper .pjFdCounter.input-group-sm > .input-group-addon,
+#pjWrapper .pjFdCounter.input-group-sm > .input-group-btn > .btn { padding: 5px; }
+#pjWrapper .pjFdCounter.input-group-sm .form-control { padding: 6px 1px; }
+
+/* ==========================================================================
+	#pjFdGroupVaucher
+========================================================================== */
+#pjWrapper .pjFdGroupVaucher .btn-default,
+#pjWrapper .pjFdGroupVaucher .btn-default:hover { border-color: #adadad; }
+
+#pjWrapper .fdCartPriceCol{ /*margin-left: -12px;*/ padding: 0; }
+#pjWrapper .fdCartPriceCol span { word-break: break-all; }
+#pjWrapper .fdCartItemRemove{z-index: 99999;}
+/* ==========================================================================
+	.Modal
+========================================================================== */
+.modal-backdrop.fade {
+	opacity: 0;
+	filter: alpha(opacity=0);
+}
+.modal-backdrop.fade.in {
+	opacity: 0.5;
+	filter: alpha(opacity=50);
+}
+.modal-dialog{z-index: 9999;}
+/* ==========================================================================
+	#Responsive
+========================================================================== */
+@media only screen and ( max-width: 990px ) {
+	/* ==========================================================================
+		#pjFdProducts
+	========================================================================== */
+	#pjWrapper .pjFdBtnOrder { margin-top: 20px; }
+}
+
+/* ==========================================================================
+	#Responsive
+========================================================================== */
+@media only screen and ( max-width: 767px ) {
+	/* ==========================================================================
+		#pjFdProducts
+	========================================================================== */
+	#pjWrapper .pjFdProductContent > .col-xs-12 { width: 75%; }
+	#pjWrapper .pjFdProductContent > .col-xs-6 { width: 25%; }
+	#pjWrapper .pjFdProductContent > .col-xs-12 > .col-xs-8 { width: 45%; }
+	#pjWrapper .pjFdProductContent > .col-xs-12 > .col-xs-12 { width: 55%; }
+
+	/* ==========================================================================
+		#pjFdPanelLeft
+	========================================================================== */
+	#pjWrapper .pjFdPanelLeft .pjFdPanelHead .col-xs-12 { width: 50%; }
+
+	/* ==========================================================================
+		#pjFdPanelRight
+	========================================================================== */
+	#pjWrapper .pjFdPanelRight .btn-block { display: inline-block; width: auto; }
+}
+
+@media only screen and ( max-width: 480px ) {
+	/* ==========================================================================
+		#pjFdProducts
+	========================================================================== */
+	#pjWrapper .pjFdProductContent > .col-xs-12,
+	#pjWrapper .pjFdProductContent > .col-xs-6,
+	#pjWrapper .pjFdProductContent > .col-xs-12 > .col-xs-8,
+	#pjWrapper .pjFdProductContent > .col-xs-12 > .col-xs-12 { width: 100%; text-align: center; }
+	#pjWrapper .pjFdProductContent p { padding-top: 10px; }
+	#pjWrapper .pjFdProductContent img { display: inline-block; }
+
+	#pjWrapper .pjFdColCustom { padding-right: 15px; padding-left: 15px; }
+	#pjWrapper .pjFdColCustom .form-control { padding-right: 10px; padding-left: 10px; }
+
+	/* ==========================================================================
+		#pjFdPanelLeft
+	========================================================================== */
+	#pjWrapper .pjFdPanelLeft .pjFdPanelHead .col-xs-12 { width: 100%; }
+	#pjWrapper .pjFdPanelLeft .pjFdPanelHead .col-xs-12:last-of-type { padding-top: 15px; }
+	#pjWrapper .pjFdHeaderRight .pull-right{float: left !important;}
+	#pjWrapper .pjFdHeaderRight .fdBtnLogout,
+	#pjWrapper .pjFdHeaderRight .fdBtnAccount{margin-left: 0px !important; margin-right: 15px !important;}
+	
+}
+
+@media only screen and ( max-width: 390px ) {
+	/* ==========================================================================
+		#pjFdCounter
+	========================================================================== */
+	#pjWrapper .pjFdCounter .form-control,
+	#pjWrapper .pjFdCounter .btn { padding-right: 5px !important; padding-left: 5px !important; }
+	
+	#pjWrapper .row .col-xss-12{width: 100%;}
+}
