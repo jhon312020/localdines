@@ -54,7 +54,9 @@ class pjOrderModel extends pjAppModel
 		array('name' => 'phone_no', 'type' => 'int', 'default' => ':NULL'),
 		array('name' => 'surname', 'type' => 'char', 'default' => ':NULL'),
 	    array('name' => 'sms_email', 'type' => 'varchar', 'default' => ':NULL'),
-	    array('name' => 'first_name', 'type' => 'char', 'default' => ':NULL')
+	    array('name' => 'first_name', 'type' => 'char', 'default' => ':NULL'),
+	    array('name' => 'kprint', 'type' => 'boolean', 'default' => '0'),
+	    array('name' => 'order_despatched', 'type' => 'boolean', 'default' => ':NULL')
 	);
 	
 	public static function factory($attr=array())

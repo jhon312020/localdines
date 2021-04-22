@@ -1,4 +1,5 @@
 <div class="row wrapper border-bottom white-bg page-heading">
+    <!-- <?php //print_r($tpl['product_arr']); ?>  -->
     <div class="col-sm-12">
         <div class="row">
             <div class="col-sm-10">
@@ -103,10 +104,12 @@ myLabel.phone = <?php x__encode('lblPhone'); ?>;
 myLabel.address = '<?php echo 'Address'; ?>';
 myLabel.postcode = '<?php echo 'Postcode'; ?>';
 myLabel.caller_type = '<?php echo 'CallerType'; ?>';
-myLabel.call_start = '<?php echo 'Call Start'; ?>';
-myLabel.call_end = '<?php echo 'Call End'; ?>';
+// myLabel.call_start = '<?php //echo 'Call Start'; ?>';
+// myLabel.call_end = '<?php //echo 'Call End'; ?>';
 myLabel.sms_email = '<?php echo 'SMS/Email'; ?>';
 myLabel.order_despatched = '<?php echo 'OD'; ?>';
+myLabel.yes = <?php x__encode('_yesno_ARRAY_T'); ?>;
+myLabel.no = <?php x__encode('_yesno_ARRAY_F'); ?>;
 myLabel.excpected_delivery = '<?php echo 'ED'; ?>';
 myLabel.sms_sent_time = '<?php echo 'SST'; ?>';
 myLabel.delivered_customer = '<?php echo 'DC'; ?>';
@@ -123,4 +126,5 @@ myLabel.delete_confirmation = <?php x__encode('delete_confirmation'); ?>;
 myLabel.pending = <?php x__encode('order_statuses_ARRAY_pending'); ?>;
 myLabel.confirmed = <?php x__encode('order_statuses_ARRAY_confirmed'); ?>;
 myLabel.cancelled = <?php x__encode('order_statuses_ARRAY_cancelled'); ?>;
+
 </script>

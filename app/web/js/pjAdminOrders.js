@@ -40,45 +40,87 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           $(":input[name='tab_id']").val(ui.panel.id);
         },
       };
-
+    // $("#d_date").datepicker();
     if ($tabs.length > 0 && tabs) {
       $tabs.tabs(tOpt);
     }
     if (chosen) {
       $("#client_id").chosen();
     }
-    if ($("#dateTimePickerOptions").length) {
-      var currentDate = new Date();
-      var $optionsEle = $("#dateTimePickerOptions");
+    // if ($("#dateTimePickerOptions").length) {
+    //   var currentDate = new Date();
+    //   var $optionsEle = $("#dateTimePickerOptions");
 
-      moment.updateLocale("en", {
-        week: { dow: parseInt($optionsEle.data("wstart"), 10) },
-        months: $optionsEle.data("months").split("_"),
-        weekdaysMin: $optionsEle.data("days").split("_"),
-      });
-      datetimeOptions = {
-        format: $optionsEle.data("format"),
-        locale: moment.locale("en"),
-        allowInputToggle: true,
-        ignoreReadonly: true,
-      };
-      datetimeOptions.minDate = new Date(
-        currentDate.getFullYear(),
-        currentDate.getMonth(),
-        currentDate.getDate()
-      );
-      $("#d_dt").datetimepicker(datetimeOptions);
-      $("#p_dt").datetimepicker(datetimeOptions);
-      $("#d_dt").on("dp.hide", function (e) {
-        validateDeliveryTime();
-        calPrice(1);
-      });
-      $("#p_dt").on("dp.hide", function (e) {
-        validatePickupTime();
-        calPrice(1);
-      });
+    //   moment.updateLocale("en", {
+    //     week: { dow: parseInt($optionsEle.data("wstart"), 10) },
+    //     months: $optionsEle.data("months").split("_"),
+    //     weekdaysMin: $optionsEle.data("days").split("_"),
+    //   });
+    //   datetimeOptions = {
+    //     format: $optionsEle.data("format"),
+    //     locale: moment.locale("en"),
+    //     allowInputToggle: true,
+    //     ignoreReadonly: true,
+    //   };
+    //   datetimeOptions.minDate = new Date(
+    //     currentDate.getFullYear(),
+    //     currentDate.getMonth(),
+    //     currentDate.getDate()
+    //   );
+    //   $("#d_dt").datetimepicker(datetimeOptions);
+    //   $("#p_dt").datetimepicker(datetimeOptions);
+    //   $("#d_dt").on("dp.hide", function (e) {
+    //     validateDeliveryTime();
+    //     calPrice(1);
+    //   });
+    //   $("#p_dt").on("dp.hide", function (e) {
+    //     validatePickupTime();
+    //     calPrice(1);
+    //   });
+    // }
+
+    if ($('#datePickerOptions').length) {
+            $.fn.datepicker.dates['en'] = {
+              days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+              daysMin: $('#datePickerOptions').data('days').split("_"),
+              daysShort: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+              months: $('#datePickerOptions').data('months').split("_"),
+              monthsShort: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+              format: $('#datePickerOptions').data('format'),
+                weekStart: parseInt($('#datePickerOptions').data('wstart'), 10),
+          };
+          $('#d_date').datepicker({
+              autoclose: true,
+              startDate: '-0d'
+           })
+          $('#p_date').datepicker({
+              autoclose: true,
+              startDate: '-0d'
+           })
+          $("#d_date").on("changeDate", function (e) {
+            validateDeliveryTime();
+            calPrice(1);
+          });
+          $("#p_dt").on("changeDate", function (e) {
+            validatePickupTime();
+            calPrice(1);
+          });
     }
-
+    if ($('.pj-timepicker').length) {
+          $( ".pj-timepicker" ).each(function( index ) {
+            var $this = $(this);
+            $this.clockpicker({
+                  // twelvehour: myLabel.showperiod,
+                  autoclose: true,
+                  afterDone: function() {
+                  $frmCreateOrder.find("input[name='type']").is(":checked")
+                  ? validateDeliveryTime()
+                  : validatePickupTime();
+                    calPrice(1);
+                    }
+                });
+        });
+    }
     if ($frmCreateOrder.length > 0 || $frmUpdateOrder.length > 0) {
       $.validator.addMethod("pickupTime", function (value, element) {
         if ($(element).attr("data-wt") == "open") {
@@ -129,33 +171,31 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
         submitHandler: function (form) {
           var valid = true;
           var $ele = null;
-          $("#fdOrderList")
-            .find("tbody.main-body > tr.fdLine")
-            .each(function () {
-              var index = $(this).attr("data-index"),
-                $product = $("#fdProduct_" + index),
-                $price = $("#fdPrice_" + index);
-              if ($product.val() == "") {
-                $product.parent().addClass("has-error");
-                valid = false;
-                $ele = $product;
-              } else {
-                $product.parent().removeClass("has-error");
-              }
-              if ($price.val() == "") {
-                $price.parent().addClass("has-error");
-                valid = false;
-                $ele = $product;
-              } else {
-                $price.parent().removeClass("has-error");
-              }
-            });
+          
+          // MEGAMIND
+
+          var firstRowIndex = $('#fdOrderList').find("tbody.main-body > tr:first-child").attr("data-index");
+          var lastRow = $("#fdOrderList tr:last");
+          var lastRowIndex = $("#fdOrderList tr:last").attr("data-index");
+          var $product = $("#fdProduct_"+lastRowIndex);
+          var $price = $("#fdPrice_"+lastRowIndex);
+          
+          if ($product.val() == "" && $price.val() == "") {
+            if (lastRowIndex == firstRowIndex) {
+              $product.parent().parent().addClass("has-error");
+              valid = false;
+              $ele = $product;
+            }
+            else{
+              lastRow.remove();
+              valid = true;
+            }
+          }
+          
+          // !MEGAMIND
+
           if (valid == true) {
             form.submit();
-          } else {
-            var $closest = $ele.closest(".tab-pane");
-            var id = $closest.attr("id");
-            $('.nav a[href="#' + id + '"]').tab("show");
           }
         },
       });
@@ -263,14 +303,14 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
             return $frm.find("select[name='p_location_id']").val();
           },
           p_dt: function () {
-            return $frm.find("input[name='p_dt']").val();
+            return $frm.find("input[name='p_dt']").val() + " " + $frm.find("input[name='d_time']").val();
           },
         },
         success: function (data) {
           if (data == "false") {
-            $frm.find("input[name='p_dt']").attr("data-wt", "closed").valid();
+            $frm.find("input[name='p_date']").attr("data-wt", "closed").valid();
           } else {
-            $frm.find("input[name='p_dt']").attr("data-wt", "open").valid();
+            $frm.find("input[name='p_date']").attr("data-wt", "open").valid();
           }
         },
       });
@@ -294,14 +334,14 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
             return $frm.find("select[name='d_location_id']").val();
           },
           d_dt: function () {
-            return $frm.find("input[name='d_dt']").val();
+            return $frm.find("input[name='d_date']").val() + " " + $frm.find("input[name='d_time']").val();
           },
         },
         success: function (data) {
           if (data == "false") {
-            $frm.find("input[name='d_dt']").attr("data-wt", "closed").valid();
+            $frm.find("input[name='d_date']").attr("data-wt", "closed").valid();
           } else {
-            $frm.find("input[name='d_dt']").attr("data-wt", "open").valid();
+            $frm.find("input[name='d_date']").attr("data-wt", "open").valid();
           }
         },
       });
@@ -346,7 +386,14 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
       var $grid = $("#grid").datagrid({
         buttons: [
           {
+            type: "delay_sms",
+            text: "Delay",
+            url:
+               "index.php?controller=pjAdminOrders&action=pjActionPrintOrder&id={:id}",
+          },
+          {
             type: "print",
+            text: " Kprint",
             url:
               "index.php?controller=pjAdminOrders&action=pjActionPrintOrder&id={:id}",
           },
@@ -367,10 +414,17 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           { text: myLabel.address, type: "text", sortable: false },
           { text: myLabel.postcode, type: "text", sortable: false },
           { text: myLabel.caller_type, type: "text", sortable: false },
-          { text: myLabel.call_start, type: "text", sortable: false },
-          { text: myLabel.call_end, type: "text", sortable: false },
+          // { text: myLabel.call_start, type: "text", sortable: false },
+          // { text: myLabel.call_end, type: "text", sortable: false },
           { text: myLabel.sms_email, type: "text", sortable: false },
-          { text: myLabel.order_despatched, type: "text", sortable: false },
+          // { text: myLabel.order_despatched, type: "toggle", sortable: false },
+          {text: myLabel.order_despatched, type: "toggle", sortable: false, editable: true, 
+                    editableRenderer: function () {
+                      return 0;
+                    },
+                    saveUrl: "index.php?controller=pjAdminOrders&action=pjActionSaveOrderDespatched&id={:id}",
+                    positiveLabel: myLabel.yes, positiveValue: "1", negativeLabel: myLabel.no, negativeValue: "0", 
+                    cellClass: "text-center"},
           { text: myLabel.excpected_delivery, type: "text", sortable: false },
           { text: myLabel.sms_sent_time, type: "text", sortable: false },
           { text: myLabel.delivered_customer, type: "text", sortable: false },
@@ -385,7 +439,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
             text: myLabel.total,
             type: "text",
             sortable: false,
-            editable: false,
+            editable: true,
           },
           {
             text: myLabel.type,
@@ -398,15 +452,22 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
             text: myLabel.status,
             type: "text",
             sortable: true,
-            editable: false,
+            editable: true,
             renderer: formatStatus,
           },
+          // { text: myLabel.is_featured, type: "toggle", sortable: false, editable: true, 
+          //           editableRenderer: function () {
+          //             return 0;
+          //           },
+          //           saveUrl: "",
+          //           positiveLabel: myLabel.rigtht, positiveValue: "1", negativeLabel: myLabel.no, negativeValue: "0", 
+          //           cellClass: "text-center"},
         ],
         dataUrl:
           "index.php?controller=pjAdminOrders&action=pjActionGetOrder" +
           pjGrid.queryString,
         dataType: "json",
-        fields: ["phone_no", "surname", "d_address_1", "post_code", "caller_type", "call_start", "call_end", "sms_email", "order_despatched", "excpected_delivery", "sms_sent_time", "delivered_customer", "review", "datetime", "total", "type", "status"],
+        fields: ["phone_no", "surname", "d_address_1", "post_code", "caller_type", "sms_email", "order_despatched", "excpected_delivery", "sms_sent_time", "delivered_customer", "review", "datetime", "total", "type", "status"],
         paginator: {
           actions: [
             {
@@ -467,6 +528,14 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           content.page,
           content.rowCount
         );
+        $grid.datagrid(
+          "load",
+          "index.php?controller=pjAdminOrders&action=pjActionGetOrder",
+          "order_despatched",
+          "DESC",
+          content.page,
+          content.rowCount
+        );
         return false;
       })
       .on("change", "#payment_method", function (e) {
@@ -491,7 +560,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
         $("#fdOrderList").find("tbody.main-body").append($clone);
         bindTouchSpin();
         $("#fdOrderList").show();
-        console.log('Index:',index);
+        // console.log('Index:',index);
         $('#fdProduct_new_'+index).addClass('selectpicker').selectpicker('refresh');
       })
       .on("click", ".pj-remove-product", function (e) {
@@ -568,8 +637,10 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           // if ($fdSelectedProduct.preparation_time == Null) {
           //   $fdSelectedProduct.preparation_time = 0;
           // }
+          var $kordersPrepTime = $("#totKorderPrepTimeInput").val();
           $prepTime = $fdSelectedProduct.preparation_time;
           $totPrepTime = $totPrepTime + parseInt($prepTime);
+          $totPrepTime = $totPrepTime + parseInt($kordersPrepTime);
           //$fdSelectedProduct.description
           // if ($totPrepTime < 60 ) {
           //   $totPrepTime = $totPrepTime + ""
@@ -580,7 +651,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           $("#fdDescription").html($fdSelectedProduct.description);
           $("#total_prep-time_format").html($totPrepTime);
           
-          //MEGAMIND
+          // !MEGAMIND
 
           $("#curProdDesc").html($("#prdDesc_" + index).val());
           $("#fdExtraTable_" + index)
@@ -597,15 +668,59 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
             $(".fdExtraButton_" + index).show();
           }
           calPrice(1);
-        });
-        return false;
+        })
+            
+        // MEGAMIND
+
+        .done(function(e){
+        if (e && e.preventDefault) {
+          e.preventDefault();
+        }
+        //console.log($("#fdOrderList tr:last").attr("data-index"));
+        var lastRowIndex = $("#fdOrderList tr:last").attr("data-index"),
+        $product = $("#fdProduct_" + lastRowIndex).val(),
+        $price = $("#fdPrice_" + lastRowIndex).val();
+        if($product != "" && $price != ""){
+          var index = Math.ceil(Math.random() * 999999),
+          $clone = $("#boxProductClone").find("tbody").html();
+          $clone = $clone.replace(/\{INDEX\}/g, "new_" + index);
+          $("#fdOrderList").find("tbody.main-body").append($clone);
+          bindTouchSpin();
+          $("#fdOrderList").show();
+          // console.log('Index:',index);
+          $('#fdProduct_new_'+index).addClass('selectpicker').selectpicker('refresh');
+        }
+        
+      });
+         return false;
       })
-
-      // MEGAMIND
-
+      // .on("change", "#d_date", function (e){
+      //   d_dt = $("#d_dt").val();
+      //   ddate = $this.val();
+      //   d_dt = d_dt + ddate;
+      //   $("#d_dt").val() = d_dt;
+      // })
+      // .on("change", "#d_time", function (e){
+      //   d_dt = $("#d_dt").val();
+      //   dtime = $this.val();
+      //   d_dt = d_dt + dtime;
+      //   $("#d_dt").val() = d_dt;
+      // })
+      // .on("change", "#p_date", function (e){
+      //   p_dt = $("#p_dt").val();
+      //   pdate = $this.val();
+      //   p_dt = p_dt + pdate;
+      //    $("#p_dt").val() = 
+      // })
+      //  .on("change", "#p_time", function (e){
+      //   p_dt = $("#p_dt").val();
+      //   ptime = $this.val();
+      //   p_dt = p_dt + ptime;
+      // })
       .on("change", "#c_email", function (e) {
         $cinfo = client_info;
         $cmail = $(this).val();
+        var newUser = true;
 
         for(var c in $cinfo) {
           if ($cinfo[c]['sms_email'] == $cmail){
@@ -616,8 +731,12 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
             $("#d_address_2").val($cinfo[c]['d_address_2']);
             $("#d_city").val($cinfo[c]['d_city']);
              $("#c_name").val($cinfo[c]['first_name']);
+             newUser = false;
           }
         }
+        // if(newUser = true) {
+        //   alert("Hi New User");
+        // }
       })
 
       // !MEGAMIND
@@ -948,15 +1067,15 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
       .on("change", "#selAddress", function (e) {
         var index = $(this).val();
         console.log(postalResult);
-        return;
-        client.lookupPostcode({ postcode }).then(function (result) {
+        // return;
+        //client.lookupPostcode({ postcode }).then(function (result) {
           if (postalResult.length > 0) {
-            $("#d_address_1").val(result[index].line_1);
-            $("#d_address_2").val(result[index].line_2);
-            $("#d_city").val(result[index].post_town);
+            $("#d_address_1").val(postalResult[index].line_1);
+            $("#d_address_2").val(postalResult[index].line_2);
+            $("#d_city").val(postalResult[index].post_town);
 
           }
-        })
+        //})
 
       })
       .on("click", ".clickCategory", function (e) {

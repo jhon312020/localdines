@@ -79,10 +79,6 @@ class pjAdminOrders extends pjAdmin
 			{
 			    $pjOrderModel->where('t1.client_id', $client_id);
 			}
-			// if ($post_code = $this->_get->toString('post_code'))
-			// {
-			//     $pjOrderModel->where('t1.post_code', $post_code);
-			// }
 			$column = 'created';
 			$direction = 'DESC';
 			if ($this->_get->toString('column') && in_array(strtoupper($this->_get->toString('direction')), array('ASC', 'DESC')))
@@ -125,7 +121,7 @@ class pjAdminOrders extends pjAdmin
 				// $data[$k]['call_start'] = 'call_start';
 				// $data[$k]['call_end'] = 'call_end';
 				//$data[$k]['sms_email'] = 'SMS Email';
-				$data[$k]['order_despatched'] = 'order_despatched';
+				// $data[$k]['order_despatched'] = '1';
 				$data[$k]['excpected_delivery'] = 'postcode';
 				$data[$k]['sms_sent_time'] = 'sms_sent_time';
 				$data[$k]['delivered_customer'] = 'delivered_customer';
@@ -329,12 +325,7 @@ class pjAdminOrders extends pjAdmin
 			$data['surname'] = $this->_post->toString('surname');
 			$data['sms_email'] = $this->_post->toString('sms_email');
 			$data['first_name'] = $this->_post->toString('c_name');
-            
-            // print_r($data);
-            // exit;
 
-	        // if($this->_post->check('new_client'))
-	        // {
 	            $c_data = array();
 	            $c_data['c_title'] = $this->_post->toString('c_title');
 	            //$c_data['c_name'] = $this->_post->toString('c_name');
@@ -379,6 +370,25 @@ class pjAdminOrders extends pjAdmin
 	                }
 	                $data['d_dt'] = pjDateTime::formatDate($_date, $this->option_arr['o_date_format']) . ' ' . $time;
 	            }
+	            // if (!empty($post['d_date']);
+	            // {
+	            //     $date = $post['d_date'];
+	            //     $time = $post['d_time'];
+	            //     if ($time > 12:00){
+	            //     	$period = 'pm';
+	                
+	            //     }
+	            //     if(!empty($date) && !empty($time))
+	            //     {
+	            //         // list($_date, $_time, $_period) = explode(" ", $date_time);
+	            //         list($date, $time, $period);
+	            //         $time = pjDateTime::formatTime($time . ' ' . $period, $this->option_arr['o_time_format']);
+	            //     }else{
+	            //         // list($_date, $_time) = explode(" ", $date_time);
+	            //         $time = pjDateTime::formatTime($_time, $this->option_arr['o_time_format']);
+	            //     }
+	            //     $data['d_date']=pjDateTime::formatTime($date,$this->option_arr['o_date_format']) . ' ' . $time;
+	            // }
 	            if ($this->_post->toInt('d_location_id'))
 	            {
 	                $data['location_id'] = $this->_post->toInt('d_location_id');
@@ -522,7 +532,7 @@ class pjAdminOrders extends pjAdmin
             // MEGAMIND
 
             $client_info = pjOrderModel::factory()
-            ->select('t1.phone_no, t1.surname, t1.sms_email, t1.post_code, t1.d_address_1, t1.d_address_2, t1.d_city, t1.first_name')
+            ->select('t1.id, t1.phone_no, t1.surname, t1.sms_email, t1.post_code, t1.d_address_1, t1.d_address_2, t1.d_city, t1.first_name, t1.client_id, t1.kprint')
             ->findAll()
             ->getData();
             $this->set('client_info', $client_info);
@@ -564,8 +574,10 @@ class pjAdminOrders extends pjAdmin
 	        $this->appendCss('bootstrap-chosen.css', PJ_THIRD_PARTY_PATH . 'chosen/');
 	        $this->appendJs('chosen.jquery.js', PJ_THIRD_PARTY_PATH . 'chosen/');
 	        $this->appendJs('moment-with-locales.min.js', PJ_THIRD_PARTY_PATH . 'moment/');
-	        $this->appendCss('build/css/bootstrap-datetimepicker.min.css', PJ_THIRD_PARTY_PATH . 'bootstrap_datetimepicker/');
-	        $this->appendJs('build/js/bootstrap-datetimepicker.min.js', PJ_THIRD_PARTY_PATH . 'bootstrap_datetimepicker/');
+	        $this->appendCss('clockpicker.css', PJ_THIRD_PARTY_PATH . 'clockpicker/');
+	        $this->appendJs('clockpicker.js', PJ_THIRD_PARTY_PATH . 'clockpicker/');
+	        $this->appendCss('datepicker3.css', PJ_THIRD_PARTY_PATH . 'bootstrap_datepicker/');
+	        $this->appendJs('bootstrap-datepicker.js', PJ_THIRD_PARTY_PATH . 'bootstrap_datepicker/');
 	        $this->appendJs('jquery.validate.min.js', PJ_THIRD_PARTY_PATH . 'validate/');
 			$this->appendJs('additional-methods.js', PJ_THIRD_PARTY_PATH . 'validate/');
 			$this->appendCss('bootstrap-select.min.css', PJ_THIRD_PARTY_PATH . 'bootstrap_select/1.13.18/css/');
@@ -892,7 +904,7 @@ class pjAdminOrders extends pjAdmin
 	
 	public function pjActionPrintOrder()
 	{
-		// print_r($this->_get->toString('hash'));
+		// print_r($this->_get->toString('hash'))
 		// exit;
 	    $this->checkLogin();
 	    if (!pjAuth::factory()->hasAccess())
@@ -902,35 +914,84 @@ class pjAdminOrders extends pjAdmin
 	    }
 
 	    $this->setLayout('pjActionPrint');
+	    $id = $this->_get->toInt('id');
 	    if($id = $this->_get->toInt('id'))
 	    {
-	    	// echo $this->_get->toInt('id');
-    	    $pjOrderItemModel = pjOrderItemModel::factory();
-            $pjProductModel = pjProductModel::factory();
-    	   
-    	    $arr = $pjOrderItemModel
-   //  	    ->join('pjClient', "t2.id=t1.client_id", 'left outer')
-   //  	    ->join('pjAuthUser', "t3.id=t2.foreign_id", 'left outer')
-   //  	    ->select("t1.*, t2.c_title, t3.email AS c_email, t3.name AS c_name, t3.phone AS c_phone, t2.c_company, t2.c_address_1, t2.c_address_2, t2.c_country, t2.c_state, t2.c_city, t2.c_zip, t2.c_notes,
-   //  						AES_DECRYPT(t1.cc_type, '".PJ_SALT."') AS `cc_type`,
-   //  						AES_DECRYPT(t1.cc_num, '".PJ_SALT."') AS `cc_num`,
-   //  						AES_DECRYPT(t1.cc_exp, '".PJ_SALT."') AS `cc_exp`,
-   //  						AES_DECRYPT(t1.cc_code, '".PJ_SALT."') AS `cc_code`")
-			// ->find($id)
-   //  		->getData();
-    	    //->join('pjProductModel', "t2.id=t1.foreign_id", 'left')
-    	    ->select("t1.foreign_id")
-    	    ->find($id)
-    	    ->getData();
+	    	
+           // MEGAMIND
+	
+           $korder = pjOrderModel::factory()
+           ->select("t1.*")
+           ->find($id)
+           ->getData();
+           $korder['kprint'] = 1;
 
-    	    $arr2 =  
-    	    //->select("t1.");
-    		print_r($arr);
-		    exit;
-		   //  $product_category = pjProductCategoryModel::factory()->where("product_id", $product_id)->findAll()->getData();
-					// if ($product_category) {
-					// 	$arr['category_id'] = $product_category[0]['category_id'];
-					// }
+           $pjOrder = pjOrderModel::factory();
+           $pjOrder->where('id',$id)->limit(1)->modifyAll($korder);
+
+    	    $pjOrderModel = pjOrderModel::factory();
+
+    		  // print_r("<pre>");print_r($korder);
+    		  // exit;
+    	   
+     	    $arr = $pjOrderModel
+    	    ->join('pjClient', "t2.id=t1.client_id", 'left outer')
+    	    ->join('pjAuthUser', "t3.id=t2.foreign_id", 'left outer')
+    	    ->select("t1.*, t2.c_title, t3.email AS c_email, t3.name AS c_name, t3.phone AS c_phone, t2.c_company, t2.c_address_1, t2.c_address_2, t2.c_country, t2.c_state, t2.c_city, t2.c_zip, t2.c_notes,
+    						AES_DECRYPT(t1.cc_type, '".PJ_SALT."') AS `cc_type`,
+    						AES_DECRYPT(t1.cc_num, '".PJ_SALT."') AS `cc_num`,
+    						AES_DECRYPT(t1.cc_exp, '".PJ_SALT."') AS `cc_exp`,
+    						AES_DECRYPT(t1.cc_code, '".PJ_SALT."') AS `cc_code`")
+			->find($id)
+    		->getData();
+
+    		$this->set('arr', $arr);
+
+    		$product_arr = pjProductModel::factory()
+			->join('pjMultiLang', sprintf("t2.foreign_id = t1.id AND t2.model = 'pjProduct' AND t2.locale = '%u' AND t2.field = 'name'", $this->getLocaleId()), 'left')
+			->join('pjProductCategory', "t3.product_id = t1.id", 'left')
+			->select(sprintf("t1.*, t2.content AS name, t3.category_id,
+								(SELECT GROUP_CONCAT(extra_id SEPARATOR '~:~') FROM `%s` WHERE product_id = t1.id GROUP BY product_id LIMIT 1) AS allowed_extras,
+								(SELECT COUNT(*) FROM `%s` AS TPE WHERE TPE.product_id=t1.id) as cnt_extras", pjProductExtraModel::factory()->getTable(), pjProductExtraModel::factory()->getTable()))
+			->orderBy("name ASC")
+			->findAll()
+			->toArray('allowed_extras', '~:~')
+			->getData();
+
+			$this->set('product_arr', $product_arr);
+
+			$pjProductPriceModel = pjProductPriceModel::factory();
+			$oi_arr = array();
+			$_oi_arr = pjOrderItemModel::factory()
+			->where('t1.order_id', $arr['id'])
+			->findAll()
+			->getData();
+			foreach ($_oi_arr as $item)
+			{
+			    if($item['type'] == 'product')
+			    {
+			        $item['price_arr'] = $pjProductPriceModel
+			        ->reset()
+			        ->join('pjMultiLang', sprintf("t2.foreign_id = t1.id AND t2.model = 'pjProductPrice' AND t2.locale = '%u' AND t2.field = 'price_name'", $this->getLocaleId()), 'left')
+			        ->select("t1.*, t2.content AS price_name")
+			        ->where('product_id', $item['foreign_id'])
+			        ->findAll()
+			        ->getData();
+			    }
+			    $oi_arr[] = $item;
+			}
+			$this->set('oi_arr', $oi_arr);
+			
+			$client_arr = pjClientModel::factory()
+			->select("t1.*, t2.email as c_email, t2.name as c_name, t2.phone as c_phone")
+			->join("pjAuthUser", "t2.id=t1.foreign_id", 'left outer')
+			->orderBy('t2.name ASC')
+			->findAll()
+			->getData();
+			$this->set('client_arr', $client_arr);
+
+			// !MEGAMIND
+
     		if (empty($arr))
     		{
     		    pjUtil::redirect(PJ_INSTALL_URL. "index.php?controller=pjAdminOrders&action=pjActionIndex&err=AR08");
@@ -982,6 +1043,8 @@ class pjAdminOrders extends pjAdmin
 
     		$this->set('template_arr', $template_arr);
 	    }
+
+	    
 	}
 	
 	public function pjActionReminderEmail()
@@ -1427,16 +1490,19 @@ class pjAdminOrders extends pjAdmin
 		    }
 		    $type = $this->_post->toString('type');
 		    $d_location_id = $this->_post->toInt('d_location_id');
-		    $date_time = $this->_post->toString('d_dt');
-			if(count(explode(" ", $date_time)) == 3)
-			{
-				list($_date, $_time, $_period) = explode(" ", $date_time);
-				$time = pjDateTime::formatTime($_time . ' ' . $_period, $this->option_arr['o_time_format']);
-			}else{
-				list($_date, $_time) = explode(" ", $date_time);
-				$time = pjDateTime::formatTime($_time, $this->option_arr['o_time_format']);
-			}
-			$date = pjDateTime::formatDate($_date, $this->option_arr['o_date_format']);
+		    $date = pjDateTime::formatDate($this->_post->toString('d_date'), $this->option_arr['o_date_format']);
+		    //$d_time = date('H:i', strtotime($this->_post->toString('d_time')));
+		//$date_to = pjDateTime::formatDate($this->_post->toString('date_to'), $this->option_arr['o_date_format']);
+		    //$date_time = $this->_post->toString('d_date');
+			// if(count(explode(" ", $date_time)) == 3)
+			// {
+			// 	list($_date, $_time, $_period) = explode(" ", $date_time);
+			// 	$time = pjDateTime::formatTime($_time . ' ' . $_period, $this->option_arr['o_time_format']);
+			// }else{
+			// 	list($_date, $_time) = explode(" ", $date_time);
+			$time = pjDateTime::formatTime($this->_post->toString('d_time'), $this->option_arr['o_time_format']);
+			// }
+			// $date = pjDateTime::formatDate($_date, $this->option_arr['o_date_format']);
 			$wt_arr = pjAppController::getWorkingTime($date, $d_location_id, $type);
 			
 			if($wt_arr == false)
@@ -1512,6 +1578,49 @@ class pjAdminOrders extends pjAdmin
 			}
 			$this->set('product_arr', $product_arr);
 		}
+	}
+	public function pjActionSaveOrderDespatched()
+	{
+	    $this->setAjax(true);
+	    if ($this->isXHR())
+	    {
+	        if (!self::isPost())
+	        {
+	            self::jsonResponse(array('status' => 'ERR', 'code' => 100, 'text' => 'HTTP method not allowed.'));
+	        }
+	        
+	        if ($this->_get->toInt('id') <= 0)
+	        {
+	            self::jsonResponse(array('status' => 'ERR', 'code' => 101, 'text' => 'Missing, empty or invalid parameters.'));
+	        }
+	        $id = $this->_get->toInt('id');
+	        
+	        pjOrderModel::factory()
+	        ->where('id', $id)
+	        ->modifyAll(array(
+	            'order_despatched' => ":IF(`order_despatched`='0','1','0')"
+	        ));
+
+	        $data = pjOrderModel::factory()
+	        ->select("t1.phone_no, t1.order_despatched")
+	        ->find($id)
+	        ->getData();
+	        print_r($data);
+	         if ($data['order_despatched']) {
+	         	$params = array(
+                'text' => 'Your order has been despatched',
+                'type' => 'unicode',
+                //'key' => md5($option_arr['private_key'] . PJ_SALT)
+               );
+               // $params['number'] = $data['phone_no'];
+               $params['number'] = "+919841646770";
+               pjBaseSms::init($params)->pjActionSend();
+               //print_r("Message has sent");
+	         }
+            
+	        self::jsonResponse(array('status' => 'OK', 'code' => 200, 'text' => 'Your order has despatched.'));
+	    }
+	    exit;
 	}
 }
 ?>

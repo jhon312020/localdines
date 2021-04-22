@@ -1,7 +1,9 @@
 <div class="row wrapper border-bottom white-bg page-heading">
-    <!--<?php //print_r($tpl['product_arr']); ?>  -->
+    <!-- <?php //print_r("<pre>");print_r($tpl['product_arr']); ?>   -->
    <!--  <?php //print_r($tpl['arr']['i18n']); ?>  -->
-  <!--  <?php //print_r($tpl['client_info']); ?> -->
+  <!--  <?php //print_r("<pre>");print_r($tpl['client_info']);
+   //exit; ?> -->
+   <!-- <?php //print_r($tpl['kprint_arr']); ?> -->
     <div class="col-sm-12">
         <div class="row">
             <div class="col-sm-10">
@@ -39,7 +41,8 @@ $short_days = __('short_days', true);
 			<input type="hidden" id="total" name="total" value="" />
 			<input type="hidden" id="call_start" name="call_start" value="<?php echo date('h:i:s A'); ?>" />
 			
-			<div id="dateTimePickerOptions" style="display:none;" data-wstart="<?php echo (int) $tpl['option_arr']['o_week_start']; ?>" data-dateformat="<?php echo pjUtil::toMomemtJS($tpl['option_arr']['o_date_format']); ?>" data-format="<?php echo pjUtil::toMomemtJS($tpl['option_arr']['o_date_format']); ?> <?php echo $time_format;?>" data-months="<?php echo implode("_", $months);?>" data-days="<?php echo implode("_", $short_days);?>"></div>
+			<!-- <div id="dateTimePickerOptions" style="display:none;" data-wstart="<?php //echo (int) $tpl['option_arr']['o_week_start']; ?>" data-dateformat="<?php ///echo pjUtil::toMomemtJS($tpl['option_arr']['o_date_format']); ?>" data-format="<?php //echo pjUtil::toMomemtJS($tpl['option_arr']['o_date_format']); ?> <?php //echo $time_format;?>" data-months="<?php //echo implode("_", $months);?>" data-days="<?php //echo implode("_", $short_days);?>"></div> -->
+            <div id="datePickerOptions" style="display:none;" data-wstart="<?php echo (int) $tpl['option_arr']['o_week_start']; ?>" data-format="<?php echo pjUtil::toBootstrapDate($tpl['option_arr']['o_date_format']); ?>" data-months="<?php echo implode("_", $months);?>" data-days="<?php echo implode("_", $short_days);?>"></div>
             <div class="tabs-container tabs-reservations m-b-lg">
                 <ul class="nav nav-tabs" role="tablist">
                     <li role="presentation" class="active"><a href="#order-details" aria-controls="order-details" role="tab" data-toggle="tab"><?php __('menuOrders'); ?></a></li>
@@ -60,14 +63,42 @@ $short_days = __('short_days', true);
     										?>
                                 
                                     </div>
+                                   <div class="">
+                                      <lable  href="#" style="margin-right:5px; float: right; margin-top: -45px;">Kitchen Orders:</lable>
+                                          <?php
+                                            $printedOrders = array();
+                                            $totPrepTime = 0;
+
+                                            foreach ($tpl['client_info'] as $orders => $order) {
+                                                if($order['kprint'] == 1) {
+                                                    
+                                                     $printedOrders[] = $order['id'];
+                                                     
+                                                     }
+                                                     } 
+
+                                            foreach ($tpl['product_arr'] as $products => $product) {
+                                                foreach ($printedOrders as $id) {
+                                                    if ($product['order'] == $id) {
+                                                        $totPrepTime = $totPrepTime + $product['preparation_time'];
+                                                    }
+                                                }
+                                            }
+
+
+                                                      ?>
+                                        
+                                                <span id="korders"><?php echo count($printedOrders); ?></span>
+                                                <input type="hidden" id="totKorderPrepTimeInput" name="total_korder_preparation_time" value="<?php echo $totPrepTime; ?>">
+                                    </div>
                                 </div><!-- /.col-md-3 -->
                             </div><!-- /.row -->
     
                             <div class="hr-line-dashed"></div>
     
-                            <div class="m-b-md">
-                                <a href="#" class="btn btn-primary btn-outline m-t-xs" id="btnAddProduct"><i class="fa fa-plus"></i> <?php __('btnAddProduct');?></a>
-                            </div>
+                            <!-- <div class="m-b-md">
+                                <a href="#" class="btn btn-primary btn-outline m-t-xs" id="btnAddProduct"><i class="fa fa-plus"></i> <?php //__('btnAddProduct');?></a>
+                            </div> -->
     
                             <div class="form-group ibox-content">
                             	<div class="sk-spinner sk-spinner-double-bounce"><div class="sk-double-bounce1"></div><div class="sk-double-bounce2"></div></div>
@@ -357,6 +388,13 @@ $short_days = __('short_days', true);
                                             <textarea name="d_notes" id="d_notes" class="form-control<?php echo $tpl['option_arr']['o_df_include_notes'] == 3 ? ' fdRequired required' : NULL; ?>" data-msg-required="<?php __('fd_field_required', false, true);?>"></textarea>
                                         </div>
                                     </div><!-- /.col-md-3 -->
+                                    <div class="col-md-4 col-sm-6">
+                                        <div class="form-group">
+                                            <label class="control-label"><?php echo 'Total Prep.Time:'; ?></label>
+    
+                                            <span name="d_notes" id="total_prep-time_format" data-msg-required="<?php __('fd_field_required', false, true);?>"></span>
+                                        </div>
+                                    </div><!-- /.col-md-3 -->
                                     <?php
                                     $field++;
                                 }
@@ -394,25 +432,67 @@ $short_days = __('short_days', true);
                                         </div><!-- /.clearfix -->
                                     </div>
                                 </div><!-- /.col-md-3 -->
-                                <div class="col-lg-2 col-md-2 col-sm-6">
+                                <div class="col-lg-4 col-md-4 col-sm-6">
+                                    <!-- <div class="form-group order-delivery">
+                                        <label class="control-label"><?php //__('lblDeliveryDateTime'); ?></label> -->
+    
+                                        <!-- <div class="input-group">
+                                            <input type="text" id="d_dt" name="d_dt" class="form-control fdRequired required" data-wt="open" data-msg-required="<?php //__('fd_field_required', false, true);?>" readonly>
+    
+                                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span> 
+                                        </div> -->
+                                        
+                                    
+                                        
+                                    <!-- </div> -->
+                                     
+                                    <!--  <input type="hidden" id="d_dt" name="d_dt" class="form-control fdRequired required" data-wt="open" data-msg-required="<?php //__('fd_field_required', false, true);?>" readonly> -->
                                     <div class="form-group order-delivery">
-                                        <label class="control-label"><?php __('lblDeliveryDateTime'); ?></label>
-    
-                                        <div class="input-group">
-                                            <input type="text" id="d_dt" name="d_dt" class="form-control fdRequired required" data-wt="open" data-msg-required="<?php __('fd_field_required', false, true);?>" readonly>
-    
-                                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span> 
-                                        </div>
+                                       
+                                        <label><?php __('lblDate'); ?></label>
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                
+                                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span> 
+            
+                                                <input type="text" name="d_date" id="d_date" data-wt="open" class="form-control required" readonly>
+                                            </div>
+                                        </div><!-- /.form-group -->
+                                         <label>Time</label>
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-clock-o"></i></span> 
+                                                
+                                                <input name="d_time" class="pj-timepicker form-control required"/>    
+                                            </div>
+                                        </div><!-- /.form-group -->
                                     </div>
-    
+
                                     <div class="form-group order-pickup">
-                                        <label class="control-label"><?php __('lblPickerDateTime'); ?></label>
+                                        <label><?php __('lblDate'); ?></label>
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                
+                                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span> 
+            
+                                                <input type="text" name="p_date" id="p_date" data-wt="open" class="form-control required" readonly>
+                                            </div>
+                                        </div><!-- /.form-group -->
+                                         <label>Time</label>
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-clock-o"></i></span> 
+                                                
+                                                <input name="p_time" class="pj-timepicker form-control required"/>    
+                                            </div>
+                                        </div><!-- /.form-group -->
+                                        <!-- <label class="control-label"><?php //__('lblPickerDateTime'); ?></label>
     
                                         <div class="input-group">
-                                            <input type="text" id="p_dt" name="p_dt" class="form-control fdRequired" data-wt="open" data-msg-required="<?php __('fd_field_required', false, true);?>" readonly>
+                                            <input type="text" id="p_dt" name="p_dt" class="form-control fdRequired" data-wt="open" data-msg-required="<?php //__('fd_field_required', false, true);?>" readonly>
     
                                             <span class="input-group-addon"><i class="fa fa-calendar"></i></span> 
-                                        </div>
+                                        </div> -->
                                     </div>
                                 </div><!-- /.col-md-3 -->
                                 <div class="col-lg-2 col-md-2 col-sm-6">
@@ -516,9 +596,9 @@ $short_days = __('short_days', true);
 
                     <p id="fdDescription"></p>
 
-                    <div class="hr-line-dashed"></div>
+                    <!-- <div class="hr-line-dashed"></div>
 
-                    <h3 class="lead m-b-md"><?php echo "Total Prep.Time:";?> <strong id="total_prep-time_format" class="pull-rigth text-right"></strong></h3>
+                    <h3 class="lead m-b-md"><?php echo "Total Prep.Time:";?> <strong id="total_prep-time_format" class="pull-rigth text-right"></strong></h3> -->
                     
                     <!-- MEGAMIND -->
                 
