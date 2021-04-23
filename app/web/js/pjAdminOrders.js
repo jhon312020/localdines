@@ -18,6 +18,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
       client,
       postcode,
       postalResult,
+      $cols,
 
       // ! MEGAMIND
 
@@ -113,6 +114,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
                   // twelvehour: myLabel.showperiod,
                   autoclose: true,
                   afterDone: function() {
+                  //dateChange();
                   $frmCreateOrder.find("input[name='type']").is(":checked")
                   ? validateDeliveryTime()
                   : validatePickupTime();
@@ -123,6 +125,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
     }
     if ($frmCreateOrder.length > 0 || $frmUpdateOrder.length > 0) {
       $.validator.addMethod("pickupTime", function (value, element) {
+        console.log(element);
         if ($(element).attr("data-wt") == "open") {
           return true;
         } else {
@@ -136,6 +139,8 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           return false;
         }
       });
+       
+
 
       $frmCreateOrder.validate({
         rules: {
@@ -154,7 +159,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           p_dt: {
             pickupTime: myLabel.restaurant_closed,
           },
-          d_dt: {
+          d_date: {
             deliveryTime: myLabel.restaurant_closed,
           },
           c_email: {
@@ -169,11 +174,12 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           $('.nav a[href="#' + id + '"]').tab("show");
         },
         submitHandler: function (form) {
+
           var valid = true;
           var $ele = null;
           
           // MEGAMIND
-
+          console.log("comes here")
           var firstRowIndex = $('#fdOrderList').find("tbody.main-body > tr:first-child").attr("data-index");
           var lastRow = $("#fdOrderList tr:last");
           var lastRowIndex = $("#fdOrderList tr:last").attr("data-index");
@@ -331,10 +337,15 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
               : "pickup";
           },
           d_location_id: function () {
+            console.log($frm.find("select[name='d_location_id']").val())
             return $frm.find("select[name='d_location_id']").val();
           },
-          d_dt: function () {
-            return $frm.find("input[name='d_date']").val() + " " + $frm.find("input[name='d_time']").val();
+          d_date: function () {
+            // console.log($frm.find("input[name='d_date']").val() + " " + $frm.find("input[name='d_time']").val())
+            return $frm.find("input[name='d_date']").val();
+          },
+          d_time: function () {
+            return $frm.find("input[name='d_time']").val();
           },
         },
         success: function (data) {
@@ -399,8 +410,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           },
           {
             type: "edit",
-            url:
-              "index.php?controller=pjAdminOrders&action=pjActionUpdate&id={:id}",
+            url: "index.php?controller=pjAdminOrders&action=pjActionUpdate&id={:id}",
           },
           {
             type: "delete",
@@ -427,7 +437,14 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
                     cellClass: "text-center"},
           { text: myLabel.excpected_delivery, type: "text", sortable: false },
           { text: myLabel.sms_sent_time, type: "text", sortable: false },
-          { text: myLabel.delivered_customer, type: "text", sortable: false },
+          // { text: myLabel.delivered_customer, type: "text", sortable: false },
+          {text: myLabel.delivered_customer, type: "toggle", sortable: false, editable: false, 
+                    editableRenderer: function () {
+                      return 0;
+                    },
+                    saveUrl: "index.php?controller=pjAdminOrders&action=pjActionSaveDeliveredCustomer&id={:id}",
+                    positiveLabel: myLabel.yes, positiveValue: "1", negativeLabel: myLabel.no, negativeValue: "0", 
+                    cellClass: "text-center"},
           { text: myLabel.review, type: "text", sortable: false },
           {
             text: myLabel.date_time,
@@ -467,7 +484,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           "index.php?controller=pjAdminOrders&action=pjActionGetOrder" +
           pjGrid.queryString,
         dataType: "json",
-        fields: ["phone_no", "surname", "d_address_1", "post_code", "caller_type", "sms_email", "order_despatched", "excpected_delivery", "sms_sent_time", "delivered_customer", "review", "datetime", "total", "type", "status"],
+        fields: ["phone_no", "surname", "address", "post_code", "caller_type", "sms_email", "order_despatched", "excpected_delivery", "sms_sent_time", "delivered_customer", "review", "datetime", "total", "type", "status"],
         paginator: {
           actions: [
             {
@@ -536,6 +553,14 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           content.page,
           content.rowCount
         );
+        $grid.datagrid(
+          "load",
+          "index.php?controller=pjAdminOrders&action=pjActionGetOrder",
+          "delivered_customer",
+          "DESC",
+          content.page,
+          content.rowCount
+        )
         return false;
       })
       .on("change", "#payment_method", function (e) {
@@ -717,6 +742,12 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
       //   ptime = $this.val();
       //   p_dt = p_dt + ptime;
       // })
+      .on("click", ".pj-table-cell-editable", function (e) {
+
+       var $editBtn = $(this).parent().find('td div.m-t-xs a.pj-table-icon-edit');//.find('pj-table-icon-edit');
+       $editBtn.remove();
+       
+      })
       .on("change", "#c_email", function (e) {
         $cinfo = client_info;
         $cmail = $(this).val();
@@ -1092,6 +1123,9 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           });
           return false;
       });
+    $cols = $("table");//.on("click", function(){
+    console.log($cols);
+    // })
     $('#catModal').on('show.bs.modal', function (event) {
         // Fix Animate.css
         console.log('Called me');

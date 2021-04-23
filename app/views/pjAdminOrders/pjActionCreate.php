@@ -265,7 +265,9 @@ $short_days = __('short_days', true);
     							?>
                             </div><!-- /.new-client-area -->
                             <div class="hr-line-dashed"></div>
+
     						<div class="order-delivery">
+                                
                                 <?php
                                 ob_start();
                                 $field = 0;
@@ -314,6 +316,7 @@ $short_days = __('short_days', true);
         
                                                 <input type="text" name="d_city" id="d_city" class="form-control<?php echo $tpl['option_arr']['o_df_include_city'] == 3 ? ' fdRequired required' : NULL; ?>" data-msg-required="<?php __('fd_field_required', false, true);?>"/>
                                             </div>
+
                                         </div>
                                     </div>
                                     <?php
@@ -436,10 +439,10 @@ $short_days = __('short_days', true);
                                     <!-- <div class="form-group order-delivery">
                                         <label class="control-label"><?php //__('lblDeliveryDateTime'); ?></label> -->
     
-                                        <!-- <div class="input-group">
-                                            <input type="text" id="d_dt" name="d_dt" class="form-control fdRequired required" data-wt="open" data-msg-required="<?php //__('fd_field_required', false, true);?>" readonly>
+                                        <!-- <div class="input-group"> -->
+                                            <!-- <input type="hidden" id="d_dt" name="d_dt" class="form-control fdRequired required" data-wt="open" data-msg-required="<?php //__('fd_field_required', false, true);?>" readonly> -->
     
-                                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span> 
+                                            <!--<span class="input-group-addon"><i class="fa fa-calendar"></i></span> 
                                         </div> -->
                                         
                                     
@@ -455,7 +458,7 @@ $short_days = __('short_days', true);
                                                 
                                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span> 
             
-                                                <input type="text" name="d_date" id="d_date" data-wt="open" class="form-control required" readonly>
+                                                <input type="text" name="d_date" id="d_date" data-wt="open" class="form-control fdRequired required" data-msg-required="<?php __('fd_field_required', false, true);?>" readonly>
                                             </div>
                                         </div><!-- /.form-group -->
                                          <label>Time</label>
@@ -463,7 +466,7 @@ $short_days = __('short_days', true);
                                             <div class="input-group">
                                                 <span class="input-group-addon"><i class="fa fa-clock-o"></i></span> 
                                                 
-                                                <input name="d_time" class="pj-timepicker form-control required"/>    
+                                                <input name="d_time" class="pj-timepicker form-control required fdRequired" data-msg-required="<?php __('fd_field_required', false, true);?>" readonly/>    
                                             </div>
                                         </div><!-- /.form-group -->
                                     </div>
@@ -475,7 +478,7 @@ $short_days = __('short_days', true);
                                                 
                                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span> 
             
-                                                <input type="text" name="p_date" id="p_date" data-wt="open" class="form-control required" readonly>
+                                                <input type="text" name="p_date" id="p_date" data-wt="open" class="form-control fdRequired" data-msg-required="<?php __('fd_field_required', false, true);?>" readonly>
                                             </div>
                                         </div><!-- /.form-group -->
                                          <label>Time</label>
@@ -483,7 +486,7 @@ $short_days = __('short_days', true);
                                             <div class="input-group">
                                                 <span class="input-group-addon"><i class="fa fa-clock-o"></i></span> 
                                                 
-                                                <input name="p_time" class="pj-timepicker form-control required"/>    
+                                                <input name="p_time" class="pj-timepicker form-control fdRequired" data-msg-required="<?php __('fd_field_required', false, true);?>" readonly/>    
                                             </div>
                                         </div><!-- /.form-group -->
                                         <!-- <label class="control-label"><?php //__('lblPickerDateTime'); ?></label>
