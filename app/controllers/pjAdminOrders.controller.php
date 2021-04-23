@@ -1605,12 +1605,11 @@ class pjAdminOrders extends pjAdmin
 	        ->select("t1.phone_no, t1.order_despatched")
 	        ->find($id)
 	        ->getData();
-	        print_r($data);
 	         if ($data['order_despatched']) {
 	         	$params = array(
                 'text' => 'Your order has been despatched',
                 'type' => 'unicode',
-                //'key' => md5($option_arr['private_key'] . PJ_SALT)
+                'key' => md5($this->option_arr['private_key'] . PJ_SALT)
                );
                // $params['number'] = $data['phone_no'];
                $params['number'] = "+919841646770";
