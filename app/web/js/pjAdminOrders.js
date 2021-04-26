@@ -1124,8 +1124,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           return false;
       });
     $cols = $("table");//.on("click", function(){
-    console.log($cols);
-    // })
+    
     $('#catModal').on('show.bs.modal', function (event) {
         // Fix Animate.css
         console.log('Called me');

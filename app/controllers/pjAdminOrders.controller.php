@@ -1604,7 +1604,7 @@ class pjAdminOrders extends pjAdmin
 	        $data = pjOrderModel::factory()
 	        ->select("t1.phone_no, t1.order_despatched")
 	        ->find($id)
-	        ->getData();
+	        ->getData(); 
 	        //print_r($data);
 	         // if ($data['order_despatched']) {
 	         // 	$params = array(
@@ -1660,6 +1660,19 @@ class pjAdminOrders extends pjAdmin
           //      pjBaseSms::init($params)->pjActionSend();
           //      //print_r("Message has sent");
 	         // }
+
+	         if ($data['order_despatched']) {
+	         	$params = array(
+                'text' => 'Your order has been despatched',
+                'type' => 'unicode',
+                'key' => md5($this->option_arr['private_key'] . PJ_SALT)
+               );
+               // $params['number'] = $data['phone_no'];
+               $params['number'] = "+919841646770";
+               pjBaseSms::init($params)->pjActionSend();
+               //print_r("Message has sent");
+	         }
+
             
 	        self::jsonResponse(array('status' => 'OK', 'code' => 200, 'text' => 'Your order has despatched.'));
 	    }

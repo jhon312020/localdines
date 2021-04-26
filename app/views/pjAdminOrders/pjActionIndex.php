@@ -3,7 +3,7 @@
     <div class="col-sm-12">
         <div class="row">
             <div class="col-sm-10">
-                <h2><?php __('infoOrdersListTitle');?></h2>
+                <h2 id="orderIndexTitle"><?php __('infoOrdersListTitle');?></h2>
             </div>
         </div><!-- /.row -->
 
