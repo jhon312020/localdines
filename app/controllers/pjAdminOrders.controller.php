@@ -334,7 +334,7 @@ class pjAdminOrders extends pjAdmin
 	            //$c_data['c_name'] = $this->_post->toString('c_name');
 	            //$c_data['c_email'] = $this->_post->toString('sms_email');
 	            //$c_data['c_password'] = $this->_post->toString('c_password');
-	            $c_data['c_phone'] = $this->_post->toString('phone_no');
+	            //$c_data['c_phone'] = $this->_post->toString('phone_no');
 	            //$c_data['c_company'] = $this->_post->toString('c_company');
 	            $c_data['c_address_1'] = $this->_post->toString('d_address_1');
 	            $c_data['c_address_2'] = $this->_post->toString('d_address_2');
@@ -394,18 +394,20 @@ class pjAdminOrders extends pjAdmin
 	            }
 	        }else{
 	            $data['type'] = 'pickup';
-	            if (!empty($post['p_dt']))
+	            if (!empty($post['p_date']) && !empty($post['p_time']))
 	            {
-	                $date_time = $post['p_dt'];
-	                if(count(explode(" ", $date_time)) == 3)
+	                $p_date = $post['p_date'];
+	                $p_time = $post['p_time'];
+	                
+	                if(count(explode(" ", $p_time)) == 2)
 	                {
-	                    list($_date, $_time, $_period) = explode(" ", $date_time);
+	                    list($_time, $_period) = explode(" ", $p_time);
 	                    $time = pjDateTime::formatTime($_time . ' ' . $_period, $this->option_arr['o_time_format']);
 	                }else{
-	                    list($_date, $_time) = explode(" ", $date_time);
-	                    $time = pjDateTime::formatTime($_time, $this->option_arr['o_time_format']);
+	                   
+	                    $time = pjDateTime::formatTime($p_time, $this->option_arr['o_time_format']);
 	                }
-	                $data['p_dt'] = pjDateTime::formatDate($_date, $this->option_arr['o_date_format']) . ' ' . $time;
+	                $data['p_dt']=pjDateTime::formatTime($p_date,$this->option_arr['o_date_format']) . ' ' . $time;
 	            }
 	            if ($this->_post->toInt('p_location_id'))
 	            {
@@ -1488,7 +1490,7 @@ class pjAdminOrders extends pjAdmin
 		        exit;
 		    }
 		    $type = $this->_post->toString('type');
-		    print_r($type);
+		    //print_r($type);
 		    $d_location_id = $this->_post->toInt('d_location_id');
 		    // print_r($d_location_id);
 		    $d_date = $this->_post->toString('d_date');
@@ -1610,12 +1612,32 @@ class pjAdminOrders extends pjAdmin
 	         // 	$params = array(
           //       'text' => 'Your order has been despatched',
           //       'type' => 'unicode',
-          //       //'key' => md5($option_arr['private_key'] . PJ_SALT)
+          //       'key' => md5($this->option_arr['private_key'] . PJ_SALT)
           //      );
           //      // $params['number'] = $data['phone_no'];
-          //      $params['number'] = "+919841646770";
+          //      $params['number'] = "+917449296732";
           //      pjBaseSms::init($params)->pjActionSend();
-          //      //print_r("Message has sent");
+	            date_default_timezone_set('Asia/Kolkata');
+				$_ss_time = date( 'd/m/Y H:i:s', time () );
+				//echo $_ss_time;
+				// $ss_time = pjDateTime::formatTime($_ss_time, $this->option_arr['o_time_format']);
+				 
+				if(count(explode(" ", $_ss_time)) == 3) {
+                    list($_date, $_time, $_period) = explode(" ", $_ss_time);
+                    $time = pjDateTime::formatTime($_time . ' ' . $_period, $this->option_arr['o_time_format']);
+                } else {
+                    list($_date, $_time) = explode(" ", $_ss_time);
+                    $time = pjDateTime::formatTime($_time, $this->option_arr['o_time_format']);
+                }
+	            $ss_time = pjDateTime::formatDate($_date, $this->option_arr['o_date_format']) . ' ' . $time;
+	            pjOrderModel::factory()
+		        ->where('id', $id)
+		        ->modifyAll(array(
+		            'sms_sent_time' => $ss_time
+		        ));
+                // $ss_time = date("H:i:s");
+                // echo $ss_time;
+          //      print_r("Message has sent");
 	         // }
             
 	        self::jsonResponse(array('status' => 'OK', 'code' => 200, 'text' => 'Your order has despatched.'));
@@ -1675,6 +1697,41 @@ class pjAdminOrders extends pjAdmin
 
             
 	        self::jsonResponse(array('status' => 'OK', 'code' => 200, 'text' => 'Your order has despatched.'));
+	    }
+	    exit;
+	}
+	public function pjActionDelayMessage()
+	{
+	    $this->setAjax(true);
+	    if ($this->isXHR())
+	    {
+	        if (!self::isPost())
+	        {
+	            self::jsonResponse(array('status' => 'ERR', 'code' => 100, 'text' => 'HTTP method not allowed.'));
+	        }
+	        
+	        if ($this->_post->toInt('id') <= 0)
+	        {
+	            self::jsonResponse(array('status' => 'ERR', 'code' => 101, 'text' => 'Missing, empty or invalid parameters.'));
+	        }
+	        $id = $this->_post->toInt('id');
+	        $msg = $this->_post->toString('delay_msg');
+
+	        print_r($msg);
+	        
+	        //echo $id;
+
+	         	// $params = array(
+           //      'text' => $msg,
+           //      'type' => 'unicode',
+           //      'key' => md5($this->option_arr['private_key'] . PJ_SALT)
+         //       );
+         //       // $params['number'] = $data['phone_no'];
+               // $params['number'] = "+917449296732";
+               // pjBaseSms::init($params)->pjActionSend();
+         
+            
+	        self::jsonResponse(array('status' => 'OK', 'code' => 200, 'text' => 'Your order has been delivered.'));
 	    }
 	    exit;
 	}

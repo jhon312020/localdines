@@ -397,10 +397,13 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
       var $grid = $("#grid").datagrid({
         buttons: [
           {
-            type: "delay_sms",
+            type: "delay",
             text: "Delay",
             url:
-               "index.php?controller=pjAdminOrders&action=pjActionPrintOrder&id={:id}",
+               "#",
+            // .on("click",function() {
+            //   console.log("Delay Message")
+            // }
           },
           {
             type: "print",
@@ -560,7 +563,15 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           "DESC",
           content.page,
           content.rowCount
-        )
+        );
+        // $grid.datagrid(
+        //   "load",
+        //   "index.php?controller=pjAdminOrders&action=pjActionGetOrder",
+        //   "delivered_customer",
+        //   "DESC",
+        //   content.page,
+        //   content.rowCount
+        // )
         return false;
       })
       .on("change", "#payment_method", function (e) {

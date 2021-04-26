@@ -51,13 +51,14 @@ class pjOrderModel extends pjAppModel
 		array('name' => 'call_start', 'type' => 'time', 'default' => ':NULL'),
 		array('name' => 'call_end', 'type' => 'time', 'default' => ':NULL'),
 		array('name' => 'post_code', 'type' => 'varchar', 'default' => ':NULL'),
-		array('name' => 'phone_no', 'type' => 'int', 'default' => ':NULL'),
+		array('name' => 'phone_no', 'type' => 'bigint', 'default' => ':NULL'),
 		array('name' => 'surname', 'type' => 'char', 'default' => ':NULL'),
 	    array('name' => 'sms_email', 'type' => 'varchar', 'default' => ':NULL'),
 	    array('name' => 'first_name', 'type' => 'char', 'default' => ':NULL'),
 	    array('name' => 'kprint', 'type' => 'boolean', 'default' => '0'),
 	    array('name' => 'order_despatched', 'type' => 'boolean', 'default' => ':NULL'),
-	    array('name' => 'delivered_customer', 'type' => 'boolean', 'default' => ':NULL')
+	    array('name' => 'delivered_customer', 'type' => 'boolean', 'default' => ':NULL'),
+	    array('name' => 'sms_sent_time', 'type' => 'datetime', 'default' => ':NULL')
 	);
 	
 	public static function factory($attr=array())

@@ -83,6 +83,46 @@
             </div>
         </div>
     </div><!-- /.col-lg-12 -->
+   <!--  <center>
+    <input type="button" id="btnShowPopup" value="Show Popup" class="btn btn-info btn-lg" />
+</center> -->
+<!-- Modal Popup -->
+<div id="MyPopup" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    &times;</button>
+                <h4 class="modal-title">
+                </h4>
+            </div>
+            <div class="modal-body">
+                
+                <form role='form_edit'action="" method="post">
+
+             <!--  <div class="form-group">
+                <label for="Title" >Title</label>
+                <input type="text"  class="form-control" id="titleId" name='tit' placeholder="Enter the title of the article">
+              </div>
+ -->
+              <div class="form-group">
+                <h5>Type the reason for delay</h5>
+                <textarea class="form-control" rows='5' id="message" name="delay_msg"></textarea>
+              </div>
+
+              <button type="submit" class="btn btn-default btn-success btn-block" id="d_msg" >Submit</button>
+
+          </form>
+                <!-- <textarea name="dataMsg"></textarea> -->
+            </div>
+            <!-- <div class="modal-footer">
+                <a type="submit" class="btn btn-primary">
+                    Submit</a>
+            </div> -->
+        </div>
+    </div>
+</div>
 </div>
 <script type="text/javascript">
 var pjGrid = pjGrid || {};

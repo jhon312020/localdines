@@ -338,7 +338,7 @@ $short_days = __('short_days', true);
                                 <div class="col-md-3 col-sm-6">
                                     <div class="form-group">
                                         <label class="control-label"><?php echo 'Mobile' //__('lblPhone'); ?></label>
-                                        <input type="text" name="phone_no" id="c_phone" class="form-control<?php echo $tpl['option_arr']['o_bf_include_phone'] == 3 ? ' fdRequired required' : NULL; ?>" data-msg-required="<?php __('fd_field_required', false, true);?>"/>
+                                        <input type="text" name="phone_no" id="phone_no" class="form-control<?php echo $tpl['option_arr']['o_bf_include_phone'] == 3 ? ' fdRequired required' : NULL; ?>" data-msg-required="<?php __('fd_field_required', false, true);?>"/>
                                     </div>
                                 </div><!-- /.col-md-3 --> 
                                 <div class="col-md-2 col-sm-6">
