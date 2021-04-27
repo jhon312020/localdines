@@ -111,7 +111,7 @@
                 <textarea class="form-control" rows='5' id="message" name="delay_msg"></textarea>
               </div>
 
-              <button type="submit" class="btn btn-default btn-success btn-block" id="d_msg" >Submit</button>
+              <button type="submit" class="btn btn-default btn-primary btn-block" id="d_msg" >Submit</button>
 
           </form>
                 <!-- <textarea name="dataMsg"></textarea> -->

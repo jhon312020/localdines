@@ -125,7 +125,7 @@ class pjAdminOrders extends pjAdmin
 				//$data[$k]['sms_email'] = 'SMS Email';
 				// $data[$k]['order_despatched'] = '1';
 				$data[$k]['excpected_delivery'] = 'postcode';
-				$data[$k]['sms_sent_time'] = 'sms_sent_time';
+				//$data[$k]['sms_sent_time'] = 'sms_sent_time';
 				// $data[$k]['delivered_customer'] = 'delivered_customer';
 				$data[$k]['review'] = 'review';
 				$data[$k]['total'] = pjCurrency::formatPrice($v['total']);
@@ -1581,6 +1581,9 @@ class pjAdminOrders extends pjAdmin
 			$this->set('product_arr', $product_arr);
 		}
 	}
+
+    // MEGAMIND
+
 	public function pjActionSaveOrderDespatched()
 	{
 	    $this->setAjax(true);
@@ -1608,37 +1611,23 @@ class pjAdminOrders extends pjAdmin
 	        ->find($id)
 	        ->getData(); 
 	        //print_r($data);
-	         // if ($data['order_despatched']) {
-	         // 	$params = array(
-          //       'text' => 'Your order has been despatched',
-          //       'type' => 'unicode',
-          //       'key' => md5($this->option_arr['private_key'] . PJ_SALT)
-          //      );
-          //      // $params['number'] = $data['phone_no'];
-          //      $params['number'] = "+917449296732";
-          //      pjBaseSms::init($params)->pjActionSend();
-	            date_default_timezone_set('Asia/Kolkata');
-				$_ss_time = date( 'd/m/Y H:i:s', time () );
-				//echo $_ss_time;
-				// $ss_time = pjDateTime::formatTime($_ss_time, $this->option_arr['o_time_format']);
-				 
-				if(count(explode(" ", $_ss_time)) == 3) {
-                    list($_date, $_time, $_period) = explode(" ", $_ss_time);
-                    $time = pjDateTime::formatTime($_time . ' ' . $_period, $this->option_arr['o_time_format']);
-                } else {
-                    list($_date, $_time) = explode(" ", $_ss_time);
-                    $time = pjDateTime::formatTime($_time, $this->option_arr['o_time_format']);
-                }
-	            $ss_time = pjDateTime::formatDate($_date, $this->option_arr['o_date_format']) . ' ' . $time;
-	            pjOrderModel::factory()
-		        ->where('id', $id)
-		        ->modifyAll(array(
-		            'sms_sent_time' => $ss_time
-		        ));
-                // $ss_time = date("H:i:s");
-                // echo $ss_time;
-          //      print_r("Message has sent");
-	         // }
+	      //   if ($data['order_despatched']) {
+	      //    	$params = array(
+       //          'text' => 'Your order has been despatched',
+       //          'type' => 'unicode',
+       //          'key' => md5($this->option_arr['private_key'] . PJ_SALT)
+       //         );
+       //         // $params['number'] = $data['phone_no'];
+       //          $params['number'] = "+919841646770";
+       //          pjBaseSms::init($params)->pjActionSend();
+	      //       date_default_timezone_set('Asia/Kolkata');
+			    // $_ss_time = date( 'y-m-d H:i:s', time () );
+	      //       pjOrderModel::factory()
+		     //    ->where('id', $id)
+		     //    ->modifyAll(array(
+		     //        'sms_sent_time' => $_ss_time
+		     //    ));
+	      //   }
             
 	        self::jsonResponse(array('status' => 'OK', 'code' => 200, 'text' => 'Your order has despatched.'));
 	    }
@@ -1671,29 +1660,18 @@ class pjAdminOrders extends pjAdmin
 	        ->find($id)
 	        ->getData();
 	        //print_r($data);
-	         // if ($data['order_despatched']) {
+
+	         // if ($data['delivered_customer']) {
 	         // 	$params = array(
           //       'text' => 'Your order has been despatched',
           //       'type' => 'unicode',
-          //       //'key' => md5($option_arr['private_key'] . PJ_SALT)
+          //       'key' => md5($this->option_arr['private_key'] . PJ_SALT)
           //      );
           //      // $params['number'] = $data['phone_no'];
           //      $params['number'] = "+919841646770";
           //      pjBaseSms::init($params)->pjActionSend();
           //      //print_r("Message has sent");
 	         // }
-
-	         if ($data['order_despatched']) {
-	         	$params = array(
-                'text' => 'Your order has been despatched',
-                'type' => 'unicode',
-                'key' => md5($this->option_arr['private_key'] . PJ_SALT)
-               );
-               // $params['number'] = $data['phone_no'];
-               $params['number'] = "+919841646770";
-               pjBaseSms::init($params)->pjActionSend();
-               //print_r("Message has sent");
-	         }
 
             
 	        self::jsonResponse(array('status' => 'OK', 'code' => 200, 'text' => 'Your order has despatched.'));
@@ -1710,30 +1688,40 @@ class pjAdminOrders extends pjAdmin
 	            self::jsonResponse(array('status' => 'ERR', 'code' => 100, 'text' => 'HTTP method not allowed.'));
 	        }
 	        
-	        if ($this->_post->toInt('id') <= 0)
+	         if ($this->_post->toInt('id') <= 0)
 	        {
 	            self::jsonResponse(array('status' => 'ERR', 'code' => 101, 'text' => 'Missing, empty or invalid parameters.'));
 	        }
+	        if ($this->_post->toString('delay_msg') == "")
+	        {
+	        	self::jsonResponse(array('status' => 'ERR', 'code' => 102, 'text' => 'Message is empty'));
+	        }
+	        else {
+	        	$msg = $this->_post->toString('delay_msg');
+	        }
 	        $id = $this->_post->toInt('id');
-	        $msg = $this->_post->toString('delay_msg');
-
-	        print_r($msg);
 	        
-	        //echo $id;
+	        $data = pjOrderModel::factory()
+	        ->select("t1.phone_no, t1.delivered_customer")
+	        ->find($id)
+	        ->getData();
 
-	         	// $params = array(
-           //      'text' => $msg,
-           //      'type' => 'unicode',
-           //      'key' => md5($this->option_arr['private_key'] . PJ_SALT)
+	        // if ($data['delivered_customer'] == 1) {
+	        // 	$params = array(
+         //        'text' => $msg,
+         //        'type' => 'unicode',
+         //        'key' => md5($this->option_arr['private_key'] . PJ_SALT)
          //       );
          //       // $params['number'] = $data['phone_no'];
-               // $params['number'] = "+917449296732";
-               // pjBaseSms::init($params)->pjActionSend();
-         
-            
-	        self::jsonResponse(array('status' => 'OK', 'code' => 200, 'text' => 'Your order has been delivered.'));
+         //       $params['number'] = "+917449296732";
+         //       pjBaseSms::init($params)->pjActionSend();
+	        // }
+
+	        self::jsonResponse(array('status' => 'OK', 'code' => 200, 'text' => 'Delay message has been sent.'));
 	    }
 	    exit;
 	}
+
+	// !MEGAMIND
 }
 ?>
