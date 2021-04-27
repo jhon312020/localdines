@@ -122,7 +122,7 @@ class pjAdminProducts extends pjAdmin
 	                    }
 	                }
 	            }
-	            print_r($post['i18n']);
+	            //print_r($post['i18n']);
 	            if (isset($_FILES['image']))
 	            {
 	                if($_FILES['image']['error'] == 0)

@@ -64,7 +64,7 @@ $short_days = __('short_days', true);
                                 
                                     </div>
                                    <div class="">
-                                      <lable  href="#" style="margin-right:5px; float: right; margin-top: -45px;">Kitchen Orders:</lable>
+                                      <lable  href="#" style="margin-right:5px; float: right; margin-top: -25px;">Kitchen Orders:</lable>
                                           <?php
                                             $printedOrders = array();
                                             $totPrepTime = 0;
