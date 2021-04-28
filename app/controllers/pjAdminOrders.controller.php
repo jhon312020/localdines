@@ -46,6 +46,7 @@ class pjAdminOrders extends pjAdmin
 		if ($this->isXHR())
 		{
 			$pjOrderModel = pjOrderModel::factory()
+			->where('t1.deleted_order', 0)
 			->join('pjClient', "t2.id=t1.client_id", 'left outer')
 			->join('pjAuthUser', "t3.id=t2.foreign_id", 'left outer');
 
@@ -111,7 +112,7 @@ class pjAdminOrders extends pjAdmin
 				->findAll()
 				->getData();
 
-            //echo "<pre>";print_r($data); echo "</pre>";
+            //echo "<pre>";print_r($pjOrderModel); echo "</pre>";
             
 
 			foreach($data as $k => $v)
@@ -242,7 +243,10 @@ class pjAdminOrders extends pjAdmin
 	        self::jsonResponse(array('status' => 'ERR', 'code' => 103, 'text' => 'Order not found.'));
 	    }
 	    $id = $this->_get->toInt('id');
-	    if ($pjOrderModel->reset()->setAttributes(array('id' => $id))->erase()->getAffectedRows() == 1)
+	    // if ($pjOrderModel->reset()->setAttributes(array('id' => $id))->erase()->getAffectedRows() == 1)
+	    if (pjOrderModel::factory()->where('id',$id)->modifyAll(array(
+	            'deleted_order' => ":IF(`deleted_order`='0','1','0')"
+	        ))->getAffectedRows() == 1)
 	    {
 	        pjOrderItemModel::factory()->where('order_id', $id)->eraseAll();
 	        self::jsonResponse(array('status' => 'OK', 'code' => 200, 'text' => 'Order has been deleted'));
@@ -422,6 +426,15 @@ class pjAdminOrders extends pjAdmin
 			// print_r($post);
 			//exit;
 	        $id = pjOrderModel::factory(array_merge($post, $data, $post_total))->insert()->getInsertId();
+	        //print_r($id);
+	        $order_id = "t_".$id;
+	        // print_r($order_id);
+	        // exit;
+	        pjOrderModel::factory()
+		        ->where('id', $id)
+		        ->modifyAll(array(
+		            'order_id' => $order_id
+		        ));
 	        if ($id !== false && (int) $id > 0)
 	        {
 	            if (isset($post['product_id']) && count($post['product_id']) > 0)
@@ -1659,6 +1672,20 @@ class pjAdminOrders extends pjAdmin
 	        ->select("t1.phone_no, t1.delivered_customer")
 	        ->find($id)
 	        ->getData();
+	        if ($data['delivered_customer'] == 1) {
+	        	pjOrderModel::factory()
+	            ->where('id', $id)
+	            ->modifyAll(array(
+	            'status' => "delivered"
+	            ));
+	            date_default_timezone_set('Asia/Kolkata');
+			    $delivered_time = date( 'y-m-d H:i:s', time () );
+	            pjOrderModel::factory()
+		        ->where('id', $id)
+		        ->modifyAll(array(
+		            'delivered_time' => $delivered_time
+		        ));
+	        }
 	        //print_r($data);
 
 	         // if ($data['delivered_customer']) {

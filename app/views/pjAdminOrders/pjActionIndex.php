@@ -166,5 +166,6 @@ myLabel.delete_confirmation = <?php x__encode('delete_confirmation'); ?>;
 myLabel.pending = <?php x__encode('order_statuses_ARRAY_pending'); ?>;
 myLabel.confirmed = <?php x__encode('order_statuses_ARRAY_confirmed'); ?>;
 myLabel.cancelled = <?php x__encode('order_statuses_ARRAY_cancelled'); ?>;
+myLabel.delivered = '<?php echo "delivered"; ?>';
 
 </script>

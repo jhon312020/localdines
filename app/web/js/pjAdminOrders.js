@@ -107,22 +107,31 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
             calPrice(1);
           });
     }
-    if ($('.pj-timepicker').length) {
-          $( ".pj-timepicker" ).each(function( index ) {
-            var $this = $(this);
-            $this.clockpicker({
-                  // twelvehour: myLabel.showperiod,
-                  autoclose: true,
-                  afterDone: function() {
-                  //dateChange();
-                  $frmCreateOrder.find("input[name='type']").is(":checked")
-                  ? validateDeliveryTime()
-                  : validatePickupTime();
-                    calPrice(1);
-                    }
-                });
-        });
-    }
+    // if ($('.pj-timepicker').length) {
+    //       $( ".pj-timepicker" ).each(function( index ) {
+    //         var $this = $(this);
+    //         $this.clockpicker({
+    //               // twelvehour: myLabel.showperiod,
+    //               autoclose: true,
+    //               afterDone: function() {
+    //               //dateChange();
+    //               $frmCreateOrder.find("input[name='type']").is(":checked")
+    //               ? validateDeliveryTime()
+    //               : validatePickupTime();
+    //                 calPrice(1);
+    //                 }
+    //             });
+    //     });
+    // }
+    $('#d_time').on("focusout",function() {
+      //alert("hey");
+      validateDeliveryTime();
+      calPrice(1);
+    })
+    $('#p_time').on("focusout",function() {
+      validatePickupTime();
+      calPrice(1);
+    })
     if ($frmCreateOrder.length > 0 || $frmUpdateOrder.length > 0) {
       $.validator.addMethod("pickupTime", function (value, element) {
         console.log(element);
@@ -179,7 +188,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           var $ele = null;
           
           // MEGAMIND
-          console.log("comes here")
+          //console.log("comes here")
           var firstRowIndex = $('#fdOrderList').find("tbody.main-body > tr:first-child").attr("data-index");
           var lastRow = $("#fdOrderList tr:last");
           var lastRowIndex = $("#fdOrderList tr:last").attr("data-index");
@@ -385,6 +394,12 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           myLabel.confirmed +
           "</div>"
         );
+      } else if (val == "delivered") {
+        return (
+          '<div class="btn bg-confirmed btn-xs no-margin"><i class="fa fa-check"></i> ' +
+          myLabel.delivered +
+          "</div>"
+        );
       } else {
         return (
           '<div class="btn bg-canceled btn-xs no-margin"><i class="fa fa-times"></i> ' +
@@ -398,7 +413,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
         buttons: [
           {
             type: "delay",
-            text: "Delay",
+            //text: "Delay",
             url:
                "#",
             // .on("click",function() {
@@ -407,18 +422,20 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           },
           {
             type: "print",
-            text: " Kprint",
+            //text: " Kprint",
             url:
               "index.php?controller=pjAdminOrders&action=pjActionPrintOrder&id={:id}",
           },
-          {
-            type: "edit",
-            url: "index.php?controller=pjAdminOrders&action=pjActionUpdate&id={:id}",
-          },
+          
           {
             type: "delete",
             url:
               "index.php?controller=pjAdminOrders&action=pjActionDeleteOrder&id={:id}",
+              //"#",
+          },
+          {
+            type: "edit",
+            url: "index.php?controller=pjAdminOrders&action=pjActionUpdate&id={:id}",
           },
         ],
         columns: [

@@ -58,7 +58,10 @@ class pjOrderModel extends pjAppModel
 	    array('name' => 'kprint', 'type' => 'boolean', 'default' => '0'),
 	    array('name' => 'order_despatched', 'type' => 'boolean', 'default' => ':NULL'),
 	    array('name' => 'delivered_customer', 'type' => 'boolean', 'default' => ':NULL'),
-	    array('name' => 'sms_sent_time', 'type' => 'datetime', 'default' => ':NULL')
+	    array('name' => 'sms_sent_time', 'type' => 'datetime', 'default' => ':NULL'),
+	    array('name' => 'delivered_time', 'type' => 'datetime', 'default' => ':NULL'),
+	    array('name' => 'order_id', 'type' => 'varchar', 'default' => ':NULL'),
+	    array('name' => 'deleted_order', 'type' => 'boolean', 'default' => ':NULL')
 	);
 	
 	public static function factory($attr=array())

@@ -272,7 +272,7 @@ $short_days = __('short_days', true);
                                 ob_start();
                                 $field = 0;
                                 //echo $tpl['option_arr']['o_df_include_zip'];
-                                if (in_array($tpl['option_arr']['o_df_include_zip'], array(1, 2, 3)))
+                                if (in_array($tpl['option_arr']['o_df_include_zip'], array(1, 2)))
     							{
     							    ?>
                                     <div class="form-group">
@@ -296,6 +296,22 @@ $short_days = __('short_days', true);
                                             </div>
                                             
                                         </div>
+                                        <?php
+                                    // $field = 2;
+                                }
+                                if($field == 3)
+                                {
+                                    $ob_fields = ob_get_contents();
+                                    ob_end_clean();
+                                    ?>
+                                    <div class="row">
+                                        <?php echo $ob_fields;?>
+                                    </div><!-- /.row -->
+                                    <?php
+                                    ob_start();
+                                    $field = 3;
+                                }
+                                ?>
                                         <div class="col-md-4 col-sm-6">
                                             <div class="form-group">
                                                 <label class="control-label"><?php __('lblAddress1'); ?></label>
@@ -319,9 +335,9 @@ $short_days = __('short_days', true);
 
                                         </div>
                                     </div>
-                                    <?php
+                                     <?php
                                     $field = 3;
-                                }
+                                
                                 if($field == 3)
                                 {
                                     $ob_fields = ob_get_contents();
@@ -334,7 +350,7 @@ $short_days = __('short_days', true);
     							    ob_start();
     							    $field = 3;
                                 }
-                                ?>
+                                ?> 
                                 <div class="col-md-3 col-sm-6">
                                     <div class="form-group">
                                         <label class="control-label"><?php echo 'Mobile' //__('lblPhone'); ?></label>
@@ -466,7 +482,8 @@ $short_days = __('short_days', true);
                                             <div class="input-group">
                                                 <span class="input-group-addon"><i class="fa fa-clock-o"></i></span> 
                                                 
-                                                <input name="d_time" class="pj-timepicker form-control required fdRequired" data-msg-required="<?php __('fd_field_required', false, true);?>" readonly/>    
+                                               <!--  <input name="d_time" class="pj-timepicker form-control required fdRequired" data-msg-required="<?php //__('fd_field_required', false, true);?>" readonly/>   -->
+                                                <input name="d_time" id="d_time" class=" form-control required fdRequired" data-msg-required="<?php __('fd_field_required', false, true);?>"/>    
                                             </div>
                                         </div><!-- /.form-group -->
                                     </div>
@@ -486,7 +503,8 @@ $short_days = __('short_days', true);
                                             <div class="input-group">
                                                 <span class="input-group-addon"><i class="fa fa-clock-o"></i></span> 
                                                 
-                                                <input name="p_time" class="pj-timepicker form-control fdRequired" data-msg-required="<?php __('fd_field_required', false, true);?>" readonly/>    
+                                                <!-- <input name="p_time" class="pj-timepicker form-control fdRequired" data-msg-required="<?php //__('fd_field_required', false, true);?>" readonly/>    --> 
+                                                <input name="p_time" class="form-control fdRequired" data-msg-required="<?php __('fd_field_required', false, true);?>" readonly/>   
                                             </div>
                                         </div><!-- /.form-group -->
                                         <!-- <label class="control-label"><?php //__('lblPickerDateTime'); ?></label>
@@ -589,7 +607,7 @@ $short_days = __('short_days', true);
 
     <div class="col-lg-3">
         <div class="m-b-lg">
-            <div id="pjFdPriceWrapper" class="panel no-borders ibox-content">
+            <div  class="panel no-borders ibox-content">
                 <div class="panel-heading bg-pending desc-head">
                     <p class="lead m-n"><i class="fa fa-check"></i> <?php echo 'Description'  ?>: <span class="pull-right status-text"></span></p>    
                 </div><!-- /.panel-heading -->
@@ -601,7 +619,7 @@ $short_days = __('short_days', true);
 
                     <!-- <div class="hr-line-dashed"></div>
 
-                    <h3 class="lead m-b-md"><?php echo "Total Prep.Time:";?> <strong id="total_prep-time_format" class="pull-rigth text-right"></strong></h3> -->
+                    <h3 class="lead m-b-md"><?php //echo "Total Prep.Time:";?> <strong id="total_prep-time_format" class="pull-rigth text-right"></strong></h3> -->
                     
                     <!-- MEGAMIND -->
                 
