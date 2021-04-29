@@ -139,6 +139,7 @@ if ($controller->_get->toString('type'))
 ?>
 var myLabel = myLabel || {};
 //myLabel.name = <?php x__encode('lblName'); ?>;
+myLabel.id = '<?php echo 'ID'; ?>';
 myLabel.name = '<?php echo 'Surname'; ?>';
 myLabel.phone = <?php x__encode('lblPhone'); ?>;
 myLabel.address = '<?php echo 'Address'; ?>';

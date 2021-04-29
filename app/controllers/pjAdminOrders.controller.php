@@ -1633,13 +1633,13 @@ class pjAdminOrders extends pjAdmin
        //         // $params['number'] = $data['phone_no'];
        //          $params['number'] = "+919841646770";
        //          pjBaseSms::init($params)->pjActionSend();
-	      //       date_default_timezone_set('Asia/Kolkata');
-			    // $_ss_time = date( 'y-m-d H:i:s', time () );
-	      //       pjOrderModel::factory()
-		     //    ->where('id', $id)
-		     //    ->modifyAll(array(
-		     //        'sms_sent_time' => $_ss_time
-		     //    ));
+	            date_default_timezone_set('Asia/Kolkata');
+			    $_ss_time = date( 'y-m-d H:i:s', time () );
+	            pjOrderModel::factory()
+		        ->where('id', $id)
+		        ->modifyAll(array(
+		            'sms_sent_time' => $_ss_time
+		         ));
 	      //   }
             
 	        self::jsonResponse(array('status' => 'OK', 'code' => 200, 'text' => 'Your order has despatched.'));

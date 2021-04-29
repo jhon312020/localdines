@@ -439,6 +439,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           },
         ],
         columns: [
+          { text: myLabel.id, type: "text", sortable: false},
           { text: myLabel.phone, type: "text", sortable: false },
           { text: myLabel.name, type: "text", sortable: false },
           { text: myLabel.address, type: "text", sortable: false },
@@ -504,7 +505,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           "index.php?controller=pjAdminOrders&action=pjActionGetOrder" +
           pjGrid.queryString,
         dataType: "json",
-        fields: ["phone_no", "surname", "address", "post_code", "caller_type", "sms_email", "order_despatched", "excpected_delivery", "sms_sent_time", "delivered_customer", "review", "datetime", "total", "type", "status"],
+        fields: ["order_id","phone_no", "surname", "address", "post_code", "caller_type", "sms_email", "order_despatched", "excpected_delivery", "sms_sent_time", "delivered_customer", "review", "datetime", "total", "type", "status"],
         paginator: {
           actions: [
             {
@@ -684,26 +685,23 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 
           $fdSelectedProduct = $("#prdInfo_" + index).val();
           $fdSelectedProduct = JSON.parse($fdSelectedProduct);
-          
-          //console.log($fdSelectedProduct);
-
-          // if ($fdSelectedProduct.preparation_time == Null) {
-          //   $fdSelectedProduct.preparation_time = 0;
-          // }
           var $kordersPrepTime = $("#totKorderPrepTimeInput").val();
-          $prepTime = $fdSelectedProduct.preparation_time;
-          $totPrepTime = $totPrepTime + parseInt($prepTime);
-          $totPrepTime = $totPrepTime + parseInt($kordersPrepTime);
-          //$fdSelectedProduct.description
-          // if ($totPrepTime < 60 ) {
-          //   $totPrepTime = $totPrepTime + ""
-          // }
+          console.log($fdSelectedProduct.preparation_time);
+          if ($fdSelectedProduct.preparation_time == "") {
+            $prepTime = "0";
+          } else {
+            $prepTime = $fdSelectedProduct.preparation_time;
+          }//? $prepTime = 0 : $prepTime = $fdSelectedProduct.preparation_time;
+          //console.log($prepTime);
+          $totPrepTime = $totPrepTime + parseInt($prepTime) + parseInt($kordersPrepTime);
 
+          //$totPrepTime = $totPrepTime + parseInt($kordersPrepTime);
+          
           $("#fdPrepTime_" + index).html($prepTime);
           $("#fdCategory_" + index).html(categoryList[$fdSelectedProduct.category_id]);
           $("#fdDescription").html($fdSelectedProduct.description);
           $("#total_prep-time_format").html($totPrepTime);
-          
+          $totPrepTime = $totPrepTime - parseInt($kordersPrepTime);
           // !MEGAMIND
 
           $("#curProdDesc").html($("#prdDesc_" + index).val());
@@ -746,6 +744,18 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
         
       });
          return false;
+      })
+      .on("click", ".dropdown-toggle", function (e) { 
+        var index = $(this).siblings("select").attr("data-index"); 
+        $fdSelectedProduct = $("#prdInfo_" + index).val();
+        
+        if ($fdSelectedProduct == undefined) {
+          return;
+        } else {
+          $fdSelectedProduct = JSON.parse($fdSelectedProduct);
+          $("#fdDescription").html($fdSelectedProduct.description);
+        }
+        
       })
       // .on("change", "#d_date", function (e){
       //   d_dt = $("#d_dt").val();

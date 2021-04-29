@@ -54,7 +54,7 @@ $short_days = __('short_days', true);
                         <div class="panel-body">
                             <div class="row">
                                 <div class="col-lg-12 col-md-12 col-sm-6">
-                                    <div class="form-group">
+                                    <div class="form-group col-md-9 col-lg-9">
                                             <?php
                                             foreach ($tpl['category_arr'] as $k)
     										{
@@ -63,8 +63,8 @@ $short_days = __('short_days', true);
     										?>
                                 
                                     </div>
-                                   <div class="">
-                                      <lable  href="#" style="margin-right:5px; float: right; margin-top: -25px;">Kitchen Orders:</lable>
+                                   <div class="col-md-3 col-lg-3">
+                                      <lable>Kitchen Orders:</lable>
                                           <?php
                                             $printedOrders = array();
                                             $totPrepTime = 0;
@@ -259,8 +259,8 @@ $short_days = __('short_days', true);
     							    	<?php echo $ob_fields;?>
     							    </div><!-- /.row -->
     							    <?php
-    							    ob_start();
-    							    $field = 0;
+    							    // ob_start();
+    							    // $field = 0;
                                 }
     							?>
                             </div><!-- /.new-client-area -->
@@ -297,9 +297,9 @@ $short_days = __('short_days', true);
                                             
                                         </div>
                                         <?php
-                                    // $field = 2;
+                                    $field = 2;
                                 }
-                                if($field == 3)
+                                if($field == 2)
                                 {
                                     $ob_fields = ob_get_contents();
                                     ob_end_clean();
@@ -308,32 +308,39 @@ $short_days = __('short_days', true);
                                         <?php echo $ob_fields;?>
                                     </div><!-- /.row -->
                                     <?php
-                                    ob_start();
-                                    $field = 3;
+                                    // ob_start();
+                                    // $field = 3;
                                 }
+                                
                                 ?>
-                                        <div class="col-md-4 col-sm-6">
-                                            <div class="form-group">
-                                                <label class="control-label"><?php __('lblAddress1'); ?></label>
-        
-                                                <input type="text" name="d_address_1" id="d_address_1" class="form-control<?php echo $tpl['option_arr']['o_df_include_address_1'] == 3 ? ' fdRequired required' : NULL; ?>" data-msg-required="<?php __('fd_field_required', false, true);?>"/>
-                                            </div>
+                                        
+                                    </div>
+                               <!--  </div> -->
+                               <?php 
+                               ob_start();
+                                $field = 3;
+                                    ?>
+                                    <div class="col-md-4 col-sm-6">
+                                        <div class="form-group">
+                                            <label class="control-label"><?php __('lblAddress1'); ?></label>
+    
+                                            <input type="text" name="d_address_1" id="d_address_1" class="form-control<?php echo $tpl['option_arr']['o_df_include_address_1'] == 3 ? ' fdRequired required' : NULL; ?>" data-msg-required="<?php __('fd_field_required', false, true);?>"/>
                                         </div>
-                                        <div class="col-md-4 col-sm-6">
-                                            <div class="form-group">
-                                                <label class="control-label"><?php __('lblAddress2'); ?></label>
-        
-                                                <input type="text" name="d_address_2" id="d_address_2" class="form-control<?php echo $tpl['option_arr']['o_df_include_address_2'] == 3 ? ' fdRequired required' : NULL; ?>" data-msg-required="<?php __('fd_field_required', false, true);?>"/>
-                                            </div>
+                                    </div>
+                                    <div class="col-md-4 col-sm-6">
+                                        <div class="form-group">
+                                            <label class="control-label"><?php __('lblAddress2'); ?></label>
+    
+                                            <input type="text" name="d_address_2" id="d_address_2" class="form-control<?php echo $tpl['option_arr']['o_df_include_address_2'] == 3 ? ' fdRequired required' : NULL; ?>" data-msg-required="<?php __('fd_field_required', false, true);?>"/>
                                         </div>
-                                        <div class="col-md-4 col-sm-6">
-                                            <div class="form-group">
-                                                <label class="control-label"><?php __('lblCity'); ?></label>
-        
-                                                <input type="text" name="d_city" id="d_city" class="form-control<?php echo $tpl['option_arr']['o_df_include_city'] == 3 ? ' fdRequired required' : NULL; ?>" data-msg-required="<?php __('fd_field_required', false, true);?>"/>
-                                            </div>
+                                    </div>
+                                    <div class="col-md-4 col-sm-6">
+                                        <div class="form-group">
+                                            <label class="control-label"><?php __('lblCity'); ?></label>
+    
+                                            <input type="text" name="d_city" id="d_city" class="form-control<?php echo $tpl['option_arr']['o_df_include_city'] == 3 ? ' fdRequired required' : NULL; ?>" data-msg-required="<?php __('fd_field_required', false, true);?>"/>
+                                        </div>
 
-                                        </div>
                                     </div>
                                      <?php
                                     $field = 3;
@@ -343,7 +350,7 @@ $short_days = __('short_days', true);
                                     $ob_fields = ob_get_contents();
                                     ob_end_clean();
                                     ?>
-    							    <div class="row">
+    							    <div class="row hi">
     							    	<?php echo $ob_fields;?>
     							    </div><!-- /.row -->
     							    <?php
