@@ -364,6 +364,12 @@ class pjAdminOrders extends pjAdmin
 	        if($this->_post->check('type'))
 	        {
 	            $data['type'] = 'delivery';
+	      //       date_default_timezone_set('Asia/Kolkata');
+			    // $del_date = date('y-m-d', date());
+			    // print_r($del_date);
+	      //       $delivery_time = $this->_post->toString('delivery_time');
+	      //       $del_time = pjDateTime::formatTime($delivery_time, $this->option_arr['o_time_format']);
+	      //       $data['delivery_time']=pjDateTime::formatTime(date( 'y-m-d' ),$this->option_arr['o_date_format']) . ' ' . $time;
 	            // if (!empty($post['d_date']))
 	            // {
 	            //     $date_time = $post['d_dt'];
@@ -377,10 +383,12 @@ class pjAdminOrders extends pjAdmin
 	            //     }
 	            //     $data['d_dt'] = pjDateTime::formatDate($_date, $this->option_arr['o_date_format']) . ' ' . $time;
 	            // }
-	            if (!empty($post['d_date']) && !empty($post['d_time']))
+	            if (!empty($post['d_date']) && !empty($post['delivery_time']))
 	            {
 	                $d_date = $post['d_date'];
-	                $d_time = $post['d_time'];
+	                //$d_date = 2021-04-31;
+
+	                $d_time = $post['delivery_time'];
 	                
 	                if(count(explode(" ", $d_time)) == 2)
 	                {
@@ -390,7 +398,9 @@ class pjAdminOrders extends pjAdmin
 	                   
 	                    $time = pjDateTime::formatTime($d_time, $this->option_arr['o_time_format']);
 	                }
-	                $data['d_dt']=pjDateTime::formatTime($d_date,$this->option_arr['o_date_format']) . ' ' . $time;
+	               
+	                $data['d_dt']=pjDateTime::formatDate($d_date,$this->option_arr['o_date_format']) . ' ' . $time;
+	                
 	            }
 	            if ($this->_post->toInt('d_location_id'))
 	            {
@@ -398,10 +408,10 @@ class pjAdminOrders extends pjAdmin
 	            }
 	        }else{
 	            $data['type'] = 'pickup';
-	            if (!empty($post['p_date']) && !empty($post['p_time']))
+	            if (!empty($post['p_date']) && !empty($post['pickup_time']))
 	            {
 	                $p_date = $post['p_date'];
-	                $p_time = $post['p_time'];
+	                $p_time = $post['pickup_time'];
 	                
 	                if(count(explode(" ", $p_time)) == 2)
 	                {
@@ -411,7 +421,7 @@ class pjAdminOrders extends pjAdmin
 	                   
 	                    $time = pjDateTime::formatTime($p_time, $this->option_arr['o_time_format']);
 	                }
-	                $data['p_dt']=pjDateTime::formatTime($p_date,$this->option_arr['o_date_format']) . ' ' . $time;
+	                $data['p_dt']=pjDateTime::formatDate($p_date,$this->option_arr['o_date_format']) . ' ' . $time;
 	            }
 	            if ($this->_post->toInt('p_location_id'))
 	            {
@@ -423,8 +433,8 @@ class pjAdminOrders extends pjAdmin
 	            $data['cc_exp'] = $this->_post->toString('cc_exp_month') . "/" . $this->_post->toString('cc_exp_year');
 			}
 			//print_r($product_arr);
-			// print_r($post);
-			//exit;
+			// print_r($data);
+			// exit;
 	        $id = pjOrderModel::factory(array_merge($post, $data, $post_total))->insert()->getInsertId();
 	        //print_r($id);
 	        $order_id = "t_".$id;
@@ -546,7 +556,8 @@ class pjAdminOrders extends pjAdmin
             // MEGAMIND
 
             $client_info = pjOrderModel::factory()
-            ->select('t1.id, t1.phone_no, t1.surname, t1.sms_email, t1.post_code, t1.d_address_1, t1.d_address_2, t1.d_city, t1.first_name, t1.client_id, t1.kprint')
+            ->join('pjClient', "t2.id = t1.client_id")
+            ->select('t1.id, t1.phone_no, t1.surname, t1.sms_email, t1.post_code, t1.d_address_1, t1.d_address_2, t1.d_city, t1.first_name, t1.client_id, t1.kprint, t2.c_title')
             ->findAll()
             ->getData();
             $this->set('client_info', $client_info);
@@ -1686,6 +1697,7 @@ class pjAdminOrders extends pjAdmin
 		            'delivered_time' => $delivered_time
 		        ));
 	        }
+	        //var_dump($data['d_dt'] > $data['delivered_time']);
 	        //print_r($data);
 
 	         // if ($data['delivered_customer']) {

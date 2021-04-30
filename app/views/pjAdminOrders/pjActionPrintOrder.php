@@ -1,8 +1,19 @@
 
 	<table class="table">
 		<thead>
-			<th>KITCHEN</th>
-			<th>NANI</th>
+
+			<tr>
+				<th class="w-75">KITCHEN</th>
+			    <th class="w-25">NANI</th>
+		    </tr>
+		    <tr>
+		    	<th>Table</th>
+		    	<th>Row</th>
+		    	<th>Covers</th>
+		    	<th>Time</th>
+		    </tr>
+		    
+			
 		</thead>
 		<tbody>
 			<!-- <tr>

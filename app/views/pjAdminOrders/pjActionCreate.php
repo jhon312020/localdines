@@ -482,6 +482,7 @@ $short_days = __('short_days', true);
                                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span> 
             
                                                 <input type="text" name="d_date" id="d_date" data-wt="open" class="form-control fdRequired required" data-msg-required="<?php __('fd_field_required', false, true);?>" readonly>
+                                                <!--  <input type="hidden" name="delivery_date" id="delivery_date"> -->
                                             </div>
                                         </div><!-- /.form-group -->
                                          <label>Time</label>
@@ -491,6 +492,7 @@ $short_days = __('short_days', true);
                                                 
                                                <!--  <input name="d_time" class="pj-timepicker form-control required fdRequired" data-msg-required="<?php //__('fd_field_required', false, true);?>" readonly/>   -->
                                                 <input name="d_time" id="d_time" class=" form-control required fdRequired" data-msg-required="<?php __('fd_field_required', false, true);?>"/>    
+                                                <input type="hidden" name="delivery_time" id="delivery_time">
                                             </div>
                                         </div><!-- /.form-group -->
                                     </div>
@@ -511,7 +513,8 @@ $short_days = __('short_days', true);
                                                 <span class="input-group-addon"><i class="fa fa-clock-o"></i></span> 
                                                 
                                                 <!-- <input name="p_time" class="pj-timepicker form-control fdRequired" data-msg-required="<?php //__('fd_field_required', false, true);?>" readonly/>    --> 
-                                                <input name="p_time" class="form-control fdRequired" data-msg-required="<?php __('fd_field_required', false, true);?>" readonly/>   
+                                                <input name="p_time" id="p_time" class="form-control fdRequired" data-msg-required="<?php __('fd_field_required', false, true);?>" readonly/> 
+                                                 <input type="hidden"  name="pickup_time" id="delivery_time">  
                                             </div>
                                         </div><!-- /.form-group -->
                                         <!-- <label class="control-label"><?php //__('lblPickerDateTime'); ?></label>

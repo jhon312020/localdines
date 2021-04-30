@@ -99,6 +99,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
               startDate: '-0d'
            })
           $("#d_date").on("changeDate", function (e) {
+            //console.log($(this).val())
             validateDeliveryTime();
             calPrice(1);
           });
@@ -317,9 +318,37 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           p_location_id: function () {
             return $frm.find("select[name='p_location_id']").val();
           },
-          p_dt: function () {
-            return $frm.find("input[name='p_dt']").val() + " " + $frm.find("input[name='d_time']").val();
+          p_date: function () {
+            return $frm.find("input[name='p_date']").val();
           },
+          p_time: function () {
+            var pickup_time = $frm.find("input[name='p_time']").val();
+            var pickup_hr;
+            var pickup_mins;
+            var p_mins;
+            var p_hr;
+            var now = new Date($.now());
+            var now_hr = now.getHours();
+            var now_mins = now.getMinutes();
+            if (pickup_time >= 60) {
+               pickup_mins = pickup_time % 60;
+              pickup_hr = (pickup_time - pickup_mins) / 60;
+             
+              p_mins = pickup_mins + now_mins;
+              p_hr = pickup_hr + now_hr;
+            } else {
+              p_mins = pickup_time + now_mins;
+            }
+            if (p_mins >= 60) {
+              p_hr++;
+              p_mins = p_mins % 60;
+            } 
+            if (p_hr >= 24) {
+              p_hr = p_hr % 24;
+            }
+            $("#pickup_time").val(p_hr + ":" + p_mins);
+            return p_hr + ":" + p_mins;
+          }
         },
         success: function (data) {
           if (data == "false") {
@@ -346,15 +375,46 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
               : "pickup";
           },
           d_location_id: function () {
-            console.log($frm.find("select[name='d_location_id']").val())
+            
             return $frm.find("select[name='d_location_id']").val();
           },
           d_date: function () {
-            // console.log($frm.find("input[name='d_date']").val() + " " + $frm.find("input[name='d_time']").val())
+            // var delivery_date = $frm.find("input[name='d_date']").val() + " " + $frm.find("input[name='d_time']").val();
+            // var date_arr = delivery_date.split(".");
+            // var delivery_date_2 = date_arr[2] + "-" + date_arr[1] + "-" + date_arr[0];
+            // console.log(date_arr);
+            // $("#delivery_date").val(delivery_date_2);
             return $frm.find("input[name='d_date']").val();
           },
           d_time: function () {
-            return $frm.find("input[name='d_time']").val();
+            var delivery_time = $frm.find("input[name='d_time']").val();
+            var delivery_hr;
+            var delivery_mins;
+            var d_mins;
+            var d_hr;
+            var now = new Date($.now());
+            var now_hr = now.getHours();
+            var now_mins = now.getMinutes();
+            if (delivery_time >= 60) {
+               delivery_mins = delivery_time % 60;
+              delivery_hr = (delivery_time - delivery_mins) / 60;
+             
+              d_mins = delivery_mins + now_mins;
+              d_hr = delivery_hr + now_hr;
+            } else {
+              d_mins = delivery_time + now_mins;
+            }
+            if (d_mins >= 60) {
+              d_hr++;
+              d_mins = d_mins % 60;
+            } 
+            if (d_hr >= 24) {
+              d_hr = d_hr % 24;
+            }
+            $("#delivery_time").val(d_hr + ":" + d_mins);
+            //return $frm.find("input[name='d_time']").val();
+            //console.log($("#delivery_time").val());
+            return d_hr + ":" + d_mins;
           },
         },
         success: function (data) {
@@ -686,7 +746,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           $fdSelectedProduct = $("#prdInfo_" + index).val();
           $fdSelectedProduct = JSON.parse($fdSelectedProduct);
           var $kordersPrepTime = $("#totKorderPrepTimeInput").val();
-          console.log($fdSelectedProduct.preparation_time);
+          
           if ($fdSelectedProduct.preparation_time == "") {
             $prepTime = "0";
           } else {
@@ -790,9 +850,10 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
         $cinfo = client_info;
         $cmail = $(this).val();
         var newUser = true;
-
+        //console.log($cinfo);
         for(var c in $cinfo) {
           if ($cinfo[c]['sms_email'] == $cmail){
+            $("#c_title").val($cinfo[c]['c_title']);
             $("#c_phone").val($cinfo[c]['phone_no']);
             $("#c_surname").val($cinfo[c]['surname']);
             $("#inputPostCode").val($cinfo[c]['post_code']);
