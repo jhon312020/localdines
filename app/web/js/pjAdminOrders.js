@@ -103,7 +103,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
             validateDeliveryTime();
             calPrice(1);
           });
-          $("#p_dt").on("changeDate", function (e) {
+          $("#p_date").on("changeDate", function (e) {
             validatePickupTime();
             calPrice(1);
           });
@@ -347,6 +347,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
               p_hr = p_hr % 24;
             }
             $("#pickup_time").val(p_hr + ":" + p_mins);
+            console.log(p_hr + ":" + p_mins);
             return p_hr + ":" + p_mins;
           }
         },
@@ -428,11 +429,25 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
     }
     function formatType(val, obj) {
       if (val == "pickup") {
-        return (
-          '<div class="badge badge-default btn-xs no-margin"><span class="p-w-xs">' +
-          myLabel.pickup +
-          "</span></div>"
-        );
+        //console.log(obj.is_paid);
+        // var isPaid = obj.isPaid;
+        //console.log(isPaid);
+        if (obj.is_paid == 1) {
+          
+          return (
+            '<div class="badge badge-success btn-xs no-margin"><span class="p-w-xs">' +
+            myLabel.pickup +
+            "</span></div>"
+          );
+        } else {
+         
+          return (
+            '<div class="badge badge-danger btn-xs no-margin"><span class="p-w-xs">' +
+            myLabel.pickup +
+            "</span></div>"
+          );
+        }
+       
       } else {
         return (
           '<div class="badge badge-primary btn-xs no-margin"><span class="p-w-xs">' +
@@ -504,7 +519,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           { text: myLabel.name, type: "text", sortable: false },
           { text: myLabel.address, type: "text", sortable: false },
           { text: myLabel.postcode, type: "text", sortable: false },
-          { text: myLabel.caller_type, type: "text", sortable: false },
+          { text: myLabel.c_type, type: "text", sortable: false },
           // { text: myLabel.call_start, type: "text", sortable: false },
           // { text: myLabel.call_end, type: "text", sortable: false },
           { text: myLabel.sms_email, type: "text", sortable: false },
@@ -516,8 +531,9 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
                     saveUrl: "index.php?controller=pjAdminOrders&action=pjActionSaveOrderDespatched&id={:id}",
                     positiveLabel: myLabel.yes, positiveValue: "1", negativeLabel: myLabel.no, negativeValue: "0", 
                     cellClass: "text-center"},
-          { text: myLabel.excpected_delivery, type: "text", sortable: false },
+          
           { text: myLabel.sms_sent_time, type: "text", sortable: false },
+          { text: myLabel.excpected_delivery, type: "text", sortable: false },
           // { text: myLabel.delivered_customer, type: "text", sortable: false },
           {text: myLabel.delivered_customer, type: "toggle", sortable: false, editable: false, 
                     editableRenderer: function () {
@@ -565,7 +581,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           "index.php?controller=pjAdminOrders&action=pjActionGetOrder" +
           pjGrid.queryString,
         dataType: "json",
-        fields: ["order_id","phone_no", "surname", "address", "post_code", "caller_type", "sms_email", "order_despatched", "excpected_delivery", "sms_sent_time", "delivered_customer", "review", "datetime", "total", "type", "status"],
+        fields: ["order_id","phone_no", "surname", "address", "post_code", "c_type", "sms_email", "order_despatched", "sms_sent_time", "excpected_delivery", "delivered_customer", "review", "datetime", "total", "type", "status"],
         paginator: {
           actions: [
             {
@@ -727,13 +743,14 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
         if (e && e.preventDefault) {
           e.preventDefault();
         }
-        //console.log(categoryList);
+      
 
-
+        //$(this).parent().last().children().css("display","block");
         var $this = $(this),
           index = $this.attr("data-index"),
           option = $("option:selected", this).attr("data-extra");
         //$this.valid();
+        // console.log($this.find());
         $(".fdExtraBusiness_" + index).hide();
         $.get("index.php?controller=pjAdminOrders&action=pjActionGetPrices", {
           product_id: $this.val(),
@@ -742,7 +759,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           $("#fdPriceTD_" + index).html(data);
           
           //MEGAMIND
-
+          $("#productDelete_"+ index).css("display","block");
           $fdSelectedProduct = $("#prdInfo_" + index).val();
           $fdSelectedProduct = JSON.parse($fdSelectedProduct);
           var $kordersPrepTime = $("#totKorderPrepTimeInput").val();
@@ -868,6 +885,16 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
         //   alert("Hi New User");
         // }
       })
+
+      // .on("click", ".pj-remove-product", function (e) {
+      //   if (e && e.preventDefault) {
+      //     e.preventDefault();
+      //   }
+      //   if($(this).parent().first().children("button").attr("title","-- Choose--")) {
+      //     console.log($(this).parent().first().children("button").attr("title"));
+      //     $("#btnAddProduct").css("display","block");
+      //   }
+      // })
 
       // !MEGAMIND
 
@@ -1057,6 +1084,34 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
       .on("change", "#filter_type", function (e) {
         $(".frm-filter").submit();
       })
+      .on("change", "#delay_reason", function (e) {
+        var val = $(this).val();
+        var msgArea = $("#message");
+        if (val == 4) {
+          return;
+        } else {
+          $.ajax({
+          type: "POST",
+          async: false,
+          url: "index.php?controller=pjAdminOrders&action=pjActionGetDelayMessage",
+          data: { 
+            value: function() {
+              return val;
+            }
+          },
+          success: function (msg) {
+            if (msg.code == 200) {
+              msgArea.val(msg.text);
+            }
+            else {
+              alert("Something is wrong");
+            }
+          },
+        
+        });
+        }
+        
+      })
       .on("click", ".pjFdOpenClientTab", function (e) {
         if (e && e.preventDefault) {
           e.preventDefault();
@@ -1173,7 +1228,12 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           );
           client.lookupPostcode({ postcode }).then(function (result) {
             postalResult = result;
+            //console.log(result.length);
             if (result.length > 0) {
+              if ($("#post_code").hasClass("has-error")) {
+                $("#post_code").removeClass("has-error");
+                $("#postCodeErr").css("display","none");
+              }
               $.each(result, function (index) {
                 
                 // $line_1 = result[index].line_1;
@@ -1190,13 +1250,26 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
                 );
               });
               $("#addressList").html(addressList);
+             }  
+            if(result.length == 0) {
+              $("#post_code").addClass("has-error");
+              $("#postCodeErr").css("display","block");
             }
+            if (result.length == 1) {
+              $("#selAddress").click(function(){
+              var index = $(this).val();
+              $("#d_address_1").val(result[index].line_1);
+              $("#d_address_2").val(result[index].line_2);
+              $("#d_city").val(result[index].post_town);
+            })
+           }
           });
         }
       })
+
       .on("change", "#selAddress", function (e) {
         var index = $(this).val();
-        console.log(postalResult);
+        //console.log(postalResult);
         // return;
         //client.lookupPostcode({ postcode }).then(function (result) {
           if (postalResult.length > 0) {

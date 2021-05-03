@@ -194,6 +194,9 @@ $short_days = __('short_days', true);
     
                                         </tbody>
                                     </table>
+                                    <div class="m-b-md">
+                                        <a href="#" class="btn btn-primary btn-outline m-t-xs" id="btnAddProduct" style="display: none"><i class="fa fa-plus"></i> <?php __('btnAddProduct');?></a>
+                                    </div>
                                 </div>
                             </div>
                             <h4>Customer Details</h4>                           
@@ -279,14 +282,17 @@ $short_days = __('short_days', true);
                                         <div class="col-md-6 col-sm-6">
                                             <div class="form-group">
                                                 <label class="control-label"><?php echo 'Postcode'; ?></label>
-                                                <div class="input-group">
+                                                <div class="input-group" id="post_code">
                                                     
                                                     <input type="text" class="form-control" placeholder="Type your postCode" name="post_code" id="inputPostCode">
                                             
                                                     <span class="input-group-btn">
                                                         <button class="btn btn-default" type="button" id="btnFindPostCode"><i class="glyphicon glyphicon-ok"></i></button>
                                                     </span>
+
+                                                   <!--  <span class="help-block">Invalid Post Code</span> -->
                                                 </div><!-- /input-group -->
+                                                <div class="text-danger" style="display: none" id="postCodeErr">Invalid Post Code</div>
                                             </div>
                                         </div><!-- /.col-md-3 -->
                                         <div class="col-md-6 col-sm-6">
@@ -414,13 +420,7 @@ $short_days = __('short_days', true);
                                             <textarea name="d_notes" id="d_notes" class="form-control<?php echo $tpl['option_arr']['o_df_include_notes'] == 3 ? ' fdRequired required' : NULL; ?>" data-msg-required="<?php __('fd_field_required', false, true);?>"></textarea>
                                         </div>
                                     </div><!-- /.col-md-3 -->
-                                    <div class="col-md-4 col-sm-6">
-                                        <div class="form-group">
-                                            <label class="control-label"><?php echo 'Total Prep.Time:'; ?></label>
-    
-                                            <span name="d_notes" id="total_prep-time_format" data-msg-required="<?php __('fd_field_required', false, true);?>"></span>
-                                        </div>
-                                    </div><!-- /.col-md-3 -->
+                                    
                                     <?php
                                     $field++;
                                 }
@@ -440,6 +440,13 @@ $short_days = __('short_days', true);
                             <!-- End of Client Details -->
                             <h4>Order Details</h4>
                             <div class="hr-line-dashed"></div>
+                               <div class="col-md-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label class="control-label"><?php echo 'Total Prep.Time:'; ?></label>
+
+                                        <span name="d_notes" id="total_prep-time_format" data-msg-required="<?php __('fd_field_required', false, true);?>"></span>
+                                    </div>
+                                </div><!-- /.col-md-3 -->
                             <div class="row">
                                 <div class="col-lg-2 col-md-2 col-sm-6">
                                     <div class="form-group">
@@ -513,8 +520,8 @@ $short_days = __('short_days', true);
                                                 <span class="input-group-addon"><i class="fa fa-clock-o"></i></span> 
                                                 
                                                 <!-- <input name="p_time" class="pj-timepicker form-control fdRequired" data-msg-required="<?php //__('fd_field_required', false, true);?>" readonly/>    --> 
-                                                <input name="p_time" id="p_time" class="form-control fdRequired" data-msg-required="<?php __('fd_field_required', false, true);?>" readonly/> 
-                                                 <input type="hidden"  name="pickup_time" id="delivery_time">  
+                                                <input name="p_time" id="p_time" class="form-control fdRequired" data-msg-required="<?php __('fd_field_required', false, true);?>"/> 
+                                                 <input type="hidden"  name="pickup_time" id="pickup_time">  
                                             </div>
                                         </div><!-- /.form-group -->
                                         <!-- <label class="control-label"><?php //__('lblPickerDateTime'); ?></label>

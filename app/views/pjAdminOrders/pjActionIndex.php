@@ -1,5 +1,6 @@
 <div class="row wrapper border-bottom white-bg page-heading">
     <!-- <?php //print_r($tpl['product_arr']); ?>  -->
+    <!-- <?php //print_r($tpl['data']); ?> -->
     <div class="col-sm-12">
         <div class="row">
             <div class="col-sm-10">
@@ -41,6 +42,8 @@
     		}
     	}
     	$statuses = __('order_statuses', true, false);
+        $statuses['delivered'] = "Delivered";
+        // print_r($statuses);
     	?>
         <div class="ibox float-e-margins">
             <div class="ibox-content">
@@ -48,7 +51,7 @@
                     <div class="col-md-4">
                         <a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminOrders&amp;action=pjActionCreate" class="btn btn-primary"><i class="fa fa-plus"></i> <?php __('btnAddOrder') ?></a>
                     </div><!-- /.col-md-6 -->
-
+                    <!-- <input type="text" name="order_info" value="<?php //echo $tpl['order_info']; ?>"> -->
 					 <form action="" method="get" class="form-horizontal frm-filter">
                         <div class="col-md-4">
                             <div class="input-group">
@@ -69,10 +72,14 @@
                 				{
                 				    ?><option value="<?php echo $k; ?>"<?php echo $controller->_get->toString('type') == $k ? ' selected="selected"' : NULL;?>><?php echo stripslashes($v); ?></option><?php
                 				}
-                				foreach (__('order_statuses', true, false) as $k => $v)
-                				{
-                					?><option value="<?php echo $k; ?>"><?php echo stripslashes($v); ?></option><?php
-                				}
+                				// foreach (__('order_statuses', true, false) as $k => $v)
+                				// {
+                				
+                				// }
+                                foreach ($statuses as $k => $v) {
+                                    # code...
+                                    ?><option value="<?php echo $k; ?>"><?php echo stripslashes($v); ?></option><?php
+                                }
                 				?>
                 			</select>
                         </div><!-- /.col-md-6 -->
@@ -104,10 +111,17 @@
              <!--  <div class="form-group">
                 <label for="Title" >Title</label>
                 <input type="text"  class="form-control" id="titleId" name='tit' placeholder="Enter the title of the article">
-              </div>
- -->
+              </div> -->
+            <select class="browser-default custom-select" id="delay_reason">
+              <option selected>Choose the reason</option>
+              <option value="1">Traffic Delay</option>
+              <option value="2">Too busy with more orders</option>
+              <option value="3">Short of staff</option>
+              <option value="4">Custom</option>
+            </select>
+ 
               <div class="form-group">
-                <h5>Type the reason for delay</h5>
+                
                 <textarea class="form-control" rows='5' id="message" name="delay_msg"></textarea>
               </div>
 
@@ -144,7 +158,7 @@ myLabel.name = '<?php echo 'Surname'; ?>';
 myLabel.phone = <?php x__encode('lblPhone'); ?>;
 myLabel.address = '<?php echo 'Address'; ?>';
 myLabel.postcode = '<?php echo 'Postcode'; ?>';
-myLabel.caller_type = '<?php echo 'CallerType'; ?>';
+myLabel.c_type = '<?php echo 'C.Type'; ?>';
 // myLabel.call_start = '<?php //echo 'Call Start'; ?>';
 // myLabel.call_end = '<?php //echo 'Call End'; ?>';
 myLabel.sms_email = '<?php echo 'SMS/Email'; ?>';

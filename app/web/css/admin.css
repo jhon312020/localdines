@@ -109,7 +109,14 @@
 .desc-body{
 	padding: 15px;
 }
-/*#korders{
-	float: right;
-}*/
+
+.delivery-success{
+	background-color: #81cc81 !important;
+	color: white;
+}
+
+.delivery-failed{
+	background-color: #de4949 !important;
+	color: white;
+}
 }

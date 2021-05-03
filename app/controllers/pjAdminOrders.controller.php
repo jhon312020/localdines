@@ -49,9 +49,8 @@ class pjAdminOrders extends pjAdmin
 			->where('t1.deleted_order', 0)
 			->join('pjClient', "t2.id=t1.client_id", 'left outer')
 			->join('pjAuthUser', "t3.id=t2.foreign_id", 'left outer');
+            
 
-			//print_r($pjOrderModel);
-			
 				
 			if ($q = $this->_get->toString('q'))
 			{
@@ -60,7 +59,7 @@ class pjAdminOrders extends pjAdmin
 			if ($this->_get->toString('status'))
 			{
 			    $status = $this->_get->toString('status');
-			    if(in_array($status, array('confirmed','cancelled','pending')))
+			    if(in_array($status, array('confirmed','cancelled','pending','delivered')))
 			    {
 			        $pjOrderModel->where('t1.status', $status);
 			    }
@@ -72,7 +71,7 @@ class pjAdminOrders extends pjAdmin
 			    {
 			        $pjOrderModel->where('t1.type', $type);
 			    }
-			    if(in_array($type, array('confirmed','cancelled','pending')))
+			    if(in_array($type, array('confirmed','cancelled','pending','delivered')))
 			    {
 			        $pjOrderModel->where('t1.status', $type);
 			    }
@@ -114,18 +113,18 @@ class pjAdminOrders extends pjAdmin
 
             //echo "<pre>";print_r($pjOrderModel); echo "</pre>";
             
-
+            // $this->set('data',$data);
 			foreach($data as $k => $v)
 			{
 				$data[$k]['address'] = $v['d_address_1'].' '.$v['d_address_2']. ' '.$v['d_city'];
 				//$data[$k]['post_code'] = 'post_code';
 				//$data[$k]['address'] = pjOrder::
-				$data[$k]['caller_type'] = 'caller_type';
+				$data[$k]['c_type'] = 'c_type';
 				// $data[$k]['call_start'] = 'call_start';
 				// $data[$k]['call_end'] = 'call_end';
 				//$data[$k]['sms_email'] = 'SMS Email';
 				// $data[$k]['order_despatched'] = '1';
-				$data[$k]['excpected_delivery'] = 'postcode';
+				$data[$k]['excpected_delivery'] = $v['d_dt'];
 				//$data[$k]['sms_sent_time'] = 'sms_sent_time';
 				// $data[$k]['delivered_customer'] = 'delivered_customer';
 				$data[$k]['review'] = 'review';
@@ -437,7 +436,7 @@ class pjAdminOrders extends pjAdmin
 			// exit;
 	        $id = pjOrderModel::factory(array_merge($post, $data, $post_total))->insert()->getInsertId();
 	        //print_r($id);
-	        $order_id = "t_".$id;
+	        $order_id = "T".$id;
 	        // print_r($order_id);
 	        // exit;
 	        pjOrderModel::factory()
@@ -557,7 +556,7 @@ class pjAdminOrders extends pjAdmin
 
             $client_info = pjOrderModel::factory()
             ->join('pjClient', "t2.id = t1.client_id")
-            ->select('t1.id, t1.phone_no, t1.surname, t1.sms_email, t1.post_code, t1.d_address_1, t1.d_address_2, t1.d_city, t1.first_name, t1.client_id, t1.kprint, t2.c_title')
+            ->select('t1.id, t1.phone_no, t1.surname, t1.sms_email, t1.post_code, t1.d_address_1, t1.d_address_2, t1.d_city, t1.first_name, t1.client_id, t1.kprint, t2.c_title, t1.type, t1.is_paid')
             ->findAll()
             ->getData();
             $this->set('client_info', $client_info);
@@ -1759,6 +1758,34 @@ class pjAdminOrders extends pjAdmin
 	        self::jsonResponse(array('status' => 'OK', 'code' => 200, 'text' => 'Delay message has been sent.'));
 	    }
 	    exit;
+	}
+
+	public function pjActionGetDelayMessage() {
+
+		$this->setAjax(true);
+	    if ($this->isXHR())
+	    {
+	        if (!self::isPost())
+	        {
+	            self::jsonResponse(array('status' => 'ERR', 'code' => 100, 'text' => 'HTTP method not allowed.'));
+	        }
+	        if ($this->_post->toInt('value') <= 0) {
+	        	self::jsonResponse(array('status' => 'ERR', 'code' => 101, 'text' => 'Missing, empty or invalid parameters.'));
+	        }
+	        $id = $this->_post->toInt('value');
+	        
+
+	        $msg = pjDelayMessagesModel::factory()
+	        ->select('t1.*')
+	        ->where('t1.id',$id)
+	        ->findAll()
+	        ->getData();
+
+	        //print_r($msg);
+
+	        self::jsonResponse(array('status' => 'OK', 'code' => 200, 'text' => $msg[0]['message']));
+	    }
+
 	}
 
 	// !MEGAMIND

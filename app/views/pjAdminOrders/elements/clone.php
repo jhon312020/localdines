@@ -53,7 +53,7 @@
     	<input type="text" id="" name="" class="form-control" value="" />
     </td>      
     <td>
-       	<div class="text-right">
+       	<div class="text-right" id="productDelete_{INDEX}" style="display: none">
             <a href="#" class="btn btn-danger btn-outline btn-sm btn-delete pj-remove-product"><i class="fa fa-trash"></i></a>
         </div>
     </td>
