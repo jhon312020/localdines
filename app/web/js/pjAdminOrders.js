@@ -419,6 +419,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           },
         },
         success: function (data) {
+          //console.log(data)
           if (data == "false") {
             $frm.find("input[name='d_date']").attr("data-wt", "closed").valid();
           } else {
@@ -1088,7 +1089,8 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
         var val = $(this).val();
         var msgArea = $("#message");
         if (val == 4) {
-          return;
+          msgArea.val("");
+          msgArea.attr("placeholder","Type the reason...")
         } else {
           $.ajax({
           type: "POST",

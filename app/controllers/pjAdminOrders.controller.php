@@ -1300,6 +1300,7 @@ class pjAdminOrders extends pjAdmin
 						// print_r($cnt_arr);
 						// echo $hash;
 						$product_price = $_price * $cnt_arr[$hash];
+						//print_r($product['packing_fee']);
 						$price_packing += $product['packing_fee'] * $cnt_arr[$hash];
 						if (!empty($extra_id_arr) && isset($extra_id_arr[$hash]))
 						{

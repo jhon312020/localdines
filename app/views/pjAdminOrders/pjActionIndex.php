@@ -94,10 +94,10 @@
     <input type="button" id="btnShowPopup" value="Show Popup" class="btn btn-info btn-lg" />
 </center> -->
 <!-- Modal Popup -->
-<div id="MyPopup" class="modal fade" role="dialog">
-    <div class="modal-dialog">
+<!-- <div id="MyPopup" class="modal fade" role="dialog">
+    <div class="modal-dialog"> -->
         <!-- Modal content-->
-        <div class="modal-content">
+        <!-- <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">
                     &times;</button>
@@ -106,13 +106,13 @@
             </div>
             <div class="modal-body">
                 
-                <form role='form_edit'action="" method="post">
+                <form role='form_edit'action="" method="post"> -->
 
              <!--  <div class="form-group">
                 <label for="Title" >Title</label>
                 <input type="text"  class="form-control" id="titleId" name='tit' placeholder="Enter the title of the article">
               </div> -->
-            <select class="browser-default custom-select" id="delay_reason">
+            <!-- <select class="form-control" id="delay_reason">
               <option selected>Choose the reason</option>
               <option value="1">Traffic Delay</option>
               <option value="2">Too busy with more orders</option>
@@ -120,23 +120,69 @@
               <option value="4">Custom</option>
             </select>
  
-              <div class="form-group">
+              <div class="form-group" style="margin-top: 20px;">
                 
                 <textarea class="form-control" rows='5' id="message" name="delay_msg"></textarea>
               </div>
 
               <button type="submit" class="btn btn-default btn-primary btn-block" id="d_msg" >Submit</button>
 
-          </form>
+          </form> -->
                 <!-- <textarea name="dataMsg"></textarea> -->
-            </div>
+            <!-- </div> -->
             <!-- <div class="modal-footer">
                 <a type="submit" class="btn btn-primary">
                     Submit</a>
             </div> -->
-        </div>
+        <!-- </div>
     </div>
+</div> -->
+<!-- Button trigger modal -->
+<style>
+    .modal h2 {
+        color: #575757;
+        font-size: 30px;
+        text-align: center;
+        font-weight: 600;
+    }
+    .modal .modal-body {
+        font-size: 20px;
+        font-weight: 400;
+    }
+</style>
+<div class="modal fade" id="MyPopup" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="width:100%">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">
+                    &times;</button>
+        <h2 class="modal-title" id="modalTitle">Delay Message</h2>
+      </div>
+      <div class="modal-body" id="modalBody">
+        <form role='form_edit'action="" method="post"> 
+
+            <select class="form-control" id="delay_reason">
+              <option selected>Choose the reason</option>
+              <option value="1">Traffic Delay</option>
+              <option value="2">Too busy with more orders</option>
+              <option value="3">Short of staff</option>
+              <option value="4">Custom</option>
+            </select>
+ 
+              <div class="form-group" style="margin-top: 20px;">
+                
+                <textarea class="form-control" rows='5' id="message" name="delay_msg"></textarea>
+              </div>
+
+              <button type="submit" class="btn btn-default btn-primary" id="d_msg" >Submit</button>
+
+          </form>
+
+      </div>
+    </div>
+  </div>
 </div>
+<!-- End of Modal -->
 </div>
 <script type="text/javascript">
 var pjGrid = pjGrid || {};
