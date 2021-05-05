@@ -318,6 +318,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           p_location_id: function () {
             return $frm.find("select[name='p_location_id']").val();
           },
+          // MEGAMIND
           p_date: function () {
             return $frm.find("input[name='p_date']").val();
           },
@@ -358,6 +359,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
             $frm.find("input[name='p_date']").attr("data-wt", "open").valid();
           }
         },
+        // !MEGAMIND
       });
     }
     function validateDeliveryTime() {
@@ -379,6 +381,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
             
             return $frm.find("select[name='d_location_id']").val();
           },
+          // MEGAMIND
           d_date: function () {
             // var delivery_date = $frm.find("input[name='d_date']").val() + " " + $frm.find("input[name='d_time']").val();
             // var date_arr = delivery_date.split(".");
@@ -426,6 +429,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
             $frm.find("input[name='d_date']").attr("data-wt", "open").valid();
           }
         },
+        // !MEGAMIND
       });
     }
     function formatType(val, obj) {
@@ -1246,12 +1250,18 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
                   result[index].line_2 +
                   " ," +
                   result[index].line_3;
-                //console.log(address);
+                
                 $("<option />", { value: index, text: address }).appendTo(
                   addressList
                 );
               });
               $("#addressList").html(addressList);
+              click("#selAddress", function () {
+                var index = $(this).val();
+                $("#d_address_1").val(result[index].line_1);
+                $("#d_address_2").val(result[index].line_2);
+                $("#d_city").val(result[index].post_town);
+              })
              }  
             if(result.length == 0) {
               $("#post_code").addClass("has-error");
@@ -1268,7 +1278,12 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           });
         }
       })
-
+      // .on("click", "#selAddress", function(e) {
+      //   var index = $(this).val();
+      //   $("#d_address_1").val(result[index].line_1);
+      //   $("#d_address_2").val(result[index].line_2);
+      //   $("#d_city").val(result[index].post_town);
+      // })
       .on("change", "#selAddress", function (e) {
         var index = $(this).val();
         //console.log(postalResult);

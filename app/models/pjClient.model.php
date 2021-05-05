@@ -21,7 +21,8 @@ class pjClientModel extends pjAppModel
 		array('name' => 'c_state', 'type' => 'varchar', 'default' => ':NULL'),
 		array('name' => 'c_city', 'type' => 'varchar', 'default' => ':NULL'),
 		array('name' => 'c_zip', 'type' => 'varchar', 'default' => ':NULL'),
-		array('name' => 'c_notes', 'type' => 'text', 'default' => ':NULL')
+		array('name' => 'c_notes', 'type' => 'text', 'default' => ':NULL'),
+		array('name' => 'c_type', 'type' => 'varchar', 'default' => ':NULL')
 	);
 	
 	public static function factory($attr=array())

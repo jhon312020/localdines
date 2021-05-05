@@ -52,6 +52,7 @@ class pjFrontClient extends pjAuth
                 $c_data['c_state'] = isset($params['d_state']) ? (!empty($params['d_state'])  ? $params['d_state'] : ':NULL') : (isset($params['c_state']) ? (!empty($params['c_state'])  ? $params['c_state'] : ':NULL') : ":NULL");
                 $c_data['c_city'] = isset($params['d_city']) ? (!empty($params['d_city'])  ? $params['d_city'] : ':NULL') : (isset($params['c_city']) ? (!empty($params['c_city'])  ? $params['c_city'] : ':NULL') : ":NULL");
                 $c_data['c_zip'] = isset($params['d_zip']) ? (!empty($params['d_zip'])  ? $params['d_zip'] : ':NULL') : (isset($params['c_zip']) ? (!empty($params['c_zip'])  ? $params['c_zip'] : ':NULL') : ":NULL");
+                $c_data['c_type'] = isset($params['c_type']) ? $params['c_type'] : ":NULL";
                 $client_id = pjClientModel::factory()->setAttributes($c_data)->insert()->getInsertId();
                 if ($client_id !== false && (int) $client_id > 0)
                 {

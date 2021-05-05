@@ -101,7 +101,7 @@ class pjAdminOrders extends pjAdmin
 			$data = array();
 			
 			$data = $pjOrderModel
-				->select("t1.*, t3.name as client_name, 
+				->select("t1.*, t3.name as client_name, t2.c_type,
 							AES_DECRYPT(t1.cc_type, '".PJ_SALT."') AS `cc_type`,	
 							AES_DECRYPT(t1.cc_num, '".PJ_SALT."') AS `cc_num`,
 							AES_DECRYPT(t1.cc_exp, '".PJ_SALT."') AS `cc_exp`,
@@ -111,7 +111,8 @@ class pjAdminOrders extends pjAdmin
 				->findAll()
 				->getData();
 
-            //echo "<pre>";print_r($pjOrderModel); echo "</pre>";
+            // echo "<pre>";print_r($data); echo "</pre>";
+            // exit;
             
             // $this->set('data',$data);
 			foreach($data as $k => $v)
@@ -119,7 +120,7 @@ class pjAdminOrders extends pjAdmin
 				$data[$k]['address'] = $v['d_address_1'].' '.$v['d_address_2']. ' '.$v['d_city'];
 				//$data[$k]['post_code'] = 'post_code';
 				//$data[$k]['address'] = pjOrder::
-				$data[$k]['c_type'] = 'c_type';
+				$data[$k]['c_type'] = $v['c_type'];
 				// $data[$k]['call_start'] = 'call_start';
 				// $data[$k]['call_end'] = 'call_end';
 				//$data[$k]['sms_email'] = 'SMS Email';
@@ -247,7 +248,7 @@ class pjAdminOrders extends pjAdmin
 	            'deleted_order' => ":IF(`deleted_order`='0','1','0')"
 	        ))->getAffectedRows() == 1)
 	    {
-	        pjOrderItemModel::factory()->where('order_id', $id)->eraseAll();
+	        //pjOrderItemModel::factory()->where('order_id', $id)->eraseAll();
 	        self::jsonResponse(array('status' => 'OK', 'code' => 200, 'text' => 'Order has been deleted'));
 	    }else{
 	        self::jsonResponse(array('status' => 'ERR', 'code' => 105, 'text' => 'Order has not been deleted.'));
@@ -279,8 +280,11 @@ class pjAdminOrders extends pjAdmin
 	    {
 	        self::jsonResponse(array('status' => 'ERR', 'code' => 104, 'text' => 'Missing, empty or invalid parameters.'));
 	    }
-	    pjOrderModel::factory()->whereIn('id', $record)->eraseAll();
-	    pjOrderItemModel::factory()->whereIn('order_id', $record)->eraseAll();
+	    //pjOrderModel::factory()->whereIn('id', $record)->eraseAll();
+	    //pjOrderItemModel::factory()->whereIn('order_id', $record)->eraseAll();
+	    pjOrderModel::factory()->whereIn('id',$record)->modifyAll(array(
+	            'deleted_order' => ":IF(`deleted_order`='0','1','0')"
+	        ));
 	    self::jsonResponse(array('status' => 'OK', 'code' => 200, 'text' => 'Order(s) has been deleted.'));
 	}
 	
@@ -334,10 +338,10 @@ class pjAdminOrders extends pjAdmin
 
 	            $c_data = array();
 	            $c_data['c_title'] = $this->_post->toString('c_title');
-	            //$c_data['c_name'] = $this->_post->toString('c_name');
-	            //$c_data['c_email'] = $this->_post->toString('sms_email');
+	            $c_data['c_name'] = $this->_post->toString('c_name');
+	            
 	            //$c_data['c_password'] = $this->_post->toString('c_password');
-	            //$c_data['c_phone'] = $this->_post->toString('phone_no');
+	            $c_data['c_phone'] = $this->_post->toString('phone_no');
 	            //$c_data['c_company'] = $this->_post->toString('c_company');
 	            $c_data['c_address_1'] = $this->_post->toString('d_address_1');
 	            $c_data['c_address_2'] = $this->_post->toString('d_address_2');
@@ -348,11 +352,35 @@ class pjAdminOrders extends pjAdmin
 	            //$c_data['status'] = 'T';
 	            //$c_data['postcode'] = $this->_post->toString('post_code');
 	            $c_data['locale_id'] = $this->getLocaleId();
-	            $response = pjFrontClient::init($c_data)->createClient();
-	            if(isset($response['client_id']) && (int) $response['client_id'] > 0)
-	            {
-	                $data['client_id'] = $response['client_id'];
+	            $client_exist = pjClientModel::factory()
+	            ->join("pjAuthUser", "t2.id = t1.foreign_id", "left")
+	            ->select("t1.*, t2.email")
+	            ->where("t2.email",$data['sms_email'])
+	            ->findAll()
+	            ->getData();
+	            
+	            if (!empty($client_exist)) {
+	            	$data['client_id'] = $client_exist[0]['id'];
+	            	$post_clientType = $this->getClientType($data);
+	            	// $c_data['c_type'] = $post_clientType;
+	            	$modify = pjClientModel::factory()
+			        ->where('id', $data['client_id'])
+			        ->modifyAll(array(
+			            'c_type' => $post_clientType
+			        ))->getAffectedRows();
+	            	// print_r($modify);
+	            	// exit;
+	            } else {
+	            	$c_data['c_email'] = $this->_post->toString('sms_email');
+	            	$c_data['c_type'] = "New";
+	            	$response = pjFrontClient::init($c_data)->createClient();
+		            if(isset($response['client_id']) && (int) $response['client_id'] > 0)
+		            {
+		                $data['client_id'] = $response['client_id'];
+
+		            }
 	            }
+	            
 	        //}
 	        if($this->_post->check('is_paid'))
 	        {
@@ -556,10 +584,12 @@ class pjAdminOrders extends pjAdmin
 
             $client_info = pjOrderModel::factory()
             ->join('pjClient', "t2.id = t1.client_id")
-            ->select('t1.id, t1.phone_no, t1.surname, t1.sms_email, t1.post_code, t1.d_address_1, t1.d_address_2, t1.d_city, t1.first_name, t1.client_id, t1.kprint, t2.c_title, t1.type, t1.is_paid')
+            ->select('t1.id, t1.phone_no, t1.surname, t1.sms_email, t1.post_code, t1.d_address_1, t1.d_address_2, t1.d_city, t1.first_name, t1.client_id, t1.kprint, t2.c_title, t1.type, t1.is_paid, t1.order_despatched')
             ->findAll()
             ->getData();
             $this->set('client_info', $client_info);
+
+            //$client_exist = 
 
             // !MEGAMIND
 			
@@ -1393,6 +1423,46 @@ class pjAdminOrders extends pjAdmin
 		}
 
 		return array('price' => 'NULL');
+	}
+
+	protected function getClientType($data)
+	{   
+		// echo "hiii";
+		// print_r($data);
+		// exit;
+		$regular = 0;
+	            	
+    	$c_exist_orders = pjOrderModel::factory()
+    	                ->select("t1.*")
+    	                ->where('t1.client_id',$data['client_id'])
+    	                ->findAll()
+    	                ->getData();
+    	
+    	$c_exist_orders_dates = array();
+    	if (count($c_exist_orders)>2) {
+    		foreach ($c_exist_orders as $k => $v) {
+    		    $c_exist_orders_dates = explode(" ",$v['created'])[0];
+	    	}
+	    	$weekDates[0] = date('Y-m-d');
+	    	for ($i=1; $i < 7; $i++) { 
+	    	 	$weekDates[i] = date('Y-m-d',strtotime("-$i days"));
+	    	 } 
+	    	foreach ($c_exist_orders_dates as $k) {
+	    		foreach ($weekDates as $d) {
+	    			if ($k == $d) {
+	    				$regular = $regular + 1;
+	    			}
+	    		}
+	    	}
+	    	if ($regular >= 3) {
+	    		$c_data['c_type'] = "Regular client";
+	    		return "Regular client";
+	    	}
+    	} else {
+    		$c_data['c_type'] = "Rare";
+    		return "Rare";
+    	}
+    	
 	}
 	
 	public function pjActionGetTotal()

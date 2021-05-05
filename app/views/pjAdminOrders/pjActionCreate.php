@@ -1,7 +1,14 @@
 <div class="row wrapper border-bottom white-bg page-heading">
     <!-- <?php //print_r("<pre>");print_r($tpl['product_arr']); ?>   -->
    <!--  <?php //print_r($tpl['arr']['i18n']); ?>  -->
-  <!--  <?php //print_r("<pre>");print_r($tpl['client_info']);
+    <!-- <?php 
+    //$date = date('')
+    // $dates[0] = date('Y-m-d');
+    //     //print_r($date);
+    //     $i = 6;
+    //     $dates[1] = date('Y-m-d',strtotime("-$i days"));
+    //     $yr = explode("-",$dates[0])[0];
+    //     print_r($yr);
    //exit; ?> -->
    <!-- <?php //print_r($tpl['kprint_arr']); ?> -->
     <div class="col-sm-12">
@@ -75,8 +82,21 @@ $short_days = __('short_days', true);
                                                      $printedOrders[] = $order['id'];
                                                      
                                                      }
-                                                     } 
 
+                                                     }
+
+
+                                            foreach ($printedOrders as $pOrder) {
+                                                // $i = 0;
+                                                // $i = $i+1;
+
+                                                foreach ($tpl['client_info'] as $orders => $order) {
+                                                    if ($pOrder == $order['id'] && $order['order_despatched'] == 1) {
+                                                        unset($printedOrders[array_search($pOrder,$printedOrders)]);
+                                                    }
+                                                }
+                                            }
+                                            //print_r($printedOrders);
                                             foreach ($tpl['product_arr'] as $products => $product) {
                                                 foreach ($printedOrders as $id) {
                                                     if ($product['order'] == $id) {
