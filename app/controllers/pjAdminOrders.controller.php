@@ -349,7 +349,7 @@ class pjAdminOrders extends pjAdmin
 	            //$c_data['c_state'] = $this->_post->toString('d_state');
 	            //$c_data['c_zip'] = $this->_post->toString('d_zip');
 	            //$c_data['c_country'] = $this->_post->toInt('d_country_id');
-	            //$c_data['status'] = 'T';
+	            $c_data['status'] = 'T';
 	            //$c_data['postcode'] = $this->_post->toString('post_code');
 	            $c_data['locale_id'] = $this->getLocaleId();
 	            $client_exist = pjClientModel::factory()
@@ -372,7 +372,12 @@ class pjAdminOrders extends pjAdmin
 	            	// exit;
 	            } else {
 	            	$c_data['c_email'] = $this->_post->toString('sms_email');
-	            	$c_data['c_type'] = "New";
+	            	// if ($data['total'] >= 100) {
+	            	// 	$c_data['c_type'] = 'Party';
+	            	// } else {
+	            		$c_data['c_type'] = "New";
+	            	//}
+	            	
 	            	$response = pjFrontClient::init($c_data)->createClient();
 		            if(isset($response['client_id']) && (int) $response['client_id'] > 0)
 		            {
@@ -1427,9 +1432,7 @@ class pjAdminOrders extends pjAdmin
 
 	protected function getClientType($data)
 	{   
-		// echo "hiii";
-		// print_r($data);
-		// exit;
+
 		$regular = 0;
 	            	
     	$c_exist_orders = pjOrderModel::factory()
@@ -1439,10 +1442,12 @@ class pjAdminOrders extends pjAdmin
     	                ->getData();
     	
     	$c_exist_orders_dates = array();
-    	if (count($c_exist_orders)>2) {
-    		foreach ($c_exist_orders as $k => $v) {
+    	foreach ($c_exist_orders as $k => $v) {
     		    $c_exist_orders_dates = explode(" ",$v['created'])[0];
 	    	}
+	    if ($data['total'] >= 100.00) {
+	    	return "party";
+	    } else if (count($c_exist_orders)>2) {
 	    	$weekDates[0] = date('Y-m-d');
 	    	for ($i=1; $i < 7; $i++) { 
 	    	 	$weekDates[i] = date('Y-m-d',strtotime("-$i days"));
@@ -1455,11 +1460,14 @@ class pjAdminOrders extends pjAdmin
 	    		}
 	    	}
 	    	if ($regular >= 3) {
-	    		$c_data['c_type'] = "Regular client";
+	    		
 	    		return "Regular client";
+	    	} else {
+
+	    		return "Occasional";
 	    	}
     	} else {
-    		$c_data['c_type'] = "Rare";
+    	
     		return "Rare";
     	}
     	

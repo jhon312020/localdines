@@ -1256,12 +1256,12 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
                 );
               });
               $("#addressList").html(addressList);
-              click("#selAddress", function () {
-                var index = $(this).val();
-                $("#d_address_1").val(result[index].line_1);
-                $("#d_address_2").val(result[index].line_2);
-                $("#d_city").val(result[index].post_town);
-              })
+              // click("#selAddress", function () {
+              //   var index = $(this).val();
+              //   $("#d_address_1").val(result[index].line_1);
+              //   $("#d_address_2").val(result[index].line_2);
+              //   $("#d_city").val(result[index].post_town);
+              // })
              }  
             if(result.length == 0) {
               $("#post_code").addClass("has-error");
