@@ -354,12 +354,14 @@ class pjAdminOrders extends pjAdmin
 	            $c_data['locale_id'] = $this->getLocaleId();
 	            $client_exist = pjClientModel::factory()
 	            ->join("pjAuthUser", "t2.id = t1.foreign_id", "left")
-	            ->select("t1.*, t2.email")
-	            ->where("t2.email",$data['sms_email'])
+	            ->select("t1.*, t2.phone")
+	            ->where("t2.phone",$c_data['c_phone'])
 	            ->findAll()
 	            ->getData();
 	            
 	            if (!empty($client_exist)) {
+	            	
+	            	
 	            	$data['client_id'] = $client_exist[0]['id'];
 	            	$post_clientType = $this->getClientType($data);
 	            	// $c_data['c_type'] = $post_clientType;
@@ -368,15 +370,10 @@ class pjAdminOrders extends pjAdmin
 			        ->modifyAll(array(
 			            'c_type' => $post_clientType
 			        ))->getAffectedRows();
-	            	// print_r($modify);
-	            	// exit;
+	            	
 	            } else {
 	            	$c_data['c_email'] = $this->_post->toString('sms_email');
-	            	// if ($data['total'] >= 100) {
-	            	// 	$c_data['c_type'] = 'Party';
-	            	// } else {
-	            		$c_data['c_type'] = "New";
-	            	//}
+	            	$c_data['c_type'] = "New";
 	            	
 	            	$response = pjFrontClient::init($c_data)->createClient();
 		            if(isset($response['client_id']) && (int) $response['client_id'] > 0)
@@ -393,6 +390,7 @@ class pjAdminOrders extends pjAdmin
 	        }else{
 	            $data['is_paid'] = 0;
 	        }
+	        
 	        if($this->_post->check('type'))
 	        {
 	            $data['type'] = 'delivery';
@@ -415,13 +413,17 @@ class pjAdminOrders extends pjAdmin
 	            //     }
 	            //     $data['d_dt'] = pjDateTime::formatDate($_date, $this->option_arr['o_date_format']) . ' ' . $time;
 	            // }
+	             
 	            if (!empty($post['d_date']) && !empty($post['delivery_time']))
 	            {
 	                $d_date = $post['d_date'];
 	                //$d_date = 2021-04-31;
 
 	                $d_time = $post['delivery_time'];
-	                
+           //          print_r("comes here");
+	          //       print_r($post['delivery_time']);
+			        // exit;
+			        //$d_time = "16:20";
 	                if(count(explode(" ", $d_time)) == 2)
 	                {
 	                    list($_time, $_period) = explode(" ", $d_time);
@@ -465,8 +467,7 @@ class pjAdminOrders extends pjAdmin
 	            $data['cc_exp'] = $this->_post->toString('cc_exp_month') . "/" . $this->_post->toString('cc_exp_year');
 			}
 			//print_r($product_arr);
-			// print_r($data);
-			// exit;
+			
 	        $id = pjOrderModel::factory(array_merge($post, $data, $post_total))->insert()->getInsertId();
 	        //print_r($id);
 	        $order_id = "T".$id;
@@ -1442,16 +1443,19 @@ class pjAdminOrders extends pjAdmin
     	                ->getData();
     	
     	$c_exist_orders_dates = array();
+    	
     	foreach ($c_exist_orders as $k => $v) {
-    		    $c_exist_orders_dates = explode(" ",$v['created'])[0];
+    		    $c_exist_orders_dates[] = explode(" ",$v['created'])[0];
+    		    
 	    	}
-	    if ($data['total'] >= 100.00) {
-	    	return "party";
-	    } else if (count($c_exist_orders)>2) {
+
+	    if (count($c_exist_orders)) {
 	    	$weekDates[0] = date('Y-m-d');
 	    	for ($i=1; $i < 7; $i++) { 
-	    	 	$weekDates[i] = date('Y-m-d',strtotime("-$i days"));
+	    	 	$weekDates[$i] = date('Y-m-d',strtotime("-$i days"));
+	    	 	
 	    	 } 
+	    	 
 	    	foreach ($c_exist_orders_dates as $k) {
 	    		foreach ($weekDates as $d) {
 	    			if ($k == $d) {
@@ -1459,17 +1463,37 @@ class pjAdminOrders extends pjAdmin
 	    			}
 	    		}
 	    	}
-	    	if ($regular >= 3) {
-	    		
-	    		return "Regular client";
-	    	} else {
 
-	    		return "Occasional";
+	    	if ($regular >= 2) {
+	    		return "Regular client";
+	    	} else if ($regular == 1) {
+
+	    		$frequent = 1;
+	    		$frequentDates = [];
+	    		for($j=7; $j < 28; $j++) {
+	    			$frequentDates[$j] = date('Y-m-d',strtotime("-$j days"));
+	    		}
+
+	    		foreach ($c_exist_orders_dates as $k) {
+	    			foreach ($frequentDates as $f) {
+	    				if($k == $f) {
+	    					$frequent = $frequent + 1;
+	    				}
+	    			}
+	    		}
+                
+	    		if ($frequent >= 4) {
+
+	    			return "Frequent";
+	    		} else {
+	    			return "Occasional";
+	    		}
+	    	} else {
+	    		
+	    		return "Rare";
 	    	}
-    	} else {
-    	
-    		return "Rare";
-    	}
+	    	
+    	} 
     	
 	}
 	

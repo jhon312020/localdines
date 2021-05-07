@@ -10,8 +10,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
       $prepTime,
       $totPrepTime = 0,
       $cinfo,
-      $cmail,
-      $cphone,
+      $c_phone,
       $cname,
       result,
       Client,
@@ -395,30 +394,34 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
             var delivery_hr;
             var delivery_mins;
             var d_mins;
-            var d_hr;
+            //var d_hr;
             var now = new Date($.now());
+            
             var now_hr = now.getHours();
             var now_mins = now.getMinutes();
+
             if (delivery_time >= 60) {
                delivery_mins = delivery_time % 60;
+
               delivery_hr = (delivery_time - delivery_mins) / 60;
              
               d_mins = delivery_mins + now_mins;
-              d_hr = delivery_hr + now_hr;
+              now_hr = now_hr + delivery_hr;
             } else {
               d_mins = delivery_time + now_mins;
             }
-            if (d_mins >= 60) {
-              d_hr++;
+            while (d_mins >= 60) {
+              now_hr++;
               d_mins = d_mins % 60;
             } 
-            if (d_hr >= 24) {
-              d_hr = d_hr % 24;
+            if (now_hr >= 24) {
+              now_hr = now_hr % 24;
             }
-            $("#delivery_time").val(d_hr + ":" + d_mins);
+            $("#delivery_time").val(now_hr + ":" + d_mins);
+            
             //return $frm.find("input[name='d_time']").val();
             //console.log($("#delivery_time").val());
-            return d_hr + ":" + d_mins;
+            return now_hr + ":" + d_mins;
           },
         },
         success: function (data) {
@@ -535,7 +538,9 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
                     },
                     saveUrl: "index.php?controller=pjAdminOrders&action=pjActionSaveOrderDespatched&id={:id}",
                     positiveLabel: myLabel.yes, positiveValue: "1", negativeLabel: myLabel.no, negativeValue: "0", 
-                    cellClass: "text-center"},
+                    cellClass: "text-center",
+                    //negativeClass: "bg-danger"
+                  },
           
           { text: myLabel.sms_sent_time, type: "text", sortable: false },
           { text: myLabel.excpected_delivery, type: "text", sortable: false },
@@ -868,15 +873,15 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
        $editBtn.remove();
        
       })
-      .on("change", "#c_email", function (e) {
+      .on("change", "#phone_no", function (e) {
         $cinfo = client_info;
-        $cmail = $(this).val();
+        $c_phone = $(this).val();
         var newUser = true;
-        //console.log($cinfo);
+        console.log($cinfo);
         for(var c in $cinfo) {
-          if ($cinfo[c]['sms_email'] == $cmail){
+          if ($cinfo[c]['phone_no'] == $c_phone){
             $("#c_title").val($cinfo[c]['c_title']);
-            $("#c_phone").val($cinfo[c]['phone_no']);
+            $("#c_email").val($cinfo[c]['sms_email']);
             $("#c_surname").val($cinfo[c]['surname']);
             $("#inputPostCode").val($cinfo[c]['post_code']);
             $("#d_address_1").val($cinfo[c]['d_address_1']);

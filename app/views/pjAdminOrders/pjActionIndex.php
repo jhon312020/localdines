@@ -157,6 +157,8 @@
         <button type="button" class="close" data-dismiss="modal">
                     &times;</button>
         <h2 class="modal-title" id="modalTitle">Delay Message</h2>
+        <h3>Client Name: <span id="delay_cname"></span></h3>
+        <h3>Client ph.no: <span id="delay_cphone"></span></h3>
       </div>
       <div class="modal-body" id="modalBody">
         <form role='form_edit'action="" method="post"> 

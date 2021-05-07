@@ -219,6 +219,31 @@ $short_days = __('short_days', true);
                                     </div>
                                 </div>
                             </div>
+                           
+                            <h4 style="margin-top: 50px;">SMS Delivery Info</h4>
+                            <div class="hr-line-dashed"></div>
+                            <div class="row">
+                                <div class="col-md-4 col-sm-6">
+                                    <div class="form-group">
+                                        <label class="control-label"><?php echo 'Mobile' //__('lblPhone'); ?></label>
+                                        <input type="text" name="phone_no" id="phone_no" class="form-control<?php echo $tpl['option_arr']['o_bf_include_phone'] == 3 ? ' fdRequired required' : NULL; ?>" data-msg-required="<?php __('fd_field_required', false, true);?>"/>
+                                    </div>
+                                </div><!-- /.col-md-3 --> 
+                                <div class="col-md-4 col-sm-6">
+                                    <label class="control-label"><?php echo 'Delivery Info' //__('lblPhone'); ?></label>
+                                    <div class="form-group">
+                                        <label><input type="radio" name="d_info" id="d_info" value="Yes"> Yes</label>
+                                        <label><input type="radio" name="d_info" id="d_info" value="No"> No</label>
+                                    </div>
+                                </div><!-- /.col-md-3 -->   
+                                <div class="col-md-4 col-sm-6">
+                                <label class="control-label"><?php echo 'Offers' //__('lblPhone'); ?></label>
+                                    <div class="form-group">
+                                        <label><input type="radio" name="d_offers" id="offers" value="Yes"> Yes</label>
+                                        <label><input type="radio" name="d_offers" id="offers" value="No"> No</label>
+                                    </div>
+                                </div><!-- /.col-md-3 -->   
+                            </div>
                             <h4>Customer Details</h4>                           
                             <div class="hr-line-dashed"></div>
                             <!-- Client Details -->
@@ -384,12 +409,12 @@ $short_days = __('short_days', true);
     							    $field = 3;
                                 }
                                 ?> 
-                                <div class="col-md-3 col-sm-6">
+                                <!-- <div class="col-md-3 col-sm-6">
                                     <div class="form-group">
-                                        <label class="control-label"><?php echo 'Mobile' //__('lblPhone'); ?></label>
-                                        <input type="text" name="phone_no" id="phone_no" class="form-control<?php echo $tpl['option_arr']['o_bf_include_phone'] == 3 ? ' fdRequired required' : NULL; ?>" data-msg-required="<?php __('fd_field_required', false, true);?>"/>
+                                        <label class="control-label"><?php //echo 'Mobile' //__('lblPhone'); ?></label>
+                                        <input type="text" name="phone_no" id="phone_no" class="form-control<?php //echo $tpl['option_arr']['o_bf_include_phone'] == 3 ? ' fdRequired required' : NULL; ?>" data-msg-required="<?php //__('fd_field_required', false, true);?>"/>
                                     </div>
-                                </div><!-- /.col-md-3 --> 
+                                </div> --><!-- /.col-md-3 --> 
                                 <div class="col-md-2 col-sm-6">
                                 <label class="control-label"><?php echo 'Delivery Info' //__('lblPhone'); ?></label>
                                     <div class="form-group">
@@ -458,15 +483,14 @@ $short_days = __('short_days', true);
     						</div><!-- /.delivery -->
 
                             <!-- End of Client Details -->
-                            <h4>Order Details</h4>
-                            <div class="hr-line-dashed"></div>
-                               <div class="col-md-12 col-sm-6">
-                                    <div class="form-group">
-                                        <label class="control-label"><?php echo 'Total Prep.Time:'; ?></label>
+                            <h4 style="display: inline">Order Details</h4>
+                            <div class="form-group col-md-3 col-sm-6" style="display: inline; float: right;">
+                                <label class="control-label"><?php echo 'Total Prep.Time:'; ?></label>
 
-                                        <span name="d_notes" id="total_prep-time_format" data-msg-required="<?php __('fd_field_required', false, true);?>"></span>
-                                    </div>
-                                </div><!-- /.col-md-3 -->
+                                <span name="d_notes" id="total_prep-time_format" data-msg-required="<?php __('fd_field_required', false, true);?>"></span>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                               
                             <div class="row">
                                 <div class="col-lg-2 col-md-2 col-sm-6">
                                     <div class="form-group">
@@ -508,7 +532,9 @@ $short_days = __('short_days', true);
                                                 
                                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span> 
             
-                                                <input type="text" name="d_date" id="d_date" data-wt="open" class="form-control fdRequired required" data-msg-required="<?php __('fd_field_required', false, true);?>" readonly>
+                                                <input type="text" name="d_date" id="d_date" data-wt="open" class="form-control fdRequired required" data-msg-required="<?php __('fd_field_required', false, true);?>" value="<?php 
+                                                  echo date("d.m.Y");
+                                                ?>" readonly>
                                                 <!--  <input type="hidden" name="delivery_date" id="delivery_date"> -->
                                             </div>
                                         </div><!-- /.form-group -->

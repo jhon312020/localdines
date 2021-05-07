@@ -119,4 +119,12 @@
 	background-color: #de4949 !important;
 	color: white;
 }
+.btn-negative{
+	background-color: #afaaaa;
+	color: white;
+}
+.btn-negative:hover{
+	background-color: #bbbaba !important;
+	color: white !important;
+}
 }
