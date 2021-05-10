@@ -36,9 +36,15 @@ class pjFrontClient extends pjAuth
         $u_data['ip'] = pjUtil::getClientIp();
         $u_data['is_active'] = 'T';
         $id = pjAuthUserModel::factory($u_data)->insert()->getInsertId();
+        $id = 82;
+        
+        //print_r($u_data);
+        
+
         if ($id !== false && (int) $id > 0)
         {
             $client = pjFrontClient::init($u_data)->getClientByEmail();
+            
             if($client != FALSE)
             {
                 $c_data = array();

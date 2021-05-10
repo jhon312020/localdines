@@ -1,6 +1,7 @@
 <div class="row wrapper border-bottom white-bg page-heading">
-    <!-- <?php //print_r("<pre>");print_r($tpl['product_arr']); ?>   -->
+   <!--   <?php //print_r("<pre>");print_r($tpl['product_arr']); ?>   -->
    <!--  <?php //print_r($tpl['arr']['i18n']); ?>  -->
+   <!-- <?php //echo "<pre>";print_r($tpl['chef_arr']); ?> -->
     <!-- <?php 
     //$date = date('')
     // $dates[0] = date('Y-m-d');
@@ -19,6 +20,7 @@
         </div><!-- /.row -->
 
         <p class="m-b-none"><i class="fa fa-info-circle"></i> <?php __('infoAddOrderDesc');?></p>
+      
     </div><!-- /.col-md-12 -->
 </div>
 <?php
@@ -38,6 +40,18 @@ $short_days = __('short_days', true);
 <div class="row wrapper wrapper-content animated fadeInRight" id="orderContainer">
     <div class="col-lg-9">
     	<form action="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminOrders&amp;action=pjActionCreate" method="post" id="frmCreateOrder">
+            <select name="select_box_name" id="chef" style="float: right;" class="form-control fdRequired required" data-msg-required="<?php __('fd_field_required', false, true);?>">
+                <option value="">Choose Chef</option>
+                    <?php
+                        foreach ($tpl['chef_arr'] as $chef => $ch)
+                        {
+                            ?><option  value="<?php echo $ch['id']; ?>"  <?php echo ($_SESSION['chef'] == $ch['id']) ? 'selected' : ''; ?>><?php echo $ch['name']; ?></option><?php
+                        }
+                        ?>
+
+                   <!--  <option value="1">one</option>
+                    <option value="2">two</option> -->
+            </select>
 			<input type="hidden" name="order_create" value="1" />
 			<input type="hidden" id="price" name="price" value="" />
 			<input type="hidden" id="price_packing" name="price_packing" value="" />
@@ -109,6 +123,7 @@ $short_days = __('short_days', true);
                                                       ?>
                                         
                                                 <span id="korders"><?php echo count($printedOrders); ?></span>
+                                                <span>(<?php echo $totPrepTime?>)</span>
                                                 <input type="hidden" id="totKorderPrepTimeInput" name="total_korder_preparation_time" value="<?php echo $totPrepTime; ?>">
                                     </div>
                                 </div><!-- /.col-md-3 -->
@@ -557,7 +572,9 @@ $short_days = __('short_days', true);
                                                 
                                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span> 
             
-                                                <input type="text" name="p_date" id="p_date" data-wt="open" class="form-control fdRequired" data-msg-required="<?php __('fd_field_required', false, true);?>" readonly>
+                                                <input type="text" name="p_date" id="p_date" data-wt="open" class="form-control fdRequired" data-msg-required="<?php __('fd_field_required', false, true);?>" value="<?php 
+                                                  echo date("d.m.Y");
+                                                ?>" readonly>
                                             </div>
                                         </div><!-- /.form-group -->
                                          <label>Time</label>
@@ -581,6 +598,44 @@ $short_days = __('short_days', true);
                                 </div><!-- /.col-md-3 -->
                                 <div class="col-lg-2 col-md-2 col-sm-6">
                                     <div class="form-group">
+                                        <label class="control-label"><?php __('lblPaymentMethod');?></label>
+                                        <?php
+                                        $online_arr = array();
+                                        $offline_arr = array();
+                                        foreach (__('payment_methods', true, false) as $k => $v)
+                                        {
+                                            if($k == 'creditcard') continue;
+                                            if(in_array($k, array('cash', 'bank')))
+                                            {
+                                                $offline_arr[$k] = $v;
+                                            }else{
+                                                $online_arr[$k] = $v;
+                                            }
+                                        }
+                                        ?>
+                                        <select name="payment_method" id="payment_method" class="form-control required" data-msg-required="<?php __('fd_field_required', false, true);?>">
+                                            <option value="">-- <?php __('lblChoose'); ?>--</option>
+                                            <optgroup label="<?php __('script_online_payment_gateway', false, true); ?>">
+                                            <?php
+                                            foreach($online_arr as $k => $v)
+                                            {
+                                                ?><option value="<?php echo $k;?>"><?php echo $v;?></option><?php
+                                            }
+                                            ?>
+                                            </optgroup>
+                                            <optgroup label="<?php __('script_offline_payment', false, true); ?>">
+                                            <?php
+                                            foreach($offline_arr as $k => $v)
+                                            {
+                                                ?><option value="<?php echo $k;?>"><?php echo $v;?></option><?php
+                                            }
+                                            ?>
+                                            </optgroup>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-6">
+                                    <div class="form-group">
                                         <label class="control-label"><?php __('lblOrderIsPaid'); ?></label>
     
                                         <div class="switch">
@@ -594,44 +649,7 @@ $short_days = __('short_days', true);
                                         </div>
                                     </div>
                                 </div><!-- /.col-md-3 -->
-                                <div class="col-lg-2 col-md-2 col-sm-6">
-                                    <div class="form-group">
-                                        <label class="control-label"><?php __('lblPaymentMethod');?></label>
-    									<?php
-    									$online_arr = array();
-    									$offline_arr = array();
-    									foreach (__('payment_methods', true, false) as $k => $v)
-    									{
-    									    if($k == 'creditcard') continue;
-    									    if(in_array($k, array('cash', 'bank')))
-    									    {
-    									        $offline_arr[$k] = $v;
-    									    }else{
-    									        $online_arr[$k] = $v;
-    									    }
-    									}
-    									?>
-                                        <select name="payment_method" id="payment_method" class="form-control required" data-msg-required="<?php __('fd_field_required', false, true);?>">
-    										<option value="">-- <?php __('lblChoose'); ?>--</option>
-    										<optgroup label="<?php __('script_online_payment_gateway', false, true); ?>">
-    										<?php
-    										foreach($online_arr as $k => $v)
-    										{
-    										    ?><option value="<?php echo $k;?>"><?php echo $v;?></option><?php
-    										}
-    										?>
-    										</optgroup>
-    										<optgroup label="<?php __('script_offline_payment', false, true); ?>">
-    										<?php
-    										foreach($offline_arr as $k => $v)
-    										{
-    										    ?><option value="<?php echo $k;?>"><?php echo $v;?></option><?php
-    										}
-    										?>
-    										</optgroup>
-    									</select>
-                                    </div>
-                                </div><!-- /.col-md-3 -->
+                                <!-- /.col-md-3 -->
                                 <div class="col-lg-2 col-md-2 col-sm-6">
                                     <div class="form-group">
                                         <label class="control-label"><?php __('lblStatus'); ?></label>

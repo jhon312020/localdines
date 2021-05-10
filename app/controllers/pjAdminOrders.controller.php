@@ -111,7 +111,7 @@ class pjAdminOrders extends pjAdmin
 				->findAll()
 				->getData();
 
-            // echo "<pre>";print_r($data); echo "</pre>";
+            //echo "<pre>";print_r($data[0]['p_dt']); echo "</pre>";
             // exit;
             
             // $this->set('data',$data);
@@ -125,7 +125,9 @@ class pjAdminOrders extends pjAdmin
 				// $data[$k]['call_end'] = 'call_end';
 				//$data[$k]['sms_email'] = 'SMS Email';
 				// $data[$k]['order_despatched'] = '1';
-				$data[$k]['excpected_delivery'] = $v['d_dt'];
+				$v['d_dt'] == "" ? $data[$k]['excpected_delivery'] = $v['p_dt'] : $data[$k]['excpected_delivery'] = $v['d_dt'];
+				//$data[$k]['excpected_delivery'] = $v['d_dt'];
+				//$v['d_dt'] == NULL ? echo "Empty delivery" : echo "delivery is there";
 				//$data[$k]['sms_sent_time'] = 'sms_sent_time';
 				// $data[$k]['delivered_customer'] = 'delivered_customer';
 				$data[$k]['review'] = 'review';
@@ -335,6 +337,9 @@ class pjAdminOrders extends pjAdmin
 			$data['surname'] = $this->_post->toString('surname');
 			$data['sms_email'] = $this->_post->toString('sms_email');
 			$data['first_name'] = $this->_post->toString('c_name');
+			$data['chef_id'] = $this->session->getData('chef');
+			// print_r($data);
+			// exit;
 
 	            $c_data = array();
 	            $c_data['c_title'] = $this->_post->toString('c_title');
@@ -346,6 +351,7 @@ class pjAdminOrders extends pjAdmin
 	            $c_data['c_address_1'] = $this->_post->toString('d_address_1');
 	            $c_data['c_address_2'] = $this->_post->toString('d_address_2');
 	            $c_data['c_city'] = $this->_post->toString('d_city');
+	            $c_data['password'] = $c_data['c_name'].$data['uuid'];
 	            //$c_data['c_state'] = $this->_post->toString('d_state');
 	            //$c_data['c_zip'] = $this->_post->toString('d_zip');
 	            //$c_data['c_country'] = $this->_post->toInt('d_country_id');
@@ -374,6 +380,8 @@ class pjAdminOrders extends pjAdmin
 	            } else {
 	            	$c_data['c_email'] = $this->_post->toString('sms_email');
 	            	$c_data['c_type'] = "New";
+
+	            	
 	            	
 	            	$response = pjFrontClient::init($c_data)->createClient();
 		            if(isset($response['client_id']) && (int) $response['client_id'] > 0)
@@ -446,6 +454,7 @@ class pjAdminOrders extends pjAdmin
 	            {
 	                $p_date = $post['p_date'];
 	                $p_time = $post['pickup_time'];
+
 	                
 	                if(count(explode(" ", $p_time)) == 2)
 	                {
@@ -456,6 +465,7 @@ class pjAdminOrders extends pjAdmin
 	                    $time = pjDateTime::formatTime($p_time, $this->option_arr['o_time_format']);
 	                }
 	                $data['p_dt']=pjDateTime::formatDate($p_date,$this->option_arr['o_date_format']) . ' ' . $time;
+
 	            }
 	            if ($this->_post->toInt('p_location_id'))
 	            {
@@ -595,7 +605,12 @@ class pjAdminOrders extends pjAdmin
             ->getData();
             $this->set('client_info', $client_info);
 
-            //$client_exist = 
+            $chef_arr = pjAuthUserModel::factory()
+            ->select("t1.id, t1.name")
+            ->where('role_id', '5')
+            ->findAll()
+            ->getData();
+            $this->set('chef_arr', $chef_arr); 
 
             // !MEGAMIND
 			
@@ -884,6 +899,30 @@ class pjAdminOrders extends pjAdmin
 			    pjUtil::redirect(PJ_INSTALL_URL. "index.php?controller=pjAdminOrders&action=pjActionIndex&err=AR08");
 			}
 			$this->set('arr', $arr);
+
+			// MEGAMIND
+            
+            $category_arr = pjCategoryModel::factory()
+	        ->join('pjMultiLang', "t2.foreign_id = t1.id AND t2.model = 'pjCategory' AND t2.locale = '".$this->getLocaleId()."' AND t2.field = 'name'", 'left')
+	        ->select("t1.*, t2.content AS name")
+	        ->orderBy("t1.order ASC")
+	        ->findAll()
+			->getData();
+			$this->set('category_arr', $category_arr);
+            $category_list = [];
+			foreach($category_arr as $category) {
+				$category_list[$category['id']] = $category['name'];
+			}
+			$this->set('category_list', $category_list);
+
+			$client_info = pjOrderModel::factory()
+            ->join('pjClient', "t2.id = t1.client_id")
+            ->select('t1.id, t1.phone_no, t1.surname, t1.sms_email, t1.post_code, t1.d_address_1, t1.d_address_2, t1.d_city, t1.first_name, t1.client_id, t1.kprint, t2.c_title, t1.type, t1.is_paid, t1.order_despatched')
+            ->findAll()
+            ->getData();
+            $this->set('client_info', $client_info);
+
+			// !MEGAMIND
 			
 			$country_arr = pjBaseCountryModel::factory()
 			->select('t1.id, t2.content AS country_title')
@@ -953,11 +992,15 @@ class pjAdminOrders extends pjAdmin
 			$this->appendJs('jquery.bootstrap-touchspin.min.js', PJ_THIRD_PARTY_PATH . 'touchspin/');
 			$this->appendCss('bootstrap-chosen.css', PJ_THIRD_PARTY_PATH . 'chosen/');
 			$this->appendJs('chosen.jquery.js', PJ_THIRD_PARTY_PATH . 'chosen/');
-			$this->appendJs('moment-with-locales.min.js', PJ_THIRD_PARTY_PATH . 'moment/');
-			$this->appendCss('build/css/bootstrap-datetimepicker.min.css', PJ_THIRD_PARTY_PATH . 'bootstrap_datetimepicker/');
-			$this->appendJs('build/js/bootstrap-datetimepicker.min.js', PJ_THIRD_PARTY_PATH . 'bootstrap_datetimepicker/');
+			// $this->appendJs('moment-with-locales.min.js', PJ_THIRD_PARTY_PATH . 'moment/');
+			$this->appendCss('datepicker3.css', PJ_THIRD_PARTY_PATH . 'bootstrap_datepicker/');
+	        $this->appendJs('bootstrap-datepicker.js', PJ_THIRD_PARTY_PATH . 'bootstrap_datepicker/');
+			// $this->appendCss('build/css/bootstrap-datetimepicker.min.css', PJ_THIRD_PARTY_PATH . 'bootstrap_datetimepicker/');
+			// $this->appendJs('build/js/bootstrap-datetimepicker.min.js', PJ_THIRD_PARTY_PATH . 'bootstrap_datetimepicker/');
 			$this->appendJs('jquery.validate.min.js', PJ_THIRD_PARTY_PATH . 'validate/');
 			$this->appendJs('additional-methods.js', PJ_THIRD_PARTY_PATH . 'validate/');
+			$this->appendCss('bootstrap-select.min.css', PJ_THIRD_PARTY_PATH . 'bootstrap_select/1.13.18/css/');
+			$this->appendJs('bootstrap-select.min.js', PJ_THIRD_PARTY_PATH . 'bootstrap_select/1.13.18/js/');
 			$this->appendJs('pjAdminOrders.js');
 	    }
 	}
@@ -1887,6 +1930,21 @@ class pjAdminOrders extends pjAdmin
 	        //print_r($msg);
 
 	        self::jsonResponse(array('status' => 'OK', 'code' => 200, 'text' => $msg[0]['message']));
+	    }
+
+	}
+
+	public function pjActionSetSession() {
+
+		$this->setAjax(true);
+	    if ($this->isXHR())
+	    {
+	    	if ($this->_post->toInt('chef_id') <= 0) {
+	        	self::jsonResponse(array('status' => 'ERR', 'code' => 101, 'text' => 'Missing, empty or invalid parameters.'));
+	        }
+	    $chef = $this->_post->toInt('chef_id');
+        $_SESSION['chef'] = $chef;
+	    self::jsonResponse(array('status' => 'OK', 'code' => 200, 'text' => 'success'));
 	    }
 
 	}

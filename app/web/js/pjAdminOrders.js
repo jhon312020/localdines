@@ -18,6 +18,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
       postcode,
       postalResult,
       $cols,
+      $kordersPrepTime,
 
       // ! MEGAMIND
 
@@ -326,7 +327,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
             var pickup_hr;
             var pickup_mins;
             var p_mins;
-            var p_hr;
+            //var p_hr;
             var now = new Date($.now());
             var now_hr = now.getHours();
             var now_mins = now.getMinutes();
@@ -335,20 +336,20 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
               pickup_hr = (pickup_time - pickup_mins) / 60;
              
               p_mins = pickup_mins + now_mins;
-              p_hr = pickup_hr + now_hr;
+              now_hr = pickup_hr + now_hr;
             } else {
               p_mins = pickup_time + now_mins;
             }
-            if (p_mins >= 60) {
-              p_hr++;
+            while (p_mins >= 60) {
+              now_hr++;
               p_mins = p_mins % 60;
             } 
-            if (p_hr >= 24) {
-              p_hr = p_hr % 24;
+            if (now_hr >= 24) {
+              now_hr = now_hr % 24;
             }
-            $("#pickup_time").val(p_hr + ":" + p_mins);
-            console.log(p_hr + ":" + p_mins);
-            return p_hr + ":" + p_mins;
+            $("#pickup_time").val(now_hr + ":" + p_mins);
+            console.log(now_hr + ":" + p_mins);
+            return now_hr + ":" + p_mins;
           }
         },
         success: function (data) {
@@ -690,6 +691,24 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
       .on("change", "#voucher_code", function (e) {
         calPrice(1);
       })
+      .on("change", "#chef", function() {
+        var $chef_id = $(this).val()
+        $.ajax({
+        type: "POST",
+        async: false,
+        url: "index.php?controller=pjAdminOrders&action=pjActionSetSession",
+        data: { 
+          chef_id: function () {
+            return $chef_id;
+          },
+        },
+        success: function (data) {
+          
+          return;
+         
+        },
+      });
+      })
       .on("click", "#btnAddProduct", function (e) {
         if (e && e.preventDefault) {
           e.preventDefault();
@@ -772,7 +791,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           $("#productDelete_"+ index).css("display","block");
           $fdSelectedProduct = $("#prdInfo_" + index).val();
           $fdSelectedProduct = JSON.parse($fdSelectedProduct);
-          var $kordersPrepTime = $("#totKorderPrepTimeInput").val();
+          $kordersPrepTime = $("#totKorderPrepTimeInput").val();
           
           if ($fdSelectedProduct.preparation_time == "") {
             $prepTime = "0";
@@ -831,6 +850,15 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
         
       });
          return false;
+      })
+      .on("click", "#fdOrderList .pj-remove-product", function (e) {
+        //console.log("Delete button clicked");
+        var $deletedPrepTime = $(this).parents("tr").children("td:nth-child(6)").children().text();
+        //console.log($deletedPrepTime);
+        //console.log($("#total_prep-time_format").text() - $deletedPrepTime);
+        $totPrepTime = $totPrepTime - $deletedPrepTime;
+        $("#total_prep-time_format").text($totPrepTime + parseInt($kordersPrepTime));
+
       })
       .on("click", ".dropdown-toggle", function (e) { 
         var index = $(this).siblings("select").attr("data-index"); 
