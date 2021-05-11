@@ -1,9 +1,11 @@
 <div class="row wrapper border-bottom white-bg page-heading">
-    <!-- <?php //echo "<pre>";print_r($tpl['oi_arr']); ?> -->
+     <!-- <?php //echo "<pre>";print_r($tpl['category_list']); ?>
+     <?php //echo "<pre>";print_r($tpl['oi_arr']); ?> -->
     <div class="col-sm-12">
         <div class="row">
             <div class="col-sm-10">
-                <h2><?php __('infoUpdateOrderTitle');?></h2>
+                <!-- <h2><?php //__('infoUpdateOrderTitle');?></h2> -->
+                <h2>Update page</h2>
             </div>
         </div><!-- /.row -->
 
@@ -27,6 +29,25 @@ $short_days = __('short_days', true);
 <div class="row wrapper wrapper-content animated fadeInRight">
     <div class="col-lg-9">
     	<form action="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminOrders&amp;action=pjActionUpdate" method="post" id="frmUpdateOrder">
+            <div class="row">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <select name="select_box_name" id="chef" style="float: right;" class="form-control fdRequired required input-small" data-msg-required="<?php __('fd_field_required', false, true);?>">
+                        <option value="">Choose Chef</option>
+                            <?php
+                                foreach ($tpl['chef_arr'] as $chef => $ch)
+                                {
+                                    ?><option  value="<?php echo $ch['id']; ?>"  <?php echo ($_SESSION['chef'] == $ch['id']) ? 'selected' : ''; ?>><?php echo $ch['name']; ?></option><?php
+                                }
+                                ?>
+
+                           <!--  <option value="1">one</option>
+                            <option value="2">two</option> -->
+                    </select>
+                </div>
+                
+            </div>
+        </div>
 			<input type="hidden" name="order_update" value="1" />
 			<input type="hidden" name="id" value="<?php echo $tpl['arr']['id']?>" />
 			<input type="hidden" id="price" name="price" value="<?php echo $tpl['arr']['price']; ?>" />
@@ -178,7 +199,14 @@ $short_days = __('short_days', true);
                                                 <!-- MEGAMIND -->
 
                                                 <td>
-                                                    <span id="fdCategory_<?php echo $index;?>"></span>
+                                                    <span id="fdCategory_<?php echo $oi['hash'];?>">
+                                                        <?php for ($i=1; $i <= count($tpl['category_list']); $i++) { 
+                                                            if ($oi['category'] == $i) {
+                                                                echo $tpl['category_list'][$i]; 
+                                                            }
+                                                        } ?>
+                                                    </span>
+                                                    <!-- <input type="hidden" id="fdCategory_<?php //echo $oi['hash']; ?>" data-type="input" name="category_[<?php //echo $oi['hash']; ?>]"> -->
 
                                                 </td>
 
@@ -219,7 +247,7 @@ $short_days = __('short_days', true);
                                                 <!-- MEGAMIND --> 
 
                                                 <td>
-                                                    <span id="fdPrepTime_<?php echo $index;?>">
+                                                    <span id="fdPrepTime_<?php echo $oi['hash'];?>">
                                                         <?php foreach ($tpl['product_arr'] as $k => $v) {
                                                             if ($v['id'] == $oi['foreign_id']) {
                                                                 echo $v['preparation_time'];
@@ -240,13 +268,15 @@ $short_days = __('short_days', true);
                                                 </td>
                                                 <!-- <td>&nbsp;</td> -->
                                             </tr>
-    
-                                        </tbody>
-                                        <?php
+                                            <?php
                                                     }
                                                 }
                                             }
                                             ?>
+                                        <tr id="extraRow"></tr>
+    
+                                        </tbody>
+                                        
                                     </table>
                                                                     
                                 </div>
@@ -286,6 +316,7 @@ $short_days = __('short_days', true);
                                 {
                                     $title_arr = pjUtil::getTitles();
                                     $name_titles = __('personal_titles', true, false);
+                                    $client_title = ucfirst($tpl['arr']['c_title']).'.';
                                     ?>
                                     <div class="col-md-2 col-sm-2">
                                         <div class="form-group">
@@ -293,12 +324,13 @@ $short_days = __('short_days', true);
     
                                             <select id="c_title" name="c_title" class="form-control<?php echo ($tpl['option_arr']['o_bf_include_title'] == 3) ? ' fdRequired required' : NULL; ?>" data-msg-required="<?php __('fd_field_required', false, true);?>">
                                                 <option value="">----</option>
+                                                
                                                 <?php
                                                 $title_arr = pjUtil::getTitles();
                                                 $name_titles = __('personal_titles', true, false);
                                                 foreach ($title_arr as $v)
                                                 {
-                                                    ?><option value="<?php echo $v; ?>"><?php echo $name_titles[$v]; ?></option><?php
+                                                    ?><option value="<?php echo $v; ?>"<?php if ($client_title==$name_titles[$v]) { ?>selected="selected"<?php } ?>><?php echo $name_titles[$v]; ?></option><?php
                                                 }
                                                 ?>
                                             </select>
@@ -626,6 +658,7 @@ $short_days = __('short_days', true);
                                     <div class="form-group">
                                         <label class="control-label"><?php __('lblPaymentMethod');?></label>
                                         <?php
+                                        $client_paymethod = ucfirst($tpl['arr']['payment_method']);
                                         $online_arr = array();
                                         $offline_arr = array();
                                         foreach (__('payment_methods', true, false) as $k => $v)
@@ -645,7 +678,9 @@ $short_days = __('short_days', true);
                                             <?php
                                             foreach($online_arr as $k => $v)
                                             {
-                                                ?><option value="<?php echo $k;?>"><?php echo $v;?></option><?php
+                                                ?><option value="<?php echo $k;?>" <?php if ($client_paymethod==$v) { ?>
+                                                    selected = 'selected' <?php
+                                                } ?>><?php echo $v;?></option><?php
                                             }
                                             ?>
                                             </optgroup>
@@ -653,7 +688,9 @@ $short_days = __('short_days', true);
                                             <?php
                                             foreach($offline_arr as $k => $v)
                                             {
-                                                ?><option value="<?php echo $k;?>"><?php echo $v;?></option><?php
+                                                ?><option value="<?php echo $k;?>"<?php if ($client_paymethod==$v) { ?>
+                                                    selected = 'selected' <?php
+                                                } ?>><?php echo $v;?></option><?php
                                             }
                                             ?>
                                             </optgroup>
@@ -684,9 +721,12 @@ $short_days = __('short_days', true);
     
                                         <select name="status" id="status" class="form-control required" data-msg-required="<?php __('fd_field_required', false, true);?>">
                                             <?php
+                                            $client_sts = ucfirst($tpl['arr']['status']);
                                             foreach (__('order_statuses', true, false) as $k => $v)
                                             {
-                                                ?><option value="<?php echo $k; ?>"<?php echo $k =='pending' ? ' selected="selected"' : NULL;?>><?php echo stripslashes($v); ?></option><?php
+                                                ?><option value="<?php echo $k; ?>"<?php if ($client_sts==$v) { ?>
+                                                    selected = "selected"
+                                                <?php }?>><?php echo stripslashes($v); ?></option><?php
                                             }
                                             ?>
                                         </select>

@@ -402,36 +402,12 @@ class pjAdminOrders extends pjAdmin
 	        if($this->_post->check('type'))
 	        {
 	            $data['type'] = 'delivery';
-	      //       date_default_timezone_set('Asia/Kolkata');
-			    // $del_date = date('y-m-d', date());
-			    // print_r($del_date);
-	      //       $delivery_time = $this->_post->toString('delivery_time');
-	      //       $del_time = pjDateTime::formatTime($delivery_time, $this->option_arr['o_time_format']);
-	      //       $data['delivery_time']=pjDateTime::formatTime(date( 'y-m-d' ),$this->option_arr['o_date_format']) . ' ' . $time;
-	            // if (!empty($post['d_date']))
-	            // {
-	            //     $date_time = $post['d_dt'];
-	            //     if(count(explode(" ", $date_time)) == 3)
-	            //     {
-	            //         list($_date, $_time, $_period) = explode(" ", $date_time);
-	            //         $time = pjDateTime::formatTime($_time . ' ' . $_period, $this->option_arr['o_time_format']);
-	            //     }else{
-	            //         list($_date, $_time) = explode(" ", $date_time);
-	            //         $time = pjDateTime::formatTime($_time, $this->option_arr['o_time_format']);
-	            //     }
-	            //     $data['d_dt'] = pjDateTime::formatDate($_date, $this->option_arr['o_date_format']) . ' ' . $time;
-	            // }
-	             
 	            if (!empty($post['d_date']) && !empty($post['delivery_time']))
 	            {
 	                $d_date = $post['d_date'];
 	                //$d_date = 2021-04-31;
 
 	                $d_time = $post['delivery_time'];
-           //          print_r("comes here");
-	          //       print_r($post['delivery_time']);
-			        // exit;
-			        //$d_time = "16:20";
 	                if(count(explode(" ", $d_time)) == 2)
 	                {
 	                    list($_time, $_period) = explode(" ", $d_time);
@@ -481,8 +457,6 @@ class pjAdminOrders extends pjAdmin
 	        $id = pjOrderModel::factory(array_merge($post, $data, $post_total))->insert()->getInsertId();
 	        //print_r($id);
 	        $order_id = "T".$id;
-	        // print_r($order_id);
-	        // exit;
 	        pjOrderModel::factory()
 		        ->where('id', $id)
 		        ->modifyAll(array(
@@ -686,21 +660,30 @@ class pjAdminOrders extends pjAdmin
 	        }
 	        
 	        $new_client_id = NULL;
-	        if($this->_post->check('new_client'))
-	        {
+	        $c_data['phone'] = $this->_post->toInt('phone_no');
+	        $isExist = $pjOrderModel
+	                   ->select('t1.*')
+	                   ->where('phone_no', $c_data['phone'])
+	                   ->findAll()
+	                   ->getData();
+	        // print_r($isExist);
+	        // exit;           
+	        if(!$isExist)
+	        {   print_r($isExist);
+	            exit;  
 	            $c_data = array();
 	            $c_data['c_title'] = $this->_post->toString('c_title');
 	            $c_data['c_name'] = $this->_post->toString('c_name');
-	            $c_data['c_email'] = $this->_post->toString('c_email');
-	            $c_data['c_password'] = $this->_post->toString('c_password');
-	            $c_data['c_phone'] = $this->_post->toString('c_phone');
-	            $c_data['c_company'] = $this->_post->toString('c_company');
+	            $c_data['c_email'] = $this->_post->toString('sms_email');
+	            //c_data['c_password'] = $this->_post->toString('c_password');
+	            //$c_data['c_phone'] = $this->_post->toString('phone_no');
+	            //$c_data['c_company'] = $this->_post->toString('c_company');
 	            $c_data['c_address_1'] = $this->_post->toString('d_address_1');
 	            $c_data['c_address_2'] = $this->_post->toString('d_address_2');
 	            $c_data['c_city'] = $this->_post->toString('d_city');
 	            $c_data['c_state'] = $this->_post->toString('d_state');
-	            $c_data['c_zip'] = $this->_post->toString('d_zip');
-	            $c_data['c_country'] = $this->_post->toInt('d_country_id');
+	            //$c_data['c_zip'] = $this->_post->toString('d_zip');
+	            //$c_data['c_country'] = $this->_post->toInt('d_country_id');
 	            $c_data['status'] = 'T';
 	            $c_data['post_code'] = $this->_post->toString('post_code');
 	            $c_data['locale_id'] = $this->getLocaleId();
@@ -710,6 +693,7 @@ class pjAdminOrders extends pjAdmin
 	                $new_client_id = $response['client_id'];
 	            }
 	        }
+	       
 	        if (isset($post['product_id']) && count($post['product_id']) > 0)
 	        {
 	            $keys = array_keys($post['product_id']);
@@ -830,18 +814,23 @@ class pjAdminOrders extends pjAdmin
 	        if($this->_post->check('type'))
 	        {
 	            $data['type'] = 'delivery';
-	            if (!empty($post['d_dt']))
+	            if (!empty($post['d_date']) && !empty($post['delivery_time']))
 	            {
-	                $date_time = $post['d_dt'];
-	                if(count(explode(" ", $date_time)) == 3)
+	                $d_date = $post['d_date'];
+	                //$d_date = 2021-04-31;
+
+	                $d_time = $post['delivery_time'];
+	                if(count(explode(" ", $d_time)) == 2)
 	                {
-	                    list($_date, $_time, $_period) = explode(" ", $date_time);
+	                    list($_time, $_period) = explode(" ", $d_time);
 	                    $time = pjDateTime::formatTime($_time . ' ' . $_period, $this->option_arr['o_time_format']);
 	                }else{
-	                    list($_date, $_time) = explode(" ", $date_time);
-	                    $time = pjDateTime::formatTime($_time, $this->option_arr['o_time_format']);
+	                   
+	                    $time = pjDateTime::formatTime($d_time, $this->option_arr['o_time_format']);
 	                }
-	                $data['d_dt'] = pjDateTime::formatDate($_date, $this->option_arr['o_date_format']) . ' ' . $time;
+	               
+	                $data['d_dt']=pjDateTime::formatDate($d_date,$this->option_arr['o_date_format']) . ' ' . $time;
+	                
 	            }
 	            if ($this->_post->toInt('d_location_id'))
 	            {
@@ -851,18 +840,22 @@ class pjAdminOrders extends pjAdmin
 	            $data['p_dt'] = ':NULL';
 	        }else{
 	            $data['type'] = 'pickup';
-	            if (!empty($post['p_dt']))
+	            if (!empty($post['p_date']) && !empty($post['pickup_time']))
 	            {
-	                $date_time = $post['p_dt'];
-	                if(count(explode(" ", $date_time)) == 3)
+	                $p_date = $post['p_date'];
+	                $p_time = $post['pickup_time'];
+
+	                
+	                if(count(explode(" ", $p_time)) == 2)
 	                {
-	                    list($_date, $_time, $_period) = explode(" ", $date_time);
+	                    list($_time, $_period) = explode(" ", $p_time);
 	                    $time = pjDateTime::formatTime($_time . ' ' . $_period, $this->option_arr['o_time_format']);
 	                }else{
-	                    list($_date, $_time) = explode(" ", $date_time);
-	                    $time = pjDateTime::formatTime($_time, $this->option_arr['o_time_format']);
+	                   
+	                    $time = pjDateTime::formatTime($p_time, $this->option_arr['o_time_format']);
 	                }
-	                $data['p_dt'] = pjDateTime::formatDate($_date, $this->option_arr['o_date_format']) . ' ' . $time;
+	                $data['p_dt']=pjDateTime::formatDate($p_date,$this->option_arr['o_date_format']) . ' ' . $time;
+
 	            }
 	            if ($this->_post->toInt('p_location_id'))
 	            {
@@ -901,6 +894,8 @@ class pjAdminOrders extends pjAdmin
 			$this->set('arr', $arr);
 
 			// MEGAMIND
+			
+
             
             $category_arr = pjCategoryModel::factory()
 	        ->join('pjMultiLang', "t2.foreign_id = t1.id AND t2.model = 'pjCategory' AND t2.locale = '".$this->getLocaleId()."' AND t2.field = 'name'", 'left')
@@ -977,7 +972,27 @@ class pjAdminOrders extends pjAdmin
 			    }
 			    $oi_arr[] = $item;
 			}
+			
+			$category = pjProductCategoryModel::factory()
+			            ->select('t1.*')
+			            ->findAll()
+			            ->getData();
+			// foreach ($category as $k => $v) {
+			// 	print_r($v['product_id']);
+			// }
+
+			foreach ($oi_arr as $oi => $o) {
+				foreach ($category as $k => $v) {
+				if ($o['foreign_id'] == $v['product_id']) {
+					//print_r($v['category_id']);
+					$oi_arr[$oi]['category'] = $v['category_id'];
+				}
+			}}
+
+
 			$this->set('oi_arr', $oi_arr);
+			//print_r($oi_arr[0]['foreign_id']);
+			//print_r($category[0]['category_id']);
 			
 			$client_arr = pjClientModel::factory()
 			->select("t1.*, t2.email as c_email, t2.name as c_name, t2.phone as c_phone")

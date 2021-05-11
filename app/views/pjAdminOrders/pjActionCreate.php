@@ -40,18 +40,26 @@ $short_days = __('short_days', true);
 <div class="row wrapper wrapper-content animated fadeInRight" id="orderContainer">
     <div class="col-lg-9">
     	<form action="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminOrders&amp;action=pjActionCreate" method="post" id="frmCreateOrder">
-            <select name="select_box_name" id="chef" style="float: right;" class="form-control fdRequired required" data-msg-required="<?php __('fd_field_required', false, true);?>">
-                <option value="">Choose Chef</option>
-                    <?php
-                        foreach ($tpl['chef_arr'] as $chef => $ch)
-                        {
-                            ?><option  value="<?php echo $ch['id']; ?>"  <?php echo ($_SESSION['chef'] == $ch['id']) ? 'selected' : ''; ?>><?php echo $ch['name']; ?></option><?php
-                        }
-                        ?>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <select name="select_box_name" id="chef" style="float: right;" class="form-control fdRequired required input-small" data-msg-required="<?php __('fd_field_required', false, true);?>">
+                        <option value="">Choose Chef</option>
+                            <?php
+                                foreach ($tpl['chef_arr'] as $chef => $ch)
+                                {
+                                    ?><option  value="<?php echo $ch['id']; ?>"  <?php echo ($_SESSION['chef'] == $ch['id']) ? 'selected' : ''; ?>><?php echo $ch['name']; ?></option><?php
+                                }
+                                ?>
 
-                   <!--  <option value="1">one</option>
-                    <option value="2">two</option> -->
-            </select>
+                           <!--  <option value="1">one</option>
+                            <option value="2">two</option> -->
+                    </select>
+                </div>
+                
+            </div>
+        </div>
+            
 			<input type="hidden" name="order_create" value="1" />
 			<input type="hidden" id="price" name="price" value="" />
 			<input type="hidden" id="price_packing" name="price_packing" value="" />

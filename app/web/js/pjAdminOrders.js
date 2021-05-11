@@ -421,7 +421,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
             $("#delivery_time").val(now_hr + ":" + d_mins);
             
             //return $frm.find("input[name='d_time']").val();
-            //console.log($("#delivery_time").val());
+            console.log($("#delivery_time").val());
             return now_hr + ":" + d_mins;
           },
         },
@@ -789,6 +789,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           
           //MEGAMIND
           $("#productDelete_"+ index).css("display","block");
+
           $fdSelectedProduct = $("#prdInfo_" + index).val();
           $fdSelectedProduct = JSON.parse($fdSelectedProduct);
           $kordersPrepTime = $("#totKorderPrepTimeInput").val();
@@ -1265,10 +1266,12 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           var addressList = $(
             '<select id="selAddress" name="selectAddress" class="form-control"/>'
           );
+          $("<option />", { value: 0, text: "--Choose--"}).appendTo(addressList);
           client.lookupPostcode({ postcode }).then(function (result) {
             postalResult = result;
             //console.log(result.length);
             if (result.length > 0) {
+              var i = 1;
               if ($("#post_code").hasClass("has-error")) {
                 $("#post_code").removeClass("has-error");
                 $("#postCodeErr").css("display","none");
@@ -1277,6 +1280,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
                 
                 // $line_1 = result[index].line_1;
                 //console.log($line_1);
+                
                 var address =
                   result[index].line_1 +
                   " ," +
@@ -1284,9 +1288,10 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
                   " ," +
                   result[index].line_3;
                 
-                $("<option />", { value: index, text: address }).appendTo(
+                $("<option />", { value: i, text: address }).appendTo(
                   addressList
                 );
+                i = i + 1;
               });
               $("#addressList").html(addressList);
               // click("#selAddress", function () {
@@ -1303,9 +1308,9 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
             if (result.length == 1) {
               $("#selAddress").click(function(){
               var index = $(this).val();
-              $("#d_address_1").val(result[index].line_1);
-              $("#d_address_2").val(result[index].line_2);
-              $("#d_city").val(result[index].post_town);
+              $("#d_address_1").val(result[index-1].line_1);
+              $("#d_address_2").val(result[index-1].line_2);
+              $("#d_city").val(result[index-1].post_town);
             })
            }
           });
@@ -1317,17 +1322,22 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
       //   $("#d_address_2").val(result[index].line_2);
       //   $("#d_city").val(result[index].post_town);
       // })
+      // .on("click", "#selAddress option:first", function (e) {
+      //   alert("clicked")
+      // })
       .on("change", "#selAddress", function (e) {
         var index = $(this).val();
         //console.log(postalResult);
         // return;
         //client.lookupPostcode({ postcode }).then(function (result) {
+        if (index != 0) {
           if (postalResult.length > 0) {
-            $("#d_address_1").val(postalResult[index].line_1);
-            $("#d_address_2").val(postalResult[index].line_2);
-            $("#d_city").val(postalResult[index].post_town);
+            $("#d_address_1").val(postalResult[index-1].line_1);
+            $("#d_address_2").val(postalResult[index-1].line_2);
+            $("#d_city").val(postalResult[index-1].post_town);
 
           }
+        }
         //})
 
       })
@@ -1358,6 +1368,26 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
         console.log('Called me on close');
        // $('#orderContainer').addClass('animated fadeInRight');
     });
+    window.onload = function() {
+     var $page = $('h2');
+     if ($page.text() == "Update page") {
+      // alert("Update page");
+      var lastRowIndex = $("#fdOrderList tr:last").attr("data-index"),
+        $product = $("#fdProduct_" + lastRowIndex).val(),
+        $price = $("#fdPrice_" + lastRowIndex).val();
+        if($product != "" && $price != ""){
+          var index = Math.ceil(Math.random() * 999999),
+          $clone = $("#boxProductClone").find("tbody").html();
+          $clone = $clone.replace(/\{INDEX\}/g, "new_" + index);
+          $("#fdOrderList").find("tbody.main-body").append($clone);
+          bindTouchSpin();
+          $("#fdOrderList").show();
+          // console.log('Index:',index);
+          $('#fdProduct_new_'+index).addClass('selectpicker').selectpicker('refresh');
+        }
+     }
+     
+    };
     function myTinyMceInit(pSelector, pValue) {
       tinymce.init({
         relative_urls: false,
@@ -1439,7 +1469,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
             price_element = $("#fdPrice_" + index),
             product_qty = parseInt($("#fdProductQty_" + index).val(), 10),
             price = 0;
-
+          
           var element_type = price_element.attr("data-type");
           if (element_type == "input") {
             price = parseFloat(price_element.val());
