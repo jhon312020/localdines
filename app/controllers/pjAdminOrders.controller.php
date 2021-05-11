@@ -338,6 +338,11 @@ class pjAdminOrders extends pjAdmin
 			$data['sms_email'] = $this->_post->toString('sms_email');
 			$data['first_name'] = $this->_post->toString('c_name');
 			$data['chef_id'] = $this->session->getData('chef');
+			$data['mobile_delivery_info'] = $this->_post->toBool('mobile_delivery_info');
+			$data['mobile_offer'] = $this->_post->toBool('mobile_offer');
+			$data['email_delivery_info'] = $this->_post->toBool('email_delivery_info');
+			$data['email_receipt'] = $this->_post->toBool('email_receipt');
+			$data['email_offer'] = $this->_post->toBool('email_offer');
 			// print_r($data);
 			// exit;
 
@@ -403,8 +408,10 @@ class pjAdminOrders extends pjAdmin
 	        {
 	            $data['type'] = 'delivery';
 	            if (!empty($post['d_date']) && !empty($post['delivery_time']))
-	            {
+	            {   
+	            	$data['d_time'] = $this->_post->toInt('d_time');
 	                $d_date = $post['d_date'];
+
 	                //$d_date = 2021-04-31;
 
 	                $d_time = $post['delivery_time'];
@@ -427,7 +434,8 @@ class pjAdminOrders extends pjAdmin
 	        }else{
 	            $data['type'] = 'pickup';
 	            if (!empty($post['p_date']) && !empty($post['pickup_time']))
-	            {
+	            {   
+	            	$data['p_time'] = $this->_post->toInt('p_time');
 	                $p_date = $post['p_date'];
 	                $p_time = $post['pickup_time'];
 
@@ -452,7 +460,8 @@ class pjAdminOrders extends pjAdmin
 	        {
 	            $data['cc_exp'] = $this->_post->toString('cc_exp_month') . "/" . $this->_post->toString('cc_exp_year');
 			}
-			//print_r($product_arr);
+			print_r($data);
+			exit;
 			
 	        $id = pjOrderModel::factory(array_merge($post, $data, $post_total))->insert()->getInsertId();
 	        //print_r($id);
@@ -666,7 +675,7 @@ class pjAdminOrders extends pjAdmin
 	                   ->where('phone_no', $c_data['phone'])
 	                   ->findAll()
 	                   ->getData();
-	        // print_r($isExist);
+	        // echo "<pre>";print_r($post);
 	        // exit;           
 	        if(!$isExist)
 	        {   print_r($isExist);
@@ -868,6 +877,9 @@ class pjAdminOrders extends pjAdmin
 	        
 	        $post_data = $this->getTotal();
 	        
+	        // print_r($post);
+	        // exit;
+	        
 	        $pjOrderModel->reset()->where('id', $id)->limit(1)->modifyAll(array_merge($post, $data, $post_data));
 	        
 	        $err = 'AR01';
@@ -917,6 +929,20 @@ class pjAdminOrders extends pjAdmin
             ->getData();
             $this->set('client_info', $client_info);
 
+            $chef_arr = pjAuthUserModel::factory()
+            ->select("t1.id, t1.name")
+            ->where('role_id', '5')
+            ->findAll()
+            ->getData();
+            $this->set('chef_arr', $chef_arr); 
+
+            $multilang = pjMultiLangModel::factory()
+                         ->select('t1.*')
+                         ->findAll()
+                         ->getData();
+
+
+           // print_r($multilang);
 			// !MEGAMIND
 			
 			$country_arr = pjBaseCountryModel::factory()
@@ -979,7 +1005,10 @@ class pjAdminOrders extends pjAdmin
 			            ->getData();
 			// foreach ($category as $k => $v) {
 			// 	print_r($v['product_id']);
+
+
 			// }
+
 
 			foreach ($oi_arr as $oi => $o) {
 				foreach ($category as $k => $v) {
@@ -993,6 +1022,11 @@ class pjAdminOrders extends pjAdmin
 			$this->set('oi_arr', $oi_arr);
 			//print_r($oi_arr[0]['foreign_id']);
 			//print_r($category[0]['category_id']);
+			// $desc_arr = pjProductModel::factory();
+			// $pjMultiLangModel = pjMultiLangModel::factory();
+			// $prodarr['i18n'] = $pjMultiLangModel->getMultiLang($product_id, 'pjProduct');
+			// $desc_arr['description'] = $prodarr['i18n'][$this->getLocaleId()]['description'];
+			// $this->set('desc_arr', $desc_arr);
 			
 			$client_arr = pjClientModel::factory()
 			->select("t1.*, t2.email as c_email, t2.name as c_name, t2.phone as c_phone")

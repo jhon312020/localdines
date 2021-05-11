@@ -189,7 +189,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           var $ele = null;
           
           // MEGAMIND
-          //console.log("comes here")
+          console.log("comes here")
           var firstRowIndex = $('#fdOrderList').find("tbody.main-body > tr:first-child").attr("data-index");
           var lastRow = $("#fdOrderList tr:last");
           var lastRowIndex = $("#fdOrderList tr:last").attr("data-index");
@@ -249,35 +249,34 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
         submitHandler: function (form) {
           var valid = true;
           var $ele = null;
-          $("#fdOrderList")
-            .find("tbody.main-body > tr.fdLine")
-            .each(function () {
-              var index = $(this).attr("data-index"),
-                $product = $("#fdProduct_" + index),
-                $price = $("#fdPrice_" + index);
-
-              if ($product.val() == "") {
-                $product.parent().addClass("has-error");
-                valid = false;
-                $ele = $product;
-              } else {
-                $product.parent().removeClass("has-error");
-              }
-              if ($price.val() == "") {
-                $price.parent().addClass("has-error");
-                valid = false;
-                $ele = $product;
-              } else {
-                $price.parent().removeClass("has-error");
-              }
-            });
+          // MEGAMIND
+          console.log("comes here")
+          var firstRowIndex = $('#fdOrderList').find("tbody.main-body > tr:first-child").attr("data-index");
+          var lastRow = $("#fdOrderList tr:last");
+          var lastRowIndex = $("#fdOrderList tr:last").attr("data-index");
+          var $product = $("#fdProduct_"+lastRowIndex);
+          var $price = $("#fdPrice_"+lastRowIndex);
+          
+          if ($product.val() == "" && $price.val() == "") {
+            if (lastRowIndex == firstRowIndex) {
+              $product.parent().parent().addClass("has-error");
+              valid = false;
+              $ele = $product;
+            }
+            else{
+              lastRow.remove();
+              valid = true;
+            }
+          }
+          
+          // !MEGAMIND
           if (valid == true) {
             form.submit();
-          } else {
-            var $closest = $ele.closest(".tab-pane");
-            var id = $closest.attr("id");
-            $('.nav a[href="#' + id + '"]').tab("show");
-          }
+          } //else {
+          //   var $closest = $ele.closest(".tab-pane");
+          //   var id = $closest.attr("id");
+          //   $('.nav a[href="#' + id + '"]').tab("show");
+          // }
         },
       });
 
@@ -1258,63 +1257,8 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
         //Added by JR
       })
       .on("click", "#btnFindPostCode", function (e) {
-        Client = IdealPostcodes.Client;
-        client = new Client({ api_key: "iddqd" });
-        postcode = "ID1 1QD";
-        postcode = $("#inputPostCode").val();
-        if (postcode) {
-          var addressList = $(
-            '<select id="selAddress" name="selectAddress" class="form-control"/>'
-          );
-          $("<option />", { value: 0, text: "--Choose--"}).appendTo(addressList);
-          client.lookupPostcode({ postcode }).then(function (result) {
-            postalResult = result;
-            //console.log(result.length);
-            if (result.length > 0) {
-              var i = 1;
-              if ($("#post_code").hasClass("has-error")) {
-                $("#post_code").removeClass("has-error");
-                $("#postCodeErr").css("display","none");
-              }
-              $.each(result, function (index) {
-                
-                // $line_1 = result[index].line_1;
-                //console.log($line_1);
-                
-                var address =
-                  result[index].line_1 +
-                  " ," +
-                  result[index].line_2 +
-                  " ," +
-                  result[index].line_3;
-                
-                $("<option />", { value: i, text: address }).appendTo(
-                  addressList
-                );
-                i = i + 1;
-              });
-              $("#addressList").html(addressList);
-              // click("#selAddress", function () {
-              //   var index = $(this).val();
-              //   $("#d_address_1").val(result[index].line_1);
-              //   $("#d_address_2").val(result[index].line_2);
-              //   $("#d_city").val(result[index].post_town);
-              // })
-             }  
-            if(result.length == 0) {
-              $("#post_code").addClass("has-error");
-              $("#postCodeErr").css("display","block");
-            }
-            if (result.length == 1) {
-              $("#selAddress").click(function(){
-              var index = $(this).val();
-              $("#d_address_1").val(result[index-1].line_1);
-              $("#d_address_2").val(result[index-1].line_2);
-              $("#d_city").val(result[index-1].post_town);
-            })
-           }
-          });
-        }
+        var postcode_input = $("#inputPostCode");
+        getAddresses(postcode_input);
       })
       // .on("click", "#selAddress", function(e) {
       //   var index = $(this).val();
@@ -1367,6 +1311,14 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
         // Fix Animate.css
         console.log('Called me on close');
        // $('#orderContainer').addClass('animated fadeInRight');
+    });
+    $("#inputPostCode").keydown(function (e) {
+      if (e.keyCode == 13) {
+      e.preventDefault();
+      //return false;
+      }
+      var $this = $(this);
+      getAddresses($this);
     });
     window.onload = function() {
      var $page = $('h2');
@@ -1516,6 +1468,55 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           }
         }
       });
+    }
+    function getAddresses($this) { 
+      //console.log($this);
+      Client = IdealPostcodes.Client;
+        client = new Client({ api_key: "iddqd" });
+        postcode = $this.val();
+        if (postcode) {
+          var addressList = $(
+            '<select id="selAddress" name="selectAddress" class="form-control"/>'
+          );
+          $("<option />", { value: 0, text: "--Choose--"}).appendTo(addressList);
+          client.lookupPostcode({ postcode }).then(function (result) {
+            postalResult = result;
+            if (result.length > 0) {
+              var i = 1;
+              if ($("#post_code").hasClass("has-error")) {
+                $("#post_code").removeClass("has-error");
+                $("#postCodeErr").css("display","none");
+              }
+              $.each(result, function (index) {
+                var address =
+                  result[index].line_1 +
+                  " ," +
+                  result[index].line_2 +
+                  " ," +
+                  result[index].line_3;
+                
+                $("<option />", { value: i, text: address }).appendTo(
+                  addressList
+                );
+                i = i + 1;
+              });
+              $("#addressList").html(addressList);
+             }  
+            if(result.length == 0) {
+              $("#post_code").addClass("has-error");
+              $("#postCodeErr").css("display","block");
+            }
+            if (result.length == 1) {
+              $("#selAddress").click(function(){
+              var index = $(this).val();
+              $("#d_address_1").val(result[index-1].line_1);
+              $("#d_address_2").val(result[index-1].line_2);
+              $("#d_city").val(result[index-1].post_town);
+            })
+           }
+          });
+        }
+
     }
   });
 })(jQuery_1_8_2);

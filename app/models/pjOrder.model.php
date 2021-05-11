@@ -62,7 +62,14 @@ class pjOrderModel extends pjAppModel
 	    array('name' => 'delivered_time', 'type' => 'datetime', 'default' => ':NULL'),
 	    array('name' => 'order_id', 'type' => 'varchar', 'default' => ':NULL'),
 	    array('name' => 'deleted_order', 'type' => 'boolean', 'default' => ':NULL'),
-	    array('name' => 'chef_id', 'type' => 'int', 'default' => ':NULL')
+	    array('name' => 'chef_id', 'type' => 'int', 'default' => ':NULL'),
+	    array('name' => 'mobile_delivery_info', 'type' => 'tinyint', 'default' => 0),
+	    array('name' => 'mobile_offer', 'type' => 'tinyint', 'default' => 0),
+	    array('name' => 'email_delivery_info', 'type' => 'tinyint', 'default' => 0),
+	    array('name' => 'email_receipt', 'type' => 'tinyint', 'default' => 0),
+	    array('name' => 'email_offer', 'type' => 'tinyint', 'default' => 0),
+	    array('name' => 'd_time', 'type' => 'int', 'default' => 0),
+	    array('name' => 'p_time', 'type' => 'int', 'default' => 0)
 	);
 	
 	public static function factory($attr=array())

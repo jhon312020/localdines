@@ -41,6 +41,7 @@ $short_days = __('short_days', true);
     <div class="col-lg-9">
     	<form action="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminOrders&amp;action=pjActionCreate" method="post" id="frmCreateOrder">
         <div class="row">
+            <div class="col-md-9"></div>
             <div class="col-md-3">
                 <div class="form-group">
                     <select name="select_box_name" id="chef" style="float: right;" class="form-control fdRequired required input-small" data-msg-required="<?php __('fd_field_required', false, true);?>">
@@ -255,15 +256,15 @@ $short_days = __('short_days', true);
                                 <div class="col-md-4 col-sm-6">
                                     <label class="control-label"><?php echo 'Delivery Info' //__('lblPhone'); ?></label>
                                     <div class="form-group">
-                                        <label><input type="radio" name="d_info" id="d_info" value="Yes"> Yes</label>
-                                        <label><input type="radio" name="d_info" id="d_info" value="No"> No</label>
+                                        <label><input type="radio" name="mobile_delivery_info" id="d_info" value="Yes"> Yes</label>
+                                        <label><input type="radio" name="mobile_delivery_info" id="d_info" value="No"> No</label>
                                     </div>
                                 </div><!-- /.col-md-3 -->   
                                 <div class="col-md-4 col-sm-6">
-                                <label class="control-label"><?php echo 'Offers' //__('lblPhone'); ?></label>
+                                <label class="control-label"><?php echo 'Offer' //__('lblPhone'); ?></label>
                                     <div class="form-group">
-                                        <label><input type="radio" name="d_offers" id="offers" value="Yes"> Yes</label>
-                                        <label><input type="radio" name="d_offers" id="offers" value="No"> No</label>
+                                        <label><input type="radio" name="mobile_offer" id="offers" value="Yes"> Yes</label>
+                                        <label><input type="radio" name="mobile_offer" id="offers" value="No"> No</label>
                                     </div>
                                 </div><!-- /.col-md-3 -->   
                             </div>
@@ -441,8 +442,8 @@ $short_days = __('short_days', true);
                                 <div class="col-md-2 col-sm-6">
                                 <label class="control-label"><?php echo 'Delivery Info' //__('lblPhone'); ?></label>
                                     <div class="form-group">
-                                        <label><input type="radio" name="delivery_info" id="delivery_info" value="Yes"> Yes</label>
-                                        <label><input type="radio" name="delivery_info" id="delivery_info" value="No"> No</label>
+                                        <label><input type="radio" name="email_delivery_info" id="delivery_info" value="Yes"> Yes</label>
+                                        <label><input type="radio" name="email_delivery_info" id="delivery_info" value="No"> No</label>
                                     </div>
                                 </div><!-- /.col-md-3 -->   
                                 <div class="col-md-3 col-sm-6">
@@ -454,15 +455,15 @@ $short_days = __('short_days', true);
                                 <div class="col-md-2 col-sm-6">
                                 <label class="control-label"><?php echo 'Receipt' //__('lblPhone'); ?></label>
                                     <div class="form-group">
-                                        <label><input type="radio" name="receipt" id="receipt" value="Yes"> Yes</label>
-                                        <label><input type="radio" name="receipt" id="receipt" value="No"> No</label>
+                                        <label><input type="radio" name="email_receipt" id="receipt" value="Yes"> Yes</label>
+                                        <label><input type="radio" name="email_receipt" id="receipt" value="No"> No</label>
                                     </div>
                                 </div><!-- /.col-md-3 -->   
                                 <div class="col-md-2 col-sm-6">
                                 <label class="control-label"><?php echo 'Offers' //__('lblPhone'); ?></label>
                                     <div class="form-group">
-                                        <label><input type="radio" name="offers" id="offers" value="Yes"> Yes</label>
-                                        <label><input type="radio" name="offers" id="offers" value="No"> No</label>
+                                        <label><input type="radio" name="email_offer" id="offers" value="Yes"> Yes</label>
+                                        <label><input type="radio" name="email_offer" id="offers" value="No"> No</label>
                                     </div>
                                 </div><!-- /.col-md-3 -->   
                                 <?php
