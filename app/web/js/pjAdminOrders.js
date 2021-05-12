@@ -19,6 +19,8 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
       postalResult,
       $cols,
       $kordersPrepTime,
+      prodSelect,
+
 
       // ! MEGAMIND
 
@@ -251,7 +253,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           var $ele = null;
           // MEGAMIND
           console.log("comes here")
-          var firstRowIndex = $('#fdOrderList').find("tbody.main-body > tr:first-child").attr("data-index");
+          var firstRowIndex = $('#fdOrderList').find("tbody.main-body > tr:first").attr("data-index");
           var lastRow = $("#fdOrderList tr:last");
           var lastRowIndex = $("#fdOrderList tr:last").attr("data-index");
           var $product = $("#fdProduct_"+lastRowIndex);
@@ -695,7 +697,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
         $.ajax({
         type: "POST",
         async: false,
-        url: "index.php?controller=pjAdminOrders&action=pjActionSetSession",
+        url: "index.php?controller=pjAuth&action=pjActionSetSession",
         data: { 
           chef_id: function () {
             return $chef_id;
@@ -774,6 +776,10 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
       
 
         //$(this).parent().last().children().css("display","block");
+        //console.log($("#fdOrderList").children("tbody").children());
+        // if (prodSelect.length() !== 0) {
+        //   console.log("has Something");
+        // }
         var $this = $(this),
           index = $this.attr("data-index"),
           option = $("option:selected", this).attr("data-extra");
@@ -787,7 +793,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           $("#fdPriceTD_" + index).html(data);
           
           //MEGAMIND
-          $("#productDelete_"+ index).css("display","block");
+          $("#productDelete_"+ index).css("display","none");
 
           $fdSelectedProduct = $("#prdInfo_" + index).val();
           $fdSelectedProduct = JSON.parse($fdSelectedProduct);
@@ -807,6 +813,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           $("#fdCategory_" + index).html(categoryList[$fdSelectedProduct.category_id]);
           $("#fdDescription").html($fdSelectedProduct.description);
           $("#total_prep-time_format").html($totPrepTime);
+          $("#prep_time").val($totPrepTime);
           $totPrepTime = $totPrepTime - parseInt($kordersPrepTime);
           // !MEGAMIND
 
@@ -837,7 +844,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
         var lastRowIndex = $("#fdOrderList tr:last").attr("data-index"),
         $product = $("#fdProduct_" + lastRowIndex).val(),
         $price = $("#fdPrice_" + lastRowIndex).val();
-        if($product != "" && $price != ""){
+        if($product != "" || $price != ""){
           var index = Math.ceil(Math.random() * 999999),
           $clone = $("#boxProductClone").find("tbody").html();
           $clone = $clone.replace(/\{INDEX\}/g, "new_" + index);
@@ -858,6 +865,8 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
         //console.log($("#total_prep-time_format").text() - $deletedPrepTime);
         $totPrepTime = $totPrepTime - $deletedPrepTime;
         $("#total_prep-time_format").text($totPrepTime + parseInt($kordersPrepTime));
+        //console.log($("#prep_time"));
+        $("#prep_time").val($totPrepTime + parseInt($kordersPrepTime));
 
       })
       .on("click", ".dropdown-toggle", function (e) { 
@@ -905,23 +914,39 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
         $cinfo = client_info;
         $c_phone = $(this).val();
         var newUser = true;
-        console.log($cinfo);
+        //console.log($cinfo);
         for(var c in $cinfo) {
           if ($cinfo[c]['phone_no'] == $c_phone){
-            $("#c_title").val($cinfo[c]['c_title']);
+           newUser = false;
+          }
+        }
+        //console.log(newUser);
+        if(newUser == true) {
+          $("#c_title").val(" ");
+          $("#c_email").val(" ");
+          $("#c_surname").val(" ");
+          $("#inputPostCode").val(" ");
+          $("#d_address_1").val(" ");
+          $("#d_address_2").val(" ");
+          $("#d_city").val(" ");
+          $("#c_name").val(" ");
+          $("input:radio").prop("checked", false);
+        } else if (newUser == false) {
+           
+          $("#c_title").val($cinfo[c]['c_title']);
             $("#c_email").val($cinfo[c]['sms_email']);
             $("#c_surname").val($cinfo[c]['surname']);
             $("#inputPostCode").val($cinfo[c]['post_code']);
             $("#d_address_1").val($cinfo[c]['d_address_1']);
             $("#d_address_2").val($cinfo[c]['d_address_2']);
             $("#d_city").val($cinfo[c]['d_city']);
-             $("#c_name").val($cinfo[c]['first_name']);
-             newUser = false;
-          }
+            $("#c_name").val($cinfo[c]['first_name']);
+            $cinfo[c]['email_delivery_info'] == 1 ? $("#email_delivery_info_yes").prop("checked",true) : $("#email_delivery_info_no").prop("checked",true);
+            $cinfo[c]['email_offer'] == 1 ? $("#email_offer_yes").prop("checked",true) : $("#email_offer_no").prop("checked",true);
+            $cinfo[c]['email_receipt'] == 1 ? $("#email_receipt_yes").prop("checked",true) : $("#email_receipt_no").prop("checked",true);
+            $cinfo[c]['mobile_delivery_info'] == 1 ? $("#mobile_delivery_info_yes").prop("checked",true) : $("#mobile_delivery_info_no").prop("checked",true); 
+            $cinfo[c]['mobile_offer'] == 1 ? $("#mobile_offer_yes").prop("checked",true) : $("#mobile_offer_no").prop("checked",true);
         }
-        // if(newUser = true) {
-        //   alert("Hi New User");
-        // }
       })
 
       // .on("click", ".pj-remove-product", function (e) {
@@ -1298,7 +1323,11 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
             $("#catModal").modal();
           });
           return false;
-      });
+      })
+      // .on("change","#fdProduct_7e3f953bc6f8ded0efa493c44ebbd13d", function(){
+      //   alert("changed");
+      // })
+      ;
     $cols = $("table");//.on("click", function(){
     
     $('#catModal').on('show.bs.modal', function (event) {
@@ -1323,6 +1352,15 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
     window.onload = function() {
      var $page = $('h2');
      if ($page.text() == "Update page") {
+
+     $("#fdOrderList").children("tbody").children("tr.fdLine").each(function(){
+
+      var pTime = $(this).children("td:nth-child(6)").children().text();
+      $(this).children("td:first").find("select").change(function(){
+        $totPrepTime = $totPrepTime - parseInt($(this).parents("tr").children("td:nth-child(6)").children().text());
+      })
+      $totPrepTime = $totPrepTime + parseInt(pTime);
+     });
       // alert("Update page");
       var lastRowIndex = $("#fdOrderList tr:last").attr("data-index"),
         $product = $("#fdProduct_" + lastRowIndex).val(),

@@ -69,7 +69,8 @@ class pjOrderModel extends pjAppModel
 	    array('name' => 'email_receipt', 'type' => 'tinyint', 'default' => 0),
 	    array('name' => 'email_offer', 'type' => 'tinyint', 'default' => 0),
 	    array('name' => 'd_time', 'type' => 'int', 'default' => 0),
-	    array('name' => 'p_time', 'type' => 'int', 'default' => 0)
+	    array('name' => 'p_time', 'type' => 'int', 'default' => 0),
+	    array('name' => 'preparation_time', 'type' => 'int', 'default' => 0)
 	);
 	
 	public static function factory($attr=array())

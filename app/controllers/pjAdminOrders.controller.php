@@ -30,6 +30,7 @@ class pjAdminOrders extends pjAdmin
 	public function pjActionIndex()
 	{
 	    $this->checkLogin();
+	    
 	    if (!pjAuth::factory()->hasAccess())
 	    {
 	        $this->sendForbidden();
@@ -343,6 +344,7 @@ class pjAdminOrders extends pjAdmin
 			$data['email_delivery_info'] = $this->_post->toBool('email_delivery_info');
 			$data['email_receipt'] = $this->_post->toBool('email_receipt');
 			$data['email_offer'] = $this->_post->toBool('email_offer');
+			$data['preparation_time'] = $this->_post->toInt('preparation_time');
 			// print_r($data);
 			// exit;
 
@@ -460,8 +462,8 @@ class pjAdminOrders extends pjAdmin
 	        {
 	            $data['cc_exp'] = $this->_post->toString('cc_exp_month') . "/" . $this->_post->toString('cc_exp_year');
 			}
-			print_r($data);
-			exit;
+			// print_r($data);
+			// exit;
 			
 	        $id = pjOrderModel::factory(array_merge($post, $data, $post_total))->insert()->getInsertId();
 	        //print_r($id);
@@ -583,7 +585,7 @@ class pjAdminOrders extends pjAdmin
 
             $client_info = pjOrderModel::factory()
             ->join('pjClient', "t2.id = t1.client_id")
-            ->select('t1.id, t1.phone_no, t1.surname, t1.sms_email, t1.post_code, t1.d_address_1, t1.d_address_2, t1.d_city, t1.first_name, t1.client_id, t1.kprint, t2.c_title, t1.type, t1.is_paid, t1.order_despatched')
+            ->select('t1.id, t1.phone_no, t1.surname, t1.sms_email, t1.post_code, t1.d_address_1, t1.d_address_2, t1.d_city, t1.first_name, t1.client_id, t1.kprint, t2.c_title, t1.type, t1.is_paid, t1.order_despatched, t1.mobile_delivery_info, t1.mobile_offer, t1.email_delivery_info, t1.email_offer, t1.email_receipt, t1.created, t1.preparation_time')
             ->findAll()
             ->getData();
             $this->set('client_info', $client_info);
@@ -924,7 +926,7 @@ class pjAdminOrders extends pjAdmin
 
 			$client_info = pjOrderModel::factory()
             ->join('pjClient', "t2.id = t1.client_id")
-            ->select('t1.id, t1.phone_no, t1.surname, t1.sms_email, t1.post_code, t1.d_address_1, t1.d_address_2, t1.d_city, t1.first_name, t1.client_id, t1.kprint, t2.c_title, t1.type, t1.is_paid, t1.order_despatched')
+            ->select('t1.id, t1.phone_no, t1.surname, t1.sms_email, t1.post_code, t1.d_address_1, t1.d_address_2, t1.d_city, t1.first_name, t1.client_id, t1.kprint, t2.c_title, t1.type, t1.is_paid, t1.order_despatched, t1.mobile_delivery_info, t1.mobile_offer, t1.email_delivery_info, t1.email_offer, t1.email_receipt, t1.created, t1.preparation_time')
             ->findAll()
             ->getData();
             $this->set('client_info', $client_info);
@@ -1983,20 +1985,20 @@ class pjAdminOrders extends pjAdmin
 
 	}
 
-	public function pjActionSetSession() {
+	// public function pjActionSetSession() {
 
-		$this->setAjax(true);
-	    if ($this->isXHR())
-	    {
-	    	if ($this->_post->toInt('chef_id') <= 0) {
-	        	self::jsonResponse(array('status' => 'ERR', 'code' => 101, 'text' => 'Missing, empty or invalid parameters.'));
-	        }
-	    $chef = $this->_post->toInt('chef_id');
-        $_SESSION['chef'] = $chef;
-	    self::jsonResponse(array('status' => 'OK', 'code' => 200, 'text' => 'success'));
-	    }
+	// 	$this->setAjax(true);
+	//     if ($this->isXHR())
+	//     {
+	//     	if ($this->_post->toInt('chef_id') <= 0) {
+	//         	self::jsonResponse(array('status' => 'ERR', 'code' => 101, 'text' => 'Missing, empty or invalid parameters.'));
+	//         }
+	//     $chef = $this->_post->toInt('chef_id');
+ //        $_SESSION['chef'] = $chef;
+	//     self::jsonResponse(array('status' => 'OK', 'code' => 200, 'text' => 'success'));
+	//     }
 
-	}
+	// }
 
 	// !MEGAMIND
 }

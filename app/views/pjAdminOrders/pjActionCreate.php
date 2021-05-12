@@ -101,8 +101,15 @@ $short_days = __('short_days', true);
 
                                             foreach ($tpl['client_info'] as $orders => $order) {
                                                 if($order['kprint'] == 1) {
+
+                                                    $dateOnly = explode(" ",$order['created']);
+                                                    // print_r("<pre>");print_r($dateOnly);print_r("</pre>");
+                                                    // print_r(date( 'Y-m-d' ));
+                                                    if ($dateOnly[0] == date( 'Y-m-d' )) {
+                                                        $printedOrders[] = $order['id'];
+                                                    }
                                                     
-                                                     $printedOrders[] = $order['id'];
+                                                     
                                                      
                                                      }
 
@@ -116,24 +123,17 @@ $short_days = __('short_days', true);
                                                 foreach ($tpl['client_info'] as $orders => $order) {
                                                     if ($pOrder == $order['id'] && $order['order_despatched'] == 1) {
                                                         unset($printedOrders[array_search($pOrder,$printedOrders)]);
+                                                    } elseif ($order['id'] == $pOrder) {
+                                                         $totPrepTime = $totPrepTime + $order['preparation_time'];
                                                     }
                                                 }
                                             }
-                                            //print_r($printedOrders);
-                                            foreach ($tpl['product_arr'] as $products => $product) {
-                                                foreach ($printedOrders as $id) {
-                                                    if ($product['order'] == $id) {
-                                                        $totPrepTime = $totPrepTime + $product['preparation_time'];
-                                                    }
-                                                }
-                                            }
-
-
+                                            
                                                       ?>
                                         
                                                 <span id="korders"><?php echo count($printedOrders); ?></span>
-                                                <span>(<?php echo $totPrepTime?>)</span>
-                                                <input type="hidden" id="totKorderPrepTimeInput" name="total_korder_preparation_time" value="<?php echo $totPrepTime; ?>">
+                                                <span>(<?php echo $totPrepTime?> Mins)</span>
+                                                <input type="hidden" id="totKorderPrepTimeInput" name="tot_Korder_preparation_time" value="<?php echo $totPrepTime; ?>">
                                     </div>
                                 </div><!-- /.col-md-3 -->
                             </div><!-- /.row -->
@@ -256,15 +256,15 @@ $short_days = __('short_days', true);
                                 <div class="col-md-4 col-sm-6">
                                     <label class="control-label"><?php echo 'Delivery Info' //__('lblPhone'); ?></label>
                                     <div class="form-group">
-                                        <label><input type="radio" name="mobile_delivery_info" id="d_info" value="Yes"> Yes</label>
-                                        <label><input type="radio" name="mobile_delivery_info" id="d_info" value="No"> No</label>
+                                        <label><input type="radio" name="mobile_delivery_info" id="mobile_delivery_info_yes" value="Yes"> Yes</label>
+                                        <label><input type="radio" name="mobile_delivery_info" id="mobile_delivery_info_no" value="No"> No</label>
                                     </div>
                                 </div><!-- /.col-md-3 -->   
                                 <div class="col-md-4 col-sm-6">
-                                <label class="control-label"><?php echo 'Offer' //__('lblPhone'); ?></label>
+                                <label class="control-label"><?php echo 'Offers' //__('lblPhone'); ?></label>
                                     <div class="form-group">
-                                        <label><input type="radio" name="mobile_offer" id="offers" value="Yes"> Yes</label>
-                                        <label><input type="radio" name="mobile_offer" id="offers" value="No"> No</label>
+                                        <label><input type="radio" name="mobile_offer" id="mobile_offer_yes" value="Yes"> Yes</label>
+                                        <label><input type="radio" name="mobile_offer" id="mobile_offer_no" value="No"> No</label>
                                     </div>
                                 </div><!-- /.col-md-3 -->   
                             </div>
@@ -439,31 +439,33 @@ $short_days = __('short_days', true);
                                         <input type="text" name="phone_no" id="phone_no" class="form-control<?php //echo $tpl['option_arr']['o_bf_include_phone'] == 3 ? ' fdRequired required' : NULL; ?>" data-msg-required="<?php //__('fd_field_required', false, true);?>"/>
                                     </div>
                                 </div> --><!-- /.col-md-3 --> 
-                                <div class="col-md-2 col-sm-6">
-                                <label class="control-label"><?php echo 'Delivery Info' //__('lblPhone'); ?></label>
-                                    <div class="form-group">
-                                        <label><input type="radio" name="email_delivery_info" id="delivery_info" value="Yes"> Yes</label>
-                                        <label><input type="radio" name="email_delivery_info" id="delivery_info" value="No"> No</label>
-                                    </div>
-                                </div><!-- /.col-md-3 -->   
                                 <div class="col-md-3 col-sm-6">
                                     <div class="form-group">
                                         <label class="control-label"><?php echo 'Email' //__('lblPhone'); ?></label>
                                         <input type="text" name="sms_email" id="c_email" class="form-control email<?php echo $tpl['option_arr']['o_bf_include_email'] == 3 ? ' fdRequired required' : NULL; ?>" data-msg-required="<?php __('fd_field_required', false, true);?>"/>
                                     </div>
                                 </div><!-- /.col-md-3 --> 
-                                <div class="col-md-2 col-sm-6">
-                                <label class="control-label"><?php echo 'Receipt' //__('lblPhone'); ?></label>
+                                <!-- <div class="col-md-2 col-sm-6"> -->
+
+                                <!-- <label class="control-label"><?php //echo 'Delivery Info' //__('lblPhone'); ?></label>
                                     <div class="form-group">
-                                        <label><input type="radio" name="email_receipt" id="receipt" value="Yes"> Yes</label>
-                                        <label><input type="radio" name="email_receipt" id="receipt" value="No"> No</label>
+                                        <label><input type="radio" name="email_delivery_info" id="email_delivery_info_yes" value="Yes"> Yes</label>
+                                        <label><input type="radio" name="email_delivery_info" id="email_delivery_info_no" value="No"> No</label>
+                                    </div>
+                                </div> --><!-- /.col-md-3 -->   
+                                
+                                <div class="col-md-3 col-sm-6">
+                                <label class="control-label"><?php echo 'Delivery Info/Receipt' //__('lblPhone'); ?></label>
+                                    <div class="form-group">
+                                        <label><input type="radio" name="email_receipt" id="email_receipt_yes" value="Yes" class="fdRequired required"> Yes</label>
+                                        <label><input type="radio" name="email_receipt" id="email_receipt_no" value="No" class=" fdRequired required"> No</label>
                                     </div>
                                 </div><!-- /.col-md-3 -->   
-                                <div class="col-md-2 col-sm-6">
+                                <div class="col-md-3 col-sm-6">
                                 <label class="control-label"><?php echo 'Offers' //__('lblPhone'); ?></label>
                                     <div class="form-group">
-                                        <label><input type="radio" name="email_offer" id="offers" value="Yes"> Yes</label>
-                                        <label><input type="radio" name="email_offer" id="offers" value="No"> No</label>
+                                        <label><input type="radio" name="email_offer" id="email_offer_yes" value="Yes" class=" fdRequired required"> Yes</label>
+                                        <label><input type="radio" name="email_offer" id="email_offer_no" value="No" class=" fdRequired required"> No</label>
                                     </div>
                                 </div><!-- /.col-md-3 -->   
                                 <?php
@@ -509,9 +511,10 @@ $short_days = __('short_days', true);
                             <!-- End of Client Details -->
                             <h4 style="display: inline">Order Details</h4>
                             <div class="form-group col-md-3 col-sm-6" style="display: inline; float: right;">
-                                <label class="control-label"><?php echo 'Total Prep.Time:'; ?></label>
+                                <label class="control-label"><?php echo 'Total Prep.Time(Mins):'; ?></label>
 
-                                <span name="d_notes" id="total_prep-time_format" data-msg-required="<?php __('fd_field_required', false, true);?>"></span>
+                                <span id="total_prep-time_format" data-msg-required="<?php __('fd_field_required', false, true);?>"></span>
+                                <input type="hidden" id="prep_time" name="preparation_time"/>
                             </div>
                             <div class="hr-line-dashed"></div>
                                
@@ -562,7 +565,7 @@ $short_days = __('short_days', true);
                                                 <!--  <input type="hidden" name="delivery_date" id="delivery_date"> -->
                                             </div>
                                         </div><!-- /.form-group -->
-                                         <label>Time</label>
+                                         <label>Time(Mins)</label>
                                         <div class="form-group">
                                             <div class="input-group">
                                                 <span class="input-group-addon"><i class="fa fa-clock-o"></i></span> 
@@ -586,7 +589,7 @@ $short_days = __('short_days', true);
                                                 ?>" readonly>
                                             </div>
                                         </div><!-- /.form-group -->
-                                         <label>Time</label>
+                                         <label>Time(Mins)</label>
                                         <div class="form-group">
                                             <div class="input-group">
                                                 <span class="input-group-addon"><i class="fa fa-clock-o"></i></span> 
@@ -651,7 +654,7 @@ $short_days = __('short_days', true);
                                             <div class="onoffswitch onoffswitch-data">
                                                 <input type="checkbox" class="onoffswitch-checkbox" name="is_paid" id="is_paid">
                                                 <label class="onoffswitch-label" for="is_paid">
-                                                    <span class="onoffswitch-inner" data-on="<?php __('_yesno_ARRAY_T', false, true);?>" data-off="<?php __('_yesno_ARRAY_T', false, true);?>"></span>
+                                                    <span class="onoffswitch-inner" data-on="<?php __('_yesno_ARRAY_T', false, true);?>" data-off="<?php __('_yesno_ARRAY_F', false, true);?>"></span>
                                                     <span class="onoffswitch-switch"></span>
                                                 </label>
                                             </div>
@@ -786,6 +789,7 @@ var categoryList = '<?php echo json_encode($tpl['category_list']); ?>';
 categoryList =  JSON.parse(categoryList);  
 var client_info = '<?php echo json_encode($tpl['client_info']); ?>';
 client_info = JSON.parse(client_info);
+//console.log(client_info);
 var myLabel = myLabel || {};
 myLabel.currency = "<?php echo $tpl['option_arr']['o_currency'];?>";
 myLabel.restaurant_closed = <?php x__encode('lblRestaurantClosed');?>;
