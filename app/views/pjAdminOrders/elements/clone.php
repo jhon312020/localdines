@@ -50,7 +50,7 @@
 		<strong><span id="fdTotalPrice_{INDEX}"><?php echo pjCurrency::formatPrice(0);?></span></strong>
 	</td>
     <td>
-    	<input type="text" id="" name="" class="form-control" value="" />
+    	<input type="text" id="specialInstruction_{INDEX}" name="special_instruction[{INDEX}]" class="form-control" value="" />
     </td>      
     <td>
        	<div class="text-right" id="productDelete_{INDEX}" style="display: none">

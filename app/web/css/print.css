@@ -1,34 +1,56 @@
-@CHARSET "UTF-8";
-html, body{
-	margin: 0;
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;
-	line-height: 22px;
+* {
+    font-size: 12px;
+    font-family: 'Times New Roman';
 }
-#container{
-	margin: 0 auto;
-	width: 595px; /* A4 */
-	/*height: 842px;*/ /* A4 */
+
+td,
+th,
+tr,
+table {
+    border-top: 0px solid black;
+    border-collapse: collapse;
 }
-.no_print{
-	display: none;
+
+td.kitchen,
+th.kitchen,
+th.nani {
+    width: 75px;
+    max-width: 75px;
+    text-align: left;
 }
-.table{
-	border-collapse: collapse;
-	width: 100%;
+
+td.quantity,
+th.quantity {
+    width: 40px;
+    max-width: 40px;
+    word-break: break-all;
 }
-.table th{
-	border: solid 1px #000;
-	padding: 4px;
-	text-align: left;
+
+td.price,
+th.price {
+    width: 40px;
+    max-width: 40px;
+    word-break: break-all;
 }
-.table td{
-	border: solid 1px #000;
-	padding: 4px;
+
+.centered {
+    text-align: center;
+    align-content: center;
 }
-p{
-	margin: 0;
+
+.ticket {
+    width: 155px;
+    max-width: 155px;
 }
-.w50{
-	width: 50px;
+
+img {
+    max-width: inherit;
+    width: inherit;
+}
+
+@media print {
+    .hidden-print,
+    .hidden-print * {
+        display: none !important;
+    }
 }

@@ -1,6 +1,6 @@
 <div class="row wrapper border-bottom white-bg page-heading">
       <?php //echo "<pre>";print_r($tpl['product_arr']); ?>
-     <?php //echo "<pre>";print_r($tpl['arr']); ?>
+     <?php //echo "<pre>";print_r($tpl['spcl_ins']); ?>
     <div class="col-sm-12">
         <div class="row">
             <div class="col-sm-10">
@@ -153,11 +153,12 @@ $short_days = __('short_days', true);
                                         ?>                    
                                         <tbody class="main-body">
                                             <?php
+                                            foreach ($tpl['spcl_ins'] as $ins) {
                                             foreach ($tpl['product_arr'] as $product)
                                             {
                                                 foreach ($tpl['oi_arr'] as $k => $oi)
                                                 {
-                                                    if ($oi['type'] == 'product' && $oi['foreign_id'] == $product['id'])
+                                                    if ($oi['type'] == 'product' && $oi['foreign_id'] == $product['id'] && $ins['foreign_id'] == $product['id'])
                                                     {
                                                         $has_extra = false;
                                                         ?>
@@ -268,7 +269,7 @@ $short_days = __('short_days', true);
                                                 </td>
                                                             
                                                 <td>
-                                                    <input type="text" id="special_instruction" name="special_instruction" class="form-control" value="<?php echo $oi['special_instruction']; ?>" />
+                                                    <input type="text" id="special_instruction_<?php echo $oi['hash']; ?>" name="special_instruction[<?php echo $oi['hash']; ?>]" class="form-control" value="<?php echo $ins['special_instruction']; ?>" />
                                                 </td>
                                                 <td>
                                                     <div class="text-right" id="productDelete_<?php echo $oi['hash']; ?>">
@@ -277,7 +278,7 @@ $short_days = __('short_days', true);
                                                 </td>
                                             </tr>
                                             <?php
-                                                    }
+                                                    }}
                                                 }
                                             }
                                             ?>
@@ -301,15 +302,15 @@ $short_days = __('short_days', true);
                                 <div class="col-md-4 col-sm-6">
                                     <label class="control-label"><?php echo 'Delivery Info' //__('lblPhone'); ?></label>
                                     <div class="form-group">
-                                        <label><input type="radio" name="mobile_delivery_info" id="mobile_delivery_info_yes" value="1" <?php if ($tpl['arr']['mobile_delivery_info'] == 1 ) { ?>checked = "checked" <?php }?>> Yes</label>
-                                        <label><input type="radio" name="mobile_delivery_info" id="mobile_delivery_info_no" value="0"<?php if ($tpl['arr']['mobile_delivery_info'] == 0 ) { ?>checked = "checked" <?php }?>> No</label>
+                                        <input type="radio" name="mobile_delivery_info" id="mobile_delivery_info_yes" value="1" <?php if ($tpl['arr']['mobile_delivery_info'] == 1 ) { ?>checked = "checked" <?php }?>><label> Yes</label>
+                                        <input type="radio" name="mobile_delivery_info" id="mobile_delivery_info_no" value="0"<?php if ($tpl['arr']['mobile_delivery_info'] == 0 ) { ?>checked = "checked" <?php }?>><label> No</label>
                                     </div>
                                 </div><!-- /.col-md-3 -->   
                                 <div class="col-md-4 col-sm-6">
                                 <label class="control-label"><?php echo 'Offers' //__('lblPhone'); ?></label>
                                     <div class="form-group">
-                                        <label><input type="radio" name="mobile_offer" id="mobile_offer_yes" value="1"<?php if ($tpl['arr']['mobile_offer'] == 1 ) { ?>checked = "checked" <?php }?>> Yes</label>
-                                        <label><input type="radio" name="mobile_offer" id="mobile_offer_no" value="0"<?php if ($tpl['arr']['mobile_offer'] == 0 ) { ?>checked = "checked" <?php }?>> No</label>
+                                        <input type="radio" name="mobile_offer" id="mobile_offer_yes" value="1"<?php if ($tpl['arr']['mobile_offer'] == 1 ) { ?>checked = "checked" <?php }?>><label> Yes</label>
+                                        <input type="radio" name="mobile_offer" id="mobile_offer_no" value="0"<?php if ($tpl['arr']['mobile_offer'] == 0 ) { ?>checked = "checked" <?php }?>><label> No</label>
                                     </div>
                                 </div><!-- /.col-md-3 -->   
                             </div>
@@ -496,26 +497,26 @@ $short_days = __('short_days', true);
                                         value = "<?php echo $tpl['arr']['sms_email']; ?>" />
                                     </div>
                                 </div><!-- /.col-md-3 --> 
-                                <div class="col-md-2 col-sm-6">
-                                <label class="control-label"><?php echo 'Delivery Info' //__('lblPhone'); ?></label>
+                               <!--  <div class="col-md-2 col-sm-6"> -->
+                                <!-- <label class="control-label"><?php //echo 'Delivery Info' //__('lblPhone'); ?></label>
                                     <div class="form-group">
-                                        <label><input type="radio" name="email_delivery_info" id="email_delivery_info_yes" value="1"<?php if ($tpl['arr']['email_delivery_info'] == 1 ) { ?>checked = "checked" <?php }?>> Yes</label>
-                                        <label><input type="radio" name="email_delivery_info" id="email_delivery_info_no" value="0"<?php if ($tpl['arr']['email_delivery_info'] == 0 ) { ?>checked = "checked" <?php }?>> No</label>
+                                        <input type="radio" name="email_delivery_info" id="email_delivery_info_yes" value="1"<?php //if ($tpl['arr']['email_delivery_info'] == 1 ) { ?>checked = "checked" <?php //}?>><label> Yes</label>
+                                        <input type="radio" name="email_delivery_info" id="email_delivery_info_no" value="0"<?php //if ($tpl['arr']['email_delivery_info'] == 0 ) { ?>checked = "checked" <?php //}?>><label> No</label>
                                     </div>
-                                </div><!-- /.col-md-3 -->   
+                                </div> --><!-- /.col-md-3   -->
                                 
                                 <div class="col-md-2 col-sm-6">
-                                <label class="control-label"><?php echo 'Receipt' //__('lblPhone'); ?></label>
+                                <label class="control-label"><?php echo 'Delivery/Receipt' //__('lblPhone'); ?></label>
                                     <div class="form-group">
-                                        <label><input type="radio" name="email_receipt" id="email_receipt_yes" value="1"<?php if ($tpl['arr']['email_receipt'] == 1 ) { ?>checked = "checked" <?php }?>> Yes</label>
-                                        <label><input type="radio" name="email_receipt" id="email_receipt_no" value="0"<?php if ($tpl['arr']['email_receipt'] == 0 ) { ?>checked = "checked" <?php }?>> No</label>
+                                        <input type="radio" name="email_receipt" id="email_receipt_yes" value="1"<?php if ($tpl['arr']['email_receipt'] == 1 ) { ?>checked = "checked" <?php }?>><label> Yes</label>
+                                       <input type="radio" name="email_receipt" id="email_receipt_no" value="0"<?php if ($tpl['arr']['email_receipt'] == 0 ) { ?>checked = "checked" <?php }?>><label> No</label>
                                     </div>
                                 </div><!-- /.col-md-3 -->   
                                 <div class="col-md-2 col-sm-6">
                                 <label class="control-label"><?php echo 'Offers' //__('lblPhone'); ?></label>
                                     <div class="form-group">
-                                        <label><input type="radio" name="email_offer" id="email_offer_yes" value="1"<?php if ($tpl['arr']['email_offer'] == 1 ) { ?>checked = "checked" <?php }?>> Yes</label>
-                                        <label><input type="radio" name="email_offer" id="email_offer_no" value="0"<?php if ($tpl['arr']['email_offer'] == 0 ) { ?>checked = "checked" <?php }?>> No</label>
+                                        <input type="radio" name="email_offer" id="email_offer_yes" value="1"<?php if ($tpl['arr']['email_offer'] == 1 ) { ?>checked = "checked" <?php }?>><label> Yes</label>
+                                        <input type="radio" name="email_offer" id="email_offer_no" value="0"<?php if ($tpl['arr']['email_offer'] == 0 ) { ?>checked = "checked" <?php }?>><label> No</label>
                                     </div>
                                 </div><!-- /.col-md-3 -->   
                                 <?php
@@ -629,12 +630,14 @@ $short_days = __('short_days', true);
                                                 value="<?php 
                                                   echo $dTime; ?>">
                                             </div>
+                                            <label>Approximate Delivery time :</label><span id="aproxDt"><?php 
+                                                  echo $dTime; ?></span>
                                         </div><!-- /.form-group -->
                                     </div>
 
                                     <?php
                                         $pDate = !empty($tpl['arr']['p_dt']) ? date($tpl['option_arr']['o_date_format'], strtotime($tpl['arr']['p_dt'])) : ''; 
-                                        $dTime = !empty($tpl['arr']['p_dt']) ? date($tpl['option_arr']['o_time_format'], strtotime($tpl['arr']['p_dt'])) : ''; 
+                                        $pTime = !empty($tpl['arr']['p_dt']) ? date($tpl['option_arr']['o_time_format'], strtotime($tpl['arr']['p_dt'])) : ''; 
                                     ?>
 
                                     <div class="form-group order-pickup" style="display:<?php echo $tpl['arr']['type']== 'pickup' ? 'block' : 'none';?>;">
@@ -661,6 +664,11 @@ $short_days = __('short_days', true);
                                                   echo $pTime;
                                                 ?>">  
                                             </div>
+                                            <label>Approximate pickup time :</label><span id="aproxPt"><?php 
+                                                if ($pTime == '') {
+                                                    
+                                                }
+                                                  echo $pTime; ?></span>
                                         </div><!-- /.form-group -->
                                         <!-- <label class="control-label"><?php //__('lblPickerDateTime'); ?></label>
     

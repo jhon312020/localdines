@@ -30,7 +30,7 @@ class pjAdminOrders extends pjAdmin
 	public function pjActionIndex()
 	{
 	    $this->checkLogin();
-	    
+
 	    if (!pjAuth::factory()->hasAccess())
 	    {
 	        $this->sendForbidden();
@@ -126,12 +126,15 @@ class pjAdminOrders extends pjAdmin
 				// $data[$k]['call_end'] = 'call_end';
 				//$data[$k]['sms_email'] = 'SMS Email';
 				// $data[$k]['order_despatched'] = '1';
+
 				$v['d_dt'] == "" ? $data[$k]['excpected_delivery'] = $v['p_dt'] : $data[$k]['excpected_delivery'] = $v['d_dt'];
 				//$data[$k]['excpected_delivery'] = $v['d_dt'];
 				//$v['d_dt'] == NULL ? echo "Empty delivery" : echo "delivery is there";
 				//$data[$k]['sms_sent_time'] = 'sms_sent_time';
 				// $data[$k]['delivered_customer'] = 'delivered_customer';
-				$data[$k]['review'] = 'review';
+				//print_r(explode("",$v['delivered_time']));
+				//$data[$k]['delivered_time'] = $var[0];
+				
 				$data[$k]['total'] = pjCurrency::formatPrice($v['total']);
 				// if($v['type'] == 'delivery')
 				// {
@@ -619,6 +622,21 @@ class pjAdminOrders extends pjAdmin
 	        ->findAll()
 	        ->getData();
 	        $this->set('location_arr', $location_arr);
+
+	        
+
+            // $prdExtras = [];
+            // foreach ($product_arr as $product) {
+            //     foreach ($extras_arr as $extra) {
+                
+            //         if ($extra['product_id'] == $product['id']) {
+            //            $prdExtras[] = $extra['extra_id'];
+            //            //$product_arr[] = $prodExtras[];
+            //         }
+            //     }
+            // }       
+
+            //$this->set('prdExtras', $prdExtras);     
 	        
 	        $client_arr = pjClientModel::factory()
 	        ->select("t1.*, t2.email as c_email, t2.name as c_name, t2.phone as c_phone")
@@ -717,6 +735,9 @@ class pjAdminOrders extends pjAdmin
 	                $product = $pjProductModel->reset()->find($pid)->getData();
 	                $price = 0;
 	                $price_id = ":NULL";
+
+	                // print_r($k);
+	                //     exit;
 	                
 	                if($product['set_different_sizes'] == 'T')
 	                {
@@ -742,10 +763,13 @@ class pjAdminOrders extends pjAdmin
 	                        'price_id' => $price_id,
 	                        'price' => $price,
 	                        'cnt' => $post['cnt'][$k],
-	                        'special_instruction' => $post['special_instruction']
+	                        'special_instruction' => $post['special_instruction'][$k]
 	                    ))
 	                    ->insert()
 	                    ->getInsertId();
+                        
+	                    // print_r($post);
+	                    // exit;
 	                    
 	                    if ($oid !== false && (int) $oid > 0)
 	                    {
@@ -777,12 +801,14 @@ class pjAdminOrders extends pjAdmin
 	                    }
 	                    
 	                } else {
+
 	                    $pjOrderItemModel->reset()->where('hash', $k)->where('type', 'product')->limit(1)
 	                    ->modifyAll(array(
 	                        'foreign_id' => $pid,
 	                        'cnt' => $post['cnt'][$k],
 	                        'price_id' => $price_id,
 	                        'price' => $price,
+	                        'special_instruction' => $post['special_instruction'][$k] ,
 	                    ));
 	                    if (isset($post['extra_id']) && isset($post['extra_id'][$k]))
 	                    {
@@ -1022,6 +1048,11 @@ class pjAdminOrders extends pjAdmin
 
 
 			$this->set('oi_arr', $oi_arr);
+			$spcl_ins = pjOrderItemModel::factory()
+			->where('t1.order_id', $id)
+			->findAll()
+			->getData();
+			$this->set('spcl_ins', $spcl_ins);
 			//print_r($oi_arr[0]['foreign_id']);
 			//print_r($category[0]['category_id']);
 			// $desc_arr = pjProductModel::factory();
@@ -1073,6 +1104,15 @@ class pjAdminOrders extends pjAdmin
 	    {
 	    	
            // MEGAMIND
+
+	    	$category_arr = pjCategoryModel::factory()
+	        ->join('pjMultiLang', "t2.foreign_id = t1.id AND t2.model = 'pjCategory' AND t2.locale = '".$this->getLocaleId()."' AND t2.field = 'name'", 'left')
+	        ->select("t1.*, t2.content AS name")
+	        ->orderBy("t1.order ASC")
+	        ->findAll()
+			->getData();
+
+			$this->set('categories', $category_arr);
 	
            $korder = pjOrderModel::factory()
            ->select("t1.*")
@@ -1196,7 +1236,10 @@ class pjAdminOrders extends pjAdmin
             // exit;
 
     		$this->set('template_arr', $template_arr);
+    		//$this->appendJs('print.js');
 	    }
+
+
 
 	    
 	}
@@ -1774,33 +1817,49 @@ class pjAdminOrders extends pjAdmin
 		}
 		exit;
 	}
+
 	/* Added by JR */
-	public function pjActionGetProductsForCategory()
-	{
-		$this->setAjax(true);
-	
-		if ($this->isXHR())
-		{
-			$product_arr = [];
-			$category_id = $this->_post->toInt('category_id');
-			$category_arr = pjProductCategoryModel::factory()
-			->select('t1.product_id')
-			->whereIn("t1.category_id", $category_id)
-			->findAll()
-			->getData();
-			if ($category_arr) {
-				$category_arr = array_column($category_arr, 'product_id');
-				$product_arr = pjProductModel::factory()
-				->select('t1.id, t2.content AS name, t1.set_different_sizes, t1.price, t1.status')
-				->join('pjMultiLang', "t2.foreign_id = t1.id AND t2.model = 'pjProduct' AND t2.locale = '".$this->getLocaleId()."' AND t2.field = 'name'", 'left')
-				->whereIn("t1.id", $category_arr)
-				->groupBy('t1.id, t1.set_different_sizes, t1.price')
-				->findAll()
-				->getData();
-			}
-			$this->set('product_arr', $product_arr);
-		}
-	}
+    public function pjActionGetProductsForCategory()
+    {
+        $this->setAjax(true);
+    
+        if ($this->isXHR())
+        {
+            $product_arr = [];
+            $category_id = $this->_post->toInt('category_id');
+            $category_arr = pjProductCategoryModel::factory()
+            ->select('t1.product_id')
+            ->whereIn("t1.category_id", $category_id)
+            ->findAll()
+            ->getData();
+            if ($category_arr) {
+                $category_arr = array_column($category_arr, 'product_id');
+                $product_arr = pjProductModel::factory()
+                ->select('t1.id, t2.content AS name, t1.set_different_sizes, t1.price, t1.status')
+                ->join('pjMultiLang', "t2.foreign_id = t1.id AND t2.model = 'pjProduct' AND t2.locale = '".$this->getLocaleId()."' AND t2.field = 'name'", 'left')
+                ->whereIn("t1.id", $category_arr)
+                ->groupBy('t1.id, t1.set_different_sizes, t1.price')
+                ->findAll()
+                ->getData();
+            }
+            $this->set('product_arr', $product_arr);
+
+            $extras_arr = pjProductExtraModel::factory()
+                        ->select('t1.*')
+                        ->findAll()
+                        ->getData();
+            $this->set('extras_arr', $extras_arr);
+            // $prdExtras = [];
+            // foreach ($exras as $extra) {
+            //     foreach ($product_arr as $product) {
+            //         if ($extra['product_id'] == $product['id']) {
+            //            $prdExtras[] = $extra['extra_id'];
+            //            $product_arr[] = $prodExtras[];
+            //         }
+            //     }
+            // }            
+        }
+    }
 
     // MEGAMIND
 
@@ -1849,6 +1908,31 @@ class pjAdminOrders extends pjAdmin
 		         ));
 	      //   }
             
+	        self::jsonResponse(array('status' => 'OK', 'code' => 200, 'text' => 'Your order has despatched.'));
+	    }
+	    exit;
+	}
+	public function pjActionSaveOrderPaid()
+	{
+	    $this->setAjax(true);
+	    if ($this->isXHR())
+	    {
+	        if (!self::isPost())
+	        {
+	            self::jsonResponse(array('status' => 'ERR', 'code' => 100, 'text' => 'HTTP method not allowed.'));
+	        }
+	        
+	        if ($this->_get->toInt('id') <= 0)
+	        {
+	            self::jsonResponse(array('status' => 'ERR', 'code' => 101, 'text' => 'Missing, empty or invalid parameters.'));
+	        }
+	        $id = $this->_get->toInt('id');
+	        
+	        pjOrderModel::factory()
+	        ->where('id', $id)
+	        ->modifyAll(array(
+	            'is_paid' => ":IF(`is_paid`='0','1','0')"
+	        ));
 	        self::jsonResponse(array('status' => 'OK', 'code' => 200, 'text' => 'Your order has despatched.'));
 	    }
 	    exit;

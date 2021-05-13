@@ -127,4 +127,7 @@
 	background-color: #bbbaba !important;
 	color: white !important;
 }
+input[type = radio] {
+	margin: 4px;
+}
 }

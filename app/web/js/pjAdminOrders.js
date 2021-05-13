@@ -166,6 +166,18 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
             remote:
               "index.php?controller=pjAdminOrders&action=pjActionCheckClientEmail",
           },
+          mobile_delivery_info: {
+            required: true,
+          },
+          mobile_offer: {
+            required: true,
+          },
+          email_receipt: {
+            required: true,
+          },
+          email_offer: {
+            required: true,
+          },
         },
         messages: {
           p_dt: {
@@ -177,6 +189,16 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           c_email: {
             remote: myLabel.email_exists,
           },
+        },
+        errorPlacement: function(error, element) {
+            if (element.attr("type") == "radio") {
+                error.insertAfter(element.parent());
+                error.css('color','#a94442');
+                error.siblings("label").css('color','#ed5565')
+                //element.css('border','2px solid red');
+            } else {
+                error.insertAfter(element);
+            }
         },
         ignore: "",
         invalidHandler: function (form, validator) {
@@ -191,22 +213,46 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           var $ele = null;
           
           // MEGAMIND
+          //$("#mobile_delivery_info_err") = $("input[name=mobile_delivery_info]").is(":checked") ? "none" : "block";
           console.log("comes here")
           var firstRowIndex = $('#fdOrderList').find("tbody.main-body > tr:first-child").attr("data-index");
           var lastRow = $("#fdOrderList tr:last");
           var lastRowIndex = $("#fdOrderList tr:last").attr("data-index");
-          var $product = $("#fdProduct_"+lastRowIndex);
-          var $price = $("#fdPrice_"+lastRowIndex);
+          var $product_last = $("#fdProduct_"+lastRowIndex);
+          var $price_last = $("#fdPrice_"+lastRowIndex);
           
-          if ($product.val() == "" && $price.val() == "") {
+          if ($product_last.val() == "" && $price_last.val() == "") {
             if (lastRowIndex == firstRowIndex) {
-              $product.parent().parent().addClass("has-error");
+              $product_last.parent().parent().addClass("has-error");
+              $price_last.parent().addClass('has-error');
               valid = false;
-              $ele = $product;
+              $ele = $product_last;
             }
             else{
               lastRow.remove();
-              valid = true;
+              $('#fdOrderList').find("tbody.main-body > tr.fdLine").each(function() {
+                  var index = $(this).attr('data-index'),
+                    $product = $('#fdProduct_' + index),
+                    $price = $('#fdPrice_' + index);
+                    
+                  if($product.val() == '')
+                  {
+                    $product.parent().addClass('has-error');
+                    valid = false;
+                    $ele = $product;
+                  }else{
+                    $product.parent().removeClass('has-error');
+                  }
+                  if($price.val() == '')
+                  {
+                    $price.parent().addClass('has-error');
+                    valid = false;
+                    $ele = $product;
+                  }else{
+                    $price.parent().removeClass('has-error');
+                  }
+                });
+              //valid = true;
             }
           }
           
@@ -229,6 +275,18 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
             remote:
               "index.php?controller=pjAdminOrders&action=pjActionCheckClientEmail",
           },
+          mobile_delivery_info: {
+            required: true,
+          },
+          mobile_offer: {
+            required: true,
+          },
+          email_receipt: {
+            required: true,
+          },
+          email_offer: {
+            required: true,
+          },
         },
         messages: {
           p_dt: {
@@ -241,6 +299,16 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
             remote: myLabel.email_exists,
           },
         },
+         errorPlacement: function(error, element) {
+            if (element.attr("type") == "radio") {
+                error.insertAfter(element.parent());
+                error.css('color','#a94442');
+                error.siblings("label").css('color','#ed5565')
+                //element.css('border','2px solid red');
+            } else {
+                error.insertAfter(element);
+            }
+        },
         ignore: "",
         invalidHandler: function (form, validator) {
           var $firstEle = $(validator.errorList[0].element);
@@ -252,22 +320,47 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           var valid = true;
           var $ele = null;
           // MEGAMIND
-          console.log("comes here")
+           
+         
+         
           var firstRowIndex = $('#fdOrderList').find("tbody.main-body > tr:first").attr("data-index");
           var lastRow = $("#fdOrderList tr:last");
           var lastRowIndex = $("#fdOrderList tr:last").attr("data-index");
-          var $product = $("#fdProduct_"+lastRowIndex);
-          var $price = $("#fdPrice_"+lastRowIndex);
+          var $product_last = $("#fdProduct_"+lastRowIndex);
+          var $price_last = $("#fdPrice_"+lastRowIndex);
           
-          if ($product.val() == "" && $price.val() == "") {
+          if ($product_last.val() == "" && $price_last.val() == "") {
             if (lastRowIndex == firstRowIndex) {
-              $product.parent().parent().addClass("has-error");
+              
+              $product_last.parent().parent().addClass("has-error");
+              $price_last.parent().addClass('has-error');
               valid = false;
-              $ele = $product;
+              $ele = $product_last;
             }
             else{
               lastRow.remove();
-              valid = true;
+              $('#fdOrderList').find("tbody.main-body > tr.fdLine").each(function() {
+                  var index = $(this).attr('data-index'),
+                    $product = $('#fdProduct_' + index),
+                    $price = $('#fdPrice_' + index);
+                    
+                  if($product.val() == '')
+                  {
+                    $product.parent().addClass('has-error');
+                    valid = false;
+                    $ele = $product;
+                  }else{
+                    $product.parent().removeClass('has-error');
+                  }
+                  if($price.val() == '')
+                  {
+                    $price.parent().addClass('has-error');
+                    valid = false;
+                    $ele = $product;
+                  }else{
+                    $price.parent().removeClass('has-error');
+                  }
+                });
             }
           }
           
@@ -349,6 +442,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
               now_hr = now_hr % 24;
             }
             $("#pickup_time").val(now_hr + ":" + p_mins);
+            $("#aproxPt").text(now_hr + ":" + p_mins);
             console.log(now_hr + ":" + p_mins);
             return now_hr + ":" + p_mins;
           }
@@ -420,6 +514,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
               now_hr = now_hr % 24;
             }
             $("#delivery_time").val(now_hr + ":" + d_mins);
+            $("#aproxDt").text(now_hr + ":" + d_mins);
             
             //return $frm.find("input[name='d_time']").val();
             console.log($("#delivery_time").val());
@@ -554,7 +649,18 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
                     saveUrl: "index.php?controller=pjAdminOrders&action=pjActionSaveDeliveredCustomer&id={:id}",
                     positiveLabel: myLabel.yes, positiveValue: "1", negativeLabel: myLabel.no, negativeValue: "0", 
                     cellClass: "text-center"},
-          { text: myLabel.review, type: "text", sortable: false },
+          { text: myLabel.delivered_time, type: "text", sortable: false },
+          {text: myLabel.is_paid, type: "toggle", sortable: false, editable: true, 
+                    editableRenderer: function () {
+                      return 0;
+                    },
+                    saveUrl: "index.php?controller=pjAdminOrders&action=pjActionSaveOrderPaid&id={:id}",
+                    positiveLabel: myLabel.yes, positiveValue: "1", negativeLabel: myLabel.no, negativeValue: "0", 
+                    cellClass: "text-center",
+                    //negativeClass: "bg-danger"
+                  },
+          
+
           {
             text: myLabel.date_time,
             type: "text",
@@ -593,7 +699,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           "index.php?controller=pjAdminOrders&action=pjActionGetOrder" +
           pjGrid.queryString,
         dataType: "json",
-        fields: ["order_id","phone_no", "surname", "address", "post_code", "c_type", "sms_email", "order_despatched", "sms_sent_time", "excpected_delivery", "delivered_customer", "review", "datetime", "total", "type", "status"],
+        fields: ["order_id","phone_no", "surname", "address", "post_code", "c_type", "sms_email", "order_despatched", "sms_sent_time", "excpected_delivery", "delivered_customer", "delivered_time","is_paid","datetime", "total", "type", "status"],
         paginator: {
           actions: [
             {
@@ -793,7 +899,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           $("#fdPriceTD_" + index).html(data);
           
           //MEGAMIND
-          $("#productDelete_"+ index).css("display","none");
+          $("#productDelete_"+ index).css("display","block");
 
           $fdSelectedProduct = $("#prdInfo_" + index).val();
           $fdSelectedProduct = JSON.parse($fdSelectedProduct);
@@ -870,8 +976,10 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 
       })
       .on("click", ".dropdown-toggle", function (e) { 
+
         var index = $(this).siblings("select").attr("data-index"); 
         $fdSelectedProduct = $("#prdInfo_" + index).val();
+        console.log(index);
         
         if ($fdSelectedProduct == undefined) {
           return;
@@ -917,23 +1025,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
         //console.log($cinfo);
         for(var c in $cinfo) {
           if ($cinfo[c]['phone_no'] == $c_phone){
-           newUser = false;
-          }
-        }
-        //console.log(newUser);
-        if(newUser == true) {
-          $("#c_title").val(" ");
-          $("#c_email").val(" ");
-          $("#c_surname").val(" ");
-          $("#inputPostCode").val(" ");
-          $("#d_address_1").val(" ");
-          $("#d_address_2").val(" ");
-          $("#d_city").val(" ");
-          $("#c_name").val(" ");
-          $("input:radio").prop("checked", false);
-        } else if (newUser == false) {
-           
-          $("#c_title").val($cinfo[c]['c_title']);
+            $("#c_title").val($cinfo[c]['c_title']);
             $("#c_email").val($cinfo[c]['sms_email']);
             $("#c_surname").val($cinfo[c]['surname']);
             $("#inputPostCode").val($cinfo[c]['post_code']);
@@ -946,7 +1038,23 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
             $cinfo[c]['email_receipt'] == 1 ? $("#email_receipt_yes").prop("checked",true) : $("#email_receipt_no").prop("checked",true);
             $cinfo[c]['mobile_delivery_info'] == 1 ? $("#mobile_delivery_info_yes").prop("checked",true) : $("#mobile_delivery_info_no").prop("checked",true); 
             $cinfo[c]['mobile_offer'] == 1 ? $("#mobile_offer_yes").prop("checked",true) : $("#mobile_offer_no").prop("checked",true);
+           newUser = false;
+          }
         }
+        console.log(newUser);
+        if(newUser == true) {
+          $("#c_title").val(" ");
+          $("#c_email").val(" ");
+          $("#c_surname").val(" ");
+          $("#inputPostCode").val(" ");
+          $("#d_address_1").val(" ");
+          $("#d_address_2").val(" ");
+          $("#d_city").val(" ");
+          $("#c_name").val(" ");
+          $("input:radio").prop("checked", false);
+        }
+        // } else if (newUser == false) {
+        //   
       })
 
       // .on("click", ".pj-remove-product", function (e) {
@@ -1314,7 +1422,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           var categoryID = $(this).data("id");
           var catName = $(this).text();
           $.post(
-            "index.php?controller=pjAdminOrders&action=pjActionGetProductsForCategory",
+            "index.php?controller=pjAuth&action=pjActionGetProductsForCategory",
             {category_id: categoryID}
           ).done(function (data) {
             //console.log(data);
@@ -1324,9 +1432,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           });
           return false;
       })
-      // .on("change","#fdProduct_7e3f953bc6f8ded0efa493c44ebbd13d", function(){
-      //   alert("changed");
-      // })
+     
       ;
     $cols = $("table");//.on("click", function(){
     
@@ -1349,22 +1455,22 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
       var $this = $(this);
       getAddresses($this);
     });
-    window.onload = function() {
+     $(document).ready(function() {
      var $page = $('h2');
      if ($page.text() == "Update page") {
 
-     $("#fdOrderList").children("tbody").children("tr.fdLine").each(function(){
+      $("#fdOrderList").children("tbody").children("tr.fdLine").each(function(){
 
       var pTime = $(this).children("td:nth-child(6)").children().text();
       $(this).children("td:first").find("select").change(function(){
         $totPrepTime = $totPrepTime - parseInt($(this).parents("tr").children("td:nth-child(6)").children().text());
       })
       $totPrepTime = $totPrepTime + parseInt(pTime);
+      
      });
-      // alert("Update page");
-      var lastRowIndex = $("#fdOrderList tr:last").attr("data-index"),
+     var lastRowIndex = $("#fdOrderList tr:last").attr("data-index"),
         $product = $("#fdProduct_" + lastRowIndex).val(),
-        $price = $("#fdPrice_" + lastRowIndex).val();
+        $price = $("#fdPrice_" + lastRowIndex).val(); 
         if($product != "" && $price != ""){
           var index = Math.ceil(Math.random() * 999999),
           $clone = $("#boxProductClone").find("tbody").html();
@@ -1375,9 +1481,19 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           // console.log('Index:',index);
           $('#fdProduct_new_'+index).addClass('selectpicker').selectpicker('refresh');
         }
+
+
+      // alert("Update page");
+      
+        
      }
      
-    };
+    });
+    //  $(window).on('beforeunload', function(){
+    //   if ($("h2").text()=="Add new order" || $("h2").text()=="Update page") {
+    //   return 'Are you sure you want to leave?';
+    // }
+    //  });
     function myTinyMceInit(pSelector, pValue) {
       tinymce.init({
         relative_urls: false,

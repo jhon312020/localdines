@@ -1,7 +1,7 @@
 <div class="row wrapper border-bottom white-bg page-heading">
    <!--   <?php //print_r("<pre>");print_r($tpl['product_arr']); ?>   -->
    <!--  <?php //print_r($tpl['arr']['i18n']); ?>  -->
-   <!-- <?php //echo "<pre>";print_r($tpl['chef_arr']); ?> -->
+    <?php //echo "<pre>";print_r($tpl['prdExtras']); ?>
     <!-- <?php 
     //$date = date('')
     // $dates[0] = date('Y-m-d');
@@ -208,13 +208,23 @@ $short_days = __('short_days', true);
 
                                                 <!-- MEGAMIND -->
 
-                                                <td id="fdPriceTD_<?php echo $index;?>">
-                									<div class="business-<?php echo $index;?>" style="display: none;">
-                										<select id="fdPrice_<?php echo $index;?>" name="price_id[<?php echo $index;?>]" data-type="select" class="fdSize form-control">
-                											<option value="">-- <?php __('lblChoose'); ?>--</option>
+                                               <!--  <td id="fdPriceTD_<?php //echo $index;?>">
+                									<div class="business-<?php //echo $index;?>" style="display: none;">
+                										<select id="fdPrice_<?php //echo $index;?>" name="price_id[<?php //echo $index;?>]" data-type="select" class="fdSize form-control">
+                											<option value="">-- <?php 
+
+                                                            //__('lblChoose'); ?>--</option>
                 										</select>
                 									</div>
-                								</td>
+                								</td> -->
+                                                <td id="fdPriceTD_<?php echo $index;?>">
+                                                    <div class="business-<?php echo $index;?>" style="display: none;">
+                                                        <select id="fdPrice_<?php echo $index;?>" name="price_id[<?php echo $index;?>]" data-type="select" class="fdSize form-control">
+                                                            <option value="">-- <?php __('lblChoose'); ?>--</option>
+                                                        </select>
+                                                    </div>
+                                                </td>
+                            
                                                 
 
                                                 <!-- MEGAMIND --> 
@@ -256,15 +266,15 @@ $short_days = __('short_days', true);
                                 <div class="col-md-4 col-sm-6">
                                     <label class="control-label"><?php echo 'Delivery Info' //__('lblPhone'); ?></label>
                                     <div class="form-group">
-                                        <label><input type="radio" name="mobile_delivery_info" id="mobile_delivery_info_yes" value="Yes"> Yes</label>
-                                        <label><input type="radio" name="mobile_delivery_info" id="mobile_delivery_info_no" value="No"> No</label>
+                                        <input type="radio" name="mobile_delivery_info" id="mobile_delivery_info_yes" value="Yes"><label> Yes</label>
+                                        <input type="radio" name="mobile_delivery_info" id="mobile_delivery_info_no" value="No"><label> No</label>
                                     </div>
                                 </div><!-- /.col-md-3 -->   
                                 <div class="col-md-4 col-sm-6">
                                 <label class="control-label"><?php echo 'Offers' //__('lblPhone'); ?></label>
                                     <div class="form-group">
-                                        <label><input type="radio" name="mobile_offer" id="mobile_offer_yes" value="Yes"> Yes</label>
-                                        <label><input type="radio" name="mobile_offer" id="mobile_offer_no" value="No"> No</label>
+                                        <input type="radio" name="mobile_offer" id="mobile_offer_yes" value="Yes"><label> Yes</label>
+                                        <input type="radio" name="mobile_offer" id="mobile_offer_no" value="No"><label> No</label>
                                     </div>
                                 </div><!-- /.col-md-3 -->   
                             </div>
@@ -457,15 +467,15 @@ $short_days = __('short_days', true);
                                 <div class="col-md-3 col-sm-6">
                                 <label class="control-label"><?php echo 'Delivery Info/Receipt' //__('lblPhone'); ?></label>
                                     <div class="form-group">
-                                        <label><input type="radio" name="email_receipt" id="email_receipt_yes" value="Yes" class="fdRequired required"> Yes</label>
-                                        <label><input type="radio" name="email_receipt" id="email_receipt_no" value="No" class=" fdRequired required"> No</label>
+                                        <input type="radio" name="email_receipt" id="email_receipt_yes" value="Yes" class="fdRequired required"><label> Yes</label>
+                                        <input type="radio" name="email_receipt" id="email_receipt_no" value="No" class=" fdRequired required"><label> No</label>
                                     </div>
                                 </div><!-- /.col-md-3 -->   
                                 <div class="col-md-3 col-sm-6">
                                 <label class="control-label"><?php echo 'Offers' //__('lblPhone'); ?></label>
                                     <div class="form-group">
-                                        <label><input type="radio" name="email_offer" id="email_offer_yes" value="Yes" class=" fdRequired required"> Yes</label>
-                                        <label><input type="radio" name="email_offer" id="email_offer_no" value="No" class=" fdRequired required"> No</label>
+                                        <input type="radio" name="email_offer" id="email_offer_yes" value="Yes" class=" fdRequired required"><label> Yes</label>
+                                        <input type="radio" name="email_offer" id="email_offer_no" value="No" class=" fdRequired required"><label>No</label>
                                     </div>
                                 </div><!-- /.col-md-3 -->   
                                 <?php
@@ -573,7 +583,9 @@ $short_days = __('short_days', true);
                                                <!--  <input name="d_time" class="pj-timepicker form-control required fdRequired" data-msg-required="<?php //__('fd_field_required', false, true);?>" readonly/>   -->
                                                 <input name="d_time" id="d_time" class=" form-control required fdRequired" data-msg-required="<?php __('fd_field_required', false, true);?>"/>    
                                                 <input type="hidden" name="delivery_time" id="delivery_time">
+                                                
                                             </div>
+                                            <label>Approximate delivery time :</label><span id="aproxDt"></span>
                                         </div><!-- /.form-group -->
                                     </div>
 
@@ -597,8 +609,12 @@ $short_days = __('short_days', true);
                                                 <!-- <input name="p_time" class="pj-timepicker form-control fdRequired" data-msg-required="<?php //__('fd_field_required', false, true);?>" readonly/>    --> 
                                                 <input name="p_time" id="p_time" class="form-control fdRequired" data-msg-required="<?php __('fd_field_required', false, true);?>"/> 
                                                  <input type="hidden"  name="pickup_time" id="pickup_time">  
+
                                             </div>
-                                        </div><!-- /.form-group -->
+                                             <label>Approximate pickup time :</label><span id="aproxPt"></span>
+
+                                        </div>
+                                       <!-- /.form-group -->
                                         <!-- <label class="control-label"><?php //__('lblPickerDateTime'); ?></label>
     
                                         <div class="input-group">
