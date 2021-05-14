@@ -126,8 +126,12 @@ class pjAdminOrders extends pjAdmin
 				// $data[$k]['call_end'] = 'call_end';
 				//$data[$k]['sms_email'] = 'SMS Email';
 				// $data[$k]['order_despatched'] = '1';
-
-				$v['d_dt'] == "" ? $data[$k]['excpected_delivery'] = $v['p_dt'] : $data[$k]['excpected_delivery'] = $v['d_dt'];
+                
+                $v['sms_sent_time'] == "" ? $data[$k]['sms_sent_time'] = '' : $data[$k]['sms_sent_time'] = explode(" ", $v['sms_sent_time'])[1];
+				$v['d_dt'] == "" ? $data[$k]['excpected_delivery'] = explode(" ", $v['p_dt'])[1] : $data[$k]['excpected_delivery'] = explode(" ", $v['d_dt'])[1];
+				//$time = explode(" ", $v['delivered_time'])[1];
+                $v['delivered_time'] == "" ? $data[$k]['delivered_time'] = '' : $data[$k]['delivered_time'] = explode(" ", $v['delivered_time'])[1];
+				//$data[$k]['delivered_time'] = $v['delivered_time'];
 				//$data[$k]['excpected_delivery'] = $v['d_dt'];
 				//$v['d_dt'] == NULL ? echo "Empty delivery" : echo "delivery is there";
 				//$data[$k]['sms_sent_time'] = 'sms_sent_time';
@@ -580,15 +584,13 @@ class pjAdminOrders extends pjAdmin
 	        ->orderBy("name ASC")
 	        ->findAll()
 	        ->getData();
-			$this->set('product_arr', $product_arr);
-
-            //print_r($product_arr);
+	        $this->set('product_arr', $product_arr);
             
             // MEGAMIND
 
             $client_info = pjOrderModel::factory()
             ->join('pjClient', "t2.id = t1.client_id")
-            ->select('t1.id, t1.phone_no, t1.surname, t1.sms_email, t1.post_code, t1.d_address_1, t1.d_address_2, t1.d_city, t1.first_name, t1.client_id, t1.kprint, t2.c_title, t1.type, t1.is_paid, t1.order_despatched, t1.mobile_delivery_info, t1.mobile_offer, t1.email_delivery_info, t1.email_offer, t1.email_receipt, t1.created, t1.preparation_time')
+            ->select('t1.id, t1.surname,t1.phone_no, t1.sms_email, t1.post_code, t1.d_address_1, t1.d_address_2, t1.d_city, t1.first_name, t1.client_id, t1.kprint, t2.c_title, t1.type, t1.is_paid, t1.order_despatched, t1.mobile_delivery_info, t1.mobile_offer, t1.email_delivery_info, t1.email_offer, t1.email_receipt, t1.created, t1.preparation_time')
             ->findAll()
             ->getData();
             $this->set('client_info', $client_info);
@@ -622,21 +624,6 @@ class pjAdminOrders extends pjAdmin
 	        ->findAll()
 	        ->getData();
 	        $this->set('location_arr', $location_arr);
-
-	        
-
-            // $prdExtras = [];
-            // foreach ($product_arr as $product) {
-            //     foreach ($extras_arr as $extra) {
-                
-            //         if ($extra['product_id'] == $product['id']) {
-            //            $prdExtras[] = $extra['extra_id'];
-            //            //$product_arr[] = $prodExtras[];
-            //         }
-            //     }
-            // }       
-
-            //$this->set('prdExtras', $prdExtras);     
 	        
 	        $client_arr = pjClientModel::factory()
 	        ->select("t1.*, t2.email as c_email, t2.name as c_name, t2.phone as c_phone")
@@ -1818,49 +1805,7 @@ class pjAdminOrders extends pjAdmin
 		exit;
 	}
 
-	/* Added by JR */
-    public function pjActionGetProductsForCategory()
-    {
-        $this->setAjax(true);
-    
-        if ($this->isXHR())
-        {
-            $product_arr = [];
-            $category_id = $this->_post->toInt('category_id');
-            $category_arr = pjProductCategoryModel::factory()
-            ->select('t1.product_id')
-            ->whereIn("t1.category_id", $category_id)
-            ->findAll()
-            ->getData();
-            if ($category_arr) {
-                $category_arr = array_column($category_arr, 'product_id');
-                $product_arr = pjProductModel::factory()
-                ->select('t1.id, t2.content AS name, t1.set_different_sizes, t1.price, t1.status')
-                ->join('pjMultiLang', "t2.foreign_id = t1.id AND t2.model = 'pjProduct' AND t2.locale = '".$this->getLocaleId()."' AND t2.field = 'name'", 'left')
-                ->whereIn("t1.id", $category_arr)
-                ->groupBy('t1.id, t1.set_different_sizes, t1.price')
-                ->findAll()
-                ->getData();
-            }
-            $this->set('product_arr', $product_arr);
-
-            $extras_arr = pjProductExtraModel::factory()
-                        ->select('t1.*')
-                        ->findAll()
-                        ->getData();
-            $this->set('extras_arr', $extras_arr);
-            // $prdExtras = [];
-            // foreach ($exras as $extra) {
-            //     foreach ($product_arr as $product) {
-            //         if ($extra['product_id'] == $product['id']) {
-            //            $prdExtras[] = $extra['extra_id'];
-            //            $product_arr[] = $prodExtras[];
-            //         }
-            //     }
-            // }            
-        }
-    }
-
+	
     // MEGAMIND
 
 	public function pjActionSaveOrderDespatched()
@@ -1997,49 +1942,7 @@ class pjAdminOrders extends pjAdmin
 	    }
 	    exit;
 	}
-	public function pjActionDelayMessage()
-	{
-	    $this->setAjax(true);
-	    if ($this->isXHR())
-	    {
-	        if (!self::isPost())
-	        {
-	            self::jsonResponse(array('status' => 'ERR', 'code' => 100, 'text' => 'HTTP method not allowed.'));
-	        }
-	        
-	         if ($this->_post->toInt('id') <= 0)
-	        {
-	            self::jsonResponse(array('status' => 'ERR', 'code' => 101, 'text' => 'Missing, empty or invalid parameters.'));
-	        }
-	        if ($this->_post->toString('delay_msg') == "")
-	        {
-	        	self::jsonResponse(array('status' => 'ERR', 'code' => 102, 'text' => 'Message is empty'));
-	        }
-	        else {
-	        	$msg = $this->_post->toString('delay_msg');
-	        }
-	        $id = $this->_post->toInt('id');
-	        
-	        $data = pjOrderModel::factory()
-	        ->select("t1.phone_no, t1.delivered_customer")
-	        ->find($id)
-	        ->getData();
-
-	        // if ($data['delivered_customer'] == 1) {
-	        // 	$params = array(
-         //        'text' => $msg,
-         //        'type' => 'unicode',
-         //        'key' => md5($this->option_arr['private_key'] . PJ_SALT)
-         //       );
-         //       // $params['number'] = $data['phone_no'];
-         //       $params['number'] = "+917449296732";
-         //       pjBaseSms::init($params)->pjActionSend();
-	        // }
-
-	        self::jsonResponse(array('status' => 'OK', 'code' => 200, 'text' => 'Delay message has been sent.'));
-	    }
-	    exit;
-	}
+	
 
 	public function pjActionGetDelayMessage() {
 

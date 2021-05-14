@@ -207,15 +207,20 @@ class pjAdminClients extends pjAdmin
 			}
 
 			$data = $pjClientModel
-			->select("t1.id, t2.email AS c_email, t2.name AS c_name, t2.status, (SELECT COUNT(TO.client_id) FROM `".pjOrderModel::factory()->getTable()."` AS `TO` WHERE `TO`.client_id=t1.id) AS cnt_orders")
+			->join('pjOrder', 't3.client_id = t1.id')
+			->select("t1.id, t2.email AS c_email, t2.name AS c_name, t2.phone, t3.post_code, t2.status, (SELECT COUNT(TO.client_id) FROM `".pjOrderModel::factory()->getTable()."` AS `TO` WHERE `TO`.client_id=t1.id) AS cnt_orders")
 			->orderBy("$column $direction")
 			->limit($rowCount, $offset)
 			->findAll()
 			->getData();
+			//print_r($data);
+			//$this->set('data_arr',$data);
 			foreach($data as $k => $v)
 			{
 			    $v['c_name'] = pjSanitize::stripScripts($v['c_name']);
 			    $v['c_email'] = pjSanitize::stripScripts($v['c_email']);
+			    $v['phone'] = pjSanitize::stripScripts($v['phone']);
+			    $v['post_code'] = pjSanitize::stripScripts($v['post_code']);
 			    $data[$k] = $v;
 			}
 			

@@ -60,12 +60,14 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 				          ],
 				columns: [{text: myLabel.name, type: "text", sortable: true, editable: true, editableWidth: 190},
 				          {text: myLabel.email, type: "text", sortable: true, editable: true , editableWidth: 190},
+				          {text: myLabel.phone_no, type: "text", sortable: true, editable: true , editableWidth: 190},
+				          {text: myLabel.post_code, type: "text", sortable: true, editable: true , editableWidth: 190},
 				          {text: myLabel.orders, type: "text", sortable: true, editable: false , align: "center", renderer: formatOrders},
 				          {text: myLabel.status, type: "toggle", sortable: true, editable: true, positiveLabel: myLabel.active, positiveValue: "T", negativeLabel: myLabel.inactive, negativeValue: "F"},
 				          ],
 				dataUrl: "index.php?controller=pjAdminClients&action=pjActionGetClient",
 				dataType: "json",
-				fields: ['c_name', 'c_email', 'cnt_orders', 'status'],
+				fields: ['c_name', 'c_email','phone','post_code', 'cnt_orders', 'status'],
 				paginator: {
 					actions: [
 					   {text: myLabel.delete_selected, url: "index.php?controller=pjAdminClients&action=pjActionDeleteClientBulk", render: true, confirmation: myLabel.delete_confirmation},

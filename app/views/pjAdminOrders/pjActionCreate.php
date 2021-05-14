@@ -1,7 +1,7 @@
 <div class="row wrapper border-bottom white-bg page-heading">
-   <!--   <?php //print_r("<pre>");print_r($tpl['product_arr']); ?>   -->
+     <?php //print_r("<pre>");print_r($tpl['extras']); ?>  
    <!--  <?php //print_r($tpl['arr']['i18n']); ?>  -->
-    <?php //echo "<pre>";print_r($tpl['prdExtras']); ?>
+    <?php //echo "<pre>";print_r($tpl['price_arr']); ?>
     <!-- <?php 
     //$date = date('')
     // $dates[0] = date('Y-m-d');
@@ -805,6 +805,7 @@ var categoryList = '<?php echo json_encode($tpl['category_list']); ?>';
 categoryList =  JSON.parse(categoryList);  
 var client_info = '<?php echo json_encode($tpl['client_info']); ?>';
 client_info = JSON.parse(client_info);
+
 //console.log(client_info);
 var myLabel = myLabel || {};
 myLabel.currency = "<?php echo $tpl['option_arr']['o_currency'];?>";

@@ -10,9 +10,8 @@
 <?php if ($tpl['product_arr']) {
     $count = 1;
     foreach ($tpl['product_arr'] as $p){ 
-        foreach ($tpl['extras_arr'] as $k) {
-            # code...
-        }
+        
+            
         if ($p['status'] == 1 ) {
 ?>
 <tr>
@@ -21,14 +20,29 @@
     </td>
     <td><?php echo $p['name']; ?></td>
     <td>
-        <?php echo pjCurrency::formatPrice($p['price']); ?>
-    </td>
-    <?php if ($p['id'] == $k['product_id']) {
+    <?php if ($p['set_different_sizes'] == 'T') {
+        foreach ($tpl['price_arr'] as $price) {
+            if ($price['product_id'] == $p['id']) {
+                ?>
+                <span><?php echo $price['price_name'].'-'.pjCurrency::formatPrice($price['price']); ?></span><br>
+                <?php
+            }
+        }
+        
+    } else { ?>
+    
+        <span><?php echo pjCurrency::formatPrice($p['price']); ?></span>
+     <?php }  ?>
+     </td>
+     <td>
+    <?php 
+    foreach ($tpl['extras'] as $k) {
+    if ($p['id'] == $k['product_id']) {
         ?>
-        <td><?php echo $k['extra_id']; ?></td>
+       <span><?php echo $k['name'].'-'.pjCurrency::formatPrice($k['price']); ?><span><br>
         <?php
-    } ?>
-
+    } }?>
+    </td>
 </tr>
 <?php } } } else { ?>
     <tr><td colspan="3">Currently no products are available for the category</td></tr>

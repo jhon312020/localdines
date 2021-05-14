@@ -1,10 +1,11 @@
 <div class="ticket">
+	<h3>CHEF ID :</h3><span><?php echo $tpl['arr']['chef_id']; ?></span>
 	<table class="table table-borderless">
 		<thead>
 
 			<!-- <tr> -->
 				<th class="kitchen">KITCHEN</th>
-			    <th class="nani">NANI</th>
+			    <th class="nani">CATEGORY ID</th>
 		    <!-- </tr> -->
 		    <!-- <tr>
 		    	<th>Table</th>
@@ -16,29 +17,10 @@
 			
 		</thead>
 		<tbody>
-			<!-- <tr>
-				<table>
-					<thead>
-						<th>table</th>
-						<th>room</th>
-						<th>covers</th>
-						<th>time</th>
-					</thead>
-					<tbody>
-						<tr>
-							<td>101</td>
-							<td>3</td>
-							<td>1</td>
-							<td>15:11</td>
-						</tr>
-					</tbody>
-				
-			    </table>
-			</tr> -->
 			
 			<?php   
                     
-              //       print_r("<pre>");print_r($tpl["categories"]);
+              //       print_r("<pre>");print_r($tpl["arr"]);
     		        // exit;
 
 			       foreach ($tpl['categories'] as $cs => $c) {
@@ -93,5 +75,6 @@
 ?>
 		</tbody>
 	</table>
+	<h5>SPECIAL INSTRUCTION:</h5><span><?php echo $tpl['arr']['d_notes']; ?></span>
 </div>
 	

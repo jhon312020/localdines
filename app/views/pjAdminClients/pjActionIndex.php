@@ -1,5 +1,6 @@
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-sm-12">
+        <?php //echo "<pre>";print_r($tpl['data_arr']);?>
         <div class="row">
             <div class="col-sm-10">
                 <h2><?php __('infoClientsTitle', false, true);?></h2>
@@ -86,7 +87,8 @@ pjGrid.currentUserId = <?php echo (int) $_SESSION[$controller->defaultUser]['id'
 var myLabel = myLabel || {};
 myLabel.name = <?php x__encode('lblName'); ?>;
 myLabel.email = <?php x__encode('email'); ?>;
-myLabel.orders = <?php x__encode('lblOrders'); ?>;
+myLabel.phone_no = "<?php echo 'Phone No'; ?>";
+myLabel.post_code = "<?php echo 'Post Code'; ?>";
 myLabel.revert_status = <?php x__encode('revert_status'); ?>;
 myLabel.exported = <?php x__encode('lblExport'); ?>;
 myLabel.active = <?php x__encode('u_statarr_ARRAY_T'); ?>;

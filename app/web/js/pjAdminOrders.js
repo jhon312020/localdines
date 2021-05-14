@@ -196,7 +196,9 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
                 error.css('color','#a94442');
                 error.siblings("label").css('color','#ed5565')
                 //element.css('border','2px solid red');
-            } else {
+            } else if (element.attr("id") == "d_time") {
+                error.insertAfter(element.parent())
+            } else{
                 error.insertAfter(element);
             }
         },
@@ -209,12 +211,14 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
         },
         submitHandler: function (form) {
 
+
+
           var valid = true;
           var $ele = null;
           
           // MEGAMIND
           //$("#mobile_delivery_info_err") = $("input[name=mobile_delivery_info]").is(":checked") ? "none" : "block";
-          console.log("comes here")
+          
           var firstRowIndex = $('#fdOrderList').find("tbody.main-body > tr:first-child").attr("data-index");
           var lastRow = $("#fdOrderList tr:last");
           var lastRowIndex = $("#fdOrderList tr:last").attr("data-index");
@@ -229,20 +233,12 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
               $ele = $product_last;
             }
             else{
+
               lastRow.remove();
               $('#fdOrderList').find("tbody.main-body > tr.fdLine").each(function() {
                   var index = $(this).attr('data-index'),
                     $product = $('#fdProduct_' + index),
                     $price = $('#fdPrice_' + index);
-                    
-                  if($product.val() == '')
-                  {
-                    $product.parent().addClass('has-error');
-                    valid = false;
-                    $ele = $product;
-                  }else{
-                    $product.parent().removeClass('has-error');
-                  }
                   if($price.val() == '')
                   {
                     $price.parent().addClass('has-error');
@@ -254,11 +250,27 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
                 });
               //valid = true;
             }
+          } else {
+            $('#fdOrderList').find("tbody.main-body > tr.fdLine").each(function() {
+                  var index = $(this).attr('data-index'),
+                    $product = $('#fdProduct_' + index),
+                    $price = $('#fdPrice_' + index);
+                  if($price.val() == '')
+                  {
+                    $price.parent().addClass('has-error');
+                    valid = false;
+                    $ele = $product;
+                  }else{
+                    $price.parent().removeClass('has-error');
+                  }
+                });
+
           }
           
           // !MEGAMIND
 
           if (valid == true) {
+            $(window).off('beforeunload');
             form.submit();
           }
         },
@@ -338,20 +350,12 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
               $ele = $product_last;
             }
             else{
+              
               lastRow.remove();
               $('#fdOrderList').find("tbody.main-body > tr.fdLine").each(function() {
                   var index = $(this).attr('data-index'),
                     $product = $('#fdProduct_' + index),
                     $price = $('#fdPrice_' + index);
-                    
-                  if($product.val() == '')
-                  {
-                    $product.parent().addClass('has-error');
-                    valid = false;
-                    $ele = $product;
-                  }else{
-                    $product.parent().removeClass('has-error');
-                  }
                   if($price.val() == '')
                   {
                     $price.parent().addClass('has-error');
@@ -362,10 +366,26 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
                   }
                 });
             }
+          } else {
+            lastRow.remove();
+            $('#fdOrderList').find("tbody.main-body > tr.fdLine").each(function() {
+                var index = $(this).attr('data-index'),
+                  $product = $('#fdProduct_' + index),
+                  $price = $('#fdPrice_' + index);
+                if($price.val() == '')
+                {
+                  $price.parent().addClass('has-error');
+                  valid = false;
+                  $ele = $product;
+                }else{
+                  $price.parent().removeClass('has-error');
+                }
+              });
           }
           
           // !MEGAMIND
           if (valid == true) {
+            $(window).off('beforeunload');
             form.submit();
           } //else {
           //   var $closest = $ele.closest(".tab-pane");
@@ -1043,14 +1063,14 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
         }
         console.log(newUser);
         if(newUser == true) {
-          $("#c_title").val(" ");
-          $("#c_email").val(" ");
-          $("#c_surname").val(" ");
-          $("#inputPostCode").val(" ");
-          $("#d_address_1").val(" ");
-          $("#d_address_2").val(" ");
-          $("#d_city").val(" ");
-          $("#c_name").val(" ");
+          $("#c_title").val("");
+          $("#c_email").val("");
+          $("#c_surname").val("");
+          $("#inputPostCode").val("");
+          $("#d_address_1").val("");
+          $("#d_address_2").val("");
+          $("#d_city").val("");
+          $("#c_name").val("");
           $("input:radio").prop("checked", false);
         }
         // } else if (newUser == false) {
@@ -1489,11 +1509,15 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
      }
      
     });
-    //  $(window).on('beforeunload', function(){
-    //   if ($("h2").text()=="Add new order" || $("h2").text()=="Update page") {
-    //   return 'Are you sure you want to leave?';
-    // }
-    //  });
+     $(window).on('beforeunload', function(){
+        if ($("h2").text()=="Add new order" || $("h2").text()=="Update page") {
+        return 'Are you sure you want to leave?';
+      }
+     });
+    // $(document).submit(function(){
+      
+    // });
+    // $(document).ready()
     function myTinyMceInit(pSelector, pValue) {
       tinymce.init({
         relative_urls: false,

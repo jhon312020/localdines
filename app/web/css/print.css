@@ -48,6 +48,11 @@ img {
     width: inherit;
 }
 
+h3,
+h5{
+    display: inline-block;
+}
+
 @media print {
     .hidden-print,
     .hidden-print * {

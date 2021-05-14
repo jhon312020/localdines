@@ -2,6 +2,7 @@
 mt_srand();
 $extra_index = 'x_' . mt_rand();
 $index = $controller->_get->toString('index');
+//print_r($tpl['extra_arr']);
 ?>
 <tr>
     <td>
