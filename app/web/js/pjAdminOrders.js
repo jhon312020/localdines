@@ -135,6 +135,12 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
       validatePickupTime();
       calPrice(1);
     })
+    $('#phone_no').on("focusout", function() {
+      validatePhoneNumber($(this).val());
+    })
+    $('#c_email').on("focusout", function() {
+      validateEmail($(this).val());
+    })
     if ($frmCreateOrder.length > 0 || $frmUpdateOrder.length > 0) {
       $.validator.addMethod("pickupTime", function (value, element) {
         console.log(element);
@@ -146,6 +152,20 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
       });
       $.validator.addMethod("deliveryTime", function (value, element) {
         if ($(element).attr("data-wt") == "open") {
+          return true;
+        } else {
+          return false;
+        }
+      });
+      $.validator.addMethod("phoneNumber", function (value, element) {
+        if ($(element).attr("data-wt") == "valid") {
+          return true;
+        } else {
+          return false;
+        }
+      });
+      $.validator.addMethod("email", function (value, element) {
+        if ($(element).attr("data-wt") == "valid") {
           return true;
         } else {
           return false;
@@ -178,6 +198,13 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           email_offer: {
             required: true,
           },
+          phone_no: {
+            phoneNumber: true,
+          },
+          sms_email: {
+            email: true,
+          },
+          //phone_no:{matches:"[0-9]+",minlength:11, maxlength:11},
         },
         messages: {
           p_dt: {
@@ -188,6 +215,12 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           },
           c_email: {
             remote: myLabel.email_exists,
+          },
+          phone_no: {
+            phoneNumber: myLabel.phoneNumber_err,
+          },
+          sms_email: {
+            email: myLabel.email_err,
           },
         },
         errorPlacement: function(error, element) {
@@ -299,6 +332,12 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           email_offer: {
             required: true,
           },
+          phone_no: {
+            phoneNumber: true,
+          },
+          sms_email: {
+            email: true,
+          },
         },
         messages: {
           p_dt: {
@@ -309,6 +348,12 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           },
           c_email: {
             remote: myLabel.email_exists,
+          },
+          phone_no: {
+            phoneNumber: myLabel.phoneNumber_err,
+          },
+          sms_email: {
+            email: myLabel.email_err,
           },
         },
          errorPlacement: function(error, element) {
@@ -551,6 +596,29 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
         },
         // !MEGAMIND
       });
+    }
+    function validatePhoneNumber(data){
+      
+      var ph = data;
+      ph = $.trim(ph);
+      var len = ph.toString().length;
+      if (len == 11 && isNaN(ph) == false) {
+        $("#phone_no").attr("data-wt","valid");
+      } else {
+        $("#phone_no").attr("data-wt","invalid");
+      }
+      //console.log(len);
+    }
+    function validateEmail(email){
+      var id = email;
+      id = $.trim(id);
+      var filter = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+      if (filter.test(id)) {
+        $("#c_email").attr("data-wt","valid");
+      } else {
+         $("#c_email").attr("data-wt","invalid");
+      }
     }
     function formatType(val, obj) {
       if (val == "pickup") {

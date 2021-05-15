@@ -811,4 +811,6 @@ var myLabel = myLabel || {};
 myLabel.currency = "<?php echo $tpl['option_arr']['o_currency'];?>";
 myLabel.restaurant_closed = <?php x__encode('lblRestaurantClosed');?>;
 myLabel.email_exists = <?php x__encode('email_taken'); ?>;
+myLabel.phoneNumber_err = '<?php echo 'Mobile Number is invalid'; ?>';
+myLabel.phoneNumber_err = '<?php echo 'Email address is invalid'; ?>';
 </script>

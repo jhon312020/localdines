@@ -339,6 +339,22 @@ class pjAdminClients extends pjAdmin
 	        $data['password'] = $this->_post->toString('c_password');
 	        $data['name'] = $this->_post->toString('c_name');
 	        $data['phone'] = $this->_post->toString('c_phone');
+	        $old_phone = pjAuthUserModel::factory()
+	                    ->select("t1.phone")
+	                    ->where("t1.id",$data['id'])
+	                    ->findAll()
+	                    ->getData();
+	        
+	        pjOrderModel::factory()
+             ->where("phone_no", $old_phone[0]['phone']) 
+             ->where("status", "pending")
+             ->modifyAll(array("phone_no" => $data['phone']));
+	               //->getAffectedRows();
+	                 
+
+	        // echo "<pre>";print_r($order);
+	        // exit;        
+
 	        pjAuth::init($data)->updateUser();
 	        pjUtil::redirect(PJ_INSTALL_URL . "index.php?controller=pjAdminClients&action=pjActionUpdate&id=".$id."&err=AC01");
 	    }

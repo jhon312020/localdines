@@ -685,8 +685,7 @@ class pjAdminOrders extends pjAdmin
 	        // echo "<pre>";print_r($post);
 	        // exit;           
 	        if(!$isExist)
-	        {   print_r($isExist);
-	            exit;  
+	        {   
 	            $c_data = array();
 	            $c_data['c_title'] = $this->_post->toString('c_title');
 	            $c_data['c_name'] = $this->_post->toString('c_name');
