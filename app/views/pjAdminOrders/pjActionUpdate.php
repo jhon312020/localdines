@@ -1,11 +1,11 @@
 <div class="row wrapper border-bottom white-bg page-heading">
       <?php //echo "<pre>";print_r($tpl['product_arr']); ?>
-     <?php //echo "<pre>";print_r($tpl['spcl_ins']); ?>
+     <?php //echo "<pre>";print_r($tpl['oi_arr']); ?>
     <div class="col-sm-12">
         <div class="row">
             <div class="col-sm-10">
                 <!-- <h2><?php //__('infoUpdateOrderTitle');?></h2> -->
-                <h2>Update page</h2>
+                <h2>Update Order</h2>
             </div>
         </div><!-- /.row -->
 
@@ -153,12 +153,11 @@ $short_days = __('short_days', true);
                                         ?>                    
                                         <tbody class="main-body">
                                             <?php
-                                            foreach ($tpl['spcl_ins'] as $ins) {
                                             foreach ($tpl['product_arr'] as $product)
                                             {
                                                 foreach ($tpl['oi_arr'] as $k => $oi)
                                                 {
-                                                    if ($oi['type'] == 'product' && $oi['foreign_id'] == $product['id'] && $ins['foreign_id'] == $product['id'])
+                                                    if ($oi['type'] == 'product' && $oi['foreign_id'] == $product['id'])
                                                     {
                                                         $has_extra = false;
                                                         ?>
@@ -185,18 +184,50 @@ $short_days = __('short_days', true);
                                                         <input type="text" id="fdProductQty_<?php echo $oi['hash']; ?>" name="cnt[<?php echo $oi['hash']; ?>]" class="form-control pj-field-count" value="<?php echo $oi['cnt']; ?>" />
                                                     </div>
                                                 </td>
+                                                
                                                 <td>
-                                                    <div class="business-<?php echo $index;?>" style="display: none;">
-                                                        <table id="fdExtraTable_<?php echo $index;?>" class="table no-margins pj-extra-table">                          
-                                                            <tbody>
-                                                            </tbody>
-                                                        </table>
-                                                        <div class="p-w-xs">
-                                                            <a href="#" class="btn btn-primary btn-xs btn-outline pj-add-extra fdExtraBusiness_<?php echo $index;?> fdExtraButton_<?php echo $index;?>" data-index="<?php echo $index;?>"><i class="fa fa-plus"></i> <?php __('btnAddExtra');?></a>
-                                                        </div><!-- /.p-w-xs -->
-                                                        <span class="fdExtraBusiness_<?php echo $index;?> fdExtraNA_<?php echo $index;?>"><?php __('lblNA');?></span>
-                                                    </div>
-                                                </td>
+                                <div class="business-<?php echo $oi['hash']; ?>">
+                                    <table id="fdExtraTable_<?php echo $oi['hash'];?>" class="table no-margins pj-extra-table">
+                                        <tbody>
+                                            <?php
+                                            foreach ($tpl['extra_arr'] as $extra)
+                                            {
+                                                foreach ($tpl['oi_arr'] as $oi_sub)
+                                                {
+                                                    if ($oi_sub['type'] == 'extra' && $oi_sub['hash'] == $oi['hash'] && $oi_sub['foreign_id'] == $extra['id'])
+                                                    {
+                                                        ?>
+                                                        <tr>
+                                                            <td>
+                                                                <select name="extra_id[<?php echo $oi['hash']; ?>][<?php echo $oi_sub['id']; ?>]" data-index="<?php echo $oi['hash']; ?>_<?php echo $oi_sub['id']; ?>" class="fdExtra fdExtra_<?php echo $oi['hash']; ?> form-control">
+                                                                    <option value="">-- <?php __('lblChoose'); ?>--</option>
+                                                                    <?php
+                                                                    foreach ($tpl['extra_arr'] as $e)
+                                                                    {
+                                                                        if (in_array($e['id'], $product['allowed_extras']))
+                                                                        {
+                                                                            ?><option value="<?php echo $e['id']; ?>"<?php echo $e['id'] == $extra['id'] ? ' selected="selected"' : NULL; ?> data-price="<?php echo $e['price'];?>"><?php echo stripslashes($e['name']); ?>: <?php echo pjCurrency::formatPrice($e['price']);?></option><?php
+                                                                        }
+                                                                    }
+                                                                    ?>
+                                                                </select>
+                                                            </td>
+                                                            <td><input type="text" id="fdExtraQty_<?php echo $oi['hash']; ?>_<?php echo $oi_sub['id']; ?>" name="extra_cnt[<?php echo $oi['hash']; ?>][<?php echo $oi_sub['id']; ?>]" class="form-control pj-field-count" value="<?php echo $oi_sub['cnt']; ?>" /></td>
+                                                                                            <td><a href="#" class="btn btn-xs btn-danger btn-outline pj-remove-extra"><i class="fa fa-times"></i></a></td>
+                                                                                        </tr>
+                                                                                        <?php
+                                                                                    }
+                                                                                }
+                                                                            } 
+                                                                            ?>
+                                                                        </tbody>
+                                                                    </table>
+                                                                    <div class="p-w-xs" style="display:<?php echo $has_extra == true ? 'block' : 'none'; ?>;">
+                                                                        <a href="#" class="btn btn-primary btn-xs btn-outline pj-add-extra fdExtraBusiness_<?php echo $oi['hash'];?> fdExtraButton_<?php echo $oi['hash'];?>" data-index="<?php echo $oi['hash'];?>"><i class="fa fa-plus"></i> <?php __('btnAddExtra');?></a>
+                                                                    </div><!-- /.p-w-xs -->
+                                                                    <span class="fdExtraBusiness_<?php echo $oi['hash'];?> fdExtraNA_<?php echo $oi['hash'];?>" style="display:<?php echo $has_extra == false ? 'block' : 'none'; ?>;"><?php __('lblNA');?></span>
+                                                                </div>
+                                                            </td>
 
                                                 <!-- MEGAMIND -->
 
@@ -269,7 +300,7 @@ $short_days = __('short_days', true);
                                                 </td>
                                                             
                                                 <td>
-                                                    <input type="text" id="special_instruction_<?php echo $oi['hash']; ?>" name="special_instruction[<?php echo $oi['hash']; ?>]" class="form-control" value="<?php echo $ins['special_instruction']; ?>" />
+                                                    <input type="text" id="special_instruction_<?php echo $oi['hash']; ?>" name="special_instruction[<?php echo $oi['hash']; ?>]" class="form-control" value="<?php echo $oi['special_instruction']; ?>" />
                                                 </td>
                                                 <td>
                                                     <div class="text-right" id="productDelete_<?php echo $oi['hash']; ?>">
@@ -280,7 +311,7 @@ $short_days = __('short_days', true);
                                             <?php
                                                     }}
                                                 }
-                                            }
+                                            
                                             ?>
                                         <!-- <tr id="extraRow"></tr> -->
     
@@ -296,7 +327,7 @@ $short_days = __('short_days', true);
                                 <div class="col-md-4 col-sm-6">
                                     <div class="form-group">
                                         <label class="control-label"><?php echo 'Mobile' //__('lblPhone'); ?></label>
-                                        <input type="text" name="phone_no" id="phone_no" class="form-control<?php echo $tpl['option_arr']['o_bf_include_phone'] == 3 ? ' fdRequired required' : NULL; ?>" data-msg-required="<?php __('fd_field_required', false, true);?>" value = "<?php echo $tpl['arr']['phone_no']; ?>"/>
+                                        <input type="text" name="phone_no" id="phone_no" class="form-control<?php echo $tpl['option_arr']['o_bf_include_phone'] == 3 ? ' fdRequired required' : NULL; ?>" data-msg-required="<?php __('fd_field_required', false, true);?>" value = "<?php echo $tpl['arr']['phone_no']; ?>" data-wt = "<?php if($tpl['arr']['phone_no'] == ''){ echo 'invalid'; }else{ echo 'valid';} ?>"/>
                                     </div>
                                 </div><!-- /.col-md-3 --> 
                                 <div class="col-md-4 col-sm-6">
@@ -437,7 +468,8 @@ $short_days = __('short_days', true);
                                 
                                 ?>
                                         
-                                    </div>
+                                </div>
+
                                <!--  </div> -->
                                <?php 
                                ob_start();
@@ -476,49 +508,46 @@ $short_days = __('short_days', true);
                                     $ob_fields = ob_get_contents();
                                     ob_end_clean();
                                     ?>
-                                    <div class="row hi">
+                                    <div class="row">
                                         <?php echo $ob_fields;?>
                                     </div><!-- /.row -->
                                     <?php
-                                    ob_start();
-                                    $field = 3;
+                                    // ob_start();
+                                    // $field = 3;
                                 }
                                 ?> 
-                                <!-- <div class="col-md-3 col-sm-6">
-                                    <div class="form-group">
-                                        <label class="control-label"><?php //echo 'Mobile' //__('lblPhone'); ?></label>
-                                        <input type="text" name="phone_no" id="phone_no" class="form-control<?php //echo $tpl['option_arr']['o_bf_include_phone'] == 3 ? ' fdRequired required' : NULL; ?>" data-msg-required="<?php //__('fd_field_required', false, true);?>"/>
-                                    </div>
-                                </div> --><!-- /.col-md-3 --> 
+                            </div>
+                            <div>
+                                <?php
+                                    ob_start();
+                                    $field = 3;
+                                
+                                ?> 
+                            
                                 <div class="col-md-3 col-sm-6">
                                     <div class="form-group">
                                         <label class="control-label"><?php echo 'Email' //__('lblPhone'); ?></label>
                                         <input type="text" name="sms_email" id="c_email" class="form-control email<?php echo $tpl['option_arr']['o_bf_include_email'] == 3 ? ' fdRequired required' : NULL; ?>" data-msg-required="<?php __('fd_field_required', false, true);?>"
-                                        value = "<?php echo $tpl['arr']['sms_email']; ?>" />
+                                        value = "<?php echo $tpl['arr']['sms_email']; ?>" data-wt = "<?php if($tpl['arr']['sms_email'] == ''){ echo 'invalid'; }else{ echo 'valid';} ?>" />
                                     </div>
                                 </div><!-- /.col-md-3 --> 
-                               <!--  <div class="col-md-2 col-sm-6"> -->
-                                <!-- <label class="control-label"><?php //echo 'Delivery Info' //__('lblPhone'); ?></label>
-                                    <div class="form-group">
-                                        <input type="radio" name="email_delivery_info" id="email_delivery_info_yes" value="1"<?php //if ($tpl['arr']['email_delivery_info'] == 1 ) { ?>checked = "checked" <?php //}?>><label> Yes</label>
-                                        <input type="radio" name="email_delivery_info" id="email_delivery_info_no" value="0"<?php //if ($tpl['arr']['email_delivery_info'] == 0 ) { ?>checked = "checked" <?php //}?>><label> No</label>
-                                    </div>
-                                </div> --><!-- /.col-md-3   -->
+                                
                                 
                                 <div class="col-md-2 col-sm-6">
-                                <label class="control-label"><?php echo 'Delivery/Receipt' //__('lblPhone'); ?></label>
-                                    <div class="form-group">
-                                        <input type="radio" name="email_receipt" id="email_receipt_yes" value="1"<?php if ($tpl['arr']['email_receipt'] == 1 ) { ?>checked = "checked" <?php }?>><label> Yes</label>
-                                       <input type="radio" name="email_receipt" id="email_receipt_no" value="0"<?php if ($tpl['arr']['email_receipt'] == 0 ) { ?>checked = "checked" <?php }?>><label> No</label>
-                                    </div>
-                                </div><!-- /.col-md-3 -->   
+                                    <label class="control-label"><?php echo 'Delivery/Receipt' //__('lblPhone'); ?></label>
+                                        <div class="form-group">
+                                            <input type="radio" name="email_receipt" id="email_receipt_yes" value="1"<?php if ($tpl['arr']['email_receipt'] == 1 ) { ?>checked = "checked" <?php }?>><label> Yes</label>
+                                           <input type="radio" name="email_receipt" id="email_receipt_no" value="0"<?php if ($tpl['arr']['email_receipt'] == 0 ) { ?>checked = "checked" <?php }?>><label> No</label>
+                                        </div>
+                                </div>
+                                
                                 <div class="col-md-2 col-sm-6">
-                                <label class="control-label"><?php echo 'Offers' //__('lblPhone'); ?></label>
+                                    <label class="control-label"><?php echo 'Offers' //__('lblPhone'); ?></label>
                                     <div class="form-group">
                                         <input type="radio" name="email_offer" id="email_offer_yes" value="1"<?php if ($tpl['arr']['email_offer'] == 1 ) { ?>checked = "checked" <?php }?>><label> Yes</label>
                                         <input type="radio" name="email_offer" id="email_offer_no" value="0"<?php if ($tpl['arr']['email_offer'] == 0 ) { ?>checked = "checked" <?php }?>><label> No</label>
                                     </div>
-                                </div><!-- /.col-md-3 -->   
+                                </div><!-- /.col-md-3 -->      
                                 <?php
                                 if($field == 3)
                                 {
@@ -535,7 +564,7 @@ $short_days = __('short_days', true);
                                 if (in_array($tpl['option_arr']['o_df_include_notes'], array(2, 3)))
                                 {
                                     ?>
-                                    <div class="col-md-4 col-sm-6">
+                                   <div class="col-md-4 col-sm-6">
                                         <div class="form-group">
                                             <label class="control-label"><?php __('lblSpecialInstructions'); ?></label>
     
@@ -559,12 +588,11 @@ $short_days = __('short_days', true);
                                 }
                                 ?>
                             </div><!-- /.delivery -->
-                            <!-- End of Client Details -->
                             <h4 style="display: inline">Order Details</h4>
-                            <div class="form-group col-md-3 col-sm-6" style="display: inline; float: right;">
+                            <div class="form-group col-lg-4 col-md-6 col-sm-6" style="display: inline; float: right;">
                                 <label class="control-label"><?php echo 'Total Prep.Time(Mins):'; ?></label>
 
-                                <span name="d_notes" id="total_prep-time_format" data-msg-required="<?php __('fd_field_required', false, true);?>"></span>
+                                <span id="total_prep-time_format" data-msg-required="<?php __('fd_field_required', false, true);?>"><?php echo $tpl['arr']['preparation_time'];?></span>
                                 <input type="hidden" name="preparation_time" id="prep_time" value="<?php echo $tpl['arr']['preparation_time']?>">
                             </div>
                             <div class="hr-line-dashed"></div>
@@ -609,12 +637,12 @@ $short_days = __('short_days', true);
                                         ?>
                                        
                                         <label><?php __('lblDate'); ?></label>
-                                        <div class="form-group">
+                                        <div class="form-group order-delivery">
                                             <div class="input-group">
                                                 
                                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span> 
             
-                                                <input type="text" name="d_date" id="d_date" data-wt="open" class="form-control fdRequired required" data-msg-required="<?php __('fd_field_required', false, true);?>" value="<?php 
+                                                <input type="text" name="d_date" id="d_date" data-wt="open" class="form-control fdRequired" data-msg-required="<?php __('fd_field_required', false, true);?>" value="<?php 
                                                   echo $dDate; ?>"  readonly>
                                                 <!--  <input type="hidden" name="delivery_date" id="delivery_date"> -->
                                             </div>
@@ -625,7 +653,7 @@ $short_days = __('short_days', true);
                                                 <span class="input-group-addon"><i class="fa fa-clock-o"></i></span> 
                                                 
                                                <!--  <input name="d_time" class="pj-timepicker form-control required fdRequired" data-msg-required="<?php //__('fd_field_required', false, true);?>" readonly/>   -->
-                                                <input name="d_time" id="d_time" class=" form-control required fdRequired" data-msg-required="<?php __('fd_field_required', false, true);?>"/ value = "<?php echo $tpl['arr']['d_time'] ?>">    
+                                                <input name="d_time" id="d_time" class=" form-control required fdRequired" data-msg-required="<?php __('fd_field_required', false, true);?>"/ value = "<?php if($tpl['arr']['d_time']==0){echo '';}else{echo $tpl['arr']['d_time'];} ?>">    
                                                 <input type="hidden" name="delivery_time" id="delivery_time"
                                                 value="<?php 
                                                   echo $dTime; ?>">
@@ -658,7 +686,7 @@ $short_days = __('short_days', true);
                                                 <span class="input-group-addon"><i class="fa fa-clock-o"></i></span> 
                                                 
                                                 <!-- <input name="p_time" class="pj-timepicker form-control fdRequired" data-msg-required="<?php //__('fd_field_required', false, true);?>" readonly/>    --> 
-                                                <input name="p_time" id="p_time" class="form-control fdRequired" data-msg-required="<?php __('fd_field_required', false, true);?>" value = "<?php echo $tpl['arr']['p_time'] ?>"/> 
+                                                <input name="p_time" id="p_time" class="form-control fdRequired" data-msg-required="<?php __('fd_field_required', false, true);?>" value = "<?php if($tpl['arr']['p_time']==0){echo '';}else{echo $tpl['arr']['p_time'];} ?>"/> 
                                                  <input type="hidden"  name="pickup_time" id="pickup_time"
                                                  value="<?php 
                                                   echo $pTime;
@@ -899,4 +927,6 @@ var myLabel = myLabel || {};
 myLabel.currency = "<?php echo $tpl['option_arr']['o_currency'];?>";
 myLabel.restaurant_closed = <?php x__encode('lblRestaurantClosed');?>;
 myLabel.email_exists = <?php x__encode('email_taken'); ?>;
+myLabel.phoneNumber_err = '<?php echo 'Mobile Number is invalid'; ?>';
+myLabel.email_err = '<?php echo 'Email address is invalid'; ?>';
 </script>

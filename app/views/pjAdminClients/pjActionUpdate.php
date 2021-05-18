@@ -1,5 +1,6 @@
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-sm-12">
+        <?php //echo "<pre>";print_r($tpl['arr']); ?>
         <div class="row">
             <div class="col-sm-10">
                 <h2><?php __('infoUpdateClientTitle', false, true);?></h2>
@@ -115,9 +116,16 @@ $u_statarr = __('u_statarr', true)
 
                         <div class="col-lg-3 col-md-4 col-sm-6">
                             <div class="form-group">
-                                <label class="control-label"><?php __('lblName'); ?></label>
+                                <label class="control-label"><?php echo "Firstname"; ?></label>
 
                                 <input type="text" id="c_name" name="c_name" value="<?php echo htmlspecialchars(stripslashes($tpl['arr']['c_name'])); ?>" class="form-control required" data-msg-required="<?php __('fd_field_required', false, true);?>" maxlength="255">
+                            </div>
+                        </div><!-- /.col-md-3 -->
+                         <div class="col-lg-3 col-md-4 col-sm-6">
+                            <div class="form-group">
+                                <label class="control-label"><?php echo "Surname"; ?></label>
+
+                                <input type="text" id="c_name" name="surname" value="<?php echo htmlspecialchars(stripslashes($tpl['arr']['c_surname'])); ?>" class="form-control required" data-msg-required="<?php __('fd_field_required', false, true);?>" maxlength="255">
                             </div>
                         </div><!-- /.col-md-3 -->
                     
@@ -190,7 +198,7 @@ $u_statarr = __('u_statarr', true)
 
                         <div class="col-lg-3 col-md-4 col-sm-6">
                             <div class="form-group">
-                                <label class="control-label"><?php __('lblState'); ?></label>
+                                <label class="control-label"><?php echo "County"; ?></label>
 
                                 <input type="text" name="c_state" id="c_state" value="<?php echo htmlspecialchars(stripslashes($tpl['arr']['c_state'])); ?>" class="form-control" maxlength="255">
                             </div>
@@ -198,27 +206,13 @@ $u_statarr = __('u_statarr', true)
 
                         <div class="col-lg-3 col-md-4 col-sm-6">
                             <div class="form-group">
-                                <label class="control-label"><?php __('lblZip'); ?></label>
+                                <label class="control-label"><?php echo "Postcode"; ?></label>
 
-                                <input type="text" name="c_zip" id="c_zip" value="<?php echo htmlspecialchars(stripslashes($tpl['arr']['c_zip'])); ?>" class="form-control" maxlength="255">
+                                <input type="text" name="post_code" id="c_zip" value="<?php echo htmlspecialchars(stripslashes($tpl['arr']['c_postcode'])); ?>" class="form-control" maxlength="255">
                             </div>
                         </div><!-- /.col-md-3 -->
 
-                        <div class="col-lg-3 col-md-4 col-sm-6">
-                            <div class="form-group">
-                                <label class="control-label"><?php __('lblCountry'); ?></label>
-
-                                <select name="c_country" id="c_country" class="form-control">
-                					<option value="">-- <?php __('lblChoose'); ?>--</option>
-                					<?php
-                					foreach ($tpl['country_arr'] as $v)
-                					{
-                						?><option value="<?php echo $v['id']; ?>"<?php echo $tpl['arr']['c_country'] == $v['id'] ? ' selected="selected"' : NULL;?>><?php echo stripslashes($v['country_title']); ?></option><?php
-                					}
-                					?>
-                				</select>
-                            </div>
-                        </div><!-- /.col-md-3 -->
+                        
                         <div class="col-lg-6 col-md-8 col-sm-12">
                             <div class="form-group">
                                 <label class="control-label"><?php __('lblNotes'); ?></label>

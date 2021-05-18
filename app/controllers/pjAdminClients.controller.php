@@ -41,6 +41,8 @@ class pjAdminClients extends pjAdmin
 	    if (self::isPost() && $this->_post->toInt('client_create'))
 	    {
 	        $post = $this->_post->raw();
+	        // print_r($post);
+	        // exit;
 	        if($this->_post->check('status'))
 	        {
 	            $post['status'] = 'T';
@@ -48,6 +50,7 @@ class pjAdminClients extends pjAdmin
 	            $post['status'] = 'F';
 	        }
 	        $post['locale_id'] = $this->getLocaleId();
+
 	        $response = pjFrontClient::init($post)->createClient();
 	        if($response['status'] == 'OK')
 	        {
@@ -175,7 +178,7 @@ class pjAdminClients extends pjAdmin
 		if ($this->isXHR())
 		{
 		    $pjClientModel = pjClientModel::factory()->join('pjAuthUser', 't2.id=t1.foreign_id', 'left outer');
-			
+			//print_r($pjClientModel);
 			if ($q = $this->_get->toString('q'))
 			{
 				$pjClientModel->where("(t2.email LIKE '%$q%' OR t2.name LIKE '%$q%')");
@@ -207,8 +210,8 @@ class pjAdminClients extends pjAdmin
 			}
 
 			$data = $pjClientModel
-			->join('pjOrder', 't3.client_id = t1.id')
-			->select("t1.id, t2.email AS c_email, t2.name AS c_name, t2.phone, t3.post_code, t2.status, (SELECT COUNT(TO.client_id) FROM `".pjOrderModel::factory()->getTable()."` AS `TO` WHERE `TO`.client_id=t1.id) AS cnt_orders")
+			//->join('pjOrder', 't3.client_id = t1.id')
+			->select("t1.id, t2.email AS c_email, t2.name AS c_name, t2.phone, t1.c_postcode, t2.status, (SELECT COUNT(TO.client_id) FROM `".pjOrderModel::factory()->getTable()."` AS `TO` WHERE `TO`.client_id=t1.id) AS cnt_orders")
 			->orderBy("$column $direction")
 			->limit($rowCount, $offset)
 			->findAll()
@@ -220,7 +223,7 @@ class pjAdminClients extends pjAdmin
 			    $v['c_name'] = pjSanitize::stripScripts($v['c_name']);
 			    $v['c_email'] = pjSanitize::stripScripts($v['c_email']);
 			    $v['phone'] = pjSanitize::stripScripts($v['phone']);
-			    $v['post_code'] = pjSanitize::stripScripts($v['post_code']);
+			    $v['c_postcode'] = pjSanitize::stripScripts($v['c_postcode']);
 			    $data[$k] = $v;
 			}
 			
@@ -332,12 +335,16 @@ class pjAdminClients extends pjAdmin
 	            $post['status'] = 'F';
 	            $data['status'] = 'F';
 	        }
+	        // print_r($this->_post->toString('surname'));
+	        // exit;
+	        $post['c_postcode'] = $post['post_code'];
 	        $pjClientModel->where('id', $id)->limit(1)->modifyAll($post);
 	        $client = $pjClientModel->reset()->find($id)->getData();
 	        $data['id'] = $client['foreign_id'];
 	        $data['email'] = $this->_post->toString('c_email');
 	        $data['password'] = $this->_post->toString('c_password');
 	        $data['name'] = $this->_post->toString('c_name');
+	        $data['u_surname'] = $this->_post->toString('surname');
 	        $data['phone'] = $this->_post->toString('c_phone');
 	        $old_phone = pjAuthUserModel::factory()
 	                    ->select("t1.phone")
@@ -363,7 +370,7 @@ class pjAdminClients extends pjAdmin
 	        $id = $this->_get->toInt('id');
 	        $order_table = pjOrderModel::factory()->getTable();
 	        $arr = pjClientModel::factory()
-	        ->select("t1.*, t2.email as c_email, t2.name as c_name, t2.phone as c_phone, t2.status as status, AES_DECRYPT(t2.password, '".PJ_SALT."') AS c_password,
+	        ->select("t1.*, t2.email as c_email, t2.name as c_name, t2.phone as c_phone, t2.status as status,t2.u_surname As c_surname, AES_DECRYPT(t2.password, '".PJ_SALT."') AS c_password,
 							  (SELECT COUNT(TB.id) FROM `".$order_table."` AS TB WHERE TB.client_id = t1.id) AS cnt_orders,
 							  (SELECT SUM(TB.total) FROM `".$order_table."` AS TB WHERE TB.client_id = t1.id) AS total_amount,
 							  (SELECT CONCAT(TB.created, '~:~', TB.id) FROM `".$order_table."` AS TB WHERE TB.client_id = t1.id ORDER BY TB.created DESC LIMIT 1) AS last_order")

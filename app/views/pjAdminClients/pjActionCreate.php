@@ -54,11 +54,18 @@ $u_statarr = __('u_statarr', true)
                             </div>
                         </div><!-- /.col-md-3 -->
 
-                        <div class="col-sm-6">
+                        <div class="col-sm-3">
                             <div class="form-group">
-                                <label class="control-label"><?php __('lblName'); ?></label>
+                                <label class="control-label"><?php echo "Firstname"; ?></label>
 
                                 <input type="text" id="c_name" name="c_name" class="form-control required" data-msg-required="<?php __('fd_field_required', false, true);?>" maxlength="255">
+                            </div>
+                        </div><!-- /.col-md-3 -->
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label class="control-label"><?php echo "Surname"; ?></label>
+
+                                <input type="text" id="surname" name="surname" class="form-control required" data-msg-required="<?php __('fd_field_required', false, true);?>" maxlength="255">
                             </div>
                         </div><!-- /.col-md-3 -->
                     </div><!-- /.row -->
@@ -137,35 +144,21 @@ $u_statarr = __('u_statarr', true)
 
                         <div class="col-lg-3 col-md-4 col-sm-6">
                             <div class="form-group">
-                                <label class="control-label"><?php __('lblState'); ?></label>
+                                <label class="control-label"><?php echo "County"; ?></label>
 
-                                <input type="text" name="c_state" id="c_state" class="form-control" maxlength="255">
+                                <input type="text" name="c_county" id="c_county" class="form-control" maxlength="255">
                             </div>
                         </div><!-- /.col-md-3 -->
 
                         <div class="col-lg-3 col-md-4 col-sm-6">
                             <div class="form-group">
-                                <label class="control-label"><?php __('lblZip'); ?></label>
+                                <label class="control-label"><?php echo "Postcode"; ?></label>
 
-                                <input type="text" name="c_zip" id="c_zip" class="form-control" maxlength="255">
+                                <input type="text" name="post_code" id="c_zip" class="form-control" maxlength="255">
                             </div>
                         </div><!-- /.col-md-3 -->
 
-                        <div class="col-lg-3 col-md-4 col-sm-6">
-                            <div class="form-group">
-                                <label class="control-label"><?php __('lblCountry'); ?></label>
-
-                                <select name="c_country" id="c_country" class="form-control">
-                					<option value="">-- <?php __('lblChoose'); ?>--</option>
-                					<?php
-                					foreach ($tpl['country_arr'] as $v)
-                					{
-                						?><option value="<?php echo $v['id']; ?>"><?php echo stripslashes($v['country_title']); ?></option><?php
-                					}
-                					?>
-                				</select>
-                            </div>
-                        </div><!-- /.col-md-3 -->
+                        
                         <div class="col-lg-6 col-md-8 col-sm-12">
                             <div class="form-group">
                                 <label class="control-label"><?php __('lblNotes'); ?></label>

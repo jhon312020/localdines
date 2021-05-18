@@ -62,7 +62,7 @@
             <tr>
             	<input type="hidden" id="kprint_" name="" value="<?php echo $kprint; ?>">
 
-                <td class="kitchen"><?php echo $oi['cnt']. " ";?><?php echo $product['name']; ?><br><?php echo '#'.$oi['special_instruction']; ?></td>
+                <td class="kitchen"><?php echo $oi['cnt']. " ";?><?php echo $product['name']; ?><br><?php if($oi['special_instruction'] != '') { echo '#'.$oi['special_instruction']; }else{ echo '';} ?></td>
                 <td class="nani"></td>
                 
             </tr>

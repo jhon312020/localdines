@@ -241,7 +241,7 @@ $short_days = __('short_days', true);
                 								</td>
                                                             
                                                 <td>
-                                                    <input type="text" id="special_instruction" name="special_instruction" class="form-control" value="" />
+                                                    <input type="text" id="special_instruction" name="special_instruction[<?php echo $index;?>]" class="form-control" value="" />
                                                 </td>
                                                 <!-- <td>&nbsp;</td> -->
                                             </tr>
@@ -435,34 +435,28 @@ $short_days = __('short_days', true);
                                     $ob_fields = ob_get_contents();
                                     ob_end_clean();
                                     ?>
-    							    <div class="row hi">
+    							    <div class="row">
     							    	<?php echo $ob_fields;?>
     							    </div><!-- /.row -->
     							    <?php
-    							    ob_start();
-    							    $field = 3;
+    							    // ob_start();
+    							    // $field = 3;
                                 }
                                 ?> 
-                                <!-- <div class="col-md-3 col-sm-6">
-                                    <div class="form-group">
-                                        <label class="control-label"><?php //echo 'Mobile' //__('lblPhone'); ?></label>
-                                        <input type="text" name="phone_no" id="phone_no" class="form-control<?php //echo $tpl['option_arr']['o_bf_include_phone'] == 3 ? ' fdRequired required' : NULL; ?>" data-msg-required="<?php //__('fd_field_required', false, true);?>"/>
-                                    </div>
-                                </div> --><!-- /.col-md-3 --> 
+                            </div>
+                            <div>
+                                <?php
+                                    ob_start();
+                                    $field = 3;
+                                
+                                ?> 
+                            
                                 <div class="col-md-3 col-sm-6">
                                     <div class="form-group">
                                         <label class="control-label"><?php echo 'Email' //__('lblPhone'); ?></label>
                                         <input type="text" name="sms_email" id="c_email" class="form-control email<?php echo $tpl['option_arr']['o_bf_include_email'] == 3 ? ' fdRequired required' : NULL; ?>" data-msg-required="<?php __('fd_field_required', false, true);?>"/>
                                     </div>
                                 </div><!-- /.col-md-3 --> 
-                                <!-- <div class="col-md-2 col-sm-6"> -->
-
-                                <!-- <label class="control-label"><?php //echo 'Delivery Info' //__('lblPhone'); ?></label>
-                                    <div class="form-group">
-                                        <label><input type="radio" name="email_delivery_info" id="email_delivery_info_yes" value="Yes"> Yes</label>
-                                        <label><input type="radio" name="email_delivery_info" id="email_delivery_info_no" value="No"> No</label>
-                                    </div>
-                                </div> --><!-- /.col-md-3 -->   
                                 
                                 <div class="col-md-3 col-sm-6">
                                 <label class="control-label"><?php echo 'Delivery Info/Receipt' //__('lblPhone'); ?></label>
@@ -520,7 +514,7 @@ $short_days = __('short_days', true);
 
                             <!-- End of Client Details -->
                             <h4 style="display: inline">Order Details</h4>
-                            <div class="form-group col-md-3 col-sm-6" style="display: inline; float: right;">
+                            <div class="form-group col-lg-4 col-md-6 col-sm-6" style="display: inline; float: right;">
                                 <label class="control-label"><?php echo 'Total Prep.Time(Mins):'; ?></label>
 
                                 <span id="total_prep-time_format" data-msg-required="<?php __('fd_field_required', false, true);?>"></span>
@@ -581,7 +575,7 @@ $short_days = __('short_days', true);
                                                 <span class="input-group-addon"><i class="fa fa-clock-o"></i></span> 
                                                 
                                                <!--  <input name="d_time" class="pj-timepicker form-control required fdRequired" data-msg-required="<?php //__('fd_field_required', false, true);?>" readonly/>   -->
-                                                <input name="d_time" id="d_time" class=" form-control required fdRequired" data-msg-required="<?php __('fd_field_required', false, true);?>"/>    
+                                                <input name="d_time" id="d_time" class=" form-control fdRequired required" data-msg-required="<?php __('fd_field_required', false, true);?>"/>    
                                                 <input type="hidden" name="delivery_time" id="delivery_time">
                                                 
                                             </div>
@@ -596,7 +590,7 @@ $short_days = __('short_days', true);
                                                 
                                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span> 
             
-                                                <input type="text" name="p_date" id="p_date" data-wt="open" class="form-control fdRequired" data-msg-required="<?php __('fd_field_required', false, true);?>" value="<?php 
+                                                <input type="text" name="p_date" id="p_date" data-wt="open" class="form-control fdRequired required" data-msg-required="<?php __('fd_field_required', false, true);?>" value="<?php 
                                                   echo date("d.m.Y");
                                                 ?>" readonly>
                                             </div>
@@ -705,7 +699,7 @@ $short_days = __('short_days', true);
                                     <span class="ladda-label"><?php __('btnSave'); ?></span>
                                     <?php include $controller->getConstant('pjBase', 'PLUGIN_VIEWS_PATH') . 'pjLayouts/elements/button-animation.php'; ?>
                                 </button>
-                                <a class="btn btn-white btn-lg pull-right" href="<?php echo PJ_INSTALL_URL; ?>index.php?controller=pjAdminOrders&action=pjActionIndex"><?php __('btnCancel'); ?></a>
+                                
                             </div><!-- /.clearfix -->
                         </div>
                     </div>
@@ -784,7 +778,7 @@ $short_days = __('short_days', true);
     }
 </style>
 <div class="modal fade" id="catModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="width:100%">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h2 class="modal-title" id="catModalTitle"></h2>
@@ -812,5 +806,5 @@ myLabel.currency = "<?php echo $tpl['option_arr']['o_currency'];?>";
 myLabel.restaurant_closed = <?php x__encode('lblRestaurantClosed');?>;
 myLabel.email_exists = <?php x__encode('email_taken'); ?>;
 myLabel.phoneNumber_err = '<?php echo 'Mobile Number is invalid'; ?>';
-myLabel.phoneNumber_err = '<?php echo 'Email address is invalid'; ?>';
+myLabel.email_err = '<?php echo 'Email address is invalid'; ?>';
 </script>

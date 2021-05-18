@@ -229,7 +229,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
                 error.css('color','#a94442');
                 error.siblings("label").css('color','#ed5565')
                 //element.css('border','2px solid red');
-            } else if (element.attr("id") == "d_time") {
+            } else if (element.siblings("span").hasClass("input-group-addon")) {
                 error.insertAfter(element.parent())
             } else{
                 error.insertAfter(element);
@@ -248,6 +248,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 
           var valid = true;
           var $ele = null;
+          var $err_ele = [];
           
           // MEGAMIND
           //$("#mobile_delivery_info_err") = $("input[name=mobile_delivery_info]").is(":checked") ? "none" : "block";
@@ -264,10 +265,13 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
               $price_last.parent().addClass('has-error');
               valid = false;
               $ele = $product_last;
+              $err_ele.push($product_last);
             }
             else{
 
               lastRow.remove();
+              $product_last.parent().parent().removeClass("has-error");
+              $price_last.parent().removeClass('has-error');
               $('#fdOrderList').find("tbody.main-body > tr.fdLine").each(function() {
                   var index = $(this).attr('data-index'),
                     $product = $('#fdProduct_' + index),
@@ -277,6 +281,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
                     $price.parent().addClass('has-error');
                     valid = false;
                     $ele = $product;
+                    $err_ele.push($price);
                   }else{
                     $price.parent().removeClass('has-error');
                   }
@@ -293,6 +298,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
                     $price.parent().addClass('has-error');
                     valid = false;
                     $ele = $product;
+                    $err_ele.push($price);
                   }else{
                     $price.parent().removeClass('has-error');
                   }
@@ -305,7 +311,11 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           if (valid == true) {
             $(window).off('beforeunload');
             form.submit();
-          }
+           } else {
+              $('html,body').animate({
+                  scrollTop: $err_ele[0].offset().top
+              }, 1000);
+           }
         },
       });
       $frmUpdateOrder.validate({
@@ -362,7 +372,9 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
                 error.css('color','#a94442');
                 error.siblings("label").css('color','#ed5565')
                 //element.css('border','2px solid red');
-            } else {
+            } else if (element.siblings("span").hasClass("input-group-addon")) {
+                error.insertAfter(element.parent())
+            } else{
                 error.insertAfter(element);
             }
         },
@@ -376,6 +388,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
         submitHandler: function (form) {
           var valid = true;
           var $ele = null;
+          var $err_ele = [];
           // MEGAMIND
            
          
@@ -393,35 +406,40 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
               $price_last.parent().addClass('has-error');
               valid = false;
               $ele = $product_last;
+              $err_ele.push($product_last);
             }
             else{
               
               lastRow.remove();
+              $product_last.parent().parent().removeClass("has-error");
+              $price_last.parent().removeClass('has-error');
               $('#fdOrderList').find("tbody.main-body > tr.fdLine").each(function() {
                   var index = $(this).attr('data-index'),
                     $product = $('#fdProduct_' + index),
                     $price = $('#fdPrice_' + index);
                   if($price.val() == '')
                   {
-                    $price.parent().addClass('has-error');
+                    $price.parent().addClass('has-error').focus();
                     valid = false;
                     $ele = $product;
+                    $err_ele.push($price);
                   }else{
                     $price.parent().removeClass('has-error');
                   }
                 });
             }
           } else {
-            lastRow.remove();
+            
             $('#fdOrderList').find("tbody.main-body > tr.fdLine").each(function() {
                 var index = $(this).attr('data-index'),
                   $product = $('#fdProduct_' + index),
                   $price = $('#fdPrice_' + index);
                 if($price.val() == '')
                 {
-                  $price.parent().addClass('has-error');
+                  $price.parent().addClass('has-error').focus();
                   valid = false;
                   $ele = $product;
+                  $err_ele.push($price);
                 }else{
                   $price.parent().removeClass('has-error');
                 }
@@ -432,11 +450,11 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           if (valid == true) {
             $(window).off('beforeunload');
             form.submit();
-          } //else {
-          //   var $closest = $ele.closest(".tab-pane");
-          //   var id = $closest.attr("id");
-          //   $('.nav a[href="#' + id + '"]').tab("show");
-          // }
+          } else {
+              $('html,body').animate({
+                  scrollTop: $err_ele[0].offset().top
+              }, 1000);
+           }
         },
       });
 
@@ -759,7 +777,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
             text: myLabel.total,
             type: "text",
             sortable: false,
-            editable: true,
+            editable: false,
           },
           {
             text: myLabel.type,
@@ -834,36 +852,39 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
         }
         var $this = $(this),
           content = $grid.datagrid("option", "content"),
+
           cache = $grid.datagrid("option", "cache");
+
         $.extend(cache, {
           q: $this.find("input[name='q']").val(),
           type: $this.find("select[name='type']").val(),
         });
         $grid.datagrid("option", "cache", cache);
-        $grid.datagrid(
-          "load",
-          "index.php?controller=pjAdminOrders&action=pjActionGetOrder",
-          "created",
-          "DESC",
-          content.page,
-          content.rowCount
-        );
-        $grid.datagrid(
-          "load",
-          "index.php?controller=pjAdminOrders&action=pjActionGetOrder",
-          "order_despatched",
-          "DESC",
-          content.page,
-          content.rowCount
-        );
-        $grid.datagrid(
-          "load",
-          "index.php?controller=pjAdminOrders&action=pjActionGetOrder",
-          "delivered_customer",
-          "DESC",
-          content.page,
-          content.rowCount
-        );
+        $grid.datagrid("load", "index.php?controller=pjAdminOrders&action=pjActionGetOrder", "created", "DESC", content.page, content.rowCount);
+        // $grid.datagrid(
+        //   "load",
+        //   "index.php?controller=pjAdminOrders&action=pjActionGetOrder",
+        //   "created",
+        //   "DESC",
+        //   content.page,
+        //   content.rowCount
+        // );
+        // $grid.datagrid(
+        //   "load",
+        //   "index.php?controller=pjAdminOrders&action=pjActionGetOrder",
+        //   "order_despatched",
+        //   "DESC",
+        //   content.page,
+        //   content.rowCount
+        // );
+        // $grid.datagrid(
+        //   "load",
+        //   "index.php?controller=pjAdminOrders&action=pjActionGetOrder",
+        //   "delivered_customer",
+        //   "DESC",
+        //   content.page,
+        //   content.rowCount
+        // );
         // $grid.datagrid(
         //   "load",
         //   "index.php?controller=pjAdminOrders&action=pjActionGetOrder",
@@ -891,7 +912,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
         $.ajax({
         type: "POST",
         async: false,
-        url: "index.php?controller=pjAuth&action=pjActionSetSession",
+        url: "index.php?controller=pjFrontEnd&action=pjActionSetSession",
         data: { 
           chef_id: function () {
             return $chef_id;
@@ -963,17 +984,13 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
         calPrice(1);
         return false;
       })
+      .on("click", "input[type = 'radio']", function(e) {
+        $(this).parent().siblings("label").css('color','#676a6c');
+      })
       .on("change", ".fdProduct", function (e) {
         if (e && e.preventDefault) {
           e.preventDefault();
         }
-      
-
-        //$(this).parent().last().children().css("display","block");
-        //console.log($("#fdOrderList").children("tbody").children());
-        // if (prodSelect.length() !== 0) {
-        //   console.log("has Something");
-        // }
         var $this = $(this),
           index = $this.attr("data-index"),
           option = $("option:selected", this).attr("data-extra");
@@ -1115,6 +1132,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           if ($cinfo[c]['phone_no'] == $c_phone){
             $("#c_title").val($cinfo[c]['c_title']);
             $("#c_email").val($cinfo[c]['sms_email']);
+            $cinfo[c]['sms_email'] == '' ? $("#c_email").attr('data-wt','invalid') : $("#c_email").attr('data-wt','valid');
             $("#c_surname").val($cinfo[c]['surname']);
             $("#inputPostCode").val($cinfo[c]['post_code']);
             $("#d_address_1").val($cinfo[c]['d_address_1']);
@@ -1133,6 +1151,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
         if(newUser == true) {
           $("#c_title").val("");
           $("#c_email").val("");
+          $("#c_email").attr('data-wt','invalid');
           $("#c_surname").val("");
           $("#inputPostCode").val("");
           $("#d_address_1").val("");
@@ -1140,6 +1159,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           $("#d_city").val("");
           $("#c_name").val("");
           $("input:radio").prop("checked", false);
+          //$("input:radio").parent().siblings("label").css('color','#676a6c')
         }
         // } else if (newUser == false) {
         //   
@@ -1510,13 +1530,14 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           var categoryID = $(this).data("id");
           var catName = $(this).text();
           $.post(
-            "index.php?controller=pjAuth&action=pjActionGetProductsForCategory",
+            "index.php?controller=pjFrontEnd&action=pjActionGetProductsForCategory",
             {category_id: categoryID}
           ).done(function (data) {
             //console.log(data);
             $('#catModalTitle').text(catName);
             $('#catModalBody').html(data);
             $("#catModal").modal();
+            //$(".modal-dialog").attr('class','modal-lg')
           });
           return false;
       })
@@ -1545,7 +1566,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
     });
      $(document).ready(function() {
      var $page = $('h2');
-     if ($page.text() == "Update page") {
+     if ($page.text() == "Update Order") {
 
       $("#fdOrderList").children("tbody").children("tr.fdLine").each(function(){
 
@@ -1578,7 +1599,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
      
     });
      $(window).on('beforeunload', function(){
-        if ($("h2").text()=="Add new order" || $("h2").text()=="Update page") {
+        if ($("h2").text()=="Add new order" || $("h2").text()=="Update Order") {
         return 'Are you sure you want to leave?';
       }
      });
@@ -1736,9 +1757,9 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
               $.each(result, function (index) {
                 var address =
                   result[index].line_1 +
-                  " ," +
+                  ", " +
                   result[index].line_2 +
-                  " ," +
+                  ", " +
                   result[index].line_3;
                 
                 $("<option />", { value: i, text: address }).appendTo(

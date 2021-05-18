@@ -21,6 +21,17 @@ class pjFrontClient extends pjAuth
             return FALSE;
         }
     }
+    public function getClientByPhoneNumber()
+    {
+        $params = $this->getParams();
+        $client = pjAuthUserModel::factory()->where('phone', $params['phone'])->where('role_id', 3)->findAll()->getDataIndex(0);
+        if(!empty($client))
+        {
+            return $client;
+        }else{
+            return FALSE;
+        }
+    }
     
     public function createClient()
     {
@@ -31,19 +42,22 @@ class pjFrontClient extends pjAuth
         $u_data['email'] = $params['c_email'];
         $u_data['password'] = isset($params['c_password']) ? $params['c_password'] : pjAuth::generatePassword($this->option_arr);
         $u_data['name'] = isset($params['c_name']) ? $params['c_name'] : ":NULL";
+        $u_data['u_surname'] = isset($params['surname']) ? $params['surname'] : ":NULL";
         $u_data['phone'] = isset($params['c_phone']) ? $params['c_phone'] : ":NULL";
         $u_data['status'] = isset($params['status']) ? $params['status'] : ":NULL";
         $u_data['ip'] = pjUtil::getClientIp();
         $u_data['is_active'] = 'T';
+        // print_r($params);
+        // exit;
         $id = pjAuthUserModel::factory($u_data)->insert()->getInsertId();
-        $id = 82;
+        //$id = 82;
         
-        //print_r($u_data);
+        
         
 
         if ($id !== false && (int) $id > 0)
         {
-            $client = pjFrontClient::init($u_data)->getClientByEmail();
+            $client = pjFrontClient::init($u_data)->getClientByPhoneNumber();
             
             if($client != FALSE)
             {
@@ -57,7 +71,7 @@ class pjFrontClient extends pjAuth
                 $c_data['c_country'] = isset($params['d_country_id']) ? (!empty($params['d_country_id'])  ? $params['d_country_id'] : ':NULL') : (isset($params['c_country']) ? (!empty($params['c_country'])  ? $params['c_country'] : ':NULL') : ":NULL");
                 $c_data['c_state'] = isset($params['d_state']) ? (!empty($params['d_state'])  ? $params['d_state'] : ':NULL') : (isset($params['c_state']) ? (!empty($params['c_state'])  ? $params['c_state'] : ':NULL') : ":NULL");
                 $c_data['c_city'] = isset($params['d_city']) ? (!empty($params['d_city'])  ? $params['d_city'] : ':NULL') : (isset($params['c_city']) ? (!empty($params['c_city'])  ? $params['c_city'] : ':NULL') : ":NULL");
-                $c_data['c_zip'] = isset($params['d_zip']) ? (!empty($params['d_zip'])  ? $params['d_zip'] : ':NULL') : (isset($params['c_zip']) ? (!empty($params['c_zip'])  ? $params['c_zip'] : ':NULL') : ":NULL");
+                $c_data['c_postcode'] = isset($params['post_code']) ? (!empty($params['post_code'])  ? $params['post_code'] : ':NULL') : (isset($params['post_code']) ? (!empty($params['post_code'])  ? $params['post_code'] : ':NULL') : ":NULL");
                 $c_data['c_type'] = isset($params['c_type']) ? $params['c_type'] : ":NULL";
                 $client_id = pjClientModel::factory()->setAttributes($c_data)->insert()->getInsertId();
                 if ($client_id !== false && (int) $client_id > 0)
