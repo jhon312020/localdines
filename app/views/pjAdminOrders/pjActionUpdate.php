@@ -246,6 +246,8 @@ $short_days = __('short_days', true);
                                                 <!-- MEGAMIND -->
 
                                                 <td id="fdPriceTD_<?php echo $oi['hash']; ?>">
+                                                <?php $productData = json_encode( $product, JSON_HEX_APOS); ?>
+                                                <input type="hidden" id="prdInfo_<?php echo $oi['hash'];?>" data-type="input" name="prdInfo_[<?php echo $oi['hash'];?>]" value='<?php echo $productData; ?>' />
                                                     <div class="business-<?php echo $oi['hash']; ?>">
                                                         <?php
                                                         if(empty($oi['price_id']))
