@@ -746,7 +746,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
                   },
           
           { text: myLabel.sms_sent_time, type: "text", sortable: false },
-          { text: myLabel.excpected_delivery, type: "text", sortable: false },
+          { text: myLabel.expected_delivery, type: "text", sortable: false },
           // { text: myLabel.delivered_customer, type: "text", sortable: false },
           {text: myLabel.delivered_customer, type: "toggle", sortable: false, editable: false, 
                     editableRenderer: function () {
@@ -805,7 +805,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           "index.php?controller=pjAdminOrders&action=pjActionGetOrder" +
           pjGrid.queryString,
         dataType: "json",
-        fields: ["order_id","phone_no", "surname", "address", "post_code", "c_type", "sms_email", "order_despatched", "sms_sent_time", "excpected_delivery", "delivered_customer", "delivered_time","is_paid","datetime", "total", "type", "status"],
+        fields: ["order_id","phone_no", "surname", "address", "post_code", "c_type", "sms_email", "order_despatched", "sms_sent_time", "expected_delivery", "delivered_customer", "delivered_time","is_paid","datetime", "total", "type", "status"],
         paginator: {
           actions: [
             {
@@ -912,7 +912,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
         $.ajax({
         type: "POST",
         async: false,
-        url: "index.php?controller=pjFrontEnd&action=pjActionSetSession",
+        url: "index.php?controller=pjAdminOrders&action=pjActionSetSession",
         data: { 
           chef_id: function () {
             return $chef_id;
@@ -1432,6 +1432,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
         var $pjFdPriceWrapper = $("#pjFdPriceWrapper");
         var value = $("#status option:selected").val();
         var text = $("#status option:selected").text();
+        if(value == 'delivered'){value = 'success'}
         var bg_class = "bg-" + value;
         $pjFdPriceWrapper
           .find(".panel-heading")
@@ -1530,7 +1531,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           var categoryID = $(this).data("id");
           var catName = $(this).text();
           $.post(
-            "index.php?controller=pjFrontEnd&action=pjActionGetProductsForCategory",
+            "index.php?controller=pjAdminOrders&action=pjActionGetProductsForCategory",
             {category_id: categoryID}
           ).done(function (data) {
             //console.log(data);

@@ -36,6 +36,9 @@ if((strpos($tpl['option_arr']['o_time_format'], 'A') > -1))
 $months = __('months', true);
 ksort($months);
 $short_days = __('short_days', true);
+$statuses = __('order_statuses', true, false);
+unset($statuses['cancelled']);
+unset($statuses['delivered']);
 ?>
 <div class="row wrapper wrapper-content animated fadeInRight" id="orderContainer">
     <div class="col-lg-9">
@@ -678,7 +681,7 @@ $short_days = __('short_days', true);
     
                                         <select name="status" id="status" class="form-control required" data-msg-required="<?php __('fd_field_required', false, true);?>">
                                             <?php
-    										foreach (__('order_statuses', true, false) as $k => $v)
+    										foreach ($statuses as $k => $v)
     										{
     											?><option value="<?php echo $k; ?>"<?php echo $k =='pending' ? ' selected="selected"' : NULL;?>><?php echo stripslashes($v); ?></option><?php
     										}
@@ -699,7 +702,7 @@ $short_days = __('short_days', true);
                                     <span class="ladda-label"><?php __('btnSave'); ?></span>
                                     <?php include $controller->getConstant('pjBase', 'PLUGIN_VIEWS_PATH') . 'pjLayouts/elements/button-animation.php'; ?>
                                 </button>
-                                
+                                <a class="btn btn-white btn-lg pull-right" href="<?php echo PJ_INSTALL_URL; ?>index.php?controller=pjAdminOrders&action=pjActionIndex"><?php __('btnCancel'); ?></a>
                             </div><!-- /.clearfix -->
                         </div>
                     </div>

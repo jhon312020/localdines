@@ -412,45 +412,42 @@ class pjAppController extends pjBaseAppController
 	            
 	            if (isset($data['type']))
 	            {
-	                if(!empty($data['d_dt']))
-	                {
-    	                $date_time = $data['d_dt'];
-    	                if(count(explode(" ", $date_time)) == 3)
-    	                {
-    	                    list($_date, $_time, $_period) = explode(" ", $date_time);
-    	                    $time = pjDateTime::formatTime($_time . ' ' . $_period, $option_arr['o_time_format']);
-    	                }else{
-    	                    list($_date, $_time) = explode(" ", $date_time);
-    	                    if ($_time == 'asap')
-    	                    {
-    	                    	$time = date("H:i:s");
-    	                    } else {
-    	                    	$time = pjDateTime::formatTime($_time, $option_arr['o_time_format']);
-    	                    }
-    	                }
-    	                $date = $_date;
-    	                $dt = pjDateTime::formatDate($_date, $option_arr['o_date_format']) . ' ' . $time;
-	                }
+	                
+                    if (!empty($data['d_date']) && !empty($data['delivery_time']))
+                    {   
+                        $d_time = $data['delivery_time'];
+                        if(count(explode(" ", $data['delivery_time'])) == 2)
+                        {
+                            list($_time, $_period) = explode(" ", $d_time);
+                            $time = pjDateTime::formatTime($_time . ' ' . $_period, $option_arr['o_time_format']);
+                        }else{
+                           
+                            $time = pjDateTime::formatTime($d_time, $option_arr['o_time_format']);
+                        }
+                        $date = $data['d_date']; 
+                        $dt = pjDateTime::formatDate($date,$option_arr['o_date_format']) . ' ' . $time;
+                        
+                    }
 	            }else{
-	                if(!empty($data['p_dt']))
-	                {
-    	                $date_time = $data['p_dt'];
-    	                if(count(explode(" ", $date_time)) == 3)
-    	                {
-    	                    list($_date, $_time, $_period) = explode(" ", $date_time);
-    	                    $time = pjDateTime::formatTime($_time . ' ' . $_period, $option_arr['o_time_format']);
-    	                }else{
-    	                    list($_date, $_time) = explode(" ", $date_time);
-    	                    if ($_time == 'asap')
-    	                    {
-    	                    	$time = date("H:i:s");
-    	                    } else {
-    	                    	$time = pjDateTime::formatTime($_time, $option_arr['o_time_format']);
-    	                    }
-    	                }
-    	                $date = $_date;
-    	                $dt = pjDateTime::formatDate($_date, $option_arr['o_date_format']) . ' ' . $time;
-	                }
+	                
+                    if (!empty($data['p_date']) && !empty($data['pickup_time']))
+                    {
+                        
+                        $p_time = $data['pickup_time'];
+
+                        
+                        if(count(explode(" ", $p_time)) == 2)
+                        {
+                            list($_time, $_period) = explode(" ", $p_time);
+                            $time = pjDateTime::formatTime($_time . ' ' . $_period, $option_arr['o_time_format']);
+                        }else{
+                           
+                            $time = pjDateTime::formatTime($p_time, $option_arr['o_time_format']);
+                        }
+                        $date = $data['p_date'];
+                        $dt = pjDateTime::formatDate($date,$option_arr['o_date_format']) . ' ' . $time;
+
+                    }
 	            }
 	            if ($dt != null)
 	            {

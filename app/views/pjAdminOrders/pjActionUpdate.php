@@ -695,9 +695,6 @@ $short_days = __('short_days', true);
                                                 ?>">  
                                             </div>
                                             <label>Approximate pickup time :</label><span id="aproxPt"><?php 
-                                                if ($pTime == '') {
-                                                    
-                                                }
                                                   echo $pTime; ?></span>
                                         </div><!-- /.form-group -->
                                         <!-- <label class="control-label"><?php //__('lblPickerDateTime'); ?></label>

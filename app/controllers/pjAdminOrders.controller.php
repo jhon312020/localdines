@@ -128,7 +128,7 @@ class pjAdminOrders extends pjAdmin
 				// $data[$k]['order_despatched'] = '1';
                 
                 $v['sms_sent_time'] == "" ? $data[$k]['sms_sent_time'] = '' : $data[$k]['sms_sent_time'] = explode(" ", $v['sms_sent_time'])[1];
-				$v['d_dt'] == "" ? $data[$k]['excpected_delivery'] = explode(" ", $v['p_dt'])[1] : $data[$k]['excpected_delivery'] = explode(" ", $v['d_dt'])[1];
+				$v['d_dt'] == "" ? $data[$k]['expected_delivery'] = explode(" ", $v['p_dt'])[1] : $data[$k]['expected_delivery'] = explode(" ", $v['d_dt'])[1];
 				//$time = explode(" ", $v['delivered_time'])[1];
                 $v['delivered_time'] == "" ? $data[$k]['delivered_time'] = '' : $data[$k]['delivered_time'] = explode(" ", $v['delivered_time'])[1];
 				//$data[$k]['delivered_time'] = $v['delivered_time'];
@@ -526,7 +526,7 @@ class pjAdminOrders extends pjAdmin
 	                            'price_id' => $price_id,
 	                            'price' => $price,
 	                            'cnt' => $post['cnt'][$k],
-	                            'special_instruction' => $post['special_instruction']
+	                            'special_instruction' => $post['special_instruction'][$k]
 	                        ))
 	                        ->insert()
 	                        ->getInsertId();
@@ -555,7 +555,7 @@ class pjAdminOrders extends pjAdmin
 	                                        'price_id' => ':NULL',
 	                                        'price' => $extra_price,
 	                                        'cnt' => $post['extra_cnt'][$k][$i],
-	                                        'special_instruction' => $post['special_instruction']
+	                                        'special_instruction' => $post['special_instruction'][$k][$i]
 	                                    ))
 	                                    ->insert();
 	                                }
@@ -1509,11 +1509,11 @@ class pjAdminOrders extends pjAdmin
 					$price_delivery = $arr[0]['price'];
 				}
 			}
-			
 			if ($this->_post->has('voucher_code'))
 			{
 				$post = $this->_post->raw();
 				$resp = pjAppController::getDiscount($post, $this->option_arr);
+
 				if ($resp['code'] == 200)
 				{
 					$voucher_discount = $resp['voucher_discount'];
@@ -1975,20 +1975,109 @@ class pjAdminOrders extends pjAdmin
 
 	}
 
-	// public function pjActionSetSession() {
+	/* Added by JR */
+    public function pjActionGetProductsForCategory()
+    {
+        $this->setAjax(true);
+    
+        if ($this->isXHR())
+        {
+            $product_arr = [];
+            $category_id = $this->_post->toInt('category_id');
+            $category_arr = pjProductCategoryModel::factory()
+            ->select('t1.product_id')
+            ->whereIn("t1.category_id", $category_id)
+            ->findAll()
+            ->getData();
+            if ($category_arr) {
+                $category_arr = array_column($category_arr, 'product_id');
+                $product_arr = pjProductModel::factory()
+                ->select('t1.id, t2.content AS name, t1.set_different_sizes, t1.price, t1.status')
+                ->join('pjMultiLang', "t2.foreign_id = t1.id AND t2.model = 'pjProduct' AND t2.locale = '".$this->getLocaleId()."' AND t2.field = 'name'", 'left')
+                ->whereIn("t1.id", $category_arr)
+                ->groupBy('t1.id, t1.set_different_sizes, t1.price')
+                ->findAll()
+                ->getData();
+            }
+            $this->set('product_arr', $product_arr);
 
-	// 	$this->setAjax(true);
-	//     if ($this->isXHR())
-	//     {
-	//     	if ($this->_post->toInt('chef_id') <= 0) {
-	//         	self::jsonResponse(array('status' => 'ERR', 'code' => 101, 'text' => 'Missing, empty or invalid parameters.'));
-	//         }
-	//     $chef = $this->_post->toInt('chef_id');
- //        $_SESSION['chef'] = $chef;
-	//     self::jsonResponse(array('status' => 'OK', 'code' => 200, 'text' => 'success'));
-	//     }
+            $extra_arr = pjExtraModel::factory()
+                ->join('pjMultiLang', "t2.foreign_id = t1.id AND t2.model = 'pjExtra' AND t2.locale = '".$this->getLocaleId()."' AND t2.field = 'name'", 'left')
+                ->join('pjProductExtra', "t3.extra_id = t1.id")
+                ->select("t1.*, t2.content AS name, t3.product_id")
+                ->orderBy("name ASC")
+                ->findAll()
+                ->getData();
 
-	// }
+            $this->set('extras', $extra_arr);
+
+            $price_arr = pjProductPriceModel::factory()
+                            ->join('pjMultiLang', "t2.foreign_id = t1.id AND t2.model = 'pjProductPrice' AND t2.locale = '".$this->getLocaleId()."' AND t2.field = 'price_name'", 'left')
+                            ->select("t1.*, t2.content AS price_name")
+                            ->orderBy("price_name ASC")
+                            ->findAll()
+                            ->getData();
+                        $this->set('price_arr', $price_arr);
+        }
+    }
+
+    public function pjActionSetSession() {
+
+        $this->setAjax(true);
+        if ($this->isXHR())
+        {
+            if ($this->_post->toInt('chef_id') <= 0) {
+                self::jsonResponse(array('status' => 'ERR', 'code' => 101, 'text' => 'Missing, empty or invalid parameters.'));
+            }
+        $chef = $this->_post->toInt('chef_id');
+        $_SESSION['chef'] = $chef;
+        self::jsonResponse(array('status' => 'OK', 'code' => 200, 'text' => 'success'));
+        }
+
+    }
+    public function pjActionDelayMessage()
+    {
+        $this->setAjax(true);
+        if ($this->isXHR())
+        {
+            if (!self::isPost())
+            {
+                self::jsonResponse(array('status' => 'ERR', 'code' => 100, 'text' => 'HTTP method not allowed.'));
+            }
+            
+             if ($this->_post->toInt('id') <= 0)
+            {
+                self::jsonResponse(array('status' => 'ERR', 'code' => 101, 'text' => 'Missing, empty or invalid parameters.'));
+            }
+            if ($this->_post->toString('delay_msg') == "")
+            {
+                self::jsonResponse(array('status' => 'ERR', 'code' => 102, 'text' => 'Message is empty'));
+            }
+            else {
+                $msg = $this->_post->toString('delay_msg');
+            }
+            $id = $this->_post->toInt('id');
+            
+            $data = pjOrderModel::factory()
+            ->select("t1.phone_no, t1.delivered_customer")
+            ->find($id)
+            ->getData();
+
+            // if ($data['delivered_customer'] == 1) {
+            //  $params = array(
+         //        'text' => $msg,
+         //        'type' => 'unicode',
+         //        'key' => md5($this->option_arr['private_key'] . PJ_SALT)
+         //       );
+         //       // $params['number'] = $data['phone_no'];
+         //       $params['number'] = "+917449296732";
+         //       pjBaseSms::init($params)->pjActionSend();
+            // }
+
+            self::jsonResponse(array('status' => 'OK', 'code' => 200, 'text' => 'Delay message has been sent.'));
+        }
+        exit;
+    }
 
 	// !MEGAMIND
 }
