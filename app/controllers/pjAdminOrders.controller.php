@@ -890,6 +890,8 @@ class pjAdminOrders extends pjAdmin
 	            }
 	            unset($post['d_dt']);
 	            $data['d_dt'] = ':NULL';
+	            unset($post['d_time']);
+	            $data['d_time'] = 0;
 	        }
 	        $data['client_id'] = $new_client_id;
 	        

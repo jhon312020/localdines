@@ -42,8 +42,6 @@
     		}
     	}
     	$statuses = __('order_statuses', true, false);
-        $statuses['delivered'] = "Delivered";
-        // print_r($statuses);
     	?>
         <div class="ibox float-e-margins">
             <div class="ibox-content">
@@ -72,12 +70,7 @@
                 				{
                 				    ?><option value="<?php echo $k; ?>"<?php echo $controller->_get->toString('type') == $k ? ' selected="selected"' : NULL;?>><?php echo stripslashes($v); ?></option><?php
                 				}
-                				// foreach (__('order_statuses', true, false) as $k => $v)
-                				// {
-                				
-                				// }
                                 foreach ($statuses as $k => $v) {
-                                    # code...
                                     ?><option value="<?php echo $k; ?>"><?php echo stripslashes($v); ?></option><?php
                                 }
                 				?>
@@ -90,54 +83,6 @@
             </div>
         </div>
     </div><!-- /.col-lg-12 -->
-   <!--  <center>
-    <input type="button" id="btnShowPopup" value="Show Popup" class="btn btn-info btn-lg" />
-</center> -->
-<!-- Modal Popup -->
-<!-- <div id="MyPopup" class="modal fade" role="dialog">
-    <div class="modal-dialog"> -->
-        <!-- Modal content-->
-        <!-- <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">
-                    &times;</button>
-                <h4 class="modal-title">
-                </h4>
-            </div>
-            <div class="modal-body">
-                
-                <form role='form_edit'action="" method="post"> -->
-
-             <!--  <div class="form-group">
-                <label for="Title" >Title</label>
-                <input type="text"  class="form-control" id="titleId" name='tit' placeholder="Enter the title of the article">
-              </div> -->
-            <!-- <select class="form-control" id="delay_reason">
-              <option selected>Choose the reason</option>
-              <option value="1">Traffic Delay</option>
-              <option value="2">Too busy with more orders</option>
-              <option value="3">Short of staff</option>
-              <option value="4">Custom</option>
-            </select>
- 
-              <div class="form-group" style="margin-top: 20px;">
-                
-                <textarea class="form-control" rows='5' id="message" name="delay_msg"></textarea>
-              </div>
-
-              <button type="submit" class="btn btn-default btn-primary btn-block" id="d_msg" >Submit</button>
-
-          </form> -->
-                <!-- <textarea name="dataMsg"></textarea> -->
-            <!-- </div> -->
-            <!-- <div class="modal-footer">
-                <a type="submit" class="btn btn-primary">
-                    Submit</a>
-            </div> -->
-        <!-- </div>
-    </div>
-</div> -->
-<!-- Button trigger modal -->
 <style>
     .modal h2 {
         color: #575757;
