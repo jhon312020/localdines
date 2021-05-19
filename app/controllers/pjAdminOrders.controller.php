@@ -51,11 +51,11 @@ class pjAdminOrders extends pjAdmin
 			->join('pjClient', "t2.id=t1.client_id", 'left outer')
 			->join('pjAuthUser', "t3.id=t2.foreign_id", 'left outer');
             
-           
+
 				
 			if ($q = $this->_get->toString('q'))
 			{
-				$pjOrderModel->where("(t1.id='$q' OR t1.uuid = '$q' OR t1.surname LIKE '%$q%' OR t3.email LIKE '%$q%' OR t1.phone_no = '$q' OR t1.post_code = '$q')");
+				$pjOrderModel->where("(t1.id='$q' OR t1.uuid = '$q' OR t3.name LIKE '%$q%' OR t3.email LIKE '%$q%')");
 			}
 			if ($this->_get->toString('status'))
 			{
@@ -346,7 +346,6 @@ class pjAdminOrders extends pjAdmin
 			$data['sms_email'] = $this->_post->toString('sms_email');
 			$data['first_name'] = $this->_post->toString('c_name');
 			$data['chef_id'] = $this->session->getData('chef');
-			$data['user_role'] = $this->session->getData('user_role');
 			$data['mobile_delivery_info'] = $this->_post->toBool('mobile_delivery_info');
 			$data['mobile_offer'] = $this->_post->toBool('mobile_offer');
 			$data['email_delivery_info'] = $this->_post->toBool('email_delivery_info');
@@ -359,14 +358,13 @@ class pjAdminOrders extends pjAdmin
 	            $c_data = array();
 	            $c_data['c_title'] = $this->_post->toString('c_title');
 	            $c_data['c_name'] = $this->_post->toString('c_name');
-	            $c_data['surname'] = $data['surname'];
+	            
 	            //$c_data['c_password'] = $this->_post->toString('c_password');
 	            $c_data['c_phone'] = $this->_post->toString('phone_no');
 	            //$c_data['c_company'] = $this->_post->toString('c_company');
 	            $c_data['c_address_1'] = $this->_post->toString('d_address_1');
 	            $c_data['c_address_2'] = $this->_post->toString('d_address_2');
 	            $c_data['c_city'] = $this->_post->toString('d_city');
-	            $c_data['post_code'] = $data['post_code'];
 	            $c_data['password'] = $c_data['c_name'].$data['uuid'];
 	            //$c_data['c_state'] = $this->_post->toString('d_state');
 	            //$c_data['c_zip'] = $this->_post->toString('d_zip');
@@ -497,7 +495,6 @@ class pjAdminOrders extends pjAdmin
 	                    ->reset()
 	                    ->find($pid)
 	                    ->getData();
-	                    $loopCnt  = 1;
 	                    if (strpos($k, 'new_') === 0)
 	                    {
 	                        $price = 0;
@@ -517,7 +514,7 @@ class pjAdminOrders extends pjAdmin
 	                        }else{
 	                            $price = $product['price'];
 	                        }
-	                       
+	                        
 	                        $hash = md5(uniqid(rand(), true));
 	                        $oid = $pjOrderItemModel
 	                        ->reset()
@@ -529,7 +526,7 @@ class pjAdminOrders extends pjAdmin
 	                            'price_id' => $price_id,
 	                            'price' => $price,
 	                            'cnt' => $post['cnt'][$k],
-	                            'special_instruction' => $post['special_instruction'][$k]
+	                            'special_instruction' => $post['special_instruction']
 	                        ))
 	                        ->insert()
 	                        ->getInsertId();
@@ -558,14 +555,13 @@ class pjAdminOrders extends pjAdmin
 	                                        'price_id' => ':NULL',
 	                                        'price' => $extra_price,
 	                                        'cnt' => $post['extra_cnt'][$k][$i],
-	                                        'special_instruction' => $post['special_instruction'][$k][$i]
+	                                        'special_instruction' => $post['special_instruction']
 	                                    ))
 	                                    ->insert();
 	                                }
 	                            }
 	                        }
 	                    }
-	                    $loopCnt = $loopCnt + 1;
 	                }
 	            }
 	            $err = 'AR03';
@@ -973,7 +969,8 @@ class pjAdminOrders extends pjAdmin
 			
 			$product_arr = pjProductModel::factory()
 			->join('pjMultiLang', sprintf("t2.foreign_id = t1.id AND t2.model = 'pjProduct' AND t2.locale = '%u' AND t2.field = 'name'", $this->getLocaleId()), 'left')
-			->select(sprintf("t1.*, t2.content AS name,
+			->join('pjMultiLang', sprintf("t3.foreign_id = t1.id AND t3.model = 'pjProduct' AND t2.locale = '%u' AND t3.field = 'description'", $this->getLocaleId()), 'left')
+			->select(sprintf("t1.*, t2.content AS name, t3.content as description,
 								(SELECT GROUP_CONCAT(extra_id SEPARATOR '~:~') FROM `%s` WHERE product_id = t1.id GROUP BY product_id LIMIT 1) AS allowed_extras,
 								(SELECT COUNT(*) FROM `%s` AS TPE WHERE TPE.product_id=t1.id) as cnt_extras", pjProductExtraModel::factory()->getTable(), pjProductExtraModel::factory()->getTable()))
 			->orderBy("name ASC")
@@ -981,7 +978,7 @@ class pjAdminOrders extends pjAdmin
 			->toArray('allowed_extras', '~:~')
 			->getData();
 			$this->set('product_arr', $product_arr);
-			
+			//echo '<pre>'; print_r($product_arr); echo '</pre>'; exit;
 			$location_arr = pjLocationModel::factory()
 			->join('pjMultiLang', sprintf("t2.foreign_id = t1.id AND t2.model = 'pjLocation' AND t2.locale = '%u' AND t2.field = 'name'", $this->getLocaleId()), 'left')
 			->select("t1.*, t2.content AS name")
@@ -1040,7 +1037,19 @@ class pjAdminOrders extends pjAdmin
 
 
 			$this->set('oi_arr', $oi_arr);
-			
+			//echo '<pre>'; print_r($oi_arr); echo '</pre>'; exit;
+			$spcl_ins = pjOrderItemModel::factory()
+			->where('t1.order_id', $id)
+			->findAll()
+			->getData();
+			$this->set('spcl_ins', $spcl_ins);
+			//print_r($oi_arr[0]['foreign_id']);
+			//print_r($category[0]['category_id']);
+			// $desc_arr = pjProductModel::factory();
+			// $pjMultiLangModel = pjMultiLangModel::factory();
+			// $prodarr['i18n'] = $pjMultiLangModel->getMultiLang($product_id, 'pjProduct');
+			// $desc_arr['description'] = $prodarr['i18n'][$this->getLocaleId()]['description'];
+			// $this->set('desc_arr', $desc_arr);
 			
 			$client_arr = pjClientModel::factory()
 			->select("t1.*, t2.email as c_email, t2.name as c_name, t2.phone as c_phone")
