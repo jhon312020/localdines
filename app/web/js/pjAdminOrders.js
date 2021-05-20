@@ -201,7 +201,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
     })
     if ($frmCreateOrder.length > 0 || $frmUpdateOrder.length > 0) {
       $.validator.addMethod("pickupTime", function (value, element) {
-        console.log(element);
+        //console.log(element);
         if ($(element).attr("data-wt") == "open") {
           return true;
         } else {
@@ -985,7 +985,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
       .on("click", "input[type = 'radio']", function(e) {
         $(this).parent().siblings("label").css('color','#676a6c');
       })
-      .on("change", ".fdProduct", function (e) {
+      .on("change", "select.fdProduct", function (e) {
         if (e && e.preventDefault) {
           e.preventDefault();
         }
@@ -993,7 +993,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           index = $this.attr("data-index"),
           option = $("option:selected", this).attr("data-extra");
         //$this.valid();
-        console.log($this);
+        //console.log($this);
         $(".fdExtraBusiness_" + index).hide();
         $.get("index.php?controller=pjAdminOrders&action=pjActionGetPrices", {
           product_id: $this.val(),
@@ -1019,7 +1019,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           //$totPrepTime = $totPrepTime + parseInt($kordersPrepTime);
           
           $("#fdPrepTime_" + index).html($prepTime);
-          console.log($fdSelectedProduct.category_id);
+          //console.log($fdSelectedProduct.category_id);
           $("#fdCategory_" + index).html(categoryList[$fdSelectedProduct.category_id]);
           $("#fdDescription").html($fdSelectedProduct.description);
           $("#total_prep-time_format").html($totPrepTime);
@@ -1080,7 +1080,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 
         var index = $(this).siblings("select").attr("data-index"); 
         $fdSelectedProduct = $("#prdInfo_" + index).val();
-        console.log(index);
+        //console.log(index);
         
         if ($fdSelectedProduct == undefined) {
           return;
@@ -1538,7 +1538,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
     
     $('#catModal').on('show.bs.modal', function (event) {
         // Fix Animate.css
-        console.log('Called me');
+        //console.log('Called me');
         $('#orderContainer').removeClass('animated fadeInRight');
     });
 

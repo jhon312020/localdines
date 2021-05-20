@@ -246,7 +246,7 @@ unset($statuses['delivered']);
                                                 <td>
                                                     <input type="text" id="special_instruction" name="special_instruction[<?php echo $index;?>]" class="form-control" value="" />
                                                 </td>
-                                                <!-- <td>&nbsp;</td> -->
+                                                <td>&nbsp;</td>
                                             </tr>
     
                                         </tbody>
