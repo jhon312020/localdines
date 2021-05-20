@@ -1,6 +1,6 @@
 <div class="row wrapper border-bottom white-bg page-heading">
       <?php //echo "<pre>";print_r($tpl['product_arr']); ?>
-     <?php //echo "<pre>";print_r($tpl['oi_arr']); ?>
+     <?php //echo "<pre>";print_r($tpl['arr']); ?>
     <div class="col-sm-12">
         <div class="row">
             <div class="col-sm-10">
@@ -75,7 +75,7 @@ $short_days = __('short_days', true);
                                             <?php
                                             foreach ($tpl['category_arr'] as $k)
                                             {
-                                                ?><a  href="#" class="btn btn-primary btn-sm clickCategory" role="button" style="margin-right:5px;" data-id='<?php echo $k['id']; ?>'><?php echo $k['name']; ?></a><?php
+                                                ?><a  href="#" class="btn btn-primary btn-sm clickCategory" role="button" style="margin-right:5px;margin-bottom: 5px;" data-id='<?php echo $k['id']; ?>'><?php echo $k['name']; ?></a><?php
                                             }
                                             ?>
                                 
@@ -233,11 +233,19 @@ $short_days = __('short_days', true);
 
                                                 <td>
                                                     <span id="fdCategory_<?php echo $oi['hash'];?>">
-                                                        <?php for ($i=1; $i <= count($tpl['category_list']); $i++) { 
-                                                            if ($oi['category'] == $i) {
-                                                                echo $tpl['category_list'][$i]; 
+                                                        <?php 
+                                                        
+                                                        foreach ($tpl['category_arr'] as $c) {
+                                                            if ($oi['category'] == $c['id']) {
+                                                                echo $tpl['category_list'][$c['id']]; 
                                                             }
-                                                        } ?>
+                                                        }
+                                                        // for ($i=1; $i <= count($tpl['category_list']); $i++) { 
+                                                        //     if ($oi['category'] == $i) {
+                                                        //         echo $tpl['category_list'][$i]; 
+                                                        //     }
+                                                        // } 
+                                                        ?>
                                                     </span>
                                                     <!-- <input type="hidden" id="fdCategory_<?php //echo $oi['hash']; ?>" data-type="input" name="category_[<?php //echo $oi['hash']; ?>]"> -->
 
@@ -710,7 +718,17 @@ $short_days = __('short_days', true);
                                     <div class="form-group">
                                         <label class="control-label"><?php __('lblPaymentMethod');?></label>
                                         <?php
+                                        if($tpl['arr']['payment_method'] == 'paypal_express') { $client_paymethod = 'PayPal Express Checkout'; } elseif ($tpl['arr']['payment_method'] == 'authorize') {
+                                           $client_paymethod = 'Authorize.NET';
+                                        }elseif ($tpl['arr']['payment_method'] == '2checkout') {
+                                           $client_paymethod = '2checkout';
+                                        }elseif ($tpl['arr']['payment_method'] == 'paypal') {
+                                           $client_paymethod = 'PayPal';
+                                        }elseif ($tpl['arr']['payment_method'] == 'world_pay') {
+                                           $client_paymethod = 'WorldPay';
+                                        } else {
                                         $client_paymethod = ucfirst($tpl['arr']['payment_method']);
+                                         }
                                         $online_arr = array();
                                         $offline_arr = array();
                                         foreach (__('payment_methods', true, false) as $k => $v)

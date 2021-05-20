@@ -127,11 +127,69 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
     //     });
     // }
     $('#d_time').on("focusout",function() {
-      //alert("hey");
+      var delivery_time = parseInt($(this).val());
+      
+      var delivery_hr;
+      var delivery_mins;
+      var d_mins;
+      //var d_hr;
+      var now = new Date($.now());
+      
+      var now_hr = now.getHours();
+      var now_mins = now.getMinutes();
+      
+      if (delivery_time >= 60) {
+         delivery_mins = delivery_time % 60;
+
+        delivery_hr = (delivery_time - delivery_mins) / 60;
+       
+        d_mins = delivery_mins + now_mins;
+        now_hr = now_hr + delivery_hr;
+      } else {
+        d_mins = delivery_time + now_mins;
+        
+      }
+      while (d_mins >= 60) {
+        now_hr++;
+        d_mins = d_mins % 60;
+      } 
+      if (now_hr >= 24) {
+        now_hr = now_hr % 24;
+      }
+      
+      $("#delivery_time").val(now_hr + ":" + d_mins);
+      $("#aproxDt").text(now_hr + ":" + d_mins);
       validateDeliveryTime();
       calPrice(1);
     })
     $('#p_time').on("focusout",function() {
+      var pickup_time = parseInt($(this).val());
+      var pickup_hr;
+      var pickup_mins;
+      var p_mins;
+      //var p_hr;
+      var now = new Date($.now());
+      var now_hr = now.getHours();
+      var now_mins = now.getMinutes();
+      if (pickup_time >= 60) {
+         pickup_mins = pickup_time % 60;
+        pickup_hr = (pickup_time - pickup_mins) / 60;
+       
+        p_mins = pickup_mins + now_mins;
+        now_hr = pickup_hr + now_hr;
+      } else {
+        p_mins = pickup_time + now_mins;
+      }
+      while (p_mins >= 60) {
+        now_hr++;
+        p_mins = p_mins % 60;
+      } 
+      if (now_hr >= 24) {
+        now_hr = now_hr % 24;
+      }
+      $("#pickup_time").val(now_hr + ":" + p_mins);
+      $("#aproxPt").text(now_hr + ":" + p_mins);
+      
       validatePickupTime();
       calPrice(1);
     })
@@ -210,7 +268,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           p_dt: {
             pickupTime: myLabel.restaurant_closed,
           },
-          d_date: {
+          d_dt: {
             deliveryTime: myLabel.restaurant_closed,
           },
           c_email: {
@@ -500,34 +558,8 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
             return $frm.find("input[name='p_date']").val();
           },
           p_time: function () {
-            var pickup_time = $frm.find("input[name='p_time']").val();
-            var pickup_hr;
-            var pickup_mins;
-            var p_mins;
-            //var p_hr;
-            var now = new Date($.now());
-            var now_hr = now.getHours();
-            var now_mins = now.getMinutes();
-            if (pickup_time >= 60) {
-               pickup_mins = pickup_time % 60;
-              pickup_hr = (pickup_time - pickup_mins) / 60;
-             
-              p_mins = pickup_mins + now_mins;
-              now_hr = pickup_hr + now_hr;
-            } else {
-              p_mins = pickup_time + now_mins;
-            }
-            while (p_mins >= 60) {
-              now_hr++;
-              p_mins = p_mins % 60;
-            } 
-            if (now_hr >= 24) {
-              now_hr = now_hr % 24;
-            }
-            $("#pickup_time").val(now_hr + ":" + p_mins);
-            $("#aproxPt").text(now_hr + ":" + p_mins);
-            console.log(now_hr + ":" + p_mins);
-            return now_hr + ":" + p_mins;
+            
+            return $("#pickup_time").val();
           }
         },
         success: function (data) {
@@ -542,6 +574,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
     }
     function validateDeliveryTime() {
       var $frm = $frmCreateOrder;
+     
       if ($frmUpdateOrder.length > 0) {
         $frm = $frmUpdateOrder;
       }
@@ -561,47 +594,12 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           },
           // MEGAMIND
           d_date: function () {
-            // var delivery_date = $frm.find("input[name='d_date']").val() + " " + $frm.find("input[name='d_time']").val();
-            // var date_arr = delivery_date.split(".");
-            // var delivery_date_2 = date_arr[2] + "-" + date_arr[1] + "-" + date_arr[0];
-            // console.log(date_arr);
-            // $("#delivery_date").val(delivery_date_2);
+            
             return $frm.find("input[name='d_date']").val();
           },
           d_time: function () {
-            var delivery_time = $frm.find("input[name='d_time']").val();
-            var delivery_hr;
-            var delivery_mins;
-            var d_mins;
-            //var d_hr;
-            var now = new Date($.now());
-            
-            var now_hr = now.getHours();
-            var now_mins = now.getMinutes();
-
-            if (delivery_time >= 60) {
-               delivery_mins = delivery_time % 60;
-
-              delivery_hr = (delivery_time - delivery_mins) / 60;
-             
-              d_mins = delivery_mins + now_mins;
-              now_hr = now_hr + delivery_hr;
-            } else {
-              d_mins = delivery_time + now_mins;
-            }
-            while (d_mins >= 60) {
-              now_hr++;
-              d_mins = d_mins % 60;
-            } 
-            if (now_hr >= 24) {
-              now_hr = now_hr % 24;
-            }
-            $("#delivery_time").val(now_hr + ":" + d_mins);
-            $("#aproxDt").text(now_hr + ":" + d_mins);
-            
-            //return $frm.find("input[name='d_time']").val();
-            console.log($("#delivery_time").val());
-            return now_hr + ":" + d_mins;
+        
+            return $("#delivery_time").val();
           },
         },
         success: function (data) {
@@ -995,7 +993,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           index = $this.attr("data-index"),
           option = $("option:selected", this).attr("data-extra");
         //$this.valid();
-        // console.log($this.find());
+        console.log($this);
         $(".fdExtraBusiness_" + index).hide();
         $.get("index.php?controller=pjAdminOrders&action=pjActionGetPrices", {
           product_id: $this.val(),
@@ -1021,6 +1019,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           //$totPrepTime = $totPrepTime + parseInt($kordersPrepTime);
           
           $("#fdPrepTime_" + index).html($prepTime);
+          console.log($fdSelectedProduct.category_id);
           $("#fdCategory_" + index).html(categoryList[$fdSelectedProduct.category_id]);
           $("#fdDescription").html($fdSelectedProduct.description);
           $("#total_prep-time_format").html($totPrepTime);
@@ -1070,13 +1069,10 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
          return false;
       })
       .on("click", "#fdOrderList .pj-remove-product", function (e) {
-        //console.log("Delete button clicked");
-        var $deletedPrepTime = $(this).parents("tr").children("td:nth-child(6)").children().text();
-        //console.log($deletedPrepTime);
-        //console.log($("#total_prep-time_format").text() - $deletedPrepTime);
+        $kordersPrepTime = $("#totKorderPrepTimeInput").val();
+        var $deletedPrepTime = parseInt($(this).parents("tr").children("td:nth-child(6)").children().text());
         $totPrepTime = $totPrepTime - $deletedPrepTime;
         $("#total_prep-time_format").text($totPrepTime + parseInt($kordersPrepTime));
-        //console.log($("#prep_time"));
         $("#prep_time").val($totPrepTime + parseInt($kordersPrepTime));
 
       })
@@ -1124,57 +1120,51 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
        
       })
       .on("change", "#phone_no", function (e) {
-        $cinfo = client_info;
+
+        // $cinfo = client_info;
         $c_phone = $(this).val();
-        var newUser = true;
+        $cinfo = $.ajax({
+          type: "POST",
+          async: false,
+          url: "index.php?controller=pjAdminOrders&action=pjActionCheckClientPhoneNumber",
+          data: { 
+            value: function() {
+              return $c_phone;
+            }
+          },
+      });
         //console.log($cinfo);
-        for(var c in $cinfo) {
-          if ($cinfo[c]['phone_no'] == $c_phone){
-            $("#c_title").val($cinfo[c]['c_title']);
-            $("#c_email").val($cinfo[c]['sms_email']);
-            $cinfo[c]['sms_email'] == '' ? $("#c_email").attr('data-wt','invalid') : $("#c_email").attr('data-wt','valid');
-            $("#c_surname").val($cinfo[c]['surname']);
-            $("#inputPostCode").val($cinfo[c]['post_code']);
-            $("#d_address_1").val($cinfo[c]['d_address_1']);
-            $("#d_address_2").val($cinfo[c]['d_address_2']);
-            $("#d_city").val($cinfo[c]['d_city']);
-            $("#c_name").val($cinfo[c]['first_name']);
-            $cinfo[c]['email_delivery_info'] == 1 ? $("#email_delivery_info_yes").prop("checked",true) : $("#email_delivery_info_no").prop("checked",true);
-            $cinfo[c]['email_offer'] == 1 ? $("#email_offer_yes").prop("checked",true) : $("#email_offer_no").prop("checked",true);
-            $cinfo[c]['email_receipt'] == 1 ? $("#email_receipt_yes").prop("checked",true) : $("#email_receipt_no").prop("checked",true);
-            $cinfo[c]['mobile_delivery_info'] == 1 ? $("#mobile_delivery_info_yes").prop("checked",true) : $("#mobile_delivery_info_no").prop("checked",true); 
-            $cinfo[c]['mobile_offer'] == 1 ? $("#mobile_offer_yes").prop("checked",true) : $("#mobile_offer_no").prop("checked",true);
-           newUser = false;
-          }
-        }
-        console.log(newUser);
-        if(newUser == true) {
-          $("#c_title").val("");
-          $("#c_email").val("");
-          $("#c_email").attr('data-wt','invalid');
-          $("#c_surname").val("");
-          $("#inputPostCode").val("");
-          $("#d_address_1").val("");
-          $("#d_address_2").val("");
-          $("#d_city").val("");
-          $("#c_name").val("");
-          $("input:radio").prop("checked", false);
-          //$("input:radio").parent().siblings("label").css('color','#676a6c')
-        }
-        // } else if (newUser == false) {
-        //   
+      if($cinfo.responseText == 'new user') {
+
+        $("#c_title").val("");
+        $("#c_email").val("");
+        $("#c_email").attr('data-wt','invalid');
+        $("#c_surname").val("");
+        $("#inputPostCode").val("");
+        $("#d_address_1").val("");
+        $("#d_address_2").val("");
+        $("#d_city").val("");
+        $("#c_name").val("");
+        $("input:radio").prop("checked", false);
+      
+      } else {
+        var c_arr = $cinfo.responseJSON[0];
+        $("#c_title").val(c_arr.c_title);
+        $("#c_email").val(c_arr.email);
+        c_arr.sms_email == '' ? $("#c_email").attr('data-wt','invalid') : $("#c_email").attr('data-wt','valid');
+        $("#c_surname").val(c_arr.u_surname);
+        $("#inputPostCode").val(c_arr.c_postcode);
+        $("#d_address_1").val(c_arr.c_address_1);
+        $("#d_address_2").val(c_arr.c_address_2);
+        $("#d_city").val(c_arr.c_city);
+        $("#c_name").val(c_arr.name);
+        c_arr.email_delivery_info == 1 ? $("#email_delivery_info_yes").prop("checked",true) : $("#email_delivery_info_no").prop("checked",true);
+        c_arr.email_offer == 1 ? $("#email_offer_yes").prop("checked",true) : $("#email_offer_no").prop("checked",true);
+        c_arr.email_receipt == 1 ? $("#email_receipt_yes").prop("checked",true) : $("#email_receipt_no").prop("checked",true);
+        c_arr.mobile_delivery_info == 1 ? $("#mobile_delivery_info_yes").prop("checked",true) : $("#mobile_delivery_info_no").prop("checked",true); 
+        c_arr.mobile_offer == 1 ? $("#mobile_offer_yes").prop("checked",true) : $("#mobile_offer_no").prop("checked",true);
+        }  
       })
-
-      // .on("click", ".pj-remove-product", function (e) {
-      //   if (e && e.preventDefault) {
-      //     e.preventDefault();
-      //   }
-      //   if($(this).parent().first().children("button").attr("title","-- Choose--")) {
-      //     console.log($(this).parent().first().children("button").attr("title"));
-      //     $("#btnAddProduct").css("display","block");
-      //   }
-      // })
-
       // !MEGAMIND
 
       .on("change", "#client_id", function (e) {

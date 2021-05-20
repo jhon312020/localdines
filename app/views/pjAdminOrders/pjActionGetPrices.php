@@ -5,6 +5,7 @@ if ($controller->_get->toInt('product_id'))
     //MEGAMING
 
 	$productData = json_encode( $tpl["arr"], JSON_HEX_APOS);
+	
 ?>	
    
 	<input type="hidden" id="prdInfo_<?php echo $index;?>" data-type="input" name="prdInfo_[<?php echo $index;?>]" value='<?php echo $productData; ?>' />

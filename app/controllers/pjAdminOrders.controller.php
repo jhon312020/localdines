@@ -26,6 +26,54 @@ class pjAdminOrders extends pjAdmin
 		}
 		exit;
 	}
+	public function pjActionCheckClientPhoneNumber()
+	{
+		$this->setAjax(true);
+	
+		if ($this->isXHR())
+		{
+			if (!self::isPost())
+            {
+                echo "HTTP method not allowed";
+                exit;
+            }
+            
+             if ($this->_post->toInt('value') <= 0)
+            {
+                echo "invalid parameter";
+                exit;
+            }
+
+			// $client_info = pjOrderModel::factory()
+   //          ->join('pjClient', "t2.id = t1.client_id")
+   //          ->select('t1.id, t1.surname,t1.phone_no, t1.sms_email, t1.post_code, t1.d_address_1, t1.d_address_2, t1.d_city, t1.first_name, t1.client_id, t1.kprint, t2.c_title, t1.type, t1.is_paid, t1.order_despatched, t1.mobile_delivery_info, t1.mobile_offer, t1.email_delivery_info, t1.email_offer, t1.email_receipt, t1.created, t1.preparation_time')
+   //          ->where('t1.phone_no',$this->_post->toString('value'))
+   //          ->limit(1)
+   //          ->findAll()
+   //          ->getData();
+            $client_info = pjClientModel::factory()
+                          ->join('pjOrder', "t2.client_id = t1.id")
+                          ->join('pjAuthUser', "t3.id = t1.foreign_id")
+                          ->select('t1.*, t2.mobile_delivery_info,t2.mobile_offer,t2.email_delivery_info,t2.email_offer,t2.email_receipt, t3.name,t3.u_surname,t3.email')
+                          ->where('t3.phone',$this->_post->toString('value')) 
+
+                          ->limit(1)
+                          ->findAll()
+                          ->getData();
+           
+			
+            if(count($client_info) == 0){
+            	echo "new user";
+            	exit;
+            } else {
+                self::jsonResponse($client_info);
+                exit;
+            	
+            }
+			
+		}
+		exit;
+	}
 	
 	public function pjActionIndex()
 	{
@@ -358,19 +406,14 @@ class pjAdminOrders extends pjAdmin
 	            $c_data = array();
 	            $c_data['c_title'] = $this->_post->toString('c_title');
 	            $c_data['c_name'] = $this->_post->toString('c_name');
-	            
-	            //$c_data['c_password'] = $this->_post->toString('c_password');
+	            $c_data['surname'] = $this->_post->toString('surname');
 	            $c_data['c_phone'] = $this->_post->toString('phone_no');
-	            //$c_data['c_company'] = $this->_post->toString('c_company');
 	            $c_data['c_address_1'] = $this->_post->toString('d_address_1');
 	            $c_data['c_address_2'] = $this->_post->toString('d_address_2');
 	            $c_data['c_city'] = $this->_post->toString('d_city');
+	            $c_data['post_code'] = $this->_post->toString('post_code');
 	            $c_data['password'] = $c_data['c_name'].$data['uuid'];
-	            //$c_data['c_state'] = $this->_post->toString('d_state');
-	            //$c_data['c_zip'] = $this->_post->toString('d_zip');
-	            //$c_data['c_country'] = $this->_post->toInt('d_country_id');
 	            $c_data['status'] = 'T';
-	            //$c_data['postcode'] = $this->_post->toString('post_code');
 	            $c_data['locale_id'] = $this->getLocaleId();
 	            $client_exist = pjClientModel::factory()
 	            ->join("pjAuthUser", "t2.id = t1.foreign_id", "left")
@@ -384,7 +427,6 @@ class pjAdminOrders extends pjAdmin
 	            	
 	            	$data['client_id'] = $client_exist[0]['id'];
 	            	$post_clientType = $this->getClientType($data);
-	            	// $c_data['c_type'] = $post_clientType;
 	            	$modify = pjClientModel::factory()
 			        ->where('id', $data['client_id'])
 			        ->modifyAll(array(
@@ -1382,7 +1424,7 @@ class pjAdminOrders extends pjAdmin
 				//End of it;
                 //print_r($arr);
                 //exit;
-
+               
 				$this->set('arr', $arr);
 				//return $arr;
 			}
