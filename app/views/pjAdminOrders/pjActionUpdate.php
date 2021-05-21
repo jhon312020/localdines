@@ -366,6 +366,7 @@ $short_days = __('short_days', true);
                                 {
                                     $title_arr = pjUtil::getTitles();
                                     $name_titles = __('personal_titles', true, false);
+                                    $tpl['arr']['c_title'] == 'other' ? $client_title = ucfirst($tpl['arr']['c_title']) :
                                     $client_title = ucfirst($tpl['arr']['c_title']).'.';
                                     ?>
                                     <div class="col-md-2 col-sm-2">
@@ -442,7 +443,7 @@ $short_days = __('short_days', true);
                                                 <label class="control-label"><?php echo 'Postcode'; ?></label>
                                                 <div class="input-group" id="post_code">
                                                     
-                                                    <input type="text" class="form-control" placeholder="Type your postCode" name="post_code" id="inputPostCode" value="<?php echo $tpl['arr']['post_code'] ?>">
+                                                    <input type="text" class="form-control fdRequired<?php echo $tpl['arr']['type'] == 'delivery' ? ' required' : NULL; ?>" placeholder="Type your postCode" name="post_code" id="inputPostCode" value="<?php echo $tpl['arr']['post_code'] == 0 ? '': NULL; ?>">
                                             
                                                     <span class="input-group-btn">
                                                         <button class="btn btn-default" type="button" id="btnFindPostCode"><i class="glyphicon glyphicon-ok"></i></button>
@@ -489,24 +490,24 @@ $short_days = __('short_days', true);
                                         <div class="form-group">
                                             <label class="control-label"><?php __('lblAddress1'); ?></label>
     
-                                            <input type="text" name="d_address_1" id="d_address_1" class="form-control<?php echo $tpl['option_arr']['o_df_include_address_1'] == 3 ? ' fdRequired required' : NULL; ?>" data-msg-required="<?php __('fd_field_required', false, true);?>"
-                                            value = "<?php echo $tpl['arr']['d_address_1']; ?>"/>
+                                            <input type="text" name="d_address_1" id="d_address_1" class="form-control<?php echo $tpl['option_arr']['o_df_include_address_1'] == 3 ? ' fdRequired' : NULL; ?><?php echo $tpl['arr']['type'] == 'delivery' ? ' required' : NULL; ?>" data-msg-required="<?php __('fd_field_required', false, true);?>"
+                                            value = "<?php echo pjSanitize::html($tpl['arr']['d_address_1']); ?>"/>
                                         </div>
                                     </div>
                                     <div class="col-md-4 col-sm-6">
                                         <div class="form-group">
                                             <label class="control-label"><?php __('lblAddress2'); ?></label>
     
-                                            <input type="text" name="d_address_2" id="d_address_2" class="form-control<?php echo $tpl['option_arr']['o_df_include_address_2'] == 3 ? ' fdRequired required' : NULL; ?>" data-msg-required="<?php __('fd_field_required', false, true);?>"
-                                            value = "<?php echo $tpl['arr']['d_address_2']; ?>" />
+                                            <input type="text" name="d_address_2" id="d_address_2" class="form-control<?php echo $tpl['option_arr']['o_df_include_address_2'] == 3 ? ' fdRequired' : NULL; ?><?php echo $tpl['arr']['type'] == 'delivery' ? ' required' : NULL; ?>" data-msg-required="<?php __('fd_field_required', false, true);?>"
+                                            value = "<?php echo pjSanitize::html($tpl['arr']['d_address_2']); ?>" />
                                         </div>
                                     </div>
                                     <div class="col-md-4 col-sm-6">
                                         <div class="form-group">
                                             <label class="control-label"><?php __('lblCity'); ?></label>
     
-                                            <input type="text" name="d_city" id="d_city" class="form-control<?php echo $tpl['option_arr']['o_df_include_city'] == 3 ? ' fdRequired required' : NULL; ?>" data-msg-required="<?php __('fd_field_required', false, true);?>"
-                                            value = "<?php echo $tpl['arr']['d_city']; ?>" />
+                                            <input type="text" name="d_city" id="d_city" class="form-control<?php echo $tpl['option_arr']['o_df_include_city'] == 3 ? ' fdRequired' : NULL; ?><?php echo $tpl['arr']['type'] == 'delivery' ? ' required' : NULL; ?>" data-msg-required="<?php __('fd_field_required', false, true);?>"
+                                            value = "<?php echo pjSanitize::html($tpl['arr']['d_city']); ?>" />
                                         </div>
 
                                     </div>
@@ -537,7 +538,7 @@ $short_days = __('short_days', true);
                                 <div class="col-md-3 col-sm-6">
                                     <div class="form-group">
                                         <label class="control-label"><?php echo 'Email' //__('lblPhone'); ?></label>
-                                        <input type="text" name="sms_email" id="c_email" class="form-control email<?php echo $tpl['option_arr']['o_bf_include_email'] == 3 ? ' fdRequired required' : NULL; ?>" data-msg-required="<?php __('fd_field_required', false, true);?>"
+                                        <input type="text" name="sms_email" id="c_email" class="form-control email<?php echo $tpl['option_arr']['o_bf_include_email'] == 3 ? ' fdRequired' : NULL; ?>" data-msg-required="<?php __('fd_field_required', false, true);?>"
                                         value = "<?php echo $tpl['arr']['sms_email']; ?>" data-wt = "<?php if($tpl['arr']['sms_email'] == ''){ echo 'invalid'; }else{ echo 'valid';} ?>" />
                                     </div>
                                 </div><!-- /.col-md-3 --> 
@@ -663,7 +664,7 @@ $short_days = __('short_days', true);
                                                 <span class="input-group-addon"><i class="fa fa-clock-o"></i></span> 
                                                 
                                                <!--  <input name="d_time" class="pj-timepicker form-control required fdRequired" data-msg-required="<?php //__('fd_field_required', false, true);?>" readonly/>   -->
-                                                <input name="d_time" id="d_time" class=" form-control required fdRequired" data-msg-required="<?php __('fd_field_required', false, true);?>"/ value = "<?php if($tpl['arr']['d_time']==0){echo '';}else{echo $tpl['arr']['d_time'];} ?>">    
+                                                <input name="d_time" id="d_time" class=" form-control fdRequired" data-msg-required="<?php __('fd_field_required', false, true);?>"/ value = "<?php if($tpl['arr']['d_time']==0){echo '';}else{echo $tpl['arr']['d_time'];} ?>">    
                                                 <input type="hidden" name="delivery_time" id="delivery_time"
                                                 value="<?php 
                                                   echo $dTime; ?>">

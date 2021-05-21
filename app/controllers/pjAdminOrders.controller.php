@@ -103,7 +103,7 @@ class pjAdminOrders extends pjAdmin
 				
 			if ($q = $this->_get->toString('q'))
 			{
-				$pjOrderModel->where("(t1.id='$q' OR t1.uuid = '$q' OR t3.name LIKE '%$q%' OR t3.email LIKE '%$q%')");
+				$pjOrderModel->where("(t1.id='$q' OR t1.uuid = '$q' OR t1.surname LIKE '%$q%' OR t3.email LIKE '%$q%' OR t3.phone = '$q' OR t1.post_code = '$q')");
 			}
 			if ($this->_get->toString('status'))
 			{
@@ -168,6 +168,7 @@ class pjAdminOrders extends pjAdmin
 			{
 				$data[$k]['address'] = $v['d_address_1'].' '.$v['d_address_2']. ' '.$v['d_city'];
 				//$data[$k]['post_code'] = 'post_code';
+				$v['post_code'] == '0' ? $data[$k]['post_code'] = '' : $data[$k]['post_code'] = $v['post_code'];
 				//$data[$k]['address'] = pjOrder::
 				$data[$k]['c_type'] = $v['c_type'];
 				// $data[$k]['call_start'] = 'call_start';
@@ -408,10 +409,13 @@ class pjAdminOrders extends pjAdmin
 	            $c_data['c_name'] = $this->_post->toString('c_name');
 	            $c_data['surname'] = $this->_post->toString('surname');
 	            $c_data['c_phone'] = $this->_post->toString('phone_no');
-	            $c_data['c_address_1'] = $this->_post->toString('d_address_1');
+	            //if ($this->_post->check('type')) {
+            	$c_data['c_address_1'] = $this->_post->toString('d_address_1');
 	            $c_data['c_address_2'] = $this->_post->toString('d_address_2');
 	            $c_data['c_city'] = $this->_post->toString('d_city');
 	            $c_data['post_code'] = $this->_post->toString('post_code');
+	            //}
+	            
 	            $c_data['password'] = $c_data['c_name'].$data['uuid'];
 	            $c_data['status'] = 'T';
 	            $c_data['locale_id'] = $this->getLocaleId();
@@ -432,6 +436,19 @@ class pjAdminOrders extends pjAdmin
 			        ->modifyAll(array(
 			            'c_type' => $post_clientType
 			        ))->getAffectedRows();
+                    if ($client_exist[0]['c_address_1'] == '' || $client_exist[0]['c_address_2'] == '' || $client_exist[0]['c_city'] == '' || $client_exist[0]['c_postcode'] == '') {
+                    	// print_r($client_exist);
+                    	// exit;
+                    	pjClientModel::factory()
+				        ->where('id', $data['client_id'])
+				        ->modifyAll(array(
+				            'c_address_1' => $c_data['c_address_1'],
+				            'c_address_2' => $c_data['c_address_2'],
+				            'c_city' => $c_data['c_city'],
+				            'c_postcode' => $c_data['post_code'],
+			            ));
+			            
+                    }
 	            	
 	            } else {
 	            	$c_data['c_email'] = $this->_post->toString('sms_email');
@@ -446,7 +463,7 @@ class pjAdminOrders extends pjAdmin
 
 		            }
 	            }
-	            
+	            //exit;
 	        //}
 	        if($this->_post->check('is_paid'))
 	        {
@@ -719,28 +736,31 @@ class pjAdminOrders extends pjAdmin
 	        
 	        $new_client_id = NULL;
 	        $c_data['phone'] = $this->_post->toInt('phone_no');
-	        $isExist = $pjOrderModel
-	                   ->select('t1.*')
-	                   ->where('phone_no', $c_data['phone'])
-	                   ->findAll()
-	                   ->getData();
-	        // echo "<pre>";print_r($post);
+	        // $isExist = $pjOrderModel
+	        //            ->select('t1.*')
+	        //            ->where('phone_no', $c_data['phone'])
+	        //            ->findAll()
+	        //            ->getData();
+	        $client_exist = pjClientModel::factory()
+	            ->join("pjAuthUser", "t2.id = t1.foreign_id", "left")
+	            ->select("t1.*, t2.phone")
+	            ->where("t2.phone",$c_data['phone'])
+	            ->findAll()
+	            ->getData();
+	        // echo "<pre>";print_r($client_exist);
 	        // exit;           
-	        if(!$isExist)
+	        //if(!$isExist)
+	        if(!$client_exist)
 	        {   
 	            $c_data = array();
+	            $c_data['c_phone'] = $this->_post->toInt('phone_no');
 	            $c_data['c_title'] = $this->_post->toString('c_title');
 	            $c_data['c_name'] = $this->_post->toString('c_name');
+	            $c_data['surname'] = $this->_post->toString('surname');
 	            $c_data['c_email'] = $this->_post->toString('sms_email');
-	            //c_data['c_password'] = $this->_post->toString('c_password');
-	            //$c_data['c_phone'] = $this->_post->toString('phone_no');
-	            //$c_data['c_company'] = $this->_post->toString('c_company');
 	            $c_data['c_address_1'] = $this->_post->toString('d_address_1');
 	            $c_data['c_address_2'] = $this->_post->toString('d_address_2');
 	            $c_data['c_city'] = $this->_post->toString('d_city');
-	            $c_data['c_state'] = $this->_post->toString('d_state');
-	            //$c_data['c_zip'] = $this->_post->toString('d_zip');
-	            //$c_data['c_country'] = $this->_post->toInt('d_country_id');
 	            $c_data['status'] = 'T';
 	            $c_data['post_code'] = $this->_post->toString('post_code');
 	            $c_data['locale_id'] = $this->getLocaleId();
@@ -749,6 +769,18 @@ class pjAdminOrders extends pjAdmin
 	            {
 	                $new_client_id = $response['client_id'];
 	            }
+	        } else {
+	        	if ($client_exist[0]['c_address_1'] == '' || $client_exist[0]['c_address_2'] == '' || $client_exist[0]['c_city'] == '' || $client_exist[0]['c_postcode'] == '') {
+                    	
+                    	pjClientModel::factory()
+				        ->where('id', $client_exist[0]['id'])
+				        ->modifyAll(array(
+				            'c_address_1' => $post['d_address_1'],
+				            'c_address_2' => $post['d_address_2'],
+				            'c_city' => $post['d_city'],
+				            'c_postcode' => $post['post_code'],
+			            ));
+				    }
 	        }
 	       
 	        if (isset($post['product_id']) && count($post['product_id']) > 0)

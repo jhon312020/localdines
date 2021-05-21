@@ -1,7 +1,7 @@
 <div class="row wrapper border-bottom white-bg page-heading">
      <?php //print_r("<pre>");print_r($tpl['extras']); ?>  
    <!--  <?php //print_r($tpl['arr']['i18n']); ?>  -->
-    <?php //echo "<pre>";print_r($tpl['price_arr']); ?>
+    <?php //echo "<pre>";print_r($tpl['option_arr']); ?>
     <!-- <?php 
     //$date = date('')
     // $dates[0] = date('Y-m-d');
@@ -366,7 +366,7 @@ unset($statuses['delivered']);
                                                 <label class="control-label"><?php echo 'Postcode'; ?></label>
                                                 <div class="input-group" id="post_code">
                                                     
-                                                    <input type="text" class="form-control" placeholder="Type your postCode" name="post_code" id="inputPostCode">
+                                                    <input type="text" class="form-control fdRequired required" placeholder="Type your postCode" name="post_code" id="inputPostCode">
                                             
                                                     <span class="input-group-btn">
                                                         <button class="btn btn-default" type="button" id="btnFindPostCode"><i class="glyphicon glyphicon-ok"></i></button>

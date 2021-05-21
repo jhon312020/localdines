@@ -287,7 +287,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
                 error.css('color','#a94442');
                 error.siblings("label").css('color','#ed5565')
                 //element.css('border','2px solid red');
-            } else if (element.siblings("span").hasClass("input-group-addon")) {
+            } else if (element.siblings("span").hasClass("input-group-addon") || element.attr('name') == 'post_code') {
                 error.insertAfter(element.parent())
             } else{
                 error.insertAfter(element);
@@ -1047,9 +1047,9 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
         // MEGAMIND
 
         .done(function(e){
-        if (e && e.preventDefault) {
-          e.preventDefault();
-        }
+        // if (e && e.preventDefault) {
+        //   e.preventDefault();
+        // }
         //console.log($("#fdOrderList tr:last").attr("data-index"));
         var lastRowIndex = $("#fdOrderList tr:last").attr("data-index"),
         $product = $("#fdProduct_" + lastRowIndex).val(),
@@ -1066,7 +1066,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
         }
         
       });
-         return false;
+         //return false;
       })
       .on("click", "#fdOrderList .pj-remove-product", function (e) {
         $kordersPrepTime = $("#totKorderPrepTimeInput").val();
@@ -1402,6 +1402,10 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           $(".order-delivery").find(".fdRequired").removeClass("required");
           $(".order-pickup").show();
           $(".order-pickup").find(".fdRequired").addClass("required");
+          $("#inputPostCode").val("");
+          $("#d_address_1").val("");
+          $("#d_address_2").val("");
+          $("#d_city").val("");
         }
       })
       .on("change", ".onoffswitch-client .onoffswitch-checkbox", function (e) {
