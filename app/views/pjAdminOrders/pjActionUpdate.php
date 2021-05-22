@@ -436,7 +436,7 @@ $short_days = __('short_days', true);
                                 //echo $tpl['option_arr']['o_df_include_zip'];
                                 if (in_array($tpl['option_arr']['o_df_include_zip'], array(1, 2)))
                                 {
-                                    $pc = $tpl['arr']['post_code'] != 0 ? $tpl['arr']['post_code'] : '';
+                                    
                                     ?>
                                     <div class="form-group">
                                         <div class="col-md-6 col-sm-6">
@@ -445,7 +445,7 @@ $short_days = __('short_days', true);
                                                 <div class="input-group" id="post_code">
                                                     
                                                     <input type="text" class="form-control fdRequired<?php echo $tpl['arr']['type'] == 'delivery' ? ' required' : NULL; ?>" placeholder="Type your postCode" name="post_code" id="inputPostCode" value="<?php  
-                                                    echo $pc; ?>
+                                                    echo $tpl['arr']['post_code']; ?>
                                                     ">
                                             
                                                     <span class="input-group-btn">
