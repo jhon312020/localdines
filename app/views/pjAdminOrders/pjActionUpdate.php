@@ -436,6 +436,7 @@ $short_days = __('short_days', true);
                                 //echo $tpl['option_arr']['o_df_include_zip'];
                                 if (in_array($tpl['option_arr']['o_df_include_zip'], array(1, 2)))
                                 {
+                                    $pc = $tpl['arr']['post_code'] != 0 ? $tpl['arr']['post_code'] : '';
                                     ?>
                                     <div class="form-group">
                                         <div class="col-md-6 col-sm-6">
@@ -443,7 +444,9 @@ $short_days = __('short_days', true);
                                                 <label class="control-label"><?php echo 'Postcode'; ?></label>
                                                 <div class="input-group" id="post_code">
                                                     
-                                                    <input type="text" class="form-control fdRequired<?php echo $tpl['arr']['type'] == 'delivery' ? ' required' : NULL; ?>" placeholder="Type your postCode" name="post_code" id="inputPostCode" value="<?php echo $tpl['arr']['post_code'] == 0 ? '': NULL; ?>">
+                                                    <input type="text" class="form-control fdRequired<?php echo $tpl['arr']['type'] == 'delivery' ? ' required' : NULL; ?>" placeholder="Type your postCode" name="post_code" id="inputPostCode" value="<?php  
+                                                    echo $pc; ?>
+                                                    ">
                                             
                                                     <span class="input-group-btn">
                                                         <button class="btn btn-default" type="button" id="btnFindPostCode"><i class="glyphicon glyphicon-ok"></i></button>
@@ -643,7 +646,7 @@ $short_days = __('short_days', true);
                                     <!--  <input type="hidden" id="d_dt" name="d_dt" class="form-control fdRequired required" data-wt="open" data-msg-required="<?php //__('fd_field_required', false, true);?>" readonly> -->
                                     <div class="form-group order-delivery" style="display: <?php echo $tpl['arr']['type']== 'delivery' ? 'block' : 'none';?>;">
                                         <?php
-                                            $dDate = !empty($tpl['arr']['d_dt']) ? date($tpl['option_arr']['o_date_format'], strtotime($tpl['arr']['d_dt'])) : ''; 
+                                            $dDate = !empty($tpl['arr']['d_dt']) ? date($tpl['option_arr']['o_date_format'], strtotime($tpl['arr']['d_dt'])) : date("d.m.Y"); 
                                             $dTime = !empty($tpl['arr']['d_dt']) ? date($tpl['option_arr']['o_time_format'], strtotime($tpl['arr']['d_dt'])) : ''; 
                                         ?>
                                        
@@ -675,7 +678,7 @@ $short_days = __('short_days', true);
                                     </div>
 
                                     <?php
-                                        $pDate = !empty($tpl['arr']['p_dt']) ? date($tpl['option_arr']['o_date_format'], strtotime($tpl['arr']['p_dt'])) : ''; 
+                                        $pDate = !empty($tpl['arr']['p_dt']) ? date($tpl['option_arr']['o_date_format'], strtotime($tpl['arr']['p_dt'])) : date("d.m.Y"); 
                                         $pTime = !empty($tpl['arr']['p_dt']) ? date($tpl['option_arr']['o_time_format'], strtotime($tpl['arr']['p_dt'])) : ''; 
                                     ?>
 

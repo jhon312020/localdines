@@ -935,6 +935,8 @@ class pjAdminOrders extends pjAdmin
 	            }
 	            unset($post['p_dt']);
 	            $data['p_dt'] = ':NULL';
+	            unset($post['p_time']);
+	            $data['p_time'] = 0;
 	        }else{
 	            $data['type'] = 'pickup';
 	            if (!empty($post['p_date']) && !empty($post['pickup_time']))

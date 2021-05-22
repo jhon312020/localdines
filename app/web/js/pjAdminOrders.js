@@ -430,7 +430,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
                 error.css('color','#a94442');
                 error.siblings("label").css('color','#ed5565')
                 //element.css('border','2px solid red');
-            } else if (element.siblings("span").hasClass("input-group-addon")) {
+            } else if (element.siblings("span").hasClass("input-group-addon") || element.attr('name') == 'post_code') {
                 error.insertAfter(element.parent())
             } else{
                 error.insertAfter(element);
@@ -1397,6 +1397,27 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           $(".order-delivery").find(".fdRequired").addClass("required");
           $(".order-pickup").hide();
           $(".order-pickup").find(".fdRequired").removeClass("required");
+          
+            $c_phone = $('#phone_no').val();
+            if ($c_phone) {
+            $cinfo = $.ajax({
+              type: "POST",
+              async: false,
+              url: "index.php?controller=pjAdminOrders&action=pjActionCheckClientPhoneNumber",
+              data: { 
+                value: function() {
+                  return $c_phone;
+                }
+              },
+          });
+            if ($cinfo.responseJSON[0]) {
+              var c_arr = $cinfo.responseJSON[0];
+              $("#inputPostCode").val(c_arr.c_postcode);
+              $("#d_address_1").val(c_arr.c_address_1);
+              $("#d_address_2").val(c_arr.c_address_2);
+              $("#d_city").val(c_arr.c_city);
+            }
+          }
         } else {
           $(".order-delivery").hide();
           $(".order-delivery").find(".fdRequired").removeClass("required");
