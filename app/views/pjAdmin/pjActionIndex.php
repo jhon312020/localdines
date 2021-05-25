@@ -94,7 +94,7 @@
         
                                     <div class="col-xs-7 content">
                                     	<p class="m-b-xs"><strong><a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminClients&amp;action=pjActionUpdate&amp;id=<?php echo $v['client_id']?>"><?php echo pjSanitize::html($v['client_name']);?></a></strong></p>
-                                        <p class="m-n"><?php __('lblOrderID')?>: <em><a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminOrders&amp;action=pjActionUpdate&amp;id=<?php echo $v['id']?>"><?php echo pjSanitize::html($v['uuid']);?></a></em></p>
+                                        <p class="m-n"><?php __('lblOrderID')?>: <em><a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminOrders&amp;action=pjActionUpdate&amp;id=<?php echo $v['id']?>"><?php echo pjSanitize::html($v['order_id']);?></a></em></p>
                                         <p class="m-n"><?php __('lblLocation')?>: <em><?php echo pjSanitize::html($v['location']);?></em></p>
                                         <p class="m-n"><?php __('lblTotal')?>: <em><?php echo pjCurrency::formatPrice($v['total']);?></em></p>
                                     </div>
@@ -152,7 +152,7 @@
         
                                     <div class="col-xs-7 content">
                                     	<p class="m-b-xs"><strong><a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminClients&amp;action=pjActionUpdate&amp;id=<?php echo $v['client_id']?>"><?php echo pjSanitize::html($v['client_name']);?></a></strong></p>
-                                        <p class="m-n"><?php __('lblOrderID')?>: <em><a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminOrders&amp;action=pjActionUpdate&amp;id=<?php echo $v['id']?>"><?php echo pjSanitize::html($v['uuid']);?></a></em></p>
+                                        <p class="m-n"><?php __('lblOrderID')?>: <em><a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminOrders&amp;action=pjActionUpdate&amp;id=<?php echo $v['id']?>"><?php echo pjSanitize::html($v['order_id']);?></a></em></p>
                                         <p class="m-n"><?php __('lblLocation')?>: <em><?php echo pjSanitize::html($v['location']);?></em></p>
                                         <p class="m-n"><?php __('lblTotal')?>: <em><?php echo pjCurrency::formatPrice($v['total']);?></em></p>
                                     </div>

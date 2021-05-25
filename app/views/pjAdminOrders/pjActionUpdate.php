@@ -630,6 +630,12 @@ $short_days = __('short_days', true);
                                     </div>
                                 </div><!-- /.col-md-3 -->
                                 <div class="col-lg-4 col-md-4 col-sm-6">
+                                     <?php
+                                            $dDate = !empty($tpl['arr']['d_dt']) ? date($tpl['option_arr']['o_date_format'], strtotime($tpl['arr']['d_dt'])) : date("d.m.Y"); 
+                                            $dTime = !empty($tpl['arr']['d_dt']) ? date($tpl['option_arr']['o_time_format'], strtotime($tpl['arr']['d_dt'])) : ''; 
+                                            $pDate = !empty($tpl['arr']['p_dt']) ? date($tpl['option_arr']['o_date_format'], strtotime($tpl['arr']['p_dt'])) : date("d.m.Y"); 
+                                            $pTime = !empty($tpl['arr']['p_dt']) ? date($tpl['option_arr']['o_time_format'], strtotime($tpl['arr']['p_dt'])) : ''; 
+                                        ?>
                                     <!-- <div class="form-group order-delivery">
                                         <label class="control-label"><?php //__('lblDeliveryDateTime'); ?></label> -->
     
@@ -645,10 +651,7 @@ $short_days = __('short_days', true);
                                      
                                     <!--  <input type="hidden" id="d_dt" name="d_dt" class="form-control fdRequired required" data-wt="open" data-msg-required="<?php //__('fd_field_required', false, true);?>" readonly> -->
                                     <div class="form-group order-delivery" style="display: <?php echo $tpl['arr']['type']== 'delivery' ? 'block' : 'none';?>;">
-                                        <?php
-                                            $dDate = !empty($tpl['arr']['d_dt']) ? date($tpl['option_arr']['o_date_format'], strtotime($tpl['arr']['d_dt'])) : date("d.m.Y"); 
-                                            $dTime = !empty($tpl['arr']['d_dt']) ? date($tpl['option_arr']['o_time_format'], strtotime($tpl['arr']['d_dt'])) : ''; 
-                                        ?>
+                                       
                                        
                                         <label><?php __('lblDate'); ?></label>
                                         <div class="form-group order-delivery">
@@ -667,7 +670,7 @@ $short_days = __('short_days', true);
                                                 <span class="input-group-addon"><i class="fa fa-clock-o"></i></span> 
                                                 
                                                <!--  <input name="d_time" class="pj-timepicker form-control required fdRequired" data-msg-required="<?php //__('fd_field_required', false, true);?>" readonly/>   -->
-                                                <input name="d_time" id="d_time" class=" form-control fdRequired" data-msg-required="<?php __('fd_field_required', false, true);?>"/ value = "<?php if($tpl['arr']['d_time']==0){echo '';}else{echo $tpl['arr']['d_time'];} ?>">    
+                                                <input name="d_time" id="d_time" class=" form-control fdRequired" data-msg-required="<?php __('fd_field_required', false, true);?>"/ value = "<?php if($tpl['arr']['d_time']==0){ echo $tpl['arr']['p_time'];}else{echo $tpl['arr']['d_time'];} ?>">    
                                                 <input type="hidden" name="delivery_time" id="delivery_time"
                                                 value="<?php 
                                                   echo $dTime; ?>">
@@ -678,8 +681,7 @@ $short_days = __('short_days', true);
                                     </div>
 
                                     <?php
-                                        $pDate = !empty($tpl['arr']['p_dt']) ? date($tpl['option_arr']['o_date_format'], strtotime($tpl['arr']['p_dt'])) : date("d.m.Y"); 
-                                        $pTime = !empty($tpl['arr']['p_dt']) ? date($tpl['option_arr']['o_time_format'], strtotime($tpl['arr']['p_dt'])) : ''; 
+                                        
                                     ?>
 
                                     <div class="form-group order-pickup" style="display:<?php echo $tpl['arr']['type']== 'pickup' ? 'block' : 'none';?>;">
@@ -700,7 +702,7 @@ $short_days = __('short_days', true);
                                                 <span class="input-group-addon"><i class="fa fa-clock-o"></i></span> 
                                                 
                                                 <!-- <input name="p_time" class="pj-timepicker form-control fdRequired" data-msg-required="<?php //__('fd_field_required', false, true);?>" readonly/>    --> 
-                                                <input name="p_time" id="p_time" class="form-control fdRequired" data-msg-required="<?php __('fd_field_required', false, true);?>" value = "<?php if($tpl['arr']['p_time']==0){echo '';}else{echo $tpl['arr']['p_time'];} ?>"/> 
+                                                <input name="p_time" id="p_time" class="form-control fdRequired" data-msg-required="<?php __('fd_field_required', false, true);?>" value = "<?php if($tpl['arr']['p_time']==0){echo $tpl['arr']['d_time'];}else{echo $tpl['arr']['p_time'];} ?>"/> 
                                                  <input type="hidden"  name="pickup_time" id="pickup_time"
                                                  value="<?php 
                                                   echo $pTime;
@@ -811,6 +813,15 @@ $short_days = __('short_days', true);
                                         <label class="control-label"><?php __('lblVoucher'); ?></label>
     
                                         <input type="text" name="voucher_code" id="voucher_code" class="form-control">
+                                    </div>
+                                </div><!-- /.col-md-3 -->
+                                <div class="col-lg-2 col-md-2 col-sm-6">
+                                    <div class="form-group">
+                                        <label class="control-label"><?php echo "Delivery fee"; ?></label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><?php echo pjCurrency::getCurrencySign($tpl['option_arr']['o_currency'], false) ?></span> 
+                                            <input type="text" name="delivery_fee" id="delivery_fee" class="form-control">
+                                        </div>
                                     </div>
                                 </div><!-- /.col-md-3 -->
                             </div> <!-- jaslin -->

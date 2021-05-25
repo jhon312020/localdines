@@ -89,6 +89,7 @@ myLabel.name = <?php x__encode('lblName'); ?>;
 myLabel.email = <?php x__encode('email'); ?>;
 myLabel.phone_no = "<?php echo 'Phone No'; ?>";
 myLabel.c_postcode = "<?php echo 'Post Code'; ?>";
+myLabel.orders = <?php x__encode('lblOrders'); ?>;
 myLabel.revert_status = <?php x__encode('revert_status'); ?>;
 myLabel.exported = <?php x__encode('lblExport'); ?>;
 myLabel.active = <?php x__encode('u_statarr_ARRAY_T'); ?>;

@@ -26,6 +26,9 @@ class pjAdminOrders extends pjAdmin
 		}
 		exit;
 	}
+
+	// MEGAMIND
+
 	public function pjActionCheckClientPhoneNumber()
 	{
 		$this->setAjax(true);
@@ -44,13 +47,6 @@ class pjAdminOrders extends pjAdmin
                 exit;
             }
 
-			// $client_info = pjOrderModel::factory()
-   //          ->join('pjClient', "t2.id = t1.client_id")
-   //          ->select('t1.id, t1.surname,t1.phone_no, t1.sms_email, t1.post_code, t1.d_address_1, t1.d_address_2, t1.d_city, t1.first_name, t1.client_id, t1.kprint, t2.c_title, t1.type, t1.is_paid, t1.order_despatched, t1.mobile_delivery_info, t1.mobile_offer, t1.email_delivery_info, t1.email_offer, t1.email_receipt, t1.created, t1.preparation_time')
-   //          ->where('t1.phone_no',$this->_post->toString('value'))
-   //          ->limit(1)
-   //          ->findAll()
-   //          ->getData();
             $client_info = pjClientModel::factory()
                           ->join('pjOrder', "t2.client_id = t1.id")
                           ->join('pjAuthUser', "t3.id = t1.foreign_id")
@@ -75,6 +71,8 @@ class pjAdminOrders extends pjAdmin
 		exit;
 	}
 	
+	// !MEGAMIND
+
 	public function pjActionIndex()
 	{
 	    $this->checkLogin();
@@ -103,12 +101,19 @@ class pjAdminOrders extends pjAdmin
 				
 			if ($q = $this->_get->toString('q'))
 			{
-				$pjOrderModel->where("(t1.id='$q' OR t1.uuid = '$q' OR t1.surname LIKE '%$q%' OR t3.email LIKE '%$q%' OR t3.phone = '$q' OR t1.post_code = '$q')");
+				// MEGAMIND 
+
+				$pjOrderModel->where("(t1.id='$q' OR t1.uuid = '$q' OR t1.surname LIKE '%$q%' 
+					OR t3.email LIKE '%$q%' OR t3.phone = '$q' OR t1.post_code = '$q')");
+
+				// !MEGAMIND
 			}
 			if ($this->_get->toString('status'))
 			{
 			    $status = $this->_get->toString('status');
+			    // MEGAMIND (Added delivered status)
 			    if(in_array($status, array('confirmed','cancelled','pending','delivered')))
+			    // !MEGAMIND
 			    {
 			        $pjOrderModel->where('t1.status', $status);
 			    }
@@ -120,7 +125,9 @@ class pjAdminOrders extends pjAdmin
 			    {
 			        $pjOrderModel->where('t1.type', $type);
 			    }
+			    // MEGAMIND (Added delivered status)
 			    if(in_array($type, array('confirmed','cancelled','pending','delivered')))
+			    // !MEGAMIND
 			    {
 			        $pjOrderModel->where('t1.status', $type);
 			    }
@@ -160,52 +167,20 @@ class pjAdminOrders extends pjAdmin
 				->findAll()
 				->getData();
 
-            //echo "<pre>";print_r($data[0]['p_dt']); echo "</pre>";
-            // exit;
-            
-            // $this->set('data',$data);
 			foreach($data as $k => $v)
 			{
+				// MEGAMIND
+
 				$data[$k]['address'] = $v['d_address_1'].' '.$v['d_address_2']. ' '.$v['d_city'];
-				//$data[$k]['post_code'] = 'post_code';
 				$v['post_code'] == '0' ? $data[$k]['post_code'] = '' : $data[$k]['post_code'] = $v['post_code'];
-				//$data[$k]['address'] = pjOrder::
 				$data[$k]['c_type'] = $v['c_type'];
-				// $data[$k]['call_start'] = 'call_start';
-				// $data[$k]['call_end'] = 'call_end';
-				//$data[$k]['sms_email'] = 'SMS Email';
-				// $data[$k]['order_despatched'] = '1';
-                
                 $v['sms_sent_time'] == "" ? $data[$k]['sms_sent_time'] = '' : $data[$k]['sms_sent_time'] = explode(" ", $v['sms_sent_time'])[1];
 				$v['d_dt'] == "" ? $data[$k]['expected_delivery'] = explode(" ", $v['p_dt'])[1] : $data[$k]['expected_delivery'] = explode(" ", $v['d_dt'])[1];
-				//$time = explode(" ", $v['delivered_time'])[1];
                 $v['delivered_time'] == "" ? $data[$k]['delivered_time'] = '' : $data[$k]['delivered_time'] = explode(" ", $v['delivered_time'])[1];
-				//$data[$k]['delivered_time'] = $v['delivered_time'];
-				//$data[$k]['excpected_delivery'] = $v['d_dt'];
-				//$v['d_dt'] == NULL ? echo "Empty delivery" : echo "delivery is there";
-				//$data[$k]['sms_sent_time'] = 'sms_sent_time';
-				// $data[$k]['delivered_customer'] = 'delivered_customer';
-				//print_r(explode("",$v['delivered_time']));
-				//$data[$k]['delivered_time'] = $var[0];
-				
 				$data[$k]['total'] = pjCurrency::formatPrice($v['total']);
-				// if($v['type'] == 'delivery')
-				// {
-				// 	if($v['d_asap'] == 'F')
-				// 	{
-				// 	    $data[$k]['datetime'] = date($this->option_arr['o_date_format'] . ', ' . $this->option_arr['o_time_format'], strtotime($v['d_dt']));
-				// 	}else{
-				// 	    $data[$k]['datetime'] = date($this->option_arr['o_date_format'], strtotime($v['d_dt'])) . ', ' . __('lblAsap', true);
-				// 	}
-				// }else if($v['type'] == 'pickup'){
-				// 	if($v['p_asap'] == 'F')
-				// 	{
-				// 	    $data[$k]['datetime'] = date($this->option_arr['o_date_format'] . ', ' . $this->option_arr['o_time_format'], strtotime($v['p_dt']));
-				// 	}else{
-				// 	    $data[$k]['datetime'] = date($this->option_arr['o_date_format'], strtotime($v['p_dt'])) . ', ' . __('lblAsap', true);
-				// 	}
-				// }
 				$data[$k]['client_name'] = pjSanitize::clean($v['client_name']);
+
+				// !MEGAMIND
 			}
 			//echo "<pre>";print_r($data); echo "</pre>";
 			pjAppController::jsonResponse(compact('data', 'total', 'pages', 'page', 'rowCount', 'column', 'direction'));
@@ -302,12 +277,17 @@ class pjAdminOrders extends pjAdmin
 	        self::jsonResponse(array('status' => 'ERR', 'code' => 103, 'text' => 'Order not found.'));
 	    }
 	    $id = $this->_get->toInt('id');
-	    // if ($pjOrderModel->reset()->setAttributes(array('id' => $id))->erase()->getAffectedRows() == 1)
+	    
+	    // MEGAMIND 
+
 	    if (pjOrderModel::factory()->where('id',$id)->modifyAll(array(
 	            'deleted_order' => ":IF(`deleted_order`='0','1','0')"
 	        ))->getAffectedRows() == 1)
+
+	    // !MEGAMIND
+
 	    {
-	        //pjOrderItemModel::factory()->where('order_id', $id)->eraseAll();
+	        
 	        self::jsonResponse(array('status' => 'OK', 'code' => 200, 'text' => 'Order has been deleted'));
 	    }else{
 	        self::jsonResponse(array('status' => 'ERR', 'code' => 105, 'text' => 'Order has not been deleted.'));
@@ -339,11 +319,15 @@ class pjAdminOrders extends pjAdmin
 	    {
 	        self::jsonResponse(array('status' => 'ERR', 'code' => 104, 'text' => 'Missing, empty or invalid parameters.'));
 	    }
-	    //pjOrderModel::factory()->whereIn('id', $record)->eraseAll();
-	    //pjOrderItemModel::factory()->whereIn('order_id', $record)->eraseAll();
+	    
+	    // MEGAMIND
+
 	    pjOrderModel::factory()->whereIn('id',$record)->modifyAll(array(
 	            'deleted_order' => ":IF(`deleted_order`='0','1','0')"
 	        ));
+
+        // !MEGAMIND
+
 	    self::jsonResponse(array('status' => 'OK', 'code' => 200, 'text' => 'Order(s) has been deleted.'));
 	}
 	
@@ -409,13 +393,10 @@ class pjAdminOrders extends pjAdmin
 	            $c_data['c_name'] = $this->_post->toString('c_name');
 	            $c_data['surname'] = $this->_post->toString('surname');
 	            $c_data['c_phone'] = $this->_post->toString('phone_no');
-	            //if ($this->_post->check('type')) {
             	$c_data['c_address_1'] = $this->_post->toString('d_address_1');
 	            $c_data['c_address_2'] = $this->_post->toString('d_address_2');
 	            $c_data['c_city'] = $this->_post->toString('d_city');
-	            $c_data['post_code'] = $this->_post->toString('post_code');
-	            //}
-	            
+	            $c_data['post_code'] = $this->_post->toString('post_code'); 
 	            $c_data['password'] = $c_data['c_name'].$data['uuid'];
 	            $c_data['status'] = 'T';
 	            $c_data['locale_id'] = $this->getLocaleId();
@@ -1569,20 +1550,22 @@ class pjAdminOrders extends pjAdmin
 				}
 			}
 			
-			if ($this->_post->has('type') && $this->_post->toInt('d_location_id'))
-			{
-				$d_location_id = $this->_post->toInt('d_location_id');
-				$arr = pjPriceModel::factory()
-				->where("t1.location_id", $d_location_id)
-				->where("(t1.total_from <= $price)")
-				->where("(t1.total_to >= $price)")
-				->findAll()
-				->limit(1)
-				->getData();
+			if ($this->_post->has('type') && $this->_post->has('delivery_fee'))
+			{   
+				//print_r("coming here");
+
+				$d_fee = $this->_post->toInt('delivery_fee');
+				// $arr = pjPriceModel::factory()
+				// ->where("t1.location_id", $d_location_id)
+				// ->where("(t1.total_from <= $price)")
+				// ->where("(t1.total_to >= $price)")
+				// ->findAll()
+				// ->limit(1)
+				// ->getData();
 				
-				if (count($arr) === 1)
+			    if ($d_fee)
 				{
-					$price_delivery = $arr[0]['price'];
+				   $price_delivery = $d_fee;
 				}
 			}
 			if ($this->_post->has('voucher_code'))

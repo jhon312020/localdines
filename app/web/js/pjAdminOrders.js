@@ -127,69 +127,14 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
     //     });
     // }
     $('#d_time').on("focusout",function() {
-      var delivery_time = parseInt($(this).val());
-      
-      var delivery_hr;
-      var delivery_mins;
-      var d_mins;
-      //var d_hr;
-      var now = new Date($.now());
-      
-      var now_hr = now.getHours();
-      var now_mins = now.getMinutes();
-      
-      if (delivery_time >= 60) {
-         delivery_mins = delivery_time % 60;
-
-        delivery_hr = (delivery_time - delivery_mins) / 60;
-       
-        d_mins = delivery_mins + now_mins;
-        now_hr = now_hr + delivery_hr;
-      } else {
-        d_mins = delivery_time + now_mins;
-        
-      }
-      while (d_mins >= 60) {
-        now_hr++;
-        d_mins = d_mins % 60;
-      } 
-      if (now_hr >= 24) {
-        now_hr = now_hr % 24;
-      }
-      
-      $("#delivery_time").val(now_hr + ":" + d_mins);
-      $("#aproxDt").text(now_hr + ":" + d_mins);
+      var mins = parseInt($(this).val());
+      deliveryTime(mins);
       validateDeliveryTime();
       calPrice(1);
     })
     $('#p_time').on("focusout",function() {
-      var pickup_time = parseInt($(this).val());
-      var pickup_hr;
-      var pickup_mins;
-      var p_mins;
-      //var p_hr;
-      var now = new Date($.now());
-      var now_hr = now.getHours();
-      var now_mins = now.getMinutes();
-      if (pickup_time >= 60) {
-         pickup_mins = pickup_time % 60;
-        pickup_hr = (pickup_time - pickup_mins) / 60;
-       
-        p_mins = pickup_mins + now_mins;
-        now_hr = pickup_hr + now_hr;
-      } else {
-        p_mins = pickup_time + now_mins;
-      }
-      while (p_mins >= 60) {
-        now_hr++;
-        p_mins = p_mins % 60;
-      } 
-      if (now_hr >= 24) {
-        now_hr = now_hr % 24;
-      }
-      $("#pickup_time").val(now_hr + ":" + p_mins);
-      $("#aproxPt").text(now_hr + ":" + p_mins);
-      
+      var mins = parseInt($(this).val());
+      pickupTime(mins);
       validatePickupTime();
       calPrice(1);
     })
@@ -636,6 +581,76 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
          $("#c_email").attr("data-wt","invalid");
       }
     }
+    function deliveryTime(mins) {
+      var delivery_time = mins;
+      
+      var delivery_hr;
+      var delivery_mins;
+      var d_mins;
+      //var d_hr;
+      var now = new Date($.now());
+      
+      var now_hr = now.getHours();
+      var now_mins = now.getMinutes();
+      
+      if (delivery_time >= 60) {
+         delivery_mins = delivery_time % 60;
+
+        delivery_hr = (delivery_time - delivery_mins) / 60;
+       
+        d_mins = delivery_mins + now_mins;
+        now_hr = now_hr + delivery_hr;
+      } else {
+        d_mins = delivery_time + now_mins;
+        
+      }
+      while (d_mins >= 60) {
+        now_hr++;
+        d_mins = d_mins % 60;
+      } 
+      if (now_hr >= 24) {
+        now_hr = now_hr % 24;
+      }
+
+      now_hr = now_hr < 10 ? '0' + now_hr : now_hr;
+      d_mins = d_mins < 10 ? '0' + d_mins : d_mins;
+      
+      $("#delivery_time").val(now_hr + ":" + d_mins);
+      $("#aproxDt").text(now_hr + ":" + d_mins);
+    }
+    function pickupTime(mins) {
+      var pickup_time = mins;
+      var pickup_hr;
+      var pickup_mins;
+      var p_mins;
+      //var p_hr;
+      var now = new Date($.now());
+      var now_hr = now.getHours();
+      var now_mins = now.getMinutes();
+      if (pickup_time >= 60) {
+         pickup_mins = pickup_time % 60;
+        pickup_hr = (pickup_time - pickup_mins) / 60;
+       
+        p_mins = pickup_mins + now_mins;
+        now_hr = pickup_hr + now_hr;
+      } else {
+        p_mins = pickup_time + now_mins;
+      }
+      while (p_mins >= 60) {
+        now_hr++;
+        p_mins = p_mins % 60;
+      } 
+      if (now_hr >= 24) {
+        now_hr = now_hr % 24;
+      }
+
+      now_hr = now_hr < 10 ? '0' + now_hr : now_hr;
+      p_mins = p_mins < 10 ? '0' + p_mins : p_mins;
+
+      $("#pickup_time").val(now_hr + ":" + p_mins);
+      $("#aproxPt").text(now_hr + ":" + p_mins);
+      
+    }
     function formatType(val, obj) {
       if (val == "pickup") {
         //console.log(obj.is_paid);
@@ -1006,7 +1021,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 
           $fdSelectedProduct = $("#prdInfo_" + index).val();
           $fdSelectedProduct = JSON.parse($fdSelectedProduct);
-          $kordersPrepTime = $("#totKorderPrepTimeInput").val();
+          //$kordersPrepTime = $("#totKorderPrepTimeInput").val();
           
           if ($fdSelectedProduct.preparation_time == "") {
             $prepTime = "0";
@@ -1014,7 +1029,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
             $prepTime = $fdSelectedProduct.preparation_time;
           }//? $prepTime = 0 : $prepTime = $fdSelectedProduct.preparation_time;
           //console.log($prepTime);
-          $totPrepTime = $totPrepTime + parseInt($prepTime) + parseInt($kordersPrepTime);
+          $totPrepTime = $totPrepTime + parseInt($prepTime);
 
           //$totPrepTime = $totPrepTime + parseInt($kordersPrepTime);
           
@@ -1024,7 +1039,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           $("#fdDescription").html($fdSelectedProduct.description);
           $("#total_prep-time_format").html($totPrepTime);
           $("#prep_time").val($totPrepTime);
-          $totPrepTime = $totPrepTime - parseInt($kordersPrepTime);
+          //$totPrepTime = $totPrepTime - parseInt($kordersPrepTime);
           // !MEGAMIND
 
           $("#curProdDesc").html($("#prdDesc_" + index).val());
@@ -1069,11 +1084,11 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
          //return false;
       })
       .on("click", "#fdOrderList .pj-remove-product", function (e) {
-        $kordersPrepTime = $("#totKorderPrepTimeInput").val();
+        //$kordersPrepTime = $("#totKorderPrepTimeInput").val();
         var $deletedPrepTime = parseInt($(this).parents("tr").children("td:nth-child(6)").children().text());
         $totPrepTime = $totPrepTime - $deletedPrepTime;
-        $("#total_prep-time_format").text($totPrepTime + parseInt($kordersPrepTime));
-        $("#prep_time").val($totPrepTime + parseInt($kordersPrepTime));
+        $("#total_prep-time_format").text($totPrepTime);
+        $("#prep_time").val($totPrepTime);
 
       })
       .on("click", ".dropdown-toggle", function (e) { 
@@ -1397,6 +1412,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           $(".order-delivery").find(".fdRequired").addClass("required");
           $(".order-pickup").hide();
           $(".order-pickup").find(".fdRequired").removeClass("required");
+
           
             $c_phone = $('#phone_no').val();
             if ($c_phone) {
@@ -1418,6 +1434,10 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
               $("#d_city").val(c_arr.c_city);
             }
           }
+          if ($("#d_time").val() && !($("#delivery_time").val())) {
+            var mins = parseInt($("#d_time").val());
+            deliveryTime(mins);
+           }
         } else {
           $(".order-delivery").hide();
           $(".order-delivery").find(".fdRequired").removeClass("required");
@@ -1427,6 +1447,10 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           $("#d_address_1").val("");
           $("#d_address_2").val("");
           $("#d_city").val("");
+          if ($("#p_time").val() && !($("#pickup_time").val())) {
+            var mins = parseInt($("#p_time").val());
+            pickupTime(mins);
+           }
         }
       })
       .on("change", ".onoffswitch-client .onoffswitch-checkbox", function (e) {

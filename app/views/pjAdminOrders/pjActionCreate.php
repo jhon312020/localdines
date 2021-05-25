@@ -696,6 +696,15 @@ unset($statuses['delivered']);
                                         <input type="text" name="voucher_code" id="voucher_code" class="form-control">
                                     </div>
                                 </div><!-- /.col-md-3 -->
+                                <div class="col-lg-2 col-md-2 col-sm-6">
+                                    <div class="form-group">
+                                        <label class="control-label"><?php echo "Delivery fee"; ?></label>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><?php echo pjCurrency::getCurrencySign($tpl['option_arr']['o_currency'], false) ?></span> 
+                                            <input type="text" name="delivery_fee" id="delivery_fee" class="form-control">
+                                        </div>
+                                    </div>
+                                </div><!-- /.col-md-3 -->
                             </div>
                             <div class="clearfix">
                                 <button type="submit" class="ladda-button btn btn-primary btn-lg btn-phpjabbers-loader pull-left" data-style="zoom-in" style="margin-right: 15px;">
