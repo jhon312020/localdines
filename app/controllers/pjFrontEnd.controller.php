@@ -18,6 +18,7 @@ class pjFrontEnd extends pjFront
 	public function pjActionLoadCss()
 	{
 	    $dm = new pjDependencyManager(PJ_INSTALL_PATH, PJ_THIRD_PARTY_PATH);
+	    print_r("HI");
 	    $dm->load(PJ_CONFIG_PATH . 'dependencies.php')->resolve();
 	    
 	    $theme = $this->option_arr['o_theme'];

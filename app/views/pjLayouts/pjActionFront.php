@@ -5,7 +5,8 @@ ob_end_clean();
 
 $content = preg_replace('/\r\n|\n|\t/', '', $content);
 $content = str_replace("'", "\"", $content);
-
+// print_r($content);
+// exit;
 $pattern = '|<script.*>(.*)</script>|';
 if (preg_match($pattern, $content, $matches))
 {

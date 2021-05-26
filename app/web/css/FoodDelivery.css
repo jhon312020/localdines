@@ -180,3 +180,55 @@
 	
 	#pjWrapper .row .col-xss-12{width: 100%;}
 }
+
+/** MEGAMIND **/
+body {
+  
+  padding-top: 70px;
+}
+nav {
+	padding: 10px 0px;
+}
+@media only screen and ( min-width: 767px ) {
+	div.sticky {
+	  position: fixed;
+	  top: 100px;
+	}
+}
+@media only screen and ( max-width: 480px ) { 
+	.menu-left {
+		display: none;
+	}
+}
+footer{
+	background-color: #f7f7f7;
+	position: relative;
+	z-index: 1;
+}
+.d-left {
+    height: 100vh;
+    background-color: pink;
+}
+.text-nav {
+	font-weight: 600;
+	font-size: 17px;
+	/*color: #55ad32 !important;*/
+}
+.text-nav a{
+	color: #55ad32 !important;
+}
+li.active a {
+	color: black !important;
+	background-color: #f8f8f8 !important;
+}
+li.active a:hover {
+	color: #55ad32 !important;
+}
+.container-fluid {
+	padding: 0px !important;
+}
+h1{
+	margin: 0px !important;
+}
+
+/** !MEGAMIND **/

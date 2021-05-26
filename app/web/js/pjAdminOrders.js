@@ -920,6 +920,9 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
       .on("change", "#voucher_code", function (e) {
         calPrice(1);
       })
+      .on("change", "#delivery_fee", function(e) {
+        calPrice(1);
+      })
       .on("change", "#chef", function() {
         var $chef_id = $(this).val()
         $.ajax({

@@ -1,4 +1,4 @@
-<div id="pjFdCartWrapper_<?php echo $controller->_get->toString('index');?>" class="panel panel-default">
+<div id="pjFdCartWrapper_<?php echo $controller->_get->toString('index');?>" class="panel panel-default sticky">
 	<div class="panel-heading pjFdPanelHead">
 		<h1 class="panel-title clearfix">
 			<i class="fa fa-shopping-cart"></i>
