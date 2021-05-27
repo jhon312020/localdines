@@ -51,7 +51,7 @@ class pjOrderModel extends pjAppModel
 		array('name' => 'call_start', 'type' => 'time', 'default' => ':NULL'),
 		array('name' => 'call_end', 'type' => 'time', 'default' => ':NULL'),
 		array('name' => 'post_code', 'type' => 'varchar', 'default' => ':NULL'),
-		array('name' => 'phone_no', 'type' => 'bigint', 'default' => ':NULL'),
+		array('name' => 'phone_no', 'type' => 'varchar', 'default' => ':NULL'),
 		array('name' => 'surname', 'type' => 'char', 'default' => ':NULL'),
 	    array('name' => 'sms_email', 'type' => 'varchar', 'default' => ':NULL'),
 	    array('name' => 'first_name', 'type' => 'char', 'default' => ':NULL'),

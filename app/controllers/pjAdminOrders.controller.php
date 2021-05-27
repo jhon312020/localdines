@@ -374,7 +374,7 @@ class pjAdminOrders extends pjAdmin
 			$data['call_start'] = $this->_post->toString('call_start');
 			$data['call_end'] = date('h:i:s A');
 			$data['post_code'] = $this->_post->toString('post_code');
-			$data['phone_no'] = $this->_post->toInt('phone_no');
+			$data['phone_no'] = $this->_post->toString('phone_no');
 			$data['surname'] = $this->_post->toString('surname');
 			$data['sms_email'] = $this->_post->toString('sms_email');
 			$data['first_name'] = $this->_post->toString('c_name');
@@ -1885,35 +1885,41 @@ class pjAdminOrders extends pjAdmin
 	            self::jsonResponse(array('status' => 'ERR', 'code' => 101, 'text' => 'Missing, empty or invalid parameters.'));
 	        }
 	        $id = $this->_get->toInt('id');
-	        
-	        pjOrderModel::factory()
-	        ->where('id', $id)
-	        ->modifyAll(array(
-	            'order_despatched' => ":IF(`order_despatched`='0','1','0')"
-	        ));
-
-	        $data = pjOrderModel::factory()
-	        ->select("t1.phone_no, t1.order_despatched")
-	        ->find($id)
-	        ->getData(); 
-	        //print_r($data);
-	      //   if ($data['order_despatched']) {
-	      //    	$params = array(
-       //          'text' => 'Your order has been despatched',
-       //          'type' => 'unicode',
-       //          'key' => md5($this->option_arr['private_key'] . PJ_SALT)
-       //         );
-       //         // $params['number'] = $data['phone_no'];
-       //          $params['number'] = "+919841646770";
-       //          pjBaseSms::init($params)->pjActionSend();
-	            date_default_timezone_set('Asia/Kolkata');
-			    $_ss_time = date( 'y-m-d H:i:s', time () );
-	            pjOrderModel::factory()
+            
+	        //if ($this->_post->toBool('od')) {
+	        	pjOrderModel::factory()
 		        ->where('id', $id)
 		        ->modifyAll(array(
-		            'sms_sent_time' => $_ss_time
-		         ));
-	      //   }
+		            'order_despatched' => ":IF(`order_despatched`='0','1','0')"
+		        ));
+
+				
+		        $data = pjOrderModel::factory()
+		        ->select("t1.phone_no, t1.order_despatched")
+		        ->find($id)
+		        ->getData(); 
+		  //       print_r($data);
+				// exit;
+		        //print_r($data);
+		      //   if ($data['order_despatched']) {
+		      //    	$params = array(
+	       //          'text' => 'Your order has been despatched',
+	       //          'type' => 'unicode',
+	       //          'key' => md5($this->option_arr['private_key'] . PJ_SALT)
+	       //         );
+	       //         // $params['number'] = $data['phone_no'];
+	       //          $params['number'] = "+919841646770";
+	       //          pjBaseSms::init($params)->pjActionSend();
+		            date_default_timezone_set('Asia/Kolkata');
+				    $_ss_time = date( 'y-m-d H:i:s', time () );
+		            pjOrderModel::factory()
+			        ->where('id', $id)
+			        ->modifyAll(array(
+			            'sms_sent_time' => $_ss_time
+			         ));
+		      //   }
+	        //}
+	        
             
 	        self::jsonResponse(array('status' => 'OK', 'code' => 200, 'text' => 'Your order has despatched.'));
 	    }
@@ -1933,14 +1939,65 @@ class pjAdminOrders extends pjAdmin
 	        {
 	            self::jsonResponse(array('status' => 'ERR', 'code' => 101, 'text' => 'Missing, empty or invalid parameters.'));
 	        }
-	        $id = $this->_get->toInt('id');
+	        $gid = $this->_get->toInt('id');
+	        $pid = $this->_post->toInt('pid');
+	        //print_r(self::isPost());
+	        if ($gid) {
+	        	pjOrderModel::factory()
+		        ->where('id', $gid)
+		        ->modifyAll(array(
+		            'is_paid' => ":IF(`is_paid`='0','1','0')"
+		        ));
+
+	        }
+	        // elseif ($pid) {
+	        // 	pjOrderModel::factory()
+		       //  ->where('id', $pid)
+		       //  ->modifyAll(array(
+		       //      'is_paid' => ":IF(`is_paid`='0','1','0')"
+		       //  ));
+
+	        // }
 	        
-	        pjOrderModel::factory()
-	        ->where('id', $id)
-	        ->modifyAll(array(
-	            'is_paid' => ":IF(`is_paid`='0','1','0')"
-	        ));
-	        self::jsonResponse(array('status' => 'OK', 'code' => 200, 'text' => 'Your order has despatched.'));
+	        self::jsonResponse(array('status' => 'OK', 'code' => 200, 'text' => 'Your order has paid.'));
+	    }
+	    exit;
+	}
+	public function pjActionSaveOrderPaidByPost()
+	{
+	    $this->setAjax(true);
+	    if ($this->isXHR())
+	    {
+	        if (!self::isPost())
+	        {
+	            self::jsonResponse(array('status' => 'ERR', 'code' => 100, 'text' => 'HTTP method not allowed.'));
+	        }
+	        
+	        if ($this->_post->toInt('id') <= 0)
+	        {
+	            self::jsonResponse(array('status' => 'ERR', 'code' => 101, 'text' => 'Missing, empty or invalid parameters.'));
+	        }
+	        //$gid = $this->_get->toInt('id');
+	        $pid = $this->_post->toInt('id');
+	        //print_r(self::isPost());
+	        
+	        	pjOrderModel::factory()
+		        ->where('id', $pid)
+		        ->modifyAll(array(
+		            'is_paid' => ":IF(`is_paid`='0','1','0')"
+		        ));
+
+	        
+	        // elseif ($pid) {
+	        // 	pjOrderModel::factory()
+		       //  ->where('id', $pid)
+		       //  ->modifyAll(array(
+		       //      'is_paid' => ":IF(`is_paid`='0','1','0')"
+		       //  ));
+
+	        // }
+	        
+	        self::jsonResponse(array('status' => 'OK', 'code' => 200, 'text' => 'Your order has paid.'));
 	    }
 	    exit;
 	}
@@ -1954,36 +2011,39 @@ class pjAdminOrders extends pjAdmin
 	            self::jsonResponse(array('status' => 'ERR', 'code' => 100, 'text' => 'HTTP method not allowed.'));
 	        }
 	        
-	        if ($this->_get->toInt('id') <= 0)
+	        if ($this->_post->toInt('id') <= 0)
 	        {
 	            self::jsonResponse(array('status' => 'ERR', 'code' => 101, 'text' => 'Missing, empty or invalid parameters.'));
 	        }
-	        $id = $this->_get->toInt('id');
-	        
-	        pjOrderModel::factory()
-	        ->where('id', $id)
-	        ->modifyAll(array(
-	            'delivered_customer' => ":IF(`delivered_customer`='0','1','0')"
-	        ));
+	        $id = $this->_post->toInt('id');
 
-	        $data = pjOrderModel::factory()
-	        ->select("t1.phone_no, t1.delivered_customer")
-	        ->find($id)
-	        ->getData();
-	        if ($data['delivered_customer'] == 1) {
+	        if ($this->_post->toBool('od')) {
 	        	pjOrderModel::factory()
-	            ->where('id', $id)
-	            ->modifyAll(array(
-	            'status' => "delivered"
-	            ));
-	            date_default_timezone_set('Asia/Kolkata');
-			    $delivered_time = date( 'y-m-d H:i:s', time () );
-	            pjOrderModel::factory()
 		        ->where('id', $id)
 		        ->modifyAll(array(
-		            'delivered_time' => $delivered_time
+		            'delivered_customer' => ":IF(`delivered_customer`='0','1','0')"
 		        ));
+
+		        $data = pjOrderModel::factory()
+		        ->select("t1.phone_no, t1.delivered_customer")
+		        ->find($id)
+		        ->getData();
+		        if ($data['delivered_customer'] == 1) {
+		        	pjOrderModel::factory()
+		            ->where('id', $id)
+		            ->modifyAll(array(
+		            'status' => "delivered"
+		            ));
+		            date_default_timezone_set('Asia/Kolkata');
+				    $delivered_time = date( 'y-m-d H:i:s', time () );
+		            pjOrderModel::factory()
+			        ->where('id', $id)
+			        ->modifyAll(array(
+			            'delivered_time' => $delivered_time
+			        ));
+		        }
 	        }
+	        
 	        //var_dump($data['d_dt'] > $data['delivered_time']);
 	        //print_r($data);
 
@@ -2000,7 +2060,7 @@ class pjAdminOrders extends pjAdmin
 	         // }
 
             
-	        self::jsonResponse(array('status' => 'OK', 'code' => 200, 'text' => 'Your order has despatched.'));
+	        self::jsonResponse(array('status' => 'OK', 'code' => 200, 'text' => 'Your order has delivered.'));
 	    }
 	    exit;
 	}

@@ -765,7 +765,9 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
                     editableRenderer: function () {
                       return 0;
                     },
-                    saveUrl: "index.php?controller=pjAdminOrders&action=pjActionSaveDeliveredCustomer&id={:id}",
+                    // if() {
+                    //saveUrl: "index.php?controller=pjAdminOrders&action=pjActionSaveDeliveredCustomer&id={:id}",
+                    // }
                     positiveLabel: myLabel.yes, positiveValue: "1", negativeLabel: myLabel.no, negativeValue: "0", 
                     cellClass: "text-center"},
           { text: myLabel.delivered_time, type: "text", sortable: false },
@@ -1140,49 +1142,9 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
       .on("change", "#phone_no", function (e) {
 
         // $cinfo = client_info;
-        $c_phone = $(this).val();
-        $cinfo = $.ajax({
-          type: "POST",
-          async: false,
-          url: "index.php?controller=pjAdminOrders&action=pjActionCheckClientPhoneNumber",
-          data: { 
-            value: function() {
-              return $c_phone;
-            }
-          },
-      });
-        //console.log($cinfo);
-      if($cinfo.responseText == 'new user') {
-
-        $("#c_title").val("");
-        $("#c_email").val("");
-        $("#c_email").attr('data-wt','invalid');
-        $("#c_surname").val("");
-        $("#inputPostCode").val("");
-        $("#d_address_1").val("");
-        $("#d_address_2").val("");
-        $("#d_city").val("");
-        $("#c_name").val("");
-        $("input:radio").prop("checked", false);
-      
-      } else {
-        var c_arr = $cinfo.responseJSON[0];
-        $("#c_title").val(c_arr.c_title);
-        $("#c_email").val(c_arr.email);
-        c_arr.sms_email == '' ? $("#c_email").attr('data-wt','invalid') : $("#c_email").attr('data-wt','valid');
-        $("#c_surname").val(c_arr.u_surname);
-        $("#inputPostCode").val(c_arr.c_postcode);
-        $("#d_address_1").val(c_arr.c_address_1);
-        $("#d_address_2").val(c_arr.c_address_2);
-        $("#d_city").val(c_arr.c_city);
-        $("#c_name").val(c_arr.name);
-        c_arr.email_delivery_info == 1 ? $("#email_delivery_info_yes").prop("checked",true) : $("#email_delivery_info_no").prop("checked",true);
-        c_arr.email_offer == 1 ? $("#email_offer_yes").prop("checked",true) : $("#email_offer_no").prop("checked",true);
-        c_arr.email_receipt == 1 ? $("#email_receipt_yes").prop("checked",true) : $("#email_receipt_no").prop("checked",true);
-        c_arr.mobile_delivery_info == 1 ? $("#mobile_delivery_info_yes").prop("checked",true) : $("#mobile_delivery_info_no").prop("checked",true); 
-        c_arr.mobile_offer == 1 ? $("#mobile_offer_yes").prop("checked",true) : $("#mobile_offer_no").prop("checked",true);
-        }  
+        getClientInfo($(this));
       })
+      
       // !MEGAMIND
 
       .on("change", "#client_id", function (e) {
@@ -1415,7 +1377,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           $(".order-delivery").find(".fdRequired").addClass("required");
           $(".order-pickup").hide();
           $(".order-pickup").find(".fdRequired").removeClass("required");
-
+          $("#delivery_fee_frmgrp").css("display","block");
           
             $c_phone = $('#phone_no').val();
             if ($c_phone) {
@@ -1429,15 +1391,16 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
                 }
               },
           });
-            if ($cinfo.responseJSON[0]) {
+            if ($cinfo.responseJSON) {
               var c_arr = $cinfo.responseJSON[0];
               $("#inputPostCode").val(c_arr.c_postcode);
               $("#d_address_1").val(c_arr.c_address_1);
               $("#d_address_2").val(c_arr.c_address_2);
               $("#d_city").val(c_arr.c_city);
-            }
+            } 
           }
           if ($("#d_time").val() && !($("#delivery_time").val())) {
+            //console.log("comes jas");
             var mins = parseInt($("#d_time").val());
             deliveryTime(mins);
            }
@@ -1450,6 +1413,12 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           $("#d_address_1").val("");
           $("#d_address_2").val("");
           $("#d_city").val("");
+          $("#delivery_fee_frmgrp").css("display","none");
+          if ($("#delivery_fee").val()) {
+            $("#delivery_fee").val("");
+            calPrice(1);
+            
+          }
           if ($("#p_time").val() && !($("#pickup_time").val())) {
             var mins = parseInt($("#p_time").val());
             pickupTime(mins);
@@ -1602,11 +1571,20 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
     $("#inputPostCode").keydown(function (e) {
       if (e.keyCode == 13) {
       e.preventDefault();
+      getAddresses($(this));
       //return false;
       }
-      var $this = $(this);
-      getAddresses($this);
+      
     });
+    $("#phone_no").keydown(function (e) {
+      if (e.keyCode == 13) {
+      e.preventDefault();
+      getClientInfo($(this));
+      //return false;
+      }
+     
+      
+      });
      $(document).ready(function() {
      var $page = $('h2');
      if ($page.text() == "Update Order") {
@@ -1827,6 +1805,50 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           });
         }
 
+    }
+    function getClientInfo($this) {
+      $c_phone = $this.val();
+        $cinfo = $.ajax({
+          type: "POST",
+          async: false,
+          url: "index.php?controller=pjAdminOrders&action=pjActionCheckClientPhoneNumber",
+          data: { 
+            value: function() {
+              return $c_phone;
+            }
+          },
+      });
+        //console.log($cinfo);
+      if($cinfo.responseText == 'new user') {
+
+        $("#c_title").val("");
+        $("#c_email").val("");
+        $("#c_email").attr('data-wt','invalid');
+        $("#c_surname").val("");
+        $("#inputPostCode").val("");
+        $("#d_address_1").val("");
+        $("#d_address_2").val("");
+        $("#d_city").val("");
+        $("#c_name").val("");
+        $("input:radio").prop("checked", false);
+      
+      } else {
+        var c_arr = $cinfo.responseJSON[0];
+        $("#c_title").val(c_arr.c_title);
+        $("#c_email").val(c_arr.email);
+        c_arr.sms_email == '' ? $("#c_email").attr('data-wt','invalid') : $("#c_email").attr('data-wt','valid');
+        $("#c_surname").val(c_arr.u_surname);
+        $("#inputPostCode").val(c_arr.c_postcode);
+        $("#d_address_1").val(c_arr.c_address_1);
+        $("#d_address_2").val(c_arr.c_address_2);
+        $("#d_city").val(c_arr.c_city);
+        $("#c_name").val(c_arr.name);
+        c_arr.email_delivery_info == 1 ? $("#email_delivery_info_yes").prop("checked",true) : $("#email_delivery_info_no").prop("checked",true);
+        c_arr.email_offer == 1 ? $("#email_offer_yes").prop("checked",true) : $("#email_offer_no").prop("checked",true);
+        c_arr.email_receipt == 1 ? $("#email_receipt_yes").prop("checked",true) : $("#email_receipt_no").prop("checked",true);
+        c_arr.mobile_delivery_info == 1 ? $("#mobile_delivery_info_yes").prop("checked",true) : $("#mobile_delivery_info_no").prop("checked",true); 
+        c_arr.mobile_offer == 1 ? $("#mobile_offer_yes").prop("checked",true) : $("#mobile_offer_no").prop("checked",true);
+        }  
     }
   });
 })(jQuery_1_8_2);
