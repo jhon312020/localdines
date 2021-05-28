@@ -141,9 +141,10 @@
       <div class="modal-body" id="modalBody">
         <form role='' action="" method="post"> 
 
-            <h4>Is payment made for the products?</h4>
-            <button type="submit" id="paidBtn" class="modalBtn">Yes</button>
-            <button type="submit" id="notpaidBtn" class="modalBtn">No</button>
+            <h4 style="font-size: 25px;">Is payment made for the products?</h4>
+            <hr>
+            <button type="submit" id="paidBtn" class="modalBtn btn-primary" style="border-radius: 5px;border: none;padding: 10px 20px;">Yes</button>
+            <button type="submit" id="notpaidBtn" class="modalBtn btn-danger" style="border-radius: 5px;border: none;padding: 10px 20px;float: right;">No</button>
 
         </form>
 

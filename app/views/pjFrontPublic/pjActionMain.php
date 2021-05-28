@@ -3,8 +3,8 @@
 <?php $index = $controller->_get->toString('index');?>
 <br />
 <div class="container">
-<div class="row">
-	<div id="sidenav" class="col-md-3 col-sm-3 menu-left">
+<div class="row"  style="overflow: visible;">
+	<div id="sidenav" class="col-md-2 col-sm-2 menu-left sticky">
 		<?php include_once dirname(__FILE__) . '/elements/sidenav.php';?>
 	</div><!-- /.col-md-4 col-sm-4 col-xs-12 pjFdPanelRight -->
 	<div id="fdMain_<?php echo $index; ?>" class="col-md-6 col-sm-6 col-xs-12 pjFdPanelLeft">
@@ -54,7 +54,7 @@
 		</div><!-- /.panel panel-default -->
 		
 	</div>
-	<div id="fdCart_<?php echo $index; ?>" class="col-md-3 col-sm-3 col-xs-12 pjFdPanelRight">
+	<div id="fdCart_<?php echo $index; ?>" class="col-md-4 col-sm-4 col-xs-12 pjFdPanelRight sticky">
 		<?php include_once dirname(__FILE__) . '/elements/cart.php';?>
 	</div><!-- /.col-md-4 col-sm-4 col-xs-12 pjFdPanelRight -->
 </div><!-- /.row -->

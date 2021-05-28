@@ -1940,7 +1940,7 @@ class pjAdminOrders extends pjAdmin
 	            self::jsonResponse(array('status' => 'ERR', 'code' => 101, 'text' => 'Missing, empty or invalid parameters.'));
 	        }
 	        $gid = $this->_get->toInt('id');
-	        $pid = $this->_post->toInt('pid');
+	        //$pid = $this->_post->toInt('pid');
 	        //print_r(self::isPost());
 	        if ($gid) {
 	        	pjOrderModel::factory()
@@ -2011,13 +2011,13 @@ class pjAdminOrders extends pjAdmin
 	            self::jsonResponse(array('status' => 'ERR', 'code' => 100, 'text' => 'HTTP method not allowed.'));
 	        }
 	        
-	        if ($this->_post->toInt('id') <= 0)
+	        if ($this->_get->toInt('id') <= 0)
 	        {
 	            self::jsonResponse(array('status' => 'ERR', 'code' => 101, 'text' => 'Missing, empty or invalid parameters.'));
 	        }
-	        $id = $this->_post->toInt('id');
+	        $id = $this->_get->toInt('id');
 
-	        if ($this->_post->toBool('od')) {
+	        //if ($this->_post->toBool('od')) {
 	        	pjOrderModel::factory()
 		        ->where('id', $id)
 		        ->modifyAll(array(
@@ -2042,7 +2042,7 @@ class pjAdminOrders extends pjAdmin
 			            'delivered_time' => $delivered_time
 			        ));
 		        }
-	        }
+	        //}
 	        
 	        //var_dump($data['d_dt'] > $data['delivered_time']);
 	        //print_r($data);
