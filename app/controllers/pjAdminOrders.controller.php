@@ -210,12 +210,17 @@ class pjAdminOrders extends pjAdmin
 	    }
 	    $pjOrderModel = pjOrderModel::factory();
 	    $arr = $pjOrderModel->find($this->_get->toInt('id'))->getData();
-
+        
 	    if (!$arr)
 	    {
 	        self::jsonResponse(array('status' => 'ERR', 'code' => 103, 'text' => 'Order not found.'));
 	    }
-	    $pjOrderModel->reset()->where('id', $this->_get->toInt('id'))->limit(1)->modifyAll(array($this->_post->toString('column') => $this->_post->toString('value')));
+	    if ($this->_post->toString('column') == 'delivered_customer') {
+	    	
+	        
+	    } else {
+	       $pjOrderModel->reset()->where('id', $this->_get->toInt('id'))->limit(1)->modifyAll(array($this->_post->toString('column') => $this->_post->toString('value')));
+	    }
 	    self::jsonResponse(array('status' => 'OK', 'code' => 201, 'text' => 'Order has been updated.'));
 	    exit;
 	}
@@ -2011,23 +2016,24 @@ class pjAdminOrders extends pjAdmin
 	            self::jsonResponse(array('status' => 'ERR', 'code' => 100, 'text' => 'HTTP method not allowed.'));
 	        }
 	        
-	        if ($this->_post->toInt('id') <= 0)
+	        if ($this->_get->toInt('id') <= 0)
 	        {
 	            self::jsonResponse(array('status' => 'ERR', 'code' => 101, 'text' => 'Missing, empty or invalid parameters.'));
 	        }
-	        $id = $this->_post->toInt('id');
+	        $id = $this->_get->toInt('id');
 
-	        if ($this->_post->toBool('od')) {
-	        	pjOrderModel::factory()
+	        //if ($this->_post->toBool('od')) {
+	        	$row = pjOrderModel::factory()
 		        ->where('id', $id)
 		        ->modifyAll(array(
 		            'delivered_customer' => ":IF(`delivered_customer`='0','1','0')"
-		        ));
-
+		        ))->getAffectedRows();
+                // print_r($row);
 		        $data = pjOrderModel::factory()
 		        ->select("t1.phone_no, t1.delivered_customer")
 		        ->find($id)
 		        ->getData();
+		        
 		        if ($data['delivered_customer'] == 1) {
 		        	pjOrderModel::factory()
 		            ->where('id', $id)
@@ -2042,7 +2048,7 @@ class pjAdminOrders extends pjAdmin
 			            'delivered_time' => $delivered_time
 			        ));
 		        }
-	        }
+	        //}
 	        
 	        //var_dump($data['d_dt'] > $data['delivered_time']);
 	        //print_r($data);
