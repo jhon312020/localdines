@@ -9,6 +9,7 @@ if(isset($tpl['arr']) && !empty($tpl['arr']))
 		{
 			$image_path = PJ_INSTALL_URL . $product['image'];
 		}
+		
 		?>
 		<div class="panel panel-default pjFdProduct">
 			<form style="overflow: hidden;" action="" method="post">

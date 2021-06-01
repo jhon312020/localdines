@@ -8,7 +8,7 @@ if($controller->session->getData($controller->defaultLangMenu) == 'show' && isse
 <div class="panel-heading pjFdPanelHead">
 	<div class="row">
 		<div class="<?php echo $show_locale == true ? 'col-lg-6 col-md-6 col-sm-6 col-xs-12' : 'col-lg-8 col-md-8 col-sm-8 col-xs-8'?>">
-			<a href="#" class="btn btn-default pjFdBtnHome fdBtnHome" title="<?php echo __('front_menu');?>">
+			<a href="#" class="btn btn-default pjFdBtnHome fdBtnHome" title="<?php echo __('front_menu');?>" style="display: none;">
 				<i class="fa fa-cutlery fa-3"></i>
 			</a>
 			
@@ -50,7 +50,7 @@ if($controller->session->getData($controller->defaultLangMenu) == 'show' && isse
 				</ul>
 			</div><!-- /.btn-group pjFdNav -->
 		</div><!-- /.col-lg-6 col-md-6 col-sm-6 col-xs-12 -->
-		<div class="pjFdHeaderRight<?php echo $show_locale == true ? ' col-lg-6 col-md-6 col-sm-6 col-xs-12' : ' col-lg-4 col-md-4 col-sm-4 col-xs-4'?>">
+		<div class="pjFdHeaderRight<?php echo $show_locale == true ? ' col-lg-6 col-md-6 col-sm-6 col-xs-12' : ' col-lg-4 col-md-4 col-sm-4 col-xs-4'?>" style="display: none;">
 			<?php
 			if($controller->isFrontLogged())
 			{ 

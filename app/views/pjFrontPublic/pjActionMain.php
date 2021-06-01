@@ -3,7 +3,7 @@
 <?php $index = $controller->_get->toString('index');?>
 <br />
 <div class="container">
-<div class="row"  style="overflow: visible;">
+<div class="row">
 	<div id="sidenav" class="col-md-2 col-sm-2 menu-left sticky">
 		<?php include_once dirname(__FILE__) . '/elements/sidenav.php';?>
 	</div><!-- /.col-md-4 col-sm-4 col-xs-12 pjFdPanelRight -->

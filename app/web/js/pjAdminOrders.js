@@ -126,12 +126,30 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
     //             });
     //     });
     // }
+    $('#d_time').on("change",function() {
+      var mins;
+      if($(this).val()) { 
+        mins = parseInt($(this).val()); 
+        deliveryTime(mins);
+        validateDeliveryTime();
+        calPrice(1);
+      }
+    })
     $('#d_time').on("focusout",function() {
       var mins;
       if($(this).val()) { 
         mins = parseInt($(this).val()); 
         deliveryTime(mins);
         validateDeliveryTime();
+        calPrice(1);
+      }
+    })
+    $('#p_time').on("change",function() {
+      var mins;
+      if($(this).val()) {
+        mins = parseInt($(this).val());
+        pickupTime(mins);
+        validatePickupTime();
         calPrice(1);
       }
     })

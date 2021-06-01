@@ -1,8 +1,10 @@
+<?php include_once dirname(__FILE__) . '/elements/navbar.php';?>
 <div class="fdLoader"></div>
 <?php
 $index = $controller->_get->toString('index');
 ?>
 <br />
+<div class="container">
 <div class="row">
 	<div id="fdMain_<?php echo $index; ?>" class="col-md-8 col-sm-8 col-xs-12 pjFdPanelLeft">
 		
@@ -242,3 +244,5 @@ $index = $controller->_get->toString('index');
 		<?php include_once dirname(__FILE__) . '/elements/cart.php';?>
 	</div><!-- /.col-md-4 col-sm-4 col-xs-12 pjFdPanelRight -->
 </div><!-- /.row -->
+</div>
+<?php include_once dirname(__FILE__) . '/elements/footer.php';?>

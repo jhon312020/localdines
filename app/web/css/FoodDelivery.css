@@ -193,7 +193,7 @@ nav {
 	div.sticky {
 
 	  position: sticky !important;
-	  top: 100px;
+	  top: 120px;
 	  display: block !important;	
 	}
 }
@@ -218,14 +218,14 @@ footer{
 	/*color: #55ad32 !important;*/
 }
 .text-nav a{
-	color: #55ad32 !important;
+	color: #e85d4b !important;
 }
 li.active a {
 	color: black !important;
 	background-color: #f8f8f8 !important;
 }
 li.active a:hover {
-	color: #55ad32 !important;
+	color: #e85d4b !important;
 }
 .container-fluid {
 	padding: 0px !important;
@@ -251,9 +251,30 @@ h1{
 	margin-bottom: 20px;
 }
 li .text-list:hover {
-	color: #55ad32 !important;
+	color: #e85d4b !important;
 } 
-
+.navbar-right {
+	margin-top: 8px !important;
+}
+.row {
+	margin-top: 40px !important;
+}
+.navbar-right .pjFdBtnHome {
+	background: none !important;
+	border: none !important;
+    font-size: 17px !important;
+    font-weight: 600 !important;
+}
+.navbar-right .pjFdBtnAcc {
+	background: none !important;
+	margin-left: 0px !important;
+}
+.list-unstyled .pjFdBtnHome {
+	background: none !important;
+}
+/*#brand {
+	background-image: "./../img/frontend/localdine.png";
+}*/
 /*.row {
     display: flex !important;
     flex-wrap: wrap !important;
