@@ -5,6 +5,7 @@ $index = $controller->_get->toString('index');
 $STORAGE = @$_SESSION[$controller->defaultStore];
 $FORM = isset($_SESSION[$controller->defaultForm]) ? $_SESSION[$controller->defaultForm] : array();
 $CLIENT = $controller->isFrontLogged() ? @$_SESSION[$controller->defaultClient] : array();
+//echo "<pre>"; print_r($FORM);
 ?>
 <br />
 <div class="container">

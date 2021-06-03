@@ -173,7 +173,11 @@ $short_days = __('short_days', true);
                                                             {
                                                                 $has_extra = true;
                                                             }
+                                                            if ($p['status'] == 1) {
+                                                                
+                                                            
                                                             ?><option value="<?php echo $p['id']; ?>"<?php echo $p['id'] == $product['id'] ? ' selected="selected"' : NULL; ?> data-extra="<?php echo $p['cnt_extras'];?>"><?php echo stripslashes($p['name']); ?></option><?php
+                                                        }
                                                         }
                                                         ?>
                                                     </select>

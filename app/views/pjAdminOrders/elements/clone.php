@@ -5,8 +5,11 @@
 			<?php
 			foreach ($tpl['product_arr'] as $p)
 			{
+				if ($p['status'] == 1) {
+				
 				?><option value="<?php echo $p['id']; ?>" data-extra="<?php echo $p['cnt_extras'];?>"><?php echo stripslashes($p['name']); ?></option><?php
 			}
+		}
 			?>
 		</select>
     </td>

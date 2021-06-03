@@ -1,3 +1,4 @@
+
 <div class="fdCategoryContainer">
 	<a href="#" class="fdCateItem fdPrev"></a>
 	<div class="fdCategoryList">
@@ -15,10 +16,12 @@
 
 <div class="fdProductList">
 	<?php
+
 	if(!empty($tpl['main']['product_arr']))
 	{
 		foreach($tpl['main']['product_arr'] as $product)
 		{
+			
 			?>
 			<div id="fdProductBox_<?php echo $product['id'];?>" class="fdProductBox">
 				<form style="overflow: hidden;" action="" method="post">

@@ -215,7 +215,7 @@ class pjAdminOrders extends pjAdmin
 	    {
 	        self::jsonResponse(array('status' => 'ERR', 'code' => 103, 'text' => 'Order not found.'));
 	    }
-	    if ($this->_post->toString('column') == 'delivered_customer') {
+	    if ($this->_post->toString('column') == 'delivered_customer' || $this->_post->toString('column') == 'order_despatched') {
 	    	
 	        
 	    } else {
@@ -2102,6 +2102,51 @@ class pjAdminOrders extends pjAdmin
 
 	/* Added by JR */
     public function pjActionGetProductsForCategory()
+    {
+        $this->setAjax(true);
+    
+        if ($this->isXHR())
+        {
+            $product_arr = [];
+            $category_id = $this->_post->toInt('category_id');
+            $category_arr = pjProductCategoryModel::factory()
+            ->select('t1.product_id')
+            ->whereIn("t1.category_id", $category_id)
+            ->findAll()
+            ->getData();
+            if ($category_arr) {
+                $category_arr = array_column($category_arr, 'product_id');
+                $product_arr = pjProductModel::factory()
+                ->select('t1.id, t2.content AS name, t1.set_different_sizes, t1.price, t1.status')
+                ->join('pjMultiLang', "t2.foreign_id = t1.id AND t2.model = 'pjProduct' AND t2.locale = '".$this->getLocaleId()."' AND t2.field = 'name'", 'left')
+                ->whereIn("t1.id", $category_arr)
+                ->groupBy('t1.id, t1.set_different_sizes, t1.price')
+                ->findAll()
+                ->getData();
+            }
+            $this->set('product_arr', $product_arr);
+
+            $extra_arr = pjExtraModel::factory()
+                ->join('pjMultiLang', "t2.foreign_id = t1.id AND t2.model = 'pjExtra' AND t2.locale = '".$this->getLocaleId()."' AND t2.field = 'name'", 'left')
+                ->join('pjProductExtra', "t3.extra_id = t1.id")
+                ->select("t1.*, t2.content AS name, t3.product_id")
+                ->orderBy("name ASC")
+                ->findAll()
+                ->getData();
+
+            $this->set('extras', $extra_arr);
+
+            $price_arr = pjProductPriceModel::factory()
+                            ->join('pjMultiLang', "t2.foreign_id = t1.id AND t2.model = 'pjProductPrice' AND t2.locale = '".$this->getLocaleId()."' AND t2.field = 'price_name'", 'left')
+                            ->select("t1.*, t2.content AS price_name")
+                            ->orderBy("price_name ASC")
+                            ->findAll()
+                            ->getData();
+                        $this->set('price_arr', $price_arr);
+        }
+    }
+
+     public function pjActionGetProducts()
     {
         $this->setAjax(true);
     

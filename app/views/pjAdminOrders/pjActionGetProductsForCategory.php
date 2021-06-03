@@ -1,12 +1,17 @@
-<table width="100%" style="border-collapse: separate;border-spacing: 0 15px;">
-<tr>
+<div>    
+    <input type='hidden' id='current_page' />
+    <input type='hidden' id='show_per_page' />
+    <div id='page_navigation'>
+    </div>
+<table id="paginate" width="100%" style="border-collapse: separate;border-spacing: 15px 15px;">
+
 <thead>
     <th>S.No.</th>
     <th>Product Name</th>
     <th>Extras</th>
     <th>Price</th>
 </thead>
-</tr>
+<tbody>
 <?php if ($tpl['product_arr']) {
     $count = 1;
     foreach ($tpl['product_arr'] as $p){ 
@@ -45,7 +50,9 @@
      </td>
      
 </tr>
+</tbody>
 <?php } } } else { ?>
     <tr><td colspan="3">Currently no products are available for the category</td></tr>
 <?php } ?>
 </table>
+</div>

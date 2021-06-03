@@ -2,8 +2,11 @@
 if(isset($tpl['arr']) && !empty($tpl['arr']))
 {
 	$category_id = $controller->_get->toInt('category_id');
+
 	foreach($tpl['arr'] as $product)
 	{
+		if ($product['status'] == 1) {
+			
 		$image_path = 'https://placehold.it/220x200';
 		if(!empty($product['image']))
 		{
@@ -113,6 +116,7 @@ if(isset($tpl['arr']) && !empty($tpl['arr']))
 			</form>
 		</div><!-- /.panel panel-default -->
 		<?php
+	}
 	}
 }
 ?>

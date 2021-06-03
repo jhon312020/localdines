@@ -1,7 +1,7 @@
 <div class="row wrapper border-bottom white-bg page-heading">
      <?php //print_r("<pre>");print_r($tpl['extras']); ?>  
    <!--  <?php //print_r($tpl['arr']['i18n']); ?>  -->
-    <?php //echo "<pre>";print_r($tpl['option_arr']); ?>
+    <?php //echo "<pre>";print_r($tpl['product_arr']); ?>
     <!-- <?php 
     //$date = date('')
     // $dates[0] = date('Y-m-d');
@@ -177,9 +177,14 @@ unset($statuses['delivered']);
                 										<option value="">-- <?php __('lblChoose'); ?>--</option>
                 										<?php
                 										foreach ($tpl['product_arr'] as $p)
-                										{
+                                                        {
+                                                            if ($p['status'] == 1) {
+                                                                
+                                                            
+                									
                 											?><option value="<?php echo $p['id']; ?>" data-extra="<?php echo $p['cnt_extras'];?>"><?php echo stripslashes($p['name']); ?></option><?php
                                                             //echo $p['cnt_extras'];
+                                                        }
                 										}
                 										?>
                 									</select>

@@ -399,6 +399,13 @@ $jqDateFormat = pjUtil::jqDateFormat($tpl['option_arr']['o_date_format']);
 											<div class="help-block with-errors"><ul class="list-unstyled"></ul></div>
 										</div>
 									</div><!-- /.form-group -->
+									<div class="form-group">
+										<label for="" class="col-sm-4 control-label"><?php echo "Postcode"; ?></label>
+										<div class="col-sm-8">
+											<input type="text" name="post_code" class="form-control required" value="<?php echo isset($STORAGE['post_code']) ? htmlspecialchars(stripslashes(@$STORAGE['post_code'])) : htmlspecialchars(stripslashes(@$CLIENT['c_postcode'])); ?>" data-err="Postcode is required"/>
+											<div class="help-block with-errors"><ul class="list-unstyled"></ul></div>
+										</div>
+									</div><!-- /.form-group -->
 									<?php
 								}
 								if (in_array($tpl['option_arr']['o_df_include_notes'], array(2, 3)))

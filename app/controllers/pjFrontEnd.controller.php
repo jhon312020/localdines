@@ -18,7 +18,7 @@ class pjFrontEnd extends pjFront
 	public function pjActionLoadCss()
 	{
 	    $dm = new pjDependencyManager(PJ_INSTALL_PATH, PJ_THIRD_PARTY_PATH);
-	    print_r("HI");
+	   
 	    $dm->load(PJ_CONFIG_PATH . 'dependencies.php')->resolve();
 	    
 	    $theme = $this->option_arr['o_theme'];
@@ -522,6 +522,11 @@ class pjFrontEnd extends pjFront
 	        $data['uuid'] = time();
 	        $data['locale_id'] = $this->getLocaleId();
 	        $data['ip'] = $_SERVER['REMOTE_ADDR'];
+	        $data['phone_no'] = $FORM['c_phone'];
+	        $data['first_name'] = $FORM['c_name'];
+	        $data['sms_email'] = $FORM['c_email'];
+	        // print_r($data);
+	        // exit;
 	        
 	        switch ($this->_get('type'))
 	        {
@@ -686,6 +691,13 @@ class pjFrontEnd extends pjFront
 	        ->getInsertId();
 	        if ($order_id !== false && (int) $order_id > 0)
 	        {
+	        	$id = $order_id;
+	        	$id = "W".$id;
+		        pjOrderModel::factory()
+			        ->where('id', $order_id)
+			        ->modifyAll(array(
+			            'order_id' => $id
+			        ));
 	            $pjOrderItemModel = pjOrderItemModel::factory();
 	            $pjProductPriceModel = pjProductPriceModel::factory();
 	            $pjProductModel = pjProductModel::factory();
