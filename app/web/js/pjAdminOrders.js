@@ -951,6 +951,145 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
       .on("change", "#delivery_fee", function(e) {
         calPrice(1);
       })
+      .on("change", "#status", function() {
+        if ($(this).val() == 'delivered' && $("input[name='delivered_customer']").val() == 0) {
+          //if($("input[name='is_paid']").val() == 0 && )
+           
+          if(!($("#is_paid").prop("checked")) && $("input[name='order_despatched']").val() == 0) {
+         
+          swal({
+            title: "Delivered Customer?",
+            text: "Before Delivery, is the order despatched? and is the payment made?",
+            showCancelButton: true,
+            confirmButtonText: "Yes",
+            cancelButtonText: "No",
+            closeOnConfirm: false,
+            showLoaderOnConfirm: true
+          }, function (data) {
+            if (data) {
+              $.post("index.php?controller=pjAdminOrders&action=pjActionSaveOrderDespatched&id="+$frmUpdateOrder.find("input[name='id']").val()).done(function (data) {
+                if (!(data && data.status)) {
+                swal("Error!", '', "error");
+              }
+              switch (data.status) {
+                case "OK":
+                      
+                      swal.close();
+                      $("input[name='order_despatched']").val(1);
+
+                      $("#is_paid").attr("checked","checked");
+                    
+                    break;
+                case "ERR":
+                    swal("Error!", data.text, "error");
+                    break;
+              }
+            });
+              if ($("input[name='delivered_customer']").val() == 0) {
+                $.post("index.php?controller=pjAdminOrders&action=pjActionSaveDeliveredCustomer&id="+$frmUpdateOrder.find("input[name='id']").val()).done(function (data) {
+                    if (!(data && data.status)) {
+                    swal("Error!", '', "error");
+                  }
+                  switch (data.status) {
+                    case "OK":
+                          
+                          swal.close();
+                          $("input[name='delivered_customer']").val(1);
+                        
+                        break;
+                    case "ERR":
+                        swal("Error!", data.text, "error");
+                        break;
+                  }
+                });
+              }
+            } else {
+
+              $("#status").val('pending');
+            }
+            
+          })
+        }else if(!($("#is_paid").prop("checked"))) {
+          swal({
+            title: "Is Paid?",
+            text: "Is payment made for the products?",
+            showCancelButton: true,
+            confirmButtonText: "Yes",
+            cancelButtonText: "No",
+            closeOnConfirm: false,
+            showLoaderOnConfirm: true
+          }, function (data) {
+            if (data) {
+              
+                      swal.close();
+                      
+                      $("input[name='order_despatched']").val(1);
+                      $("#is_paid").attr("checked","checked");
+                    
+                    
+              // if ($("input[name='delivered_customer']").val() == 0 || $("input[name='order_despatched']").val() == 0) {
+              //   $("#status").val('pending');
+              // }
+            } else {
+
+              $("#status").val('pending');
+            }
+            
+          })
+        } else if ($("input[name='order_despatched']").val() == 0) {
+          swal({
+            title: "Is order despatched?",
+            text: "Is this order despatched?",
+            showCancelButton: true,
+            confirmButtonText: "Yes",
+            cancelButtonText: "No",
+            closeOnConfirm: false,
+            showLoaderOnConfirm: true
+          }, function (data) {
+            if (data) {
+              $.post("index.php?controller=pjAdminOrders&action=pjActionSaveOrderDespatched&id="+$frmUpdateOrder.find("input[name='id']").val()).done(function (data) {
+                if (!(data && data.status)) {
+                swal("Error!", '', "error");
+              }
+              switch (data.status) {
+                case "OK":
+                      
+                      swal.close();
+                      $("input[name='order_despatched']").val(1);
+                    
+                    break;
+                case "ERR":
+                    swal("Error!", data.text, "error");
+                    break;
+              }
+            });
+              if ($("input[name='delivered_customer']").val() == 0) {
+                 $.post("index.php?controller=pjAdminOrders&action=pjActionSaveDeliveredCustomer&id="+$frmUpdateOrder.find("input[name='id']").val()).done(function (data) {
+                    if (!(data && data.status)) {
+                    swal("Error!", '', "error");
+                  }
+                  switch (data.status) {
+                    case "OK":
+                          
+                          swal.close();
+                          $("input[name='delivered_customer']").val(1);
+                        
+                        break;
+                    case "ERR":
+                        swal("Error!", data.text, "error");
+                        break;
+                  }
+                });
+              }
+            } else {
+
+              $("#status").val('pending');
+            }
+            
+          })
+        } 
+      }
+      })
       .on("change", "#chef", function() {
         var $chef_id = $(this).val()
         $.ajax({

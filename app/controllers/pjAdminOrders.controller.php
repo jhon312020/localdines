@@ -1559,7 +1559,7 @@ class pjAdminOrders extends pjAdmin
 			{   
 				//print_r("coming here");
 
-				$d_fee = $this->_post->toInt('delivery_fee');
+				$d_fee = $this->_post->toFloat('delivery_fee');
 				// $arr = pjPriceModel::factory()
 				// ->where("t1.location_id", $d_location_id)
 				// ->where("(t1.total_from <= $price)")

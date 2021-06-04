@@ -263,6 +263,8 @@ class pjFrontEnd extends pjFront
 	            if($this->isFrontLogged())
 	            {
     	            $post = $this->_post->raw();
+    	            $post['u_surname'] = $this->_post->toString('surname');
+    	            $post['c_postcode'] = $this->_post->toString('post_code');
     	            $id = $this->_post->toInt('id');
     	            $pjClientModel = pjClientModel::factory();
     	            pjAuthUserModel::factory()->set('id', $id)->modify($post);
@@ -378,6 +380,7 @@ class pjFrontEnd extends pjFront
 	                $this->_set('d_address_1', $this->_post->check('d_address_1') ? $this->_post->toString('d_address_1') : NULL);
 	                $this->_set('d_address_2', $this->_post->check('d_address_2') ? $this->_post->toString('d_address_2') : NULL);
 	                $this->_set('d_country_id', $this->_post->check('d_country_id') ? $this->_post->toInt('d_country_id') : NULL);
+	                $this->_set('post_code', $this->_post->check('post_code') ? $this->_post->toString('post_code') : NULL);
 	                $this->_set('d_state', $this->_post->check('d_state') ? $this->_post->toString('d_state') : NULL);
 	                $this->_set('d_city', $this->_post->check('d_city') ? $this->_post->toString('d_city') : NULL);
 	                $this->_set('d_zip', $this->_post->check('d_zip') ? $this->_post->toString('d_zip') : NULL);
@@ -525,7 +528,7 @@ class pjFrontEnd extends pjFront
 	        $data['phone_no'] = $FORM['c_phone'];
 	        $data['first_name'] = $FORM['c_name'];
 	        $data['sms_email'] = $FORM['c_email'];
-	        // print_r($data);
+	        // print_r($FORM);
 	        // exit;
 	        
 	        switch ($this->_get('type'))
@@ -548,6 +551,7 @@ class pjFrontEnd extends pjFront
 	                unset($STORAGE['d_address_1']);
 	                unset($STORAGE['d_address_2']);
 	                unset($STORAGE['d_country_id']);
+	                unset($STORAGE['post_code']);
 	                unset($STORAGE['d_state']);
 	                unset($STORAGE['d_city']);
 	                unset($STORAGE['d_zip']);
@@ -611,14 +615,24 @@ class pjFrontEnd extends pjFront
 	        {
 	            $FORM['status'] = 'T';
 	            $FORM['locale_id'] = $this->getLocaleId();
+	            $FORM['c_type'] = "New";
 	            $response = pjFrontClient::init(array_merge($FORM, $STORAGE))->createClient();
 	            if(isset($response['client_id']) && (int) $response['client_id'] > 0)
 	            {
 	                $data['client_id'] = $response['client_id'];
 	            }
 	        }else{
+
 	            $client = $pjClientModel->reset()->where('foreign_id', $this->getClientId())->findAll()->getDataIndex(0);
 	            $data['client_id'] = $client['id'];
+
+	            $c_type = $this->getClientType($data);
+	            //print_r($c_type);
+	             pjClientModel::factory()
+			        ->where('id', $client['id'])
+			        ->modifyAll(array(
+			            'c_type' => $c_type
+			        ));
 	        }
 	        if($update_client == true)
 	        {
@@ -635,6 +649,10 @@ class pjFrontEnd extends pjFront
 	            if(isset($FORM['c_country']))
 	            {
 	                $c_data['c_country'] = $FORM['c_country'];
+	            }
+	            if(isset($FORM['post_code']))
+	            {
+	                $c_data['c_postcode'] = $FORM['post_code'];
 	            }
 	            if(isset($FORM['c_state']))
 	            {
@@ -663,6 +681,10 @@ class pjFrontEnd extends pjFront
 	            if(isset($FORM['c_name']))
 	            {
 	                $auth_data['name'] = $FORM['c_name'];
+	            }
+	            if(isset($FORM['surname']))
+	            {
+	                $auth_data['u_surname'] = $FORM['surname'];
 	            }
 	            if(isset($FORM['c_email']))
 	            {
@@ -1293,6 +1315,72 @@ class pjFrontEnd extends pjFront
 	        }
 	    }
 	    return array('status' => 'OK', 'code' => 200, 'text' => "");
+	}
+
+	protected function getClientType($data)
+	{   
+
+		$regular = 0;
+	           	
+    	$c_exist_orders = pjOrderModel::factory()
+    	                ->select("t1.*")
+    	                ->where('t1.client_id',$data['client_id'])
+    	                ->findAll()
+    	                ->getData();
+    	
+    	$c_exist_orders_dates = array();
+    	
+    	foreach ($c_exist_orders as $k => $v) {
+    		    $c_exist_orders_dates[] = explode(" ",$v['created'])[0];
+    		    
+	    	}
+
+	    if (count($c_exist_orders)) {
+	    	$weekDates[0] = date('Y-m-d');
+	    	for ($i=1; $i < 7; $i++) { 
+	    	 	$weekDates[$i] = date('Y-m-d',strtotime("-$i days"));
+	    	 	
+	    	 } 
+	    	 
+	    	foreach ($c_exist_orders_dates as $k) {
+	    		foreach ($weekDates as $d) {
+	    			if ($k == $d) {
+	    				$regular = $regular + 1;
+	    			}
+	    		}
+	    	}
+
+	    	if ($regular >= 2) {
+	    		return "Regular client";
+	    	} else if ($regular == 1) {
+
+	    		$frequent = 1;
+	    		$frequentDates = [];
+	    		for($j=7; $j < 28; $j++) {
+	    			$frequentDates[$j] = date('Y-m-d',strtotime("-$j days"));
+	    		}
+
+	    		foreach ($c_exist_orders_dates as $k) {
+	    			foreach ($frequentDates as $f) {
+	    				if($k == $f) {
+	    					$frequent = $frequent + 1;
+	    				}
+	    			}
+	    		}
+                
+	    		if ($frequent >= 4) {
+
+	    			return "Frequent";
+	    		} else {
+	    			return "Occasional";
+	    		}
+	    	} else {
+	    		
+	    		return "Rare";
+	    	}
+	    	
+    	} 
+    	
 	}
 	
 

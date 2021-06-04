@@ -103,6 +103,7 @@ class pjFrontClient extends pjAuth
     public function doClientLogin()
     {
         $params = $this->getParams();
+       
         if($this->session->has($this->defaultUser))
         {
             $this->session->setData($this->defaultTmpUser, $this->session->getData($this->defaultUser));

@@ -51,6 +51,9 @@ $short_days = __('short_days', true);
         </div>
 			<input type="hidden" name="order_update" value="1" />
 			<input type="hidden" name="id" value="<?php echo $tpl['arr']['id']?>" />
+            <input type="hidden" name="order_despatched" value="<?php echo $tpl['arr']['order_despatched']?>" />
+            <input type="hidden" name="delivered_customer" value="<?php echo $tpl['arr']['delivered_customer']?>" />
+            <!-- <input type="hidden" name="is_paid" value="<?php //echo $tpl['arr']['is_paid']?>" /> -->
 			<input type="hidden" id="price" name="price" value="<?php echo $tpl['arr']['price']; ?>" />
 			<input type="hidden" id="price_packing" name="price_packing" value="<?php echo $tpl['arr']['price_packing']; ?>" />
 			<input type="hidden" id="price_delivery" name="price_delivery" value="<?php echo $tpl['arr']['price_delivery']; ?>" />
@@ -587,7 +590,7 @@ $short_days = __('short_days', true);
                                             <label class="control-label"><?php __('lblSpecialInstructions'); ?></label>
     
                                             <textarea name="d_notes" id="d_notes" class="form-control<?php echo $tpl['option_arr']['o_df_include_notes'] == 3 ? ' fdRequired required' : NULL; ?>" data-msg-required="<?php __('fd_field_required', false, true);?>"
-                                                ><?php echo $tpl['arr']['d_notes']; ?></textarea>
+                                                ><?php echo $tpl['arr']['d_notes'] != '' ? $tpl['arr']['d_notes'] : $tpl['arr']['p_notes']; ?></textarea>
                                         </div>
                                     </div><!-- /.col-md-3 -->
                                     <div class="col-lg-2 col-md-2 col-sm-6">
@@ -795,7 +798,7 @@ $short_days = __('short_days', true);
                                             <div class="onoffswitch onoffswitch-data">
                                                 <input type="checkbox" class="onoffswitch-checkbox" name="is_paid" id="is_paid"<?php echo (int) $tpl['arr']['is_paid'] == 1 ? ' checked' : NULL;?>>
                                                 <label class="onoffswitch-label" for="is_paid">
-                                                    <span class="onoffswitch-inner" data-on="<?php __('_yesno_ARRAY_T', false, true);?>" data-off="<?php __('_yesno_ARRAY_T', false, true);?>"></span>
+                                                    <span class="onoffswitch-inner" data-on="<?php __('_yesno_ARRAY_T', false, true);?>" data-off="<?php __('_yesno_ARRAY_F', false, true);?>"></span>
                                                     <span class="onoffswitch-switch"></span>
                                                 </label>
                                             </div>
@@ -933,6 +936,30 @@ $short_days = __('short_days', true);
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="ispaidPopup" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="width:100%">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">
+                    &times;</button>
+        <h2 class="modal-title" id="modalTitle">Order Paid?</h2>
+      </div>
+      <div class="modal-body" id="modalBody">
+        <form role='' action="" method="post"> 
+
+            <h4 style="font-size: 25px;">Is payment made for the products?</h4>
+            <hr>
+            <button type="submit" id="paidBtn" class="modalBtn btn-primary" style="border-radius: 5px;border: none;padding: 10px 20px;">Yes</button>
+            <button type="submit" id="notpaidBtn" class="modalBtn btn-danger" style="border-radius: 5px;border: none;padding: 10px 20px;float: right;">No</button>
+
+        </form>
+
+   
+
       </div>
     </div>
   </div>

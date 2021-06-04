@@ -130,30 +130,7 @@
   </div>
 </div>
 <!-- End of Modal -->
-<div class="modal fade" id="ispaidPopup" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="width:100%">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">
-                    &times;</button>
-        <h2 class="modal-title" id="modalTitle">Order Paid?</h2>
-      </div>
-      <div class="modal-body" id="modalBody">
-        <form role='' action="" method="post"> 
 
-            <h4 style="font-size: 25px;">Is payment made for the products?</h4>
-            <hr>
-            <button type="submit" id="paidBtn" class="modalBtn btn-primary" style="border-radius: 5px;border: none;padding: 10px 20px;">Yes</button>
-            <button type="submit" id="notpaidBtn" class="modalBtn btn-danger" style="border-radius: 5px;border: none;padding: 10px 20px;float: right;">No</button>
-
-        </form>
-
-   
-
-      </div>
-    </div>
-  </div>
-</div>
 </div>
 <script type="text/javascript">
 var pjGrid = pjGrid || {};

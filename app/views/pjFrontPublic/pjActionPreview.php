@@ -149,6 +149,15 @@ $CLIENT = $controller->isFrontLogged() ? @$_SESSION[$controller->defaultClient] 
 							</dl><!-- /.dl-horizontal -->
 							 <?php
 						}
+						if ($STORAGE['post_code'])
+						{
+							?>
+							 <dl class="dl-horizontal">
+								<dt><?php echo "Postcode";?></dt>
+								<dd><?php echo pjSanitize::html($STORAGE['post_code']);?></dd>
+							</dl><!-- /.dl-horizontal -->
+							 <?php
+						}
 						if (in_array($tpl['option_arr']['o_df_include_notes'], array(2, 3)) && !empty($STORAGE['d_notes']))
 						{
 							?>
@@ -246,8 +255,12 @@ $CLIENT = $controller->isFrontLogged() ? @$_SESSION[$controller->defaultClient] 
 					{
 						?>
 						<dl class="dl-horizontal">
-							<dt><?php __('front_name'); ?></dt>
+							<dt><?php echo "First Name"; ?></dt>
 							<dd><?php echo isset($FORM['c_name']) ? pjSanitize::html(@$FORM['c_name']) : pjSanitize::html(@$CLIENT['c_name']); ?></dd>
+						</dl><!-- /.dl-horizontal -->
+						<dl class="dl-horizontal">
+							<dt><?php echo "Surname"; ?></dt>
+							<dd><?php echo isset($FORM['surname']) ? pjSanitize::html(@$FORM['surname']) : pjSanitize::html(@$CLIENT['u_surname']); ?></dd>
 						</dl><!-- /.dl-horizontal -->
 						<?php
 					}

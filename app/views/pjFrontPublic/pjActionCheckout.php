@@ -144,12 +144,19 @@ $CLIENT = $controller->isFrontLogged() ? @$_SESSION[$controller->defaultClient] 
 						{
 							?>
 							<div class="form-group">
-								<label for="" class="col-lg-3 col-md-4 col-sm-4 control-label text-capitalize"><?php __('front_name'); ?></label>
+								<label for="" class="col-lg-3 col-md-4 col-sm-4 control-label text-capitalize"><?php echo "First Name"; ?></label>
 								<div class="col-lg-9 col-md-8 col-sm-8">
 									<input type="text" name="c_name" class="form-control<?php echo (int) $tpl['option_arr']['o_bf_include_name'] === 3 ? ' required' : NULL; ?>" value="<?php echo isset($FORM['c_name']) ? htmlspecialchars(stripslashes(@$FORM['c_name'])) : htmlspecialchars(stripslashes(@$CLIENT['name'])); ?>" data-err="<?php __('front_name_required');?>"/>
 									<div class="help-block with-errors"><ul class="list-unstyled"></ul></div>
 								</div>
 							</div><!-- /.form-group -->
+							<div class="form-group">
+								<label for="" class="col-lg-3 col-md-4 col-sm-4 control-label text-capitalize"><?php echo "Surname"; ?></label>
+								<div class="col-lg-9 col-md-8 col-sm-8">
+									<input type="text" name="surname" class="form-control<?php echo (int) $tpl['option_arr']['o_bf_include_name'] === 3 ? ' required' : NULL; ?>" value="<?php echo isset($FORM['surname']) ? htmlspecialchars(stripslashes(@$FORM['surname'])) : htmlspecialchars(stripslashes(@$CLIENT['u_surname'])); ?>" data-err="<?php __('front_name_required');?>"/>
+									<div class="help-block with-errors"><ul class="list-unstyled"></ul></div>
+								</div>
+							</div><!-- /.form-group-->
 							<?php
 						}
 						if (in_array($tpl['option_arr']['o_bf_include_email'], array(2, 3)))

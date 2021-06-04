@@ -14,15 +14,15 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 		{
 			$frmCreateClient.validate({
 				rules: {
-					"c_email": {
+					"c_phone": {
 						required: true,
-						email: true,
-						remote: "index.php?controller=pjAdminClients&action=pjActionCheckEmail"
+						
+						remote: "index.php?controller=pjAdminClients&action=pjActionCheckPhoneNumber"
 					}
 				},
 				messages: {
-					"c_email": {
-						remote: myLabel.email_exists
+					"c_phone": {
+						remote: myLabel.phoneno_exists
 					}
 				}
 			});
@@ -30,15 +30,15 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 		if ($frmUpdateClient.length > 0) {
 			$frmUpdateClient.validate({
 				rules: {
-					"c_email": {
+					"c_phone": {
 						required: true,
-						email: true,
-						remote: "index.php?controller=pjAdminClients&action=pjActionCheckEmail&id=" + $frmUpdateClient.find("input[name='id']").val()
+						
+						remote: "index.php?controller=pjAdminClients&action=pjActionCheckPhoneNumber&id=" + $frmUpdateClient.find("input[name='id']").val()
 					}
 				},
 				messages: {
-					"c_email": {
-						remote: myLabel.email_exists
+					"c_phone": {
+						remote: myLabel.phoneno_exists
 					}
 				}
 			});

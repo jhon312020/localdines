@@ -39,10 +39,19 @@ $CLIENT = $controller->isFrontLogged() ? @$_SESSION[$controller->defaultClient] 
 						</div>
 					</div><!-- /.form-group -->
 					<div class="form-group">
-						<label for="" class="col-lg-3 col-md-4 col-sm-4 control-label"><?php __('front_name'); ?></label>
+						<label for="" class="col-lg-3 col-md-4 col-sm-4 control-label"><?php echo "First Name"; ?></label>
 
 						<div class="col-lg-9 col-md-8 col-sm-8">
 							<input type="text" class="form-control required" name="name" value="<?php echo isset($CLIENT['name']) ? htmlspecialchars(stripslashes(@$CLIENT['name'])) : NULL; ?>" data-msg-required="<?php __('front_name_required');?>"/>
+
+							<div class="help-block with-errors"><ul class="list-unstyled"></ul></div>
+						</div>
+					</div><!-- /.form-group -->
+					<div class="form-group">
+						<label for="" class="col-lg-3 col-md-4 col-sm-4 control-label"><?php echo "Surname"; ?></label>
+
+						<div class="col-lg-9 col-md-8 col-sm-8">
+							<input type="text" class="form-control required" name="surname" value="<?php echo isset($CLIENT['u_surname']) ? htmlspecialchars(stripslashes(@$CLIENT['u_surname'])) : NULL; ?>" data-msg-required="<?php __('front_name_required');?>"/>
 
 							<div class="help-block with-errors"><ul class="list-unstyled"></ul></div>
 						</div>
@@ -99,6 +108,7 @@ $CLIENT = $controller->isFrontLogged() ? @$_SESSION[$controller->defaultClient] 
 							<div class="help-block with-errors"><ul class="list-unstyled"></ul></div>
 						</div>
 					</div><!-- /.form-group -->
+					
 					<div class="form-group">
 						<label for="" class="col-lg-3 col-md-4 col-sm-4 control-label"><?php __('front_city'); ?></label>
 						<div class="col-lg-9 col-md-8 col-sm-8">
@@ -110,6 +120,13 @@ $CLIENT = $controller->isFrontLogged() ? @$_SESSION[$controller->defaultClient] 
 						<label for="" class="col-lg-3 col-md-4 col-sm-4 control-label"><?php __('front_state'); ?></label>
 						<div class="col-lg-9 col-md-8 col-sm-8">
 							<input type="text" name="c_state" class="form-control" value="<?php echo isset($CLIENT['c_state']) ? htmlspecialchars(stripslashes(@$CLIENT['c_state'])) : NULL; ?>" data-msg-required="<?php __('front_state_required');?>"/>
+							<div class="help-block with-errors"><ul class="list-unstyled"></ul></div>
+						</div>
+					</div><!-- /.form-group -->
+					<div class="form-group">
+						<label for="" class="col-lg-3 col-md-4 col-sm-4 control-label"><?php echo "Postcode"; ?></label>
+						<div class="col-lg-9 col-md-8 col-sm-8">
+							<input type="text" name="post_code" class="form-control" value="<?php echo isset($CLIENT['c_postcode']) ? htmlspecialchars(stripslashes(@$CLIENT['c_postcode'])) : NULL; ?>" data-msg-required="<?php __('front_state_required');?>"/>
 							<div class="help-block with-errors"><ul class="list-unstyled"></ul></div>
 						</div>
 					</div><!-- /.form-group -->

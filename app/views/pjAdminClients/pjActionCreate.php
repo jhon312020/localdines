@@ -185,4 +185,5 @@ $u_statarr = __('u_statarr', true)
 <script type="text/javascript">
 var myLabel = myLabel || {};
 myLabel.email_exists = <?php x__encode('email_taken'); ?>;
+myLabel.phoneno_exists = "<?php echo 'Client with such phone number exists.'; ?>";
 </script>

@@ -29,6 +29,30 @@ class pjAdminClients extends pjAdmin
 		}
 		exit;
 	}
+
+	public function pjActionCheckPhoneNumber()
+	{
+		$this->setAjax(true);
+	
+		if ($this->isXHR())
+		{
+			if (!$this->_get->toString('c_phone')) {
+				echo 'false';
+				exit;
+			}
+
+			$pjAuthUserModel = pjAuthUserModel::factory()
+				->join('pjClient', 't2.foreign_id = t1.id', 'left')
+				->where('t1.phone', $this->_get->toString('c_phone'));
+
+			if ($this->_get->toInt('id')) {
+			    $pjAuthUserModel->where('t2.id !=', $this->_get->toInt('id'));
+			}
+
+			echo $pjAuthUserModel->findCount()->getData() == 0 ? 'true' : 'false';
+		}
+		exit;
+	}
 	
 	public function pjActionCreate()
 	{
