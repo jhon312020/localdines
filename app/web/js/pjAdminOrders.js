@@ -962,7 +962,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
          
           swal({
             title: "Delivered Customer?",
-            text: "Before Delivery, is the order despatched? and is the payment made?",
+            text: "Before Delivery, is the order despatched and the payment made?",
             showCancelButton: true,
             confirmButtonText: "Yes",
             cancelButtonText: "No",
@@ -980,7 +980,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
                       swal.close();
                       $("input[name='order_despatched']").val(1);
 
-                      $("#is_paid").attr("checked","checked");
+                      $("#is_paid").prop("checked", true);
                     
                     break;
                 case "ERR":
@@ -1015,7 +1015,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
         }else if(!($("#is_paid").prop("checked"))) {
           swal({
             title: "Is Paid?",
-            text: "Is payment made for the products?",
+            text: "Is payment made for the Order?",
             showCancelButton: true,
             confirmButtonText: "Yes",
             cancelButtonText: "No",
@@ -1027,7 +1027,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
                       swal.close();
                       
                       $("input[name='order_despatched']").val(1);
-                      $("#is_paid").attr("checked","checked");
+                      $("#is_paid").prop("checked", true);
                     
                     
               // if ($("input[name='delivered_customer']").val() == 0 || $("input[name='order_despatched']").val() == 0) {
