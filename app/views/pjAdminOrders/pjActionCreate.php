@@ -15,7 +15,7 @@
     <div class="col-sm-12">
         <div class="row">
             <div class="col-sm-10">
-                <h2><?php __('infoAddOrderTitle');?></h2>
+                <h2 id="createPage"><?php __('infoAddOrderTitle');?></h2>
             </div>
         </div><!-- /.row -->
 

@@ -47,11 +47,14 @@ class pjFrontClient extends pjAuth
         $u_data['status'] = isset($params['status']) ? $params['status'] : ":NULL";
         $u_data['ip'] = pjUtil::getClientIp();
         $u_data['is_active'] = 'T';
+        
+        // exit;
+        
+        
+        $id = pjAuthUserModel::factory($u_data)->insert()->getInsertId();
+        // print_r($id);
         // print_r($params);
         // exit;
-        $id = pjAuthUserModel::factory($u_data)->insert()->getInsertId();
-        //$id = 82;
-        
         
         
 

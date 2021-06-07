@@ -372,6 +372,8 @@ class pjAdminOrders extends pjAdmin
 	    	$post_total = $this->getTotal();
 	    	
 	        $post = $this->_post->raw();
+	        // print_r($post);
+	        // exit;
 	        $data = array();
 	        $data['uuid'] = time();
 	        $data['ip'] = pjUtil::getClientIp();
@@ -401,12 +403,12 @@ class pjAdminOrders extends pjAdmin
             	$c_data['c_address_1'] = $this->_post->toString('d_address_1');
 	            $c_data['c_address_2'] = $this->_post->toString('d_address_2');
 	            $c_data['c_city'] = $this->_post->toString('d_city');
-	            $c_data['post_code'] = $this->_post->toString('post_code'); 
+	            $c_data['post_code'] = rtrim($this->_post->toString('post_code')); 
 	            $c_data['password'] = $c_data['c_name'].$data['uuid'];
 	            $c_data['status'] = 'T';
 	            $c_data['locale_id'] = $this->getLocaleId();
 	            $client_exist = pjClientModel::factory()
-	            ->join("pjAuthUser", "t2.id = t1.foreign_id", "left")
+	            ->join("pjAuthUser", "t2.id = t1.foreign_id")
 	            ->select("t1.*, t2.phone")
 	            ->where("t2.phone",$c_data['c_phone'])
 	            ->findAll()
@@ -440,7 +442,7 @@ class pjAdminOrders extends pjAdmin
 	            	$c_data['c_email'] = $this->_post->toString('sms_email');
 	            	$c_data['c_type'] = "New";
 
-	            	
+
 	            	
 	            	$response = pjFrontClient::init($c_data)->createClient();
 		            if(isset($response['client_id']) && (int) $response['client_id'] > 0)
@@ -923,6 +925,7 @@ class pjAdminOrders extends pjAdmin
 	            $data['p_dt'] = ':NULL';
 	            unset($post['p_time']);
 	            $data['p_time'] = 0;
+
 	        }else{
 	            $data['type'] = 'pickup';
 	            if (!empty($post['p_date']) && !empty($post['pickup_time']))
@@ -950,6 +953,7 @@ class pjAdminOrders extends pjAdmin
 	            $data['d_dt'] = ':NULL';
 	            unset($post['d_time']);
 	            $data['d_time'] = 0;
+
 	        }
 	        $data['client_id'] = $new_client_id;
 	        

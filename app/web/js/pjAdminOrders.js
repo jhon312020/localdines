@@ -416,6 +416,9 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           var valid = true;
           var $ele = null;
           var $err_ele = [];
+          // if ($("#inputPostCode").val()) {
+            
+          // }
           // MEGAMIND
            
          
@@ -1673,6 +1676,17 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
         }
         return false;
         //Added by JR
+      }).on("click", ".showpage", function(e){
+        showPage($(this).text());
+      }).on("click", ".previous", function(e){
+        previous();
+      }).on("click", ".first", function(e){
+        first();
+      }).on("click", ".next", function(e){
+        next();
+      }).on("click", ".last", function(e){
+        var $nop = $("#nop").val()
+        last($nop);
       })
       .on("click", "#btnFindPostCode", function (e) {
         var postcode_input = $("#inputPostCode");
@@ -1714,127 +1728,19 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
             $('#catModalTitle').text(catName);
             $('#catModalBody').html(data);
             $("#catModal").modal();
-            // if ($("#prdGrid").length > 0 && datagrid) {
-            //   console.log("Hello");
-            //   var $grid = $("#prdGrid").datagrid({
-            //     columns: [
-                  
-            //       { text: "Product Name", type: "text", sortable: false },
-            //       { text: "Extras", type: "text", sortable: false },
-            //       { text: "Price", type: "text", sortable: false },
-            //     ],
-            //     dataUrl:
-            //       "index.php?controller=pjAdminOrders&action=pjActionGetProductsForCategory" +
-            //       pjGrid.queryString,
-            //     dataType: "json",
-            //     fields: ["product", "extra", "price"],
-            //     paginator: {
-            //       gotoPage: true,
-            //       paginate: true,
-            //       total: true,
-            //       rowCount: true,
-            //     },
-            //     // select: {
-            //     //   field: "id",
-            //     //   name: "record[]",
-            //     //   cellClass: "cell-width-2",
-            //     // },
-            //   });
-            // }//
-          //   if ($("#paginate")) {
+            
+            if ($("#paginate")) {
+        
+                showPage(1);
+        
+            }
             
 
-          //     //how much items per page to show
-          //     var show_per_page = 10;
-          //     //getting the amount of elements inside content div
-          //     var number_of_items = $('tbody').children().length;
-          //     //calculate the number of pages we are going to have
-          //     var number_of_pages = Math.ceil(number_of_items/show_per_page);
-
-          //     //set the value of our hidden input fields
-          //     $('#current_page').val(0);
-          //     $('#show_per_page').val(show_per_page);
-
-          //     //now when we got all we need for the navigation let's make it '
-
-          //     /*
-          //     what are we going to have in the navigation?
-          //       - link to previous page
-          //       - links to specific pages
-          //       - link to next page
-          //     */
-          //     var navigation_html = '<a class="previous_link" href="javascript:previous()">Prev</a>';
-          //     var current_link = 0;
-          //     while(number_of_pages > current_link){
-          //       navigation_html += '<a class="page_link" href="javascript:go_to_page(' + current_link +')" longdesc="' + current_link +'">'+ (current_link + 1) +'</a>';
-          //       current_link++;
-          //     }
-          //     navigation_html += '<a class="next_link" href="javascript:next();">Next</a>';
-
-          //     $('#page_navigation').html(navigation_html);
-
-          //     //add active_page class to the first page link
-          //     $('#page_navigation .page_link:first').addClass('active_page');
-
-          //     //hide all the elements inside content div
-          //     $('tbody').children().css('display', 'none');
-
-          //     //and show the first n (show_per_page) elements
-          //     $('tbody').children().slice(0, show_per_page).css('display', 'block');
-
-            
-
-          //   function previous(){
-
-          //     new_page = parseInt($('#current_page').val()) - 1;
-          //     //if there is an item before the current active link run the function
-          //     if($('.active_page').prev('.page_link').length==true){
-          //       go_to_page(new_page);
-          //     }
-
-          //   }
-
-          //   function next(){
-          //     new_page = parseInt($('#current_page').val()) + 1;
-          //     //if there is an item after the current active link run the function
-          //     if($('.active_page').next('.page_link').length==true){
-          //       go_to_page(new_page);
-          //     }
-
-          //   }
-          //   function go_to_page(page_num){
-          //     //get the number of items shown per page
-          //     var show_per_page = parseInt($('#show_per_page').val());
-
-          //     //get the element number where to start the slice from
-          //     start_from = page_num * show_per_page;
-
-          //     //get the element number where to end the slice
-          //     end_on = start_from + show_per_page;
-
-          //     //hide all children elements of content div, get specific items and show them
-          //     $('tbody').children().css('display', 'none').slice(start_from, end_on).css('display', 'block');
-
-          //     /*get the page link that has longdesc attribute of the current page and add active_page class to it
-          //     and remove that class from previously active page link*/
-          //     $('.page_link[longdesc=' + page_num +']').addClass('active_page').siblings('.active_page').removeClass('active_page');
-
-          //     //update the current page input field
-          //     $('#current_page').val(page_num);
-          //   }
-
-     
-      
-
-          // }
-            //$(".modal-dialog").attr('class','modal-lg')
           });
           
 
           return false;
-      })
-     
-      ;
+      });
     $cols = $("table");//.on("click", function(){
     
     $('#catModal').on('show.bs.modal', function (event) {
@@ -1866,8 +1772,9 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
       
       });
      $(document).ready(function() {
-     var $page = $('h2');
-     if ($page.text() == "Update Order") {
+     var $page = $('#updatePage');
+     //console.log($page.text());
+     if ($page.text() === "Update Order") {
 
       $("#fdOrderList").children("tbody").children("tr.fdLine").each(function(){
 
@@ -1881,7 +1788,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
      var lastRowIndex = $("#fdOrderList tr:last").attr("data-index"),
         $product = $("#fdProduct_" + lastRowIndex).val(),
         $price = $("#fdPrice_" + lastRowIndex).val(); 
-        if($product != "" && $price != ""){
+        if($product != "" || $price != ""){
           var index = Math.ceil(Math.random() * 999999),
           $clone = $("#boxProductClone").find("tbody").html();
           $clone = $clone.replace(/\{INDEX\}/g, "new_" + index);
@@ -1893,14 +1800,15 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
         }
 
 
-      // alert("Update page");
+
+      //alert("Update page");
       
         
      }
      
     });
      $(window).on('beforeunload', function(){
-        if ($("h2").text()=="Add new order" || $("h2").text()=="Update Order") {
+        if ($("#createPage").text()=="Add new order" || $("#updatePage").text()=="Update Order") {
         return 'Are you sure you want to leave?';
       }
      });
@@ -2130,5 +2038,66 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
         c_arr.mobile_offer == 1 ? $("#mobile_offer_yes").prop("checked",true) : $("#mobile_offer_no").prop("checked",true);
         }  
     }
+    function makePager(page){
+        
+            var show_per_page = 10;
+            var number_of_items = $('#paginate tr').length;
+            var number_of_pages = Math.ceil(number_of_items / show_per_page);
+            var number_of_pages_todisplay = 5;
+            var navigation_html = '';
+            var current_page = page;
+            var current_link = (number_of_pages_todisplay >= current_page ? 1 : number_of_pages_todisplay + 1);
+            $("#nop").val(number_of_pages);
+            if (current_page > 1)
+                current_link = current_page;
+            if (current_link != 1) navigation_html += "<a class='nextbutton first' >« Start&nbsp;</a>&nbsp;<a class='nextbutton previous' >« Prev&nbsp;</a>&nbsp;";
+            if (current_link == number_of_pages - 1) current_link = current_link - 3;
+            else if (current_link == number_of_pages) current_link = current_link - 4;
+            else if (current_link > 2) current_link = current_link - 2;
+            else current_link = 1;
+            var pages = number_of_pages_todisplay;
+            while (pages != 0) {
+                if (number_of_pages < current_link) { break; }
+                if (current_link >= 1)
+                    navigation_html += "<a class='" + ((current_link == current_page) ? "currentPageButton" : "numericButton") + " showpage'>" + (current_link) + "</a>&nbsp;";
+                //console.log(current_link);
+                current_link++;
+                pages--;
+            }
+            if (number_of_pages > current_page){
+                navigation_html += "<a class='nextbutton next' >Next »</a>&nbsp;<a class='nextbutton last' >Last »</a>";
+            }
+                    $('#page_navigation').html(navigation_html);
+      }
+    function showPage(page) {
+      var pageSize = 10;
+            $("#paginate tr").hide();
+            $('#current_page').val(page);
+            $("#paginate tr").each(function (n) {
+                if (n >= pageSize * (page - 1) && n < pageSize * page)
+                    $(this).show();
+            });
+        makePager(page);
+       }
+        //showPage(1);
+       function next() {
+            var new_page = parseInt($('#current_page').val()) + 1;
+            showPage(new_page);
+        }
+        function last(number_of_pages) {
+            var new_page = number_of_pages;
+            $('#current_page').val(new_page);
+            showPage(new_page);
+        }
+        function first() {
+            var new_page = "1";
+            $('#current_page').val(new_page);
+            showPage(new_page);    
+      }
+        function previous() {
+            var new_page = parseInt($('#current_page').val()) - 1;
+            $('#current_page').val(new_page);
+            showPage(new_page);
+      }
   });
 })(jQuery_1_8_2);

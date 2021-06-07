@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-sm-10">
                 <!-- <h2><?php //__('infoUpdateOrderTitle');?></h2> -->
-                <h2>Update Order</h2>
+                <h2 id="updatePage">Update Order</h2>
             </div>
         </div><!-- /.row -->
 
@@ -443,7 +443,12 @@ $short_days = __('short_days', true);
                                 //echo $tpl['option_arr']['o_df_include_zip'];
                                 if (in_array($tpl['option_arr']['o_df_include_zip'], array(1, 2)))
                                 {
-                                    
+                                    if ($tpl['arr']['post_code']) {
+                                        $postcode = $tpl['arr']['post_code'];
+                                        //$postcode = str_replace(' ','',$postcode); 
+                                    } else {
+                                        $postcode = '';
+                                    }
                                     ?>
                                     <div class="form-group">
                                         <div class="col-md-6 col-sm-6">
@@ -452,7 +457,7 @@ $short_days = __('short_days', true);
                                                 <div class="input-group" id="post_code">
                                                     
                                                     <input type="text" class="form-control fdRequired<?php echo $tpl['arr']['type'] == 'delivery' ? ' required' : NULL; ?>" placeholder="Type your postCode" name="post_code" id="inputPostCode" value="<?php  
-                                                    echo $tpl['arr']['post_code']; ?>
+                                                    echo pjSanitize::html($postcode); ?>
                                                     ">
                                             
                                                     <span class="input-group-btn">
