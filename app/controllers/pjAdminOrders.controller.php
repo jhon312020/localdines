@@ -167,6 +167,9 @@ class pjAdminOrders extends pjAdmin
 				->findAll()
 				->getData();
 
+			$today = date( 'Y-m-d', time () );	
+			//print_r($today);
+
 			foreach($data as $k => $v)
 			{
 				// MEGAMIND
@@ -175,7 +178,12 @@ class pjAdminOrders extends pjAdmin
 				$v['post_code'] == '0' ? $data[$k]['post_code'] = '' : $data[$k]['post_code'] = $v['post_code'];
 				$data[$k]['c_type'] = $v['c_type'];
                 $v['sms_sent_time'] == "" ? $data[$k]['sms_sent_time'] = '' : $data[$k]['sms_sent_time'] = explode(" ", $v['sms_sent_time'])[1];
-				$v['d_dt'] == "" ? $data[$k]['expected_delivery'] = explode(" ", $v['p_dt'])[1] : $data[$k]['expected_delivery'] = explode(" ", $v['d_dt'])[1];
+                if (explode(" ", $v['p_dt'])[0] > $today || explode(" ", $v['d_dt'])[0] > $today) {
+                	$v['d_dt'] == "" ? $data[$k]['expected_delivery'] = $v['p_dt'] : $data[$k]['expected_delivery'] = $v['d_dt'];
+                } else {
+                	$v['d_dt'] == "" ? $data[$k]['expected_delivery'] = explode(" ", $v['p_dt'])[1] : $data[$k]['expected_delivery'] = explode(" ", $v['d_dt'])[1];
+                }
+				
                 $v['delivered_time'] == "" ? $data[$k]['delivered_time'] = '' : $data[$k]['delivered_time'] = explode(" ", $v['delivered_time'])[1];
 				$data[$k]['total'] = pjCurrency::formatPrice($v['total']);
 				$data[$k]['client_name'] = pjSanitize::clean($v['client_name']);
