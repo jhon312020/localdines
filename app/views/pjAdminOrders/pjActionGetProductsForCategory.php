@@ -2,8 +2,7 @@
     <input type='hidden' id='current_page' />
     <input type='hidden' id='show_per_page' />
     <input type='hidden' id='nop' />
-    <div id='page_navigation'>
-    </div>
+    
 <table id="paginate" width="100%" style="border-collapse: separate;border-spacing: 15px 15px;">
 
 <thead>

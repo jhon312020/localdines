@@ -375,6 +375,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           sms_email: {
             email: true,
           },
+         
         },
         messages: {
           p_dt: {
@@ -416,8 +417,17 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           var valid = true;
           var $ele = null;
           var $err_ele = [];
+          // if($("#inputPostCode").val($("#inputPostCode").val().trim())){
+          //   valid = false;
+          // };
           // if ($("#inputPostCode").val()) {
-            
+          //   var $pc = $("#inputPostCode").val();
+          //   console.log($pc);
+          //   $pc = $pc.trim();
+          //   console.log($pc);
+          //   if (!$pc) {
+          //     valid = false;
+          //   }
           // }
           // MEGAMIND
            
@@ -585,7 +595,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
         // !MEGAMIND
       });
     }
-    function validatePhoneNumber(data){
+    function validatePhoneNumber(data) {
       
       var ph = data;
       ph = $.trim(ph);
@@ -955,9 +965,11 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
         calPrice(1);
       })
       .on("change", "#status", function() {
+        
         if ($(this).val() == 'delivered' && $("input[name='delivered_customer']").val() == 0) {
-          //if($("input[name='is_paid']").val() == 0 && )
-           
+          
+          var $time = timeNow();
+
           if(!($("#is_paid").prop("checked")) && $("input[name='order_despatched']").val() == 0) {
          
           swal({
@@ -970,41 +982,18 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
             showLoaderOnConfirm: true
           }, function (data) {
             if (data) {
-              $.post("index.php?controller=pjAdminOrders&action=pjActionSaveOrderDespatched&id="+$frmUpdateOrder.find("input[name='id']").val()).done(function (data) {
-                if (!(data && data.status)) {
-                swal("Error!", '', "error");
-              }
-              switch (data.status) {
-                case "OK":
-                      
-                      swal.close();
-                      $("input[name='order_despatched']").val(1);
+              
+              swal.close();
+              $("input[name='order_despatched']").val(1);
+              $("input[name='sms_sent_time']").val($time);
 
-                      $("#is_paid").prop("checked", true);
+              $("#is_paid").prop("checked", true);
                     
-                    break;
-                case "ERR":
-                    swal("Error!", data.text, "error");
-                    break;
-              }
-            });
               if ($("input[name='delivered_customer']").val() == 0) {
-                $.post("index.php?controller=pjAdminOrders&action=pjActionSaveDeliveredCustomer&id="+$frmUpdateOrder.find("input[name='id']").val()).done(function (data) {
-                    if (!(data && data.status)) {
-                    swal("Error!", '', "error");
-                  }
-                  switch (data.status) {
-                    case "OK":
-                          
-                          swal.close();
-                          $("input[name='delivered_customer']").val(1);
-                        
-                        break;
-                    case "ERR":
-                        swal("Error!", data.text, "error");
-                        break;
-                  }
-                });
+                
+                $("input[name='delivered_customer']").val(1);
+                $("input[name='delivered_time']").val($time);
+            
               }
             } else {
 
@@ -1024,15 +1013,12 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           }, function (data) {
             if (data) {
               
-                      swal.close();
-                      
-                      $("input[name='order_despatched']").val(1);
-                      $("#is_paid").prop("checked", true);
+              swal.close();
+              
+              $("input[name='order_despatched']").val(1);
+              $("input[name='sms_sent_time']").val($time);
+              $("#is_paid").prop("checked", true);
                     
-                    
-              // if ($("input[name='delivered_customer']").val() == 0 || $("input[name='order_despatched']").val() == 0) {
-              //   $("#status").val('pending');
-              // }
             } else {
 
               $("#status").val('pending');
@@ -1050,39 +1036,18 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
             showLoaderOnConfirm: true
           }, function (data) {
             if (data) {
-              $.post("index.php?controller=pjAdminOrders&action=pjActionSaveOrderDespatched&id="+$frmUpdateOrder.find("input[name='id']").val()).done(function (data) {
-                if (!(data && data.status)) {
-                swal("Error!", '', "error");
-              }
-              switch (data.status) {
-                case "OK":
-                      
-                      swal.close();
-                      $("input[name='order_despatched']").val(1);
+            
+              swal.close();
+              $("input[name='order_despatched']").val(1);
+              $("input[name='sms_sent_time']").val($time);
                     
-                    break;
-                case "ERR":
-                    swal("Error!", data.text, "error");
-                    break;
-              }
-            });
+            
               if ($("input[name='delivered_customer']").val() == 0) {
-                 $.post("index.php?controller=pjAdminOrders&action=pjActionSaveDeliveredCustomer&id="+$frmUpdateOrder.find("input[name='id']").val()).done(function (data) {
-                    if (!(data && data.status)) {
-                    swal("Error!", '', "error");
-                  }
-                  switch (data.status) {
-                    case "OK":
-                          
-                          swal.close();
-                          $("input[name='delivered_customer']").val(1);
+                 
+                $("input[name='delivered_customer']").val(1);
+                $("input[name='delivered_time']").val($time);
                         
-                        break;
-                    case "ERR":
-                        swal("Error!", data.text, "error");
-                        break;
-                  }
-                });
+                
               }
             } else {
 
@@ -1755,6 +1720,8 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
        // $('#orderContainer').addClass('animated fadeInRight');
     });
     $("#inputPostCode").keydown(function (e) {
+      
+
       if (e.keyCode == 13) {
       e.preventDefault();
       getAddresses($(this));
@@ -2050,7 +2017,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
             $("#nop").val(number_of_pages);
             if (current_page > 1)
                 current_link = current_page;
-            if (current_link != 1) navigation_html += "<a class='nextbutton first' >« Start&nbsp;</a>&nbsp;<a class='nextbutton previous' >« Prev&nbsp;</a>&nbsp;";
+            if (current_link != 1) navigation_html += "<a class='nextbutton previous' >« Prev&nbsp;</a>&nbsp;";
             if (current_link == number_of_pages - 1) current_link = current_link - 3;
             else if (current_link == number_of_pages) current_link = current_link - 4;
             else if (current_link > 2) current_link = current_link - 2;
@@ -2065,11 +2032,16 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
                 pages--;
             }
             if (number_of_pages > current_page){
-                navigation_html += "<a class='nextbutton next' >Next »</a>&nbsp;<a class='nextbutton last' >Last »</a>";
+                navigation_html += "<a class='nextbutton next' >Next »</a>&nbsp;";
             }
-                    $('#page_navigation').html(navigation_html);
+            if (number_of_pages == 1) {
+              $('#page_navigation').html("");
+            } else {
+              $('#page_navigation').html(navigation_html);
+            }
+                    
       }
-    function showPage(page) {
+      function showPage(page) {
       var pageSize = 10;
             $("#paginate tr").hide();
             $('#current_page').val(page);
@@ -2098,6 +2070,32 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
             var new_page = parseInt($('#current_page').val()) - 1;
             $('#current_page').val(new_page);
             showPage(new_page);
+      }
+      function timeNow() {
+        var d = new Date();
+        var yr = d.getFullYear();
+        var month = d.getMonth() + 1;
+        var date = d.getDate();
+        var hr = d.getHours();
+        var min = d.getMinutes();
+        var sec = d.getSeconds();
+        //console.log(date<10);
+        if (month < 10) {
+          month = "0" + month;
+        } 
+        if(hr < 10) {
+          hr = "0" + hr;
+        } 
+        if(min < 10) {
+          min = "0" + min;
+        } 
+        if(sec < 10) {
+          sec = "0" + sec;
+        } 
+        if (date<10) {
+          date = "0" + date;
+        }
+        return yr + "-" + month + "-" + date + " " + hr + ":" + min + ":" + sec;
       }
   });
 })(jQuery_1_8_2);

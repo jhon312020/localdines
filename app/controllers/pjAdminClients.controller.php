@@ -235,7 +235,7 @@ class pjAdminClients extends pjAdmin
 
 			$data = $pjClientModel
 			//->join('pjOrder', 't3.client_id = t1.id')
-			->select("t1.id, t2.email AS c_email, t2.name AS c_name, t2.phone, t1.c_postcode, t2.status, (SELECT COUNT(TO.client_id) FROM `".pjOrderModel::factory()->getTable()."` AS `TO` WHERE `TO`.client_id=t1.id) AS cnt_orders")
+			->select("t1.id, t2.email AS c_email, t2.name AS c_name, t2.u_surname AS c_surname, t2.phone, t1.c_postcode, t2.status, (SELECT COUNT(TO.client_id) FROM `".pjOrderModel::factory()->getTable()."` AS `TO` WHERE `TO`.client_id=t1.id) AS cnt_orders")
 			->orderBy("$column $direction")
 			->limit($rowCount, $offset)
 			->findAll()

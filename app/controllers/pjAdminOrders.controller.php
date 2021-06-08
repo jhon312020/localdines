@@ -155,19 +155,23 @@ class pjAdminOrders extends pjAdmin
 			}
 
 			$data = array();
-			
+			$today = date( 'Y-m-d', time () );	
+			//$toDay = $today . " " .  "00:00:00";
+			//print_r($toDay);
 			$data = $pjOrderModel
+			    //->where('t1.created' > $toDay)
 				->select("t1.*, t3.name as client_name, t2.c_type,
 							AES_DECRYPT(t1.cc_type, '".PJ_SALT."') AS `cc_type`,	
 							AES_DECRYPT(t1.cc_num, '".PJ_SALT."') AS `cc_num`,
 							AES_DECRYPT(t1.cc_exp, '".PJ_SALT."') AS `cc_exp`,
 							AES_DECRYPT(t1.cc_code, '".PJ_SALT."') AS `cc_code`")
+				
 				->orderBy("$column $direction")
 				->limit($rowCount, $offset)
 				->findAll()
 				->getData();
 
-			$today = date( 'Y-m-d', time () );	
+			
 			//print_r($today);
 
 			foreach($data as $k => $v)

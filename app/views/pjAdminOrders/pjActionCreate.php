@@ -806,7 +806,15 @@ unset($statuses['delivered']);
 
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <div class="row">
+            <div id='page_navigation' class="col-md-6">
+            </div>
+            <div class="col-md-6">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        
+        
       </div>
     </div>
   </div>

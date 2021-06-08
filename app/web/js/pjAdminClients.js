@@ -58,7 +58,8 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 				buttons: [{type: "edit", url: "index.php?controller=pjAdminClients&action=pjActionUpdate&id={:id}"},
 				          {type: "delete", url: "index.php?controller=pjAdminClients&action=pjActionDeleteClient&id={:id}"}
 				          ],
-				columns: [{text: myLabel.name, type: "text", sortable: true, editable: false , editableWidth: 190},
+				columns: [{text: myLabel.firstname, type: "text", sortable: true, editable: false , editableWidth: 190},
+				          {text: myLabel.surname, type: "text", sortable: true, editable: false , editableWidth: 190},
 				          {text: myLabel.email, type: "text", sortable: true, editable: false , editableWidth: 190},
 				          {text: myLabel.phone_no, type: "text", sortable: true, editable: false , editableWidth: 190},
 				          {text: myLabel.c_postcode, type: "text", sortable: true, editable: false , editableWidth: 190},
@@ -67,7 +68,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 				          ],
 				dataUrl: "index.php?controller=pjAdminClients&action=pjActionGetClient",
 				dataType: "json",
-				fields: ['c_name', 'c_email','phone','c_postcode', 'cnt_orders', 'status'],
+				fields: ['c_name','c_surname', 'c_email','phone','c_postcode', 'cnt_orders', 'status'],
 				paginator: {
 					actions: [
 					   {text: myLabel.delete_selected, url: "index.php?controller=pjAdminClients&action=pjActionDeleteClientBulk", render: true, confirmation: myLabel.delete_confirmation},

@@ -53,6 +53,8 @@ $short_days = __('short_days', true);
 			<input type="hidden" name="id" value="<?php echo $tpl['arr']['id']?>" />
             <input type="hidden" name="order_despatched" value="<?php echo $tpl['arr']['order_despatched']?>" />
             <input type="hidden" name="delivered_customer" value="<?php echo $tpl['arr']['delivered_customer']?>" />
+            <input type="hidden" name="delivered_time" value="<?php echo $tpl['arr']['delivered_time']?>" />
+            <input type="hidden" name="sms_sent_time" value="<?php echo $tpl['arr']['sms_sent_time']?>" />
             <!-- <input type="hidden" name="is_paid" value="<?php //echo $tpl['arr']['is_paid']?>" /> -->
 			<input type="hidden" id="price" name="price" value="<?php echo $tpl['arr']['price']; ?>" />
 			<input type="hidden" id="price_packing" name="price_packing" value="<?php echo $tpl['arr']['price_packing']; ?>" />
@@ -940,7 +942,15 @@ $short_days = __('short_days', true);
 
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <div class="row">
+            <div id='page_navigation' class="col-md-6">
+            </div>
+            <div class="col-md-6">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        
+        
       </div>
     </div>
   </div>
