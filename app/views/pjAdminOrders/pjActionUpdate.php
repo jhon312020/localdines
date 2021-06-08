@@ -459,8 +459,7 @@ $short_days = __('short_days', true);
                                                 <div class="input-group" id="post_code">
                                                     
                                                     <input type="text" class="form-control fdRequired<?php echo $tpl['arr']['type'] == 'delivery' ? ' required' : NULL; ?>" placeholder="Type your postCode" name="post_code" id="inputPostCode" value="<?php  
-                                                    echo pjSanitize::html($postcode); ?>
-                                                    ">
+                                                    echo pjSanitize::html($postcode); ?>">
                                             
                                                     <span class="input-group-btn">
                                                         <button class="btn btn-default" type="button" id="btnFindPostCode"><i class="glyphicon glyphicon-ok"></i></button>
