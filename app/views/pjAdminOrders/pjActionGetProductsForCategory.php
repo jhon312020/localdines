@@ -6,10 +6,12 @@
 <table id="paginate" width="100%" style="border-collapse: separate;border-spacing: 15px 15px;">
 
 <thead>
+<tr>
     <th>S.No.</th>
     <th>Product Name</th>
     <th>Extras</th>
     <th>Price</th>
+</tr>
 </thead>
 <tbody>
 <?php if ($tpl['product_arr']) {
@@ -50,8 +52,8 @@
      </td>
      
 </tr>
-</tbody>
 <?php } } } else { ?>
-    <tr><td colspan="3">Currently no products are available for the category</td></tr>
+    <tr><td colspan="4">Currently no products are available for the category</td></tr>
 <?php } ?>
+</tbody>
 </table>

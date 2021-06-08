@@ -2008,7 +2008,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
     function makePager(page){
         
             var show_per_page = 10;
-            var number_of_items = $('#paginate tr').length;
+            var number_of_items = $('#paginate tbody tr').length;
             var number_of_pages = Math.ceil(number_of_items / show_per_page);
             var number_of_pages_todisplay = 5;
             var navigation_html = '';
@@ -2043,9 +2043,9 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
       }
       function showPage(page) {
       var pageSize = 10;
-            $("#paginate tr").hide();
+            $("#paginate tbody tr").hide();
             $('#current_page').val(page);
-            $("#paginate tr").each(function (n) {
+            $("#paginate tbody tr").each(function (n) {
                 if (n >= pageSize * (page - 1) && n < pageSize * page)
                     $(this).show();
             });
