@@ -76,7 +76,7 @@ $short_days = __('short_days', true);
                         <div class="panel-body">
                             <div class="row">
                                 <div class="col-lg-12 col-md-12 col-sm-6">
-                                    <div class="form-group col-md-9 col-lg-9">
+                                    <div class="form-group col-sm-6 col-md-8">
                                             <?php
                                             foreach ($tpl['category_arr'] as $k)
                                             {
@@ -85,7 +85,7 @@ $short_days = __('short_days', true);
                                             ?>
                                 
                                     </div>
-                                   <div class="col-md-3 col-lg-3">
+                                   <div class="col-sm-6 col-md-4">
                                       <lable>Kitchen Orders:</lable>
                                           <?php
                                             $printedOrders = array();
@@ -697,8 +697,11 @@ $short_days = __('short_days', true);
                                                 value="<?php 
                                                   echo $dTime; ?>">
                                             </div>
-                                            <label>Approximate Delivery time :</label><span id="aproxDt"><?php 
+                                            <div>
+                                                <label>Approximate Delivery time :</label><span id="aproxDt"><?php 
                                                   echo $dTime; ?></span>
+                                            </div>
+                                            
                                         </div><!-- /.form-group -->
                                     </div>
 
@@ -942,9 +945,9 @@ $short_days = __('short_days', true);
       </div>
       <div class="modal-footer">
         <div class="row">
-            <div id='page_navigation' class="col-md-6">
+            <div id='page_navigation' class="col-sm-8">
             </div>
-            <div class="col-md-6">
+            <div class="col-sm-4">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
         </div>

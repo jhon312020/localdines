@@ -64,7 +64,7 @@
     
                         <div class="col-md-2 col-md-offset-2 text-right">
                         	<select name="type" id="filter_type" class="form-control">
-                				<option value="">-- <?php __('lblAll'); ?> --</option>
+                				<option value="">-- <?php echo "Orders"; ?> --</option>
                 				<?php
                 				foreach (__('types', true, false) as $k => $v)
                 				{
@@ -73,7 +73,9 @@
                                 foreach ($statuses as $k => $v) {
                                     ?><option value="<?php echo $k; ?>"><?php echo stripslashes($v); ?></option><?php
                                 }
+
                 				?>
+                                <option value="all">-- <?php echo "All"; ?> --</option>
                 			</select>
                         </div><!-- /.col-md-6 -->
                     </form>

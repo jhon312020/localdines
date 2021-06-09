@@ -2017,7 +2017,12 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
             $("#nop").val(number_of_pages);
             if (current_page > 1)
                 current_link = current_page;
-            if (current_link != 1) navigation_html += "<a class='nextbutton previous' >« Prev&nbsp;</a>&nbsp;";
+            if (current_link != 1) {
+              navigation_html += "<a class='nextbutton previous' >« Prev&nbsp;</a>&nbsp;";
+            } else {
+              navigation_html += "<a class='nextbutton previousDisabled' >« Prev&nbsp;</a>&nbsp;";
+            }
+            
             if (current_link == number_of_pages - 1) current_link = current_link - 3;
             else if (current_link == number_of_pages) current_link = current_link - 4;
             else if (current_link > 2) current_link = current_link - 2;
@@ -2033,6 +2038,8 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
             }
             if (number_of_pages > current_page){
                 navigation_html += "<a class='nextbutton next' >Next »</a>&nbsp;";
+            } else {
+                navigation_html += "<a class='nextbutton nextDisabled' >Next »</a>&nbsp;";
             }
             if (number_of_pages == 1) {
               $('#page_navigation').html("");

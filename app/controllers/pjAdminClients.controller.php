@@ -205,7 +205,7 @@ class pjAdminClients extends pjAdmin
 			//print_r($pjClientModel);
 			if ($q = $this->_get->toString('q'))
 			{
-				$pjClientModel->where("(t2.email LIKE '%$q%' OR t2.name LIKE '%$q%' OR t2.phone='$q' OR t1.c_postcode LIKE '%$q%')");
+				$pjClientModel->where("(t2.email LIKE '%$q%' OR t2.name LIKE '%$q%' OR t2.u_surname LIKE '%$q%' OR t2.phone='$q' OR t1.c_postcode LIKE '%$q%')");
 			}
 			if ($this->_get->toString('status'))
 			{

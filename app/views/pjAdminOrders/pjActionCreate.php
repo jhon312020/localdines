@@ -87,7 +87,7 @@ unset($statuses['delivered']);
                         <div class="panel-body">
                             <div class="row">
                                 <div class="col-lg-12 col-md-12 col-sm-6">
-                                    <div class="form-group col-md-9 col-lg-9">
+                                    <div class="form-group col-sm-6 col-md-8">
                                             <?php
                                             foreach ($tpl['category_arr'] as $k)
     										{
@@ -96,7 +96,7 @@ unset($statuses['delivered']);
     										?>
                                 
                                     </div>
-                                   <div class="col-md-3 col-lg-3">
+                                   <div class="col-sm-6 col-md-4">
                                       <lable>Kitchen Orders:</lable>
                                           <?php
                                             $printedOrders = array();
@@ -596,7 +596,10 @@ unset($statuses['delivered']);
                                                 <input type="hidden" name="delivery_time" id="delivery_time">
                                                 
                                             </div>
-                                            <label>Approximate delivery time :</label><span id="aproxDt"></span>
+                                            <div>
+                                                <label>Approximate delivery time :</label><span id="aproxDt"></span>
+                                            </div>
+                                            
                                         </div><!-- /.form-group -->
                                     </div>
 
@@ -807,9 +810,9 @@ unset($statuses['delivered']);
       </div>
       <div class="modal-footer">
         <div class="row">
-            <div id='page_navigation' class="col-md-6">
+            <div id='page_navigation' class="col-sm-8">
             </div>
-            <div class="col-md-6">
+            <div class="col-sm-4">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
         </div>

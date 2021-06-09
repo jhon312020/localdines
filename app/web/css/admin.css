@@ -168,7 +168,25 @@ input[type = radio] {
     text-decoration: none;
     width: 85px;
 }
+.previousDisabled,
+.nextDisabled {
+    background-color: #FFFFFF;
+    border: 1px solid #cacaca;
+    color: #cacaca !important;
+    display: inline-block;
+    height: 25px;
+    line-height: 14px;
+    padding: 4px;
+    text-align: center;
+    text-decoration: none;
+    width: 85px;
+    cursor: not-allowed;
+}
 #page_navigation{
     padding-top:8px;
+}
+.modal-body {
+	min-height: 550px !important;
+	max-height: 650px !important;
 }
 }

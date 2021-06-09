@@ -118,6 +118,7 @@ class pjAdminOrders extends pjAdmin
 			        $pjOrderModel->where('t1.status', $status);
 			    }
 			}
+			
 			if ($this->_get->toString('type'))
 			{
 			    $type = $this->_get->toString('type');
@@ -131,6 +132,7 @@ class pjAdminOrders extends pjAdmin
 			    {
 			        $pjOrderModel->where('t1.status', $type);
 			    }
+			    
 			}
 			if ($client_id = $this->_get->toInt('client_id'))
 			{
@@ -144,33 +146,58 @@ class pjAdminOrders extends pjAdmin
 			    $direction = strtoupper($this->_get->toString('direction'));
 			}
 
-			$total = $pjOrderModel->findCount()->getData();
-			$rowCount = $this->_get->toInt('rowCount') ?: 10;
-			$pages = ceil($total / $rowCount);
-			$page = $this->_get->toInt('page') ?: 1;
-			$offset = ((int) $page - 1) * $rowCount;
-			if ($page > $pages)
-			{
-				$page = $pages;
-			}
-
 			$data = array();
 			$today = date( 'Y-m-d', time () );	
-			//$toDay = $today . " " .  "00:00:00";
+			$toDay = $today . " " .  "00:00:00";
 			//print_r($toDay);
-			$data = $pjOrderModel
-			    //->where('t1.created' > $toDay)
-				->select("t1.*, t3.name as client_name, t2.c_type,
+			if ($this->_get->toString('type') != 'all') {
+
+				$total = $pjOrderModel->where("(t1.d_dt >= '$toDay' OR t1.p_dt >= '$toDay')")->findCount()->getData();
+				$rowCount = $this->_get->toInt('rowCount') ?: 10;
+				$pages = ceil($total / $rowCount);
+				$page = $this->_get->toInt('page') ?: 1;
+				$offset = ((int) $page - 1) * $rowCount;
+				if ($page > $pages)
+				{
+					$page = $pages;
+				}
+			    
+			    $data = $pjOrderModel
+			    ->select("t1.*, t3.name as client_name, t2.c_type,
 							AES_DECRYPT(t1.cc_type, '".PJ_SALT."') AS `cc_type`,	
 							AES_DECRYPT(t1.cc_num, '".PJ_SALT."') AS `cc_num`,
 							AES_DECRYPT(t1.cc_exp, '".PJ_SALT."') AS `cc_exp`,
 							AES_DECRYPT(t1.cc_code, '".PJ_SALT."') AS `cc_code`")
+				->where("(t1.d_dt >= '$toDay' OR t1.p_dt >= '$toDay')")
 				
 				->orderBy("$column $direction")
 				->limit($rowCount, $offset)
 				->findAll()
 				->getData();
-
+            } else {
+            	
+            	$total = $pjOrderModel->findCount()->getData();
+				$rowCount = $this->_get->toInt('rowCount') ?: 10;
+				$pages = ceil($total / $rowCount);
+				$page = $this->_get->toInt('page') ?: 1;
+				$offset = ((int) $page - 1) * $rowCount;
+				if ($page > $pages)
+				{
+					$page = $pages;
+				}
+            	$data = $pjOrderModel
+			    ->select("t1.*, t3.name as client_name, t2.c_type,
+							AES_DECRYPT(t1.cc_type, '".PJ_SALT."') AS `cc_type`,	
+							AES_DECRYPT(t1.cc_num, '".PJ_SALT."') AS `cc_num`,
+							AES_DECRYPT(t1.cc_exp, '".PJ_SALT."') AS `cc_exp`,
+							AES_DECRYPT(t1.cc_code, '".PJ_SALT."') AS `cc_code`")
+				//->where("(t1.created >= '$toDay')")
+				
+				->orderBy("$column $direction")
+				->limit($rowCount, $offset)
+				->findAll()
+				->getData();
+            }
 			
 			//print_r($today);
 
