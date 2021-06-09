@@ -998,6 +998,8 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
             } else {
 
               $("#status").val('pending');
+              $("#pjFdPriceWrapper").find(".panel-heading").addClass("bg-pending");
+              $("#pjFdPriceWrapper").find(".status-text").html("Pending");
             }
             
           })
@@ -1022,6 +1024,8 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
             } else {
 
               $("#status").val('pending');
+              $("#pjFdPriceWrapper").find(".panel-heading").addClass("bg-pending");
+              $("#pjFdPriceWrapper").find(".status-text").html("Pending");
             }
             
           })
@@ -1052,6 +1056,8 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
             } else {
 
               $("#status").val('pending');
+              $("#pjFdPriceWrapper").find(".panel-heading").addClass("bg-pending");
+              $("#pjFdPriceWrapper").find(".status-text").html("Pending");
             }
             
           })
