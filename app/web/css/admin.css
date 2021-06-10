@@ -187,6 +187,6 @@ input[type = radio] {
 }
 .modal-body {
 	min-height: 550px !important;
-	max-height: 650px !important;
+	max-height: 1000px !important;
 }
 }

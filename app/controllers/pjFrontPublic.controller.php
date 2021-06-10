@@ -35,6 +35,16 @@ class pjFrontPublic extends pjFront
 	        $this->set('main', $this->getCategories());
 	    }
 	}
+
+	public function pjActionHome()
+	{
+	    $this->setAjax(true);
+	    
+	    if ($this->isXHR() || $this->_get->check('_escaped_fragment_'))
+	    {
+	        print_r("Hey home");
+	    }
+	}
 	
 	public function pjActionCart()
 	{

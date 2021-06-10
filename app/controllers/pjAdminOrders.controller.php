@@ -419,7 +419,7 @@ class pjAdminOrders extends pjAdmin
 			$data['locale_id'] = $this->getLocaleId();
 			$data['call_start'] = $this->_post->toString('call_start');
 			$data['call_end'] = date('h:i:s A');
-			$data['post_code'] = $this->_post->toString('post_code');
+			$data['post_code'] = rtrim($this->_post->toString('post_code'));
 			$data['phone_no'] = $this->_post->toString('phone_no');
 			$data['surname'] = $this->_post->toString('surname');
 			$data['sms_email'] = $this->_post->toString('sms_email');
@@ -789,7 +789,7 @@ class pjAdminOrders extends pjAdmin
 	            $c_data['c_address_2'] = $this->_post->toString('d_address_2');
 	            $c_data['c_city'] = $this->_post->toString('d_city');
 	            $c_data['status'] = 'T';
-	            $c_data['post_code'] = $this->_post->toString('post_code');
+	            $c_data['post_code'] = rtrim($this->_post->toString('post_code'));
 	            $c_data['locale_id'] = $this->getLocaleId();
 	            $response = pjFrontClient::init($c_data)->createClient();
 	            if(isset($response['client_id']) && (int) $response['client_id'] > 0)
@@ -805,7 +805,7 @@ class pjAdminOrders extends pjAdmin
 				            'c_address_1' => $post['d_address_1'],
 				            'c_address_2' => $post['d_address_2'],
 				            'c_city' => $post['d_city'],
-				            'c_postcode' => $post['post_code'],
+				            'c_postcode' => rtrim($post['post_code']),
 			            ));
 				    }
 	        }
@@ -2011,44 +2011,7 @@ class pjAdminOrders extends pjAdmin
 	    }
 	    exit;
 	}
-	public function pjActionSaveOrderPaidByPost()
-	{
-	    $this->setAjax(true);
-	    if ($this->isXHR())
-	    {
-	        if (!self::isPost())
-	        {
-	            self::jsonResponse(array('status' => 'ERR', 'code' => 100, 'text' => 'HTTP method not allowed.'));
-	        }
-	        
-	        if ($this->_post->toInt('id') <= 0)
-	        {
-	            self::jsonResponse(array('status' => 'ERR', 'code' => 101, 'text' => 'Missing, empty or invalid parameters.'));
-	        }
-	        //$gid = $this->_get->toInt('id');
-	        $pid = $this->_post->toInt('id');
-	        //print_r(self::isPost());
-	        
-	        	pjOrderModel::factory()
-		        ->where('id', $pid)
-		        ->modifyAll(array(
-		            'is_paid' => ":IF(`is_paid`='0','1','0')"
-		        ));
-
-	        
-	        // elseif ($pid) {
-	        // 	pjOrderModel::factory()
-		       //  ->where('id', $pid)
-		       //  ->modifyAll(array(
-		       //      'is_paid' => ":IF(`is_paid`='0','1','0')"
-		       //  ));
-
-	        // }
-	        
-	        self::jsonResponse(array('status' => 'OK', 'code' => 200, 'text' => 'Your order has paid.'));
-	    }
-	    exit;
-	}
+	
 	public function pjActionSaveDeliveredCustomer()
 	{
 	    $this->setAjax(true);

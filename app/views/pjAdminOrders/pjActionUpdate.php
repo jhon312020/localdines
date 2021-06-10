@@ -560,7 +560,7 @@ $short_days = __('short_days', true);
                                 </div><!-- /.col-md-3 --> 
                                 
                                 
-                                <div class="col-md-2 col-sm-6">
+                                <div class="col-md-3 col-sm-6">
                                     <label class="control-label"><?php echo 'Delivery/Receipt' //__('lblPhone'); ?></label>
                                         <div class="form-group">
                                             <input type="radio" name="email_receipt" id="email_receipt_yes" value="1"<?php if ($tpl['arr']['email_receipt'] == 1 ) { ?>checked = "checked" <?php }?>><label> Yes</label>
@@ -568,7 +568,7 @@ $short_days = __('short_days', true);
                                         </div>
                                 </div>
                                 
-                                <div class="col-md-2 col-sm-6">
+                                <div class="col-md-3 col-sm-6">
                                     <label class="control-label"><?php echo 'Offers' //__('lblPhone'); ?></label>
                                     <div class="form-group">
                                         <input type="radio" name="email_offer" id="email_offer_yes" value="1"<?php if ($tpl['arr']['email_offer'] == 1 ) { ?>checked = "checked" <?php }?>><label> Yes</label>
@@ -698,7 +698,7 @@ $short_days = __('short_days', true);
                                                   echo $dTime; ?>">
                                             </div>
                                             <div>
-                                                <label>Approximate Delivery time :</label><span id="aproxDt"><?php 
+                                                <label>Approximate Delivery time:</label><span id="aproxDt"><?php 
                                                   echo $dTime; ?></span>
                                             </div>
                                             
@@ -733,8 +733,10 @@ $short_days = __('short_days', true);
                                                   echo $pTime;
                                                 ?>">  
                                             </div>
-                                            <label>Approximate pickup time :</label><span id="aproxPt"><?php 
-                                                  echo $pTime; ?></span>
+                                            <div>
+                                                <label>Approximate pickup time:</label><span id="aproxPt"><?php echo $pTime; ?></span>
+                                            </div>
+                                            
                                         </div><!-- /.form-group -->
                                         <!-- <label class="control-label"><?php //__('lblPickerDateTime'); ?></label>
     

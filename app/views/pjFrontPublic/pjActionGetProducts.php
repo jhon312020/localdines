@@ -21,7 +21,10 @@ if(isset($tpl['arr']) && !empty($tpl['arr']))
 					<h2 class="panel-title">
 						<a data-toggle="collapse" data-parent="#accordionInner<?php echo $category_id;?>" href="#collapseInner<?php echo $category_id;?><?php echo $product['id']?>" aria-expanded="<?php echo $product['is_featured'] == '1' ? 'true' : 'false';?>" aria-controls="collapseInner<?php echo $category_id;?><?php echo $product['id']?>">
 							<div class="row">
-								<div class="col-md-9 col-sm-9 col-xs-8 text-capitalize pjFdProductName"><?php echo pjSanitize::clean($product['name']);?></div><!-- /.col-md-10 col-sm-10 col-xs-10 -->
+								<div class="col-md-7 col-sm-9 col-xs-8 text-capitalize pjFdProductName"><?php echo pjSanitize::clean($product['name']);?>
+									<i class="fa fa-arrow-down"></i>
+									<i class="fa fa-arrow-up"></i>
+								</div><!-- /.col-md-10 col-sm-10 col-xs-10 -->
 
 								<div class="col-md-3 col-sm-3 col-xs-4 text-right pjFdProductPrice">
 								<?php
@@ -30,7 +33,12 @@ if(isset($tpl['arr']) && !empty($tpl['arr']))
 								    echo pjCurrency::formatPrice($product['price']);
 								} 
 								?>
-								</div><!-- /.col-md-2 col-sm-2 col-xs-2 -->
+								</div>
+								<div class="col-md-2 col-sm-3 col-xs-4 text-right">
+									<!-- <i class="fa fa-plus pjFdBtnOrder fdProductOrder" data-id="<?php //echo $product['id'];?>"></i> -->
+									<button class="pjFdBtnOrder fdProductOrder" role="button" data-id="<?php echo $product['id'];?>"><i class="fa fa-plus"></i></button>
+								</div>
+								<!-- /.col-md-2 col-sm-2 col-xs-2 -->
 							</div>
 						</a>
 					</h2><!-- /.panel-title -->
@@ -65,7 +73,7 @@ if(isset($tpl['arr']) && !empty($tpl['arr']))
 								}  
 								?>
 								<br/>
-								<button class="btn btn-default btn-block text-uppercase pjFdBtnOrder fdProductOrder" role="button" data-id="<?php echo $product['id'];?>"><?php __('front_order');?></button>
+								<!-- <button class="btn btn-default btn-block text-uppercase pjFdBtnOrder fdProductOrder" role="button" data-id="<?php //echo $product['id'];?>"><?php //__('front_order');?></button> -->
 							</div><!-- /.col-lg-2 col-md-2 col-sm-3 col-xs-4 -->
 						</div><!-- /.row -->
 

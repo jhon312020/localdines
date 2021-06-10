@@ -8,7 +8,9 @@
 		</h1><!-- /.panel-title -->
 	</div><!-- /.panel-heading pjFdPanelHead -->
 	<div class="panel-body pjFdPanelBody">
+
 		<?php
+		
 		$action = $controller->_get->toString('action');
 		$readonlyMode = in_array($action, array('pjActionCheckout', 'pjActionPreview'));
 		if ($tpl['cart_box']['cart'] !== false && count($tpl['cart_box']['cart']) > 0)
@@ -188,11 +190,12 @@
 							}
 							$total = $subtotal + $tax;
 							$controller->_set('total', $total);
+							
 							?>
 							<div class="row">
 								<div class="col-md-12 col-sm-12 col-xs-12 text-right">
 									<span class="text-uppercase"><?php __('front_total'); ?>:</span>
-									<span class="pjFdPriceTotal"><?php echo pjCurrency::formatPrice($total); ?></span>
+									<span  class="pjFdPriceTotal"><?php echo pjCurrency::formatPrice($total); ?></span>
 								</div><!-- /.col-md-12 col-sm-12 col-xs-12 -->
 							</div><!-- /.row -->
 							<?php
@@ -260,7 +263,7 @@
 					<div class="row">
 						<div class="col-md-12 col-sm-12 col-xs-12 text-right">
 							<span class="text-uppercase"><?php __('front_price'); ?>:</span>
-							<span class="pjFdPriceTotal"><?php echo pjCurrency::formatPrice($price); ?></span>
+							<span id="totalCartPrice" class="pjFdPriceTotal"><?php echo pjCurrency::formatPrice($price); ?></span>
 						</div><!-- /.col-md-12 col-sm-12 col-xs-12 -->
 					</div><!-- /.row -->
 					

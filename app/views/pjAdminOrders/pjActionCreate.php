@@ -558,20 +558,6 @@ unset($statuses['delivered']);
                                     </div>
                                 </div><!-- /.col-md-3 -->
                                 <div class="col-lg-4 col-md-4 col-sm-6">
-                                    <!-- <div class="form-group order-delivery">
-                                        <label class="control-label"><?php //__('lblDeliveryDateTime'); ?></label> -->
-    
-                                        <!-- <div class="input-group"> -->
-                                            <!-- <input type="hidden" id="d_dt" name="d_dt" class="form-control fdRequired required" data-wt="open" data-msg-required="<?php //__('fd_field_required', false, true);?>" readonly> -->
-    
-                                            <!--<span class="input-group-addon"><i class="fa fa-calendar"></i></span> 
-                                        </div> -->
-                                        
-                                    
-                                        
-                                    <!-- </div> -->
-                                     
-                                    <!--  <input type="hidden" id="d_dt" name="d_dt" class="form-control fdRequired required" data-wt="open" data-msg-required="<?php //__('fd_field_required', false, true);?>" readonly> -->
                                     <div class="form-group order-delivery">
                                        
                                         <label><?php __('lblDate'); ?></label>
@@ -583,7 +569,6 @@ unset($statuses['delivered']);
                                                 <input type="text" name="d_date" id="d_date" data-wt="open" class="form-control fdRequired required" data-msg-required="<?php __('fd_field_required', false, true);?>" value="<?php 
                                                   echo date("d.m.Y");
                                                 ?>" readonly>
-                                                <!--  <input type="hidden" name="delivery_date" id="delivery_date"> -->
                                             </div>
                                         </div><!-- /.form-group -->
                                          <label>Time(Mins)</label>
@@ -591,13 +576,12 @@ unset($statuses['delivered']);
                                             <div class="input-group">
                                                 <span class="input-group-addon"><i class="fa fa-clock-o"></i></span> 
                                                 
-                                               <!--  <input name="d_time" class="pj-timepicker form-control required fdRequired" data-msg-required="<?php //__('fd_field_required', false, true);?>" readonly/>   -->
                                                 <input name="d_time" id="d_time" class=" form-control fdRequired required" data-msg-required="<?php __('fd_field_required', false, true);?>"/>    
                                                 <input type="hidden" name="delivery_time" id="delivery_time">
                                                 
                                             </div>
                                             <div>
-                                                <label>Approximate delivery time :</label><span id="aproxDt"></span>
+                                                <label>Approximate delivery time:</label><span id="aproxDt"></span>
                                             </div>
                                             
                                         </div><!-- /.form-group -->
@@ -619,23 +603,14 @@ unset($statuses['delivered']);
                                         <div class="form-group">
                                             <div class="input-group">
                                                 <span class="input-group-addon"><i class="fa fa-clock-o"></i></span> 
-                                                
-                                                <!-- <input name="p_time" class="pj-timepicker form-control fdRequired" data-msg-required="<?php //__('fd_field_required', false, true);?>" readonly/>    --> 
+                                    
                                                 <input name="p_time" id="p_time" class="form-control fdRequired" data-msg-required="<?php __('fd_field_required', false, true);?>"/> 
                                                  <input type="hidden"  name="pickup_time" id="pickup_time">  
 
                                             </div>
-                                             <label>Approximate pickup time :</label><span id="aproxPt"></span>
+                                             <label>Approximate pickup time:</label><span id="aproxPt"></span>
 
                                         </div>
-                                       <!-- /.form-group -->
-                                        <!-- <label class="control-label"><?php //__('lblPickerDateTime'); ?></label>
-    
-                                        <div class="input-group">
-                                            <input type="text" id="p_dt" name="p_dt" class="form-control fdRequired" data-wt="open" data-msg-required="<?php //__('fd_field_required', false, true);?>" readonly>
-    
-                                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span> 
-                                        </div> -->
                                     </div>
                                 </div><!-- /.col-md-3 -->
                                 <div class="col-lg-2 col-md-2 col-sm-6">

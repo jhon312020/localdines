@@ -48,6 +48,11 @@
 #pjWrapper .pjFdAccourdionOuterHead > .panel-title > [aria-expanded="true"] .fa-minus { display: inline-block; }
 #pjWrapper .pjFdAccourdionOuterHead > .panel-title > [aria-expanded="false"] .fa-minus { display: none; }
 
+#pjWrapper .pjFdProductHead > .panel-title > [aria-expanded="true"] .fa-arrow-down { display: none; }
+#pjWrapper .pjFdProductHead > .panel-title > [aria-expanded="false"] .fa-arrow-down { display: inline-block; }
+#pjWrapper .pjFdProductHead > .panel-title > [aria-expanded="true"] .fa-arrow-up { display: inline-block; }
+#pjWrapper .pjFdProductHead > .panel-title > [aria-expanded="false"] .fa-arrow-up { display: none; }
+
 #pjWrapper .pjFdPanelLeft .panel-group .panel-heading { padding: 0; }
 #pjWrapper .pjFdPanelLeft .panel-group .panel-heading a { display: block; padding: 15px 20px; }
 #pjWrapper .pjFdPanelRight .pjFdPanelHead .lead { vertical-align: middle; }
@@ -202,9 +207,20 @@ nav {
 	.menu-left {
 		display: none;
 	}
+	footer {
+		display: none !important;
+	}
+	/*[id^=fdCart_] {
+        display: none !important;
+    }*/
+}
+@media only screen and ( min-width: 480px ) { 
+	#btn-cart {
+		display: none !important;
+	}
 }
 footer{
-	background-color: #eef0ef;
+	background-color: #f8f8f8;
 	position: relative;
 	z-index: 1;
 	margin-top: 20px;
@@ -273,22 +289,27 @@ li .text-list:hover {
 .list-unstyled .pjFdBtnHome {
 	background: none !important;
 }
-/*@media (min-width: 1200px) {
-[id^=pjWrapper] .container {
-    width: 100% !important;
-	max-width: 1200px !important;
+.fixed-bottom {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	z-index: 1030;
+	display: block !important;
+	background-color: #e85d4b;
+	text-align: center;
+	font-weight: 900;
 }
+.fixed-bottom a {
+	color: white;
+}
+.pjFdBtnOrder {
+    background: #fff;
+    border: none;
+    padding: 7px 10px !important;
+    border-radius: 3px;
+    margin-top: -5px;
 }
 
-*/
-/*#brand {
-	background-image: "./../img/frontend/localdine.png";
-}*/
-/*.row {
-    display: flex !important;
-    flex-wrap: wrap !important;
-    margin-right: -15px;
-    margin-left: -15px;
-}*/
 
 /** !MEGAMIND **/
