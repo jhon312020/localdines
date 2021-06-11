@@ -133,6 +133,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
         deliveryTime(mins);
         validateDeliveryTime();
         calPrice(1);
+        $("#voucher_code").removeAttr("disabled");
       }
     })
     $('#d_time').on("focusout",function() {
@@ -142,6 +143,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
         deliveryTime(mins);
         validateDeliveryTime();
         calPrice(1);
+        $("#voucher_code").removeAttr("disabled");
       }
     })
     $('#p_time').on("change",function() {
@@ -151,6 +153,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
         pickupTime(mins);
         validatePickupTime();
         calPrice(1);
+        $("#voucher_code").removeAttr("disabled");
       }
     })
     $('#p_time').on("focusout",function() {
@@ -160,6 +163,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
         pickupTime(mins);
         validatePickupTime();
         calPrice(1);
+        $("#voucher_code").removeAttr("disabled");
       }
     })
     $('#phone_no').on("focusout", function() {
@@ -167,6 +171,12 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
     })
     $('#c_email').on("focusout", function() {
       validateEmail($(this).val());
+    })
+    // $('#voucher_code').on("change", function() {
+    //   validateVoucher($(this).val());
+    // })
+    $('#voucher_code').on("input", function() {
+      validateVoucher($(this).val());
     })
     if ($frmCreateOrder.length > 0 || $frmUpdateOrder.length > 0) {
       $.validator.addMethod("pickupTime", function (value, element) {
@@ -193,6 +203,26 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
       });
       $.validator.addMethod("email", function (value, element) {
         if ($(element).attr("data-wt") == "valid") {
+          return true;
+        } else {
+          return false;
+        }
+      });
+      $.validator.addMethod("voucher", function (value, element) {
+        //console.log("Comes to up");
+        if ($(element).attr("data-wt") == "valid") {
+          return true;
+        } else if($(element).val() == "") {
+          return true;
+        } else {
+          return false;
+        }
+      });
+      $.validator.addMethod("delivery_fee", function (value, element) {
+    
+        if ($(element).attr("data-wt") == "valid") {
+          return true;
+        } else if($(element).val() == "") {
           return true;
         } else {
           return false;
@@ -231,6 +261,14 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           sms_email: {
             email: true,
           },
+          voucher_code: {
+            required: false,
+            voucher: true,
+          },
+          delivery_fee: {
+            required: false,
+            delivery_fee: true,
+          },
           //phone_no:{matches:"[0-9]+",minlength:11, maxlength:11},
         },
         messages: {
@@ -248,6 +286,12 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           },
           sms_email: {
             email: myLabel.email_err,
+          },
+          voucher_code: {
+            voucher: myLabel.voucher_err,
+          },
+          delivery_fee: {
+            delivery_fee: myLabel.delivery_fee_err,
           },
         },
         errorPlacement: function(error, element) {
@@ -375,6 +419,14 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           sms_email: {
             email: true,
           },
+          voucher_code: {
+            required: false,
+            voucher: true,
+          },
+          delivery_fee: {
+            required: false,
+            delivery_fee: true,
+          },
          
         },
         messages: {
@@ -392,6 +444,12 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           },
           sms_email: {
             email: myLabel.email_err,
+          },
+          voucher_code: {
+            voucher: myLabel.voucher_err,
+          },
+          delivery_fee: {
+            delivery_fee: myLabel.delivery_fee_err,
           },
         },
          errorPlacement: function(error, element) {
@@ -616,6 +674,37 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
         $("#c_email").attr("data-wt","valid");
       } else {
          $("#c_email").attr("data-wt","invalid");
+      }
+    }
+    function validateVoucher(voucher){
+      
+      var code = voucher;
+      var date = $("#d_date").val();
+      var time = $("#delivery_time").val();
+      $.get(
+            "index.php?controller=pjVouchers&action=pjActionCheckVoucherCode",
+            {code,date,time}
+          ).done(function (data) {
+            //console.log(data);
+            if (data == "true") {
+              $("#voucher_code").attr("data-wt","valid");
+              calPrice(1);
+            } else {
+              $("#voucher_code").attr("data-wt","invalid");
+            }
+            
+          });
+    }
+    function validateDeliveryFee(deliveryfee){
+      var regex = /^\d*[.]?\d*$/;
+      var inputVal = deliveryfee;
+      if (regex.test(inputVal)) {
+        $("#delivery_fee").attr("data-wt","valid");
+        calPrice(1);
+      } else {
+        $("#delivery_fee").val(0);
+        $("#delivery_fee").attr("data-wt","invalid");
+        
       }
     }
     function deliveryTime(mins) {
@@ -958,11 +1047,8 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
             $(".boxCC").hide();
         }
       })
-      .on("change", "#voucher_code", function (e) {
-        calPrice(1);
-      })
       .on("change", "#delivery_fee", function(e) {
-        calPrice(1);
+        validateDeliveryFee($(this).val());
       })
       .on("change", "#status", function() {
         

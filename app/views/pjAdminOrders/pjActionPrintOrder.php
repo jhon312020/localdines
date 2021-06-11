@@ -1,20 +1,20 @@
 <div class="ticket">
-	<h3>CHEF ID :</h3><span><?php echo $tpl['arr']['chef_id']; ?></span>
+	<div>
+		<h3 style="margin-bottom: 0px;">CHEF ID :</h3>
+		<span><?php 
+				date_default_timezone_set('Asia/Kolkata');
+				echo $tpl['arr']['chef_id']; ?>
+		</span>
+	</div>
+	<div>
+		<h3 style="margin-top: 0px;">TIME :</h3>
+		<span><?php echo date('H:i:s', time()); ?></span><br>
+	</div>
+	
 	<table class="table table-borderless">
 		<thead>
-
-			<!-- <tr> -->
-				<th class="kitchen">KITCHEN</th>
-			    <th class="nani">CATEGORY ID</th>
-		    <!-- </tr> -->
-		    <!-- <tr>
-		    	<th>Table</th>
-		    	<th>Row</th>
-		    	<th>Covers</th>
-		    	<th>Time</th>
-		    </tr> -->
-		    
-			
+			<th class="kitchen">KITCHEN</th>
+		    <th class="nani">CATEGORY ID</th>
 		</thead>
 		<tbody>
 			

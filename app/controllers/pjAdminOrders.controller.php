@@ -1565,10 +1565,9 @@ class pjAdminOrders extends pjAdmin
 						}
 						$extra_id_arr = $this->_post->toArray('extra_id');
 						$cnt_arr = $this->_post->toArray('cnt');
-						// print_r($cnt_arr);
-						// echo $hash;
+						
 						$product_price = $_price * $cnt_arr[$hash];
-						//print_r($product['packing_fee']);
+						
 						$price_packing += $product['packing_fee'] * $cnt_arr[$hash];
 						if (!empty($extra_id_arr) && isset($extra_id_arr[$hash]))
 						{
@@ -1600,16 +1599,10 @@ class pjAdminOrders extends pjAdmin
 			
 			if ($this->_post->has('type') && $this->_post->has('delivery_fee'))
 			{   
-				//print_r("coming here");
+				
 
 				$d_fee = $this->_post->toFloat('delivery_fee');
-				// $arr = pjPriceModel::factory()
-				// ->where("t1.location_id", $d_location_id)
-				// ->where("(t1.total_from <= $price)")
-				// ->where("(t1.total_to >= $price)")
-				// ->findAll()
-				// ->limit(1)
-				// ->getData();
+				
 				
 			    if ($d_fee)
 				{
@@ -1618,9 +1611,10 @@ class pjAdminOrders extends pjAdmin
 			}
 			if ($this->_post->has('voucher_code'))
 			{
+
 				$post = $this->_post->raw();
 				$resp = pjAppController::getDiscount($post, $this->option_arr);
-
+                //print_r($resp);
 				if ($resp['code'] == 200)
 				{
 					$voucher_discount = $resp['voucher_discount'];

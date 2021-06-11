@@ -604,7 +604,7 @@ $short_days = __('short_days', true);
                                             <label class="control-label"><?php echo "Delivery fee"; ?></label>
                                             <div class="input-group">
                                                 <span class="input-group-addon"><?php echo pjCurrency::getCurrencySign($tpl['option_arr']['o_currency'], false) ?></span> 
-                                                <input type="text" name="delivery_fee" id="delivery_fee" class="form-control" value="<?php echo $tpl['arr']['price_delivery'];?>">
+                                                <input type="text" name="delivery_fee" id="delivery_fee" class="form-control" value="<?php echo $tpl['arr']['price_delivery'];?>" data-wt="valid">
                                             </div>
                                         </div>
                                     </div><!-- /.col-md-3 -->
@@ -759,6 +759,8 @@ $short_days = __('short_days', true);
                                            $client_paymethod = 'PayPal';
                                         }elseif ($tpl['arr']['payment_method'] == 'world_pay') {
                                            $client_paymethod = 'WorldPay';
+                                        }elseif ($tpl['arr']['payment_method'] == 'bank') {
+                                           $client_paymethod = 'Bank account';
                                         } else {
                                         $client_paymethod = ucfirst($tpl['arr']['payment_method']);
                                          }
@@ -839,7 +841,7 @@ $short_days = __('short_days', true);
                                     <div class="form-group">
                                         <label class="control-label"><?php __('lblVoucher'); ?></label>
     
-                                        <input type="text" name="voucher_code" id="voucher_code" class="form-control">
+                                        <input type="text" name="voucher_code" id="voucher_code" class="form-control" value="<?php echo  stripslashes($tpl['arr']['voucher_code']);?>" data-wt="valid">
                                     </div>
                                 </div><!-- /.col-md-3 -->
                                 
@@ -1013,4 +1015,6 @@ myLabel.restaurant_closed = <?php x__encode('lblRestaurantClosed');?>;
 myLabel.email_exists = <?php x__encode('email_taken'); ?>;
 myLabel.phoneNumber_err = '<?php echo 'Mobile Number is invalid'; ?>';
 myLabel.email_err = '<?php echo 'Email address is invalid'; ?>';
+myLabel.voucher_err = '<?php echo 'Voucher code is invalid'; ?>';
+myLabel.delivery_fee_err = '<?php echo 'This field only accepts integer and float values'; ?>';
 </script>

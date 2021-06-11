@@ -404,6 +404,7 @@ class pjAppController extends pjBaseAppController
 	        ->where('code', $data['voucher_code'])
 	        ->findAll()
 	        ->getData();
+           
 	        if(count($_arr) > 0)
 	        {
 	            $arr = $_arr[0];

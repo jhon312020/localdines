@@ -185,7 +185,7 @@ input[type = radio] {
 #page_navigation{
     padding-top:8px;
 }
-.modal-body {
+#catModal .modal-body {
 	min-height: 550px !important;
 	max-height: 1000px !important;
 }

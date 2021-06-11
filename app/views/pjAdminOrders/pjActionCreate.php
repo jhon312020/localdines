@@ -685,7 +685,8 @@ unset($statuses['delivered']);
                                     <div class="form-group">
                                         <label class="control-label"><?php __('lblVoucher'); ?></label>
     
-                                        <input type="text" name="voucher_code" id="voucher_code" class="form-control">
+                                        <input type="text" name="voucher_code" id="voucher_code" class="form-control" disabled>
+
                                     </div>
                                 </div><!-- /.col-md-3 -->
                                 
@@ -809,6 +810,8 @@ myLabel.restaurant_closed = <?php x__encode('lblRestaurantClosed');?>;
 myLabel.email_exists = <?php x__encode('email_taken'); ?>;
 myLabel.phoneNumber_err = '<?php echo 'Mobile Number is invalid'; ?>';
 myLabel.email_err = '<?php echo 'Email address is invalid'; ?>';
+myLabel.voucher_err = '<?php echo 'Voucher code is invalid'; ?>';
+myLabel.delivery_fee_err = '<?php echo 'This field only accepts integer and float values'; ?>'; 
 var categoryList = '<?php echo json_encode($tpl['category_list']); ?>';  
 categoryList =  JSON.parse(categoryList);  
 var client_info = '<?php echo json_encode($tpl['client_info']); ?>';
