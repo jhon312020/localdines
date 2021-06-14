@@ -420,17 +420,17 @@ class pjAdminOrders extends pjAdmin
 			$data['call_start'] = $this->_post->toString('call_start');
 			$data['call_end'] = date('h:i:s A');
 			$data['post_code'] = rtrim($this->_post->toString('post_code'));
-			$data['phone_no'] = $this->_post->toString('phone_no');
-			$data['surname'] = $this->_post->toString('surname');
-			$data['sms_email'] = $this->_post->toString('sms_email');
+			//$data['phone_no'] = $this->_post->toString('phone_no');
+			//$data['surname'] = $this->_post->toString('surname');
+			//$data['sms_email'] = $this->_post->toString('sms_email');
 			$data['first_name'] = $this->_post->toString('c_name');
 			$data['chef_id'] = $this->session->getData('chef');
-			$data['mobile_delivery_info'] = $this->_post->toBool('mobile_delivery_info');
-			$data['mobile_offer'] = $this->_post->toBool('mobile_offer');
-			$data['email_delivery_info'] = $this->_post->toBool('email_delivery_info');
-			$data['email_receipt'] = $this->_post->toBool('email_receipt');
-			$data['email_offer'] = $this->_post->toBool('email_offer');
-			$data['preparation_time'] = $this->_post->toInt('preparation_time');
+			//$data['mobile_delivery_info'] = $this->_post->toBool('mobile_delivery_info');
+			//$data['mobile_offer'] = $this->_post->toBool('mobile_offer');
+			//$data['email_delivery_info'] = $this->_post->toBool('email_delivery_info');
+			//$data['email_receipt'] = $this->_post->toBool('email_receipt');
+			//$data['email_offer'] = $this->_post->toBool('email_offer');
+			//$data['preparation_time'] = $this->_post->toInt('preparation_time');
 			// print_r($data);
 			// exit;
 

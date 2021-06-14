@@ -2,6 +2,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 (function ($, undefined) {
   $(function () {
     "use strict";
+   
     var validator,
       
       //MEGAMIND
@@ -20,6 +21,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
       $cols,
       $kordersPrepTime,
       prodSelect,
+      
 
 
       // ! MEGAMIND
@@ -1055,8 +1057,29 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
         if ($(this).val() == 'delivered' && $("input[name='delivered_customer']").val() == 0) {
           
           var $time = timeNow();
+          var dtOfDelivery = $("#d_date").val();
+          //var $dg = new Datagrid();
+          var dtToday = $time.split(" ");
+          if (dtToday[0] < dateFormat(dtOfDelivery)) {
+            swal({
+              title: "Dispatch Order?",
+              text: "Today is not a delivery date...",
+              type: "warning",
+              confirmButtonColor: "#DD6B55",
+              confirmButtonText: "OK",
+              closeOnConfirm: false,
+              
+            }, function () {
+                $("#status").val('pending');
+                $("#pjFdPriceWrapper").find(".panel-heading").addClass("bg-pending");
+                $("#pjFdPriceWrapper").find(".status-text").html("Pending");
+                swal.close();
+            
+            });
+          }
 
-          if(!($("#is_paid").prop("checked")) && $("input[name='order_despatched']").val() == 0) {
+
+          else if(!($("#is_paid").prop("checked")) && $("input[name='order_despatched']").val() == 0) {
          
           swal({
             title: "Delivered Customer?",
@@ -2007,8 +2030,11 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
     function getAddresses($this) { 
       //console.log($this);
       Client = IdealPostcodes.Client;
+
         client = new Client({ api_key: "iddqd" });
+
         postcode = $this.val();
+        //console.log(client.lookupPostcode());
         if (postcode) {
           var addressList = $(
             '<select id="selAddress" name="selectAddress" class="form-control"/>'
@@ -2195,6 +2221,10 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           date = "0" + date;
         }
         return yr + "-" + month + "-" + date + " " + hr + ":" + min + ":" + sec;
+      }
+      function dateFormat($date) {
+        var dateArr = $date.split(".");
+        return dateArr[2]+"-"+dateArr[1]+"-"+dateArr[0];
       }
   });
 })(jQuery_1_8_2);
