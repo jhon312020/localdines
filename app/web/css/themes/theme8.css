@@ -5,6 +5,8 @@
 #pjWrapper .btn-default:hover { border-color: #000; background: #000; color: #fff; }
 
 #pjWrapper .pjFdBtnHome,
+#pjWrapper .pjFdBtnReservation,
+#pjWrapper .pjFdBtnLink,
 #pjWrapper .pjFdBtnAcc,
 #pjWrapper .pjFdBtnNav { border-color: transparent; background-color: transparent; text-transform: uppercase; }
 #pjWrapper .pjFdBtnTotal,
@@ -134,3 +136,22 @@
 	#pjFdGroupVaucher
 ========================================================================== */
 #pjWrapper .pjFdGroupVaucher .btn { border-width: 1px; }
+/* ==========================================================================
+	Navbar
+========================================================================== */
+nav {
+	background-color: #312f30 !important;
+	color: white;
+}
+footer {
+    background-color: #312f30;
+	color: white;
+}
+.left-box {
+	background-color: #312f30;
+	color: white;
+}
+li.active a {
+	color: #fff !important;
+	background-color: #f8f8f8 !important;
+}

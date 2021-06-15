@@ -36,6 +36,7 @@ class pjFrontClient extends pjAuth
     public function createClient()
     {
         $params = $this->getParams();
+
         $u_data = array();
         $u_data['is_active'] = 'T';
         $u_data['role_id'] = 3;
@@ -48,15 +49,7 @@ class pjFrontClient extends pjAuth
         $u_data['ip'] = pjUtil::getClientIp();
         $u_data['is_active'] = 'T';
         
-        // exit;
-        
-        
         $id = pjAuthUserModel::factory($u_data)->insert()->getInsertId();
-        // print_r($id);
-        // print_r($params);
-        // exit;
-        
-        
 
         if ($id !== false && (int) $id > 0)
         {

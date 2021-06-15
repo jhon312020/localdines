@@ -210,7 +210,7 @@ class pjAdminOrders extends pjAdmin
 				$data[$k]['c_type'] = $v['c_type'];
                 $v['sms_sent_time'] == "" ? $data[$k]['sms_sent_time'] = '' : $data[$k]['sms_sent_time'] = explode(" ", $v['sms_sent_time'])[1];
                 if (explode(" ", $v['p_dt'])[0] > $today || explode(" ", $v['d_dt'])[0] > $today) {
-                	$v['d_dt'] == "" ? $data[$k]['expected_delivery'] = $v['p_dt'] : $data[$k]['expected_delivery'] = $v['d_dt'];
+                	$v['d_dt'] == "" ? $data[$k]['expected_delivery'] = $this->getDateFormatted($v['p_dt']) : $data[$k]['expected_delivery'] = $this->getDateFormatted($v['d_dt']);
                 } else {
                 	$v['d_dt'] == "" ? $data[$k]['expected_delivery'] = explode(" ", $v['p_dt'])[1] : $data[$k]['expected_delivery'] = explode(" ", $v['d_dt'])[1];
                 }
@@ -419,7 +419,7 @@ class pjAdminOrders extends pjAdmin
 			$data['locale_id'] = $this->getLocaleId();
 			$data['call_start'] = $this->_post->toString('call_start');
 			$data['call_end'] = date('h:i:s A');
-			$data['post_code'] = rtrim($this->_post->toString('post_code'));
+			//$data['post_code'] = rtrim($this->_post->toString('post_code'));
 			//$data['phone_no'] = $this->_post->toString('phone_no');
 			//$data['surname'] = $this->_post->toString('surname');
 			//$data['sms_email'] = $this->_post->toString('sms_email');
@@ -435,17 +435,9 @@ class pjAdminOrders extends pjAdmin
 			// exit;
 
 	            $c_data = array();
-	            $c_data['c_title'] = $this->_post->toString('c_title');
-	            $c_data['c_name'] = $this->_post->toString('c_name');
-	            $c_data['surname'] = $this->_post->toString('surname');
+	            
 	            $c_data['c_phone'] = $this->_post->toString('phone_no');
-            	$c_data['c_address_1'] = $this->_post->toString('d_address_1');
-	            $c_data['c_address_2'] = $this->_post->toString('d_address_2');
-	            $c_data['c_city'] = $this->_post->toString('d_city');
-	            $c_data['post_code'] = rtrim($this->_post->toString('post_code')); 
-	            $c_data['password'] = $c_data['c_name'].$data['uuid'];
-	            $c_data['status'] = 'T';
-	            $c_data['locale_id'] = $this->getLocaleId();
+            	
 	            $client_exist = pjClientModel::factory()
 	            ->join("pjAuthUser", "t2.id = t1.foreign_id")
 	            ->select("t1.*, t2.phone")
@@ -478,8 +470,18 @@ class pjAdminOrders extends pjAdmin
                     }
 	            	
 	            } else {
+	            	$c_data['c_title'] = $this->_post->toString('c_title');
+		            $c_data['c_name'] = $this->_post->toString('c_name');
+		            $c_data['surname'] = $this->_post->toString('surname');
 	            	$c_data['c_email'] = $this->_post->toString('sms_email');
 	            	$c_data['c_type'] = "New";
+	            	$c_data['c_address_1'] = $this->_post->toString('d_address_1');
+		            $c_data['c_address_2'] = $this->_post->toString('d_address_2');
+		            $c_data['c_city'] = $this->_post->toString('d_city');
+		            $c_data['post_code'] = rtrim($this->_post->toString('post_code')); 
+		            $c_data['password'] = $c_data['c_name'].$data['uuid'];
+		            $c_data['status'] = 'T';
+		            $c_data['locale_id'] = $this->getLocaleId();
 
 
 	            	
@@ -2247,6 +2249,15 @@ class pjAdminOrders extends pjAdmin
             self::jsonResponse(array('status' => 'OK', 'code' => 200, 'text' => 'Delay message has been sent.'));
         }
         exit;
+    }
+
+    function getDateFormatted($date) {
+    	
+    	$dt = explode(" ",$date);
+        $dtArr = explode("-", $dt[0]);
+    	$dt = $dtArr[2]."-".$dtArr[1]."-".$dtArr[0]." ".$dt[1];
+    	
+    	return $dt;
     }
 
 	// !MEGAMIND

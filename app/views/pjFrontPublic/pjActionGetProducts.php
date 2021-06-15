@@ -20,13 +20,17 @@ if(isset($tpl['arr']) && !empty($tpl['arr']))
 				<div class="panel-heading pjFdProductHead" id="headingInner<?php echo $category_id?><?php echo $product['id']?>">
 					<h2 class="panel-title">
 						<a data-toggle="collapse" data-parent="#accordionInner<?php echo $category_id;?>" href="#collapseInner<?php echo $category_id;?><?php echo $product['id']?>" aria-expanded="<?php echo $product['is_featured'] == '1' ? 'true' : 'false';?>" aria-controls="collapseInner<?php echo $category_id;?><?php echo $product['id']?>">
-							<div class="row">
-								<div class="col-md-7 col-sm-9 col-xs-8 text-capitalize pjFdProductName"><?php echo pjSanitize::clean($product['name']);?>
-									<i class="fa fa-arrow-down"></i>
-									<i class="fa fa-arrow-up"></i>
+							<div class="row prdRow">
+								<div class="col-md-10 col-sm-10 col-xs-10 text-capitalize pjFdProductName"><?php echo pjSanitize::clean($product['name']);?>
+								    
+									
 								</div><!-- /.col-md-10 col-sm-10 col-xs-10 -->
+								<div class="col-md-2 col-sm-2 col-xs-2 upDown">
+							    	<i class="fa fa-chevron-down" style="margin-left: 7px;"></i>
+								    <i class="fa fa-chevron-up" style="margin-left: 7px;"></i>
+							    </div>
 
-								<div class="col-md-3 col-sm-3 col-xs-4 text-right pjFdProductPrice">
+								<div class="col-md-10 col-sm-10 col-xs-10 text-right pjFdProductPrice" style="margin-top: 25px;">
 								<?php
 								if($product['set_different_sizes'] == 'F' || count($product['price_arr']) == 0)
 								{
@@ -34,7 +38,7 @@ if(isset($tpl['arr']) && !empty($tpl['arr']))
 								} 
 								?>
 								</div>
-								<div class="col-md-2 col-sm-3 col-xs-4 text-right">
+								<div class="col-md-2 col-sm-2 col-xs-2" style="margin-top: 20px;">
 									<!-- <i class="fa fa-plus pjFdBtnOrder fdProductOrder" data-id="<?php //echo $product['id'];?>"></i> -->
 									<button class="pjFdBtnOrder fdProductOrder" role="button" data-id="<?php echo $product['id'];?>"><i class="fa fa-plus"></i></button>
 								</div>

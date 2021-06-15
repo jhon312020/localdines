@@ -2,7 +2,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 (function ($, undefined) {
   $(function () {
     "use strict";
-   
+
     var validator,
       
       //MEGAMIND
@@ -1069,127 +1069,124 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
               confirmButtonText: "OK",
               closeOnConfirm: false,
               
-            }, function () {
+            },function () {
                 $("#status").val('pending');
                 $("#pjFdPriceWrapper").find(".panel-heading").addClass("bg-pending");
                 $("#pjFdPriceWrapper").find(".status-text").html("Pending");
                 swal.close();
             
             });
-          }
-
-
-          else if(!($("#is_paid").prop("checked")) && $("input[name='order_despatched']").val() == 0) {
+          } else if (!($("#is_paid").prop("checked")) && $("input[name='order_despatched']").val() == 0) {
          
-          swal({
-            title: "Delivered Customer?",
-            text: "Before Delivery, is the order despatched and the payment made?",
-            showCancelButton: true,
-            confirmButtonText: "Yes",
-            cancelButtonText: "No",
-            closeOnConfirm: false,
-            showLoaderOnConfirm: true
-          }, function (data) {
-            if (data) {
-              
-              swal.close();
-              $("input[name='order_despatched']").val(1);
-              $("input[name='sms_sent_time']").val($time);
-
-              $("#is_paid").prop("checked", true);
-                    
-              if ($("input[name='delivered_customer']").val() == 0) {
+            swal({
+              title: "Delivered Customer?",
+              text: "Before Delivery, is the order despatched and the payment made?",
+              showCancelButton: true,
+              confirmButtonText: "Yes",
+              cancelButtonText: "No",
+              closeOnConfirm: false,
+              showLoaderOnConfirm: true
+            }, function (data) {
+              if (data) {
                 
-                $("input[name='delivered_customer']").val(1);
-                $("input[name='delivered_time']").val($time);
-            
+                swal.close();
+                $("input[name='order_despatched']").val(1);
+                $("input[name='sms_sent_time']").val($time);
+
+                $("#is_paid").prop("checked", true);
+                      
+                if ($("input[name='delivered_customer']").val() == 0) {
+                  
+                  $("input[name='delivered_customer']").val(1);
+                  $("input[name='delivered_time']").val($time);
+              
+                }
+              } else {
+
+                $("#status").val('pending');
+                $("#pjFdPriceWrapper").find(".panel-heading").addClass("bg-pending");
+                $("#pjFdPriceWrapper").find(".status-text").html("Pending");
               }
-            } else {
-
-              $("#status").val('pending');
-              $("#pjFdPriceWrapper").find(".panel-heading").addClass("bg-pending");
-              $("#pjFdPriceWrapper").find(".status-text").html("Pending");
-            }
-            
-          })
-        }else if(!($("#is_paid").prop("checked"))) {
-          swal({
-            title: "Is Paid?",
-            text: "Is payment made for the Order?",
-            showCancelButton: true,
-            confirmButtonText: "Yes",
-            cancelButtonText: "No",
-            closeOnConfirm: false,
-            showLoaderOnConfirm: true
-          }, function (data) {
-            if (data) {
               
-              swal.close();
-              
-              $("input[name='order_despatched']").val(1);
-              $("input[name='sms_sent_time']").val($time);
-              $("#is_paid").prop("checked", true);
-                    
-            } else {
-
-              $("#status").val('pending');
-              $("#pjFdPriceWrapper").find(".panel-heading").addClass("bg-pending");
-              $("#pjFdPriceWrapper").find(".status-text").html("Pending");
-            }
-            
-          })
-        } else if ($("input[name='order_despatched']").val() == 0) {
-          swal({
-            title: "Is order despatched?",
-            text: "Is this order despatched?",
-            showCancelButton: true,
-            confirmButtonText: "Yes",
-            cancelButtonText: "No",
-            closeOnConfirm: false,
-            showLoaderOnConfirm: true
-          }, function (data) {
-            if (data) {
-            
-              swal.close();
-              $("input[name='order_despatched']").val(1);
-              $("input[name='sms_sent_time']").val($time);
-                    
-            
-              if ($("input[name='delivered_customer']").val() == 0) {
-                 
-                $("input[name='delivered_customer']").val(1);
-                $("input[name='delivered_time']").val($time);
-                        
+            })
+          } else if(!($("#is_paid").prop("checked"))) {
+            swal({
+              title: "Is Paid?",
+              text: "Is payment made for the Order?",
+              showCancelButton: true,
+              confirmButtonText: "Yes",
+              cancelButtonText: "No",
+              closeOnConfirm: false,
+              showLoaderOnConfirm: true
+            }, function (data) {
+              if (data) {
                 
-              }
-            } else {
+                swal.close();
+                
+                $("input[name='order_despatched']").val(1);
+                $("input[name='sms_sent_time']").val($time);
+                $("#is_paid").prop("checked", true);
+                      
+              } else {
 
-              $("#status").val('pending');
-              $("#pjFdPriceWrapper").find(".panel-heading").addClass("bg-pending");
-              $("#pjFdPriceWrapper").find(".status-text").html("Pending");
-            }
-            
-          })
-        } 
-      }
+                $("#status").val('pending');
+                $("#pjFdPriceWrapper").find(".panel-heading").addClass("bg-pending");
+                $("#pjFdPriceWrapper").find(".status-text").html("Pending");
+              }
+              
+            })
+          } else if ($("input[name='order_despatched']").val() == 0) {
+            swal({
+              title: "Is order despatched?",
+              text: "Is this order despatched?",
+              showCancelButton: true,
+              confirmButtonText: "Yes",
+              cancelButtonText: "No",
+              closeOnConfirm: false,
+              showLoaderOnConfirm: true
+            }, function (data) {
+              if (data) {
+              
+                swal.close();
+                $("input[name='order_despatched']").val(1);
+                $("input[name='sms_sent_time']").val($time);
+                      
+              
+                if ($("input[name='delivered_customer']").val() == 0) {
+                   
+                  $("input[name='delivered_customer']").val(1);
+                  $("input[name='delivered_time']").val($time);
+                          
+                  
+                }
+              } else {
+
+                $("#status").val('pending');
+                $("#pjFdPriceWrapper").find(".panel-heading").addClass("bg-pending");
+                $("#pjFdPriceWrapper").find(".status-text").html("Pending");
+              }
+              
+            })
+          } 
+        }
       })
       .on("change", "#chef", function() {
         var $chef_id = $(this).val()
         $.ajax({
-        type: "POST",
-        async: false,
-        url: "index.php?controller=pjAdminOrders&action=pjActionSetSession",
-        data: { 
-          chef_id: function () {
-            return $chef_id;
+          type: "POST",
+          async: false,
+          url: "index.php?controller=pjAdminOrders&action=pjActionSetSession",
+          data: { 
+            chef_id: function () {
+              return $chef_id;
+            },
           },
-        },
-        success: function (data) {
-          
-          return;
-         
-        },
-      });
+          success: function (data) {
+            
+            return;
+           
+          },
+        });
       })
       .on("click", "#btnAddProduct", function (e) {
         if (e && e.preventDefault) {
@@ -1319,21 +1316,21 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
         //   e.preventDefault();
         // }
         //console.log($("#fdOrderList tr:last").attr("data-index"));
-        var lastRowIndex = $("#fdOrderList tr:last").attr("data-index"),
-        $product = $("#fdProduct_" + lastRowIndex).val(),
-        $price = $("#fdPrice_" + lastRowIndex).val();
-        if($product != "" || $price != ""){
-          var index = Math.ceil(Math.random() * 999999),
-          $clone = $("#boxProductClone").find("tbody").html();
-          $clone = $clone.replace(/\{INDEX\}/g, "new_" + index);
-          $("#fdOrderList").find("tbody.main-body").append($clone);
-          bindTouchSpin();
-          $("#fdOrderList").show();
-          // console.log('Index:',index);
-          $('#fdProduct_new_'+index).addClass('selectpicker').selectpicker('refresh');
-        }
-        
-      });
+          var lastRowIndex = $("#fdOrderList tr:last").attr("data-index"),
+          $product = $("#fdProduct_" + lastRowIndex).val(),
+          $price = $("#fdPrice_" + lastRowIndex).val();
+          if($product != "" || $price != ""){
+            var index = Math.ceil(Math.random() * 999999),
+            $clone = $("#boxProductClone").find("tbody").html();
+            $clone = $clone.replace(/\{INDEX\}/g, "new_" + index);
+            $("#fdOrderList").find("tbody.main-body").append($clone);
+            bindTouchSpin();
+            $("#fdOrderList").show();
+            // console.log('Index:',index);
+            $('#fdProduct_new_'+index).addClass('selectpicker').selectpicker('refresh');
+          }
+          
+        });
          //return false;
       })
       .on("click", "#fdOrderList .pj-remove-product", function (e) {
@@ -1589,24 +1586,24 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           msgArea.attr("placeholder","Type the reason...")
         } else {
           $.ajax({
-          type: "POST",
-          async: false,
-          url: "index.php?controller=pjAdminOrders&action=pjActionGetDelayMessage",
-          data: { 
-            value: function() {
-              return val;
-            }
-          },
-          success: function (msg) {
-            if (msg.code == 200) {
-              msgArea.val(msg.text);
-            }
-            else {
-              alert("Something is wrong");
-            }
-          },
+            type: "POST",
+            async: false,
+            url: "index.php?controller=pjAdminOrders&action=pjActionGetDelayMessage",
+            data: { 
+              value: function() {
+                return val;
+              }
+            },
+            success: function (msg) {
+              if (msg.code == 200) {
+                msgArea.val(msg.text);
+              }
+              else {
+                alert("Something is wrong");
+              }
+            },
         
-        });
+          });
         }
         
       })
@@ -1627,8 +1624,8 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           $(".order-pickup").find(".fdRequired").removeClass("required");
           $("#delivery_fee_frmgrp").css("display","block");
           
-            $c_phone = $('#phone_no').val();
-            if ($c_phone) {
+          $c_phone = $('#phone_no').val();
+          if ($c_phone) {
             $cinfo = $.ajax({
               type: "POST",
               async: false,
@@ -1638,7 +1635,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
                   return $c_phone;
                 }
               },
-          });
+            });
             if ($cinfo.responseJSON) {
               var c_arr = $cinfo.responseJSON[0];
               $("#inputPostCode").val(c_arr.c_postcode);
@@ -1651,7 +1648,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
             //console.log("comes jas");
             var mins = parseInt($("#d_time").val());
             deliveryTime(mins);
-           }
+          }
         } else {
           $(".order-delivery").hide();
           $(".order-delivery").find(".fdRequired").removeClass("required");
@@ -1670,7 +1667,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           if ($("#p_time").val() && !($("#pickup_time").val())) {
             var mins = parseInt($("#p_time").val());
             pickupTime(mins);
-           }
+          }
         }
       })
       .on("change", ".onoffswitch-client .onoffswitch-checkbox", function (e) {
@@ -1691,7 +1688,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
         var $pjFdPriceWrapper = $("#pjFdPriceWrapper");
         var value = $("#status option:selected").val();
         var text = $("#status option:selected").text();
-        if(value == 'delivered'){value = 'success'}
+        if (value == 'delivered') {value = 'success'}
         var bg_class = "bg-" + value;
         $pjFdPriceWrapper
           .find(".panel-heading")
@@ -2029,54 +2026,57 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
     }
     function getAddresses($this) { 
       //console.log($this);
+      //import { lookupAddress } from "@ideal-postcodes/core-browser";
       Client = IdealPostcodes.Client;
 
-        client = new Client({ api_key: "iddqd" });
+      client = new Client({ api_key: "iddqd" });
+      //ak_kpxurptcicariQqz2QFMrpjaXEMhi
 
-        postcode = $this.val();
-        //console.log(client.lookupPostcode());
-        if (postcode) {
-          var addressList = $(
-            '<select id="selAddress" name="selectAddress" class="form-control"/>'
-          );
-          $("<option />", { value: 0, text: "--Choose--"}).appendTo(addressList);
-          client.lookupPostcode({ postcode }).then(function (result) {
-            postalResult = result;
-            if (result.length > 0) {
-              var i = 1;
-              if ($("#post_code").hasClass("has-error")) {
-                $("#post_code").removeClass("has-error");
-                $("#postCodeErr").css("display","none");
-              }
-              $.each(result, function (index) {
-                var address =
-                  result[index].line_1 +
-                  ", " +
-                  result[index].line_2 +
-                  ", " +
-                  result[index].line_3;
-                
-                $("<option />", { value: i, text: address }).appendTo(
-                  addressList
-                );
-                i = i + 1;
-              });
-              $("#addressList").html(addressList);
-             }  
-            if(result.length == 0) {
-              $("#post_code").addClass("has-error");
-              $("#postCodeErr").css("display","block");
+      postcode = $this.val();
+      // console.log(client);
+      if (postcode) {
+        var addressList = $(
+          '<select id="selAddress" name="selectAddress" class="form-control"/>'
+        );
+        $("<option />", { value: 0, text: "--Choose--"}).appendTo(addressList);
+       
+        client.lookupPostcode({ postcode }).then(function (result) {
+          postalResult = result;
+          if (result.length > 0) {
+            var i = 1;
+            if ($("#post_code").hasClass("has-error")) {
+              $("#post_code").removeClass("has-error");
+              $("#postCodeErr").css("display","none");
             }
-            if (result.length == 1) {
-              $("#selAddress").click(function(){
-              var index = $(this).val();
-              $("#d_address_1").val(result[index-1].line_1);
-              $("#d_address_2").val(result[index-1].line_2);
-              $("#d_city").val(result[index-1].post_town);
-            })
-           }
-          });
-        }
+            $.each(result, function (index) {
+              var address =
+                result[index].line_1 +
+                ", " +
+                result[index].line_2 +
+                ", " +
+                result[index].line_3;
+              
+              $("<option />", { value: i, text: address }).appendTo(
+                addressList
+              );
+              i = i + 1;
+            });
+            $("#addressList").html(addressList);
+           }  
+          if (result.length == 0) {
+            $("#post_code").addClass("has-error");
+            $("#postCodeErr").css("display","block");
+          }
+          if (result.length == 1) {
+            $("#selAddress").click(function(){
+            var index = $(this).val();
+            $("#d_address_1").val(result[index-1].line_1);
+            $("#d_address_2").val(result[index-1].line_2);
+            $("#d_city").val(result[index-1].post_town);
+          })
+         }
+        });
+      }
 
     }
     function getClientInfo($this) {
@@ -2125,106 +2125,106 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
     }
     function makePager(page){
         
-            var show_per_page = 10;
-            var number_of_items = $('#paginate tbody tr').length;
-            var number_of_pages = Math.ceil(number_of_items / show_per_page);
-            var number_of_pages_todisplay = 5;
-            var navigation_html = '';
-            var current_page = page;
-            var current_link = (number_of_pages_todisplay >= current_page ? 1 : number_of_pages_todisplay + 1);
-            $("#nop").val(number_of_pages);
-            if (current_page > 1)
-                current_link = current_page;
-            if (current_link != 1) {
-              navigation_html += "<a class='nextbutton previous' >« Prev&nbsp;</a>&nbsp;";
-            } else {
-              navigation_html += "<a class='nextbutton previousDisabled' >« Prev&nbsp;</a>&nbsp;";
-            }
-            
-            if (current_link == number_of_pages - 1) current_link = current_link - 3;
-            else if (current_link == number_of_pages) current_link = current_link - 4;
-            else if (current_link > 2) current_link = current_link - 2;
-            else current_link = 1;
-            var pages = number_of_pages_todisplay;
-            while (pages != 0) {
-                if (number_of_pages < current_link) { break; }
-                if (current_link >= 1)
-                    navigation_html += "<a class='" + ((current_link == current_page) ? "currentPageButton" : "numericButton") + " showpage'>" + (current_link) + "</a>&nbsp;";
-                //console.log(current_link);
-                current_link++;
-                pages--;
-            }
-            if (number_of_pages > current_page){
-                navigation_html += "<a class='nextbutton next' >Next »</a>&nbsp;";
-            } else {
-                navigation_html += "<a class='nextbutton nextDisabled' >Next »</a>&nbsp;";
-            }
-            if (number_of_pages == 1) {
-              $('#page_navigation').html("");
-            } else {
-              $('#page_navigation').html(navigation_html);
-            }
+      var show_per_page = 10;
+      var number_of_items = $('#paginate tbody tr').length;
+      var number_of_pages = Math.ceil(number_of_items / show_per_page);
+      var number_of_pages_todisplay = 5;
+      var navigation_html = '';
+      var current_page = page;
+      var current_link = (number_of_pages_todisplay >= current_page ? 1 : number_of_pages_todisplay + 1);
+      $("#nop").val(number_of_pages);
+      if (current_page > 1)
+          current_link = current_page;
+      if (current_link != 1) {
+        navigation_html += "<a class='nextbutton previous' >« Prev&nbsp;</a>&nbsp;";
+      } else {
+        navigation_html += "<a class='nextbutton previousDisabled' >« Prev&nbsp;</a>&nbsp;";
+      }
+      
+      if (current_link == number_of_pages - 1) current_link = current_link - 3;
+      else if (current_link == number_of_pages) current_link = current_link - 4;
+      else if (current_link > 2) current_link = current_link - 2;
+      else current_link = 1;
+      var pages = number_of_pages_todisplay;
+      while (pages != 0) {
+          if (number_of_pages < current_link) { break; }
+          if (current_link >= 1)
+              navigation_html += "<a class='" + ((current_link == current_page) ? "currentPageButton" : "numericButton") + " showpage'>" + (current_link) + "</a>&nbsp;";
+          //console.log(current_link);
+          current_link++;
+          pages--;
+      }
+      if (number_of_pages > current_page){
+          navigation_html += "<a class='nextbutton next' >Next »</a>&nbsp;";
+      } else {
+          navigation_html += "<a class='nextbutton nextDisabled' >Next »</a>&nbsp;";
+      }
+      if (number_of_pages == 1) {
+        $('#page_navigation').html("");
+      } else {
+        $('#page_navigation').html(navigation_html);
+      }
                     
-      }
-      function showPage(page) {
+    }
+    function showPage(page) {
       var pageSize = 10;
-            $("#paginate tbody tr").hide();
-            $('#current_page').val(page);
-            $("#paginate tbody tr").each(function (n) {
-                if (n >= pageSize * (page - 1) && n < pageSize * page)
-                    $(this).show();
-            });
-        makePager(page);
-       }
-        //showPage(1);
-       function next() {
-            var new_page = parseInt($('#current_page').val()) + 1;
-            showPage(new_page);
-        }
-        function last(number_of_pages) {
-            var new_page = number_of_pages;
-            $('#current_page').val(new_page);
-            showPage(new_page);
-        }
-        function first() {
-            var new_page = "1";
-            $('#current_page').val(new_page);
-            showPage(new_page);    
+      $("#paginate tbody tr").hide();
+      $('#current_page').val(page);
+      $("#paginate tbody tr").each(function (n) {
+        if (n >= pageSize * (page - 1) && n < pageSize * page)
+          $(this).show();
+      });
+      makePager(page);
+    }
+      //showPage(1);
+    function next() {
+      var new_page = parseInt($('#current_page').val()) + 1;
+      showPage(new_page);
+    }
+    function last(number_of_pages) {
+      var new_page = number_of_pages;
+      $('#current_page').val(new_page);
+      showPage(new_page);
+    }
+    function first() {
+      var new_page = "1";
+      $('#current_page').val(new_page);
+      showPage(new_page);    
+    }
+    function previous() {
+      var new_page = parseInt($('#current_page').val()) - 1;
+      $('#current_page').val(new_page);
+      showPage(new_page);
+    }
+    function timeNow() {
+      var d = new Date();
+      var yr = d.getFullYear();
+      var month = d.getMonth() + 1;
+      var date = d.getDate();
+      var hr = d.getHours();
+      var min = d.getMinutes();
+      var sec = d.getSeconds();
+      //console.log(date<10);
+      if (month < 10) {
+        month = "0" + month;
+      } 
+      if(hr < 10) {
+        hr = "0" + hr;
+      } 
+      if(min < 10) {
+        min = "0" + min;
+      } 
+      if(sec < 10) {
+        sec = "0" + sec;
+      } 
+      if (date<10) {
+        date = "0" + date;
       }
-        function previous() {
-            var new_page = parseInt($('#current_page').val()) - 1;
-            $('#current_page').val(new_page);
-            showPage(new_page);
-      }
-      function timeNow() {
-        var d = new Date();
-        var yr = d.getFullYear();
-        var month = d.getMonth() + 1;
-        var date = d.getDate();
-        var hr = d.getHours();
-        var min = d.getMinutes();
-        var sec = d.getSeconds();
-        //console.log(date<10);
-        if (month < 10) {
-          month = "0" + month;
-        } 
-        if(hr < 10) {
-          hr = "0" + hr;
-        } 
-        if(min < 10) {
-          min = "0" + min;
-        } 
-        if(sec < 10) {
-          sec = "0" + sec;
-        } 
-        if (date<10) {
-          date = "0" + date;
-        }
-        return yr + "-" + month + "-" + date + " " + hr + ":" + min + ":" + sec;
-      }
-      function dateFormat($date) {
-        var dateArr = $date.split(".");
-        return dateArr[2]+"-"+dateArr[1]+"-"+dateArr[0];
-      }
+      return yr + "-" + month + "-" + date + " " + hr + ":" + min + ":" + sec;
+    }
+    function dateFormat($date) {
+      var dateArr = $date.split(".");
+      return dateArr[2]+"-"+dateArr[1]+"-"+dateArr[0];
+    }
   });
 })(jQuery_1_8_2);

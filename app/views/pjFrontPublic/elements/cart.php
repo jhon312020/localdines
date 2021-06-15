@@ -270,7 +270,7 @@
 					<br />
 					
 					<div class="text-center">
-						<a href="#" class="btn btn-default btn-block text-uppercase fdButtonCheckout" data-logged="<?php echo $controller->isFrontLogged() ? 'yes' : 'no';?>"><?php __('front_button_checkout');?></a>
+						<a href="#" id="btn-checkout" class="btn btn-default btn-block text-uppercase fdButtonCheckout" data-logged="<?php echo $controller->isFrontLogged() ? 'yes' : 'no';?>"><?php __('front_button_checkout');?></a>
 					</div><!-- /.text-center -->
 					<?php
 					break;

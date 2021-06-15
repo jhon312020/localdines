@@ -1007,6 +1007,7 @@
 						 };
 			pjQ.$.get([this.opts.folder, "index.php?controller=pjFrontPublic&action=pjActionMain", "&session_id=", self.opts.session_id].join(""), params).done(function (data) {
 				self.$container.html(data);
+				pjQ.$("#fdMyOrderPrice").text(" "+(pjQ.$('#totalCartPrice').text()));
 				pjQ.$('.fdLoader').css('display', 'none');
 				pjQ.$('.pjFdBtnHome').parent().addClass('active');
 				self.bindMain();
@@ -1089,6 +1090,7 @@
 		
 			pjQ.$.get([self.opts.folder, "index.php?controller=pjFrontPublic&action=pjActionTypes", "&session_id=", self.opts.session_id].join(""), params).done(function (data) {
 				self.$container.html(data);
+				pjQ.$('.pjFdBtnCart').css('display', 'none');
 				if(pjQ.$('#fdTypeForm_' + self.opts.index).length > 0)
 				{
 					self.cart = 'plain';
@@ -1174,6 +1176,7 @@
 					self.$container.html(data);
 					pjQ.$('.pjFdBtnAcc').parent().addClass('active');
 					pjQ.$('.fdLoader').css('display', 'none');
+					pjQ.$('.pjFdBtnCart').css('display', 'none');
 					pjQ.$('html, body').animate({
 				        scrollTop: self.$container.offset().top
 				    }, 500);
@@ -1199,6 +1202,7 @@
 				}else{
 					self.$container.html(data);
 					pjQ.$('.pjFdBtnAcc').parent().addClass('active');
+					pjQ.$('.pjFdBtnCart').css('display', 'none');
 					pjQ.$('.fdLoader').css('display', 'none');
 					self.bindProfile.call(self);
 				}
@@ -1283,6 +1287,7 @@
 						 };
 			pjQ.$.get([this.opts.folder, "index.php?controller=pjFrontPublic&action=pjActionVouchers&session_id=", self.opts.session_id].join(""), params).done(function (data) {
 				self.$container.html(data);
+				pjQ.$('.pjFdBtnCart').css('display', 'none');
 				pjQ.$('.fdLoader').css('display', 'none');
 			}).fail(function () {
 				
@@ -1298,6 +1303,7 @@
 						 };
 			pjQ.$.get([this.opts.folder, "index.php?controller=pjFrontPublic&action=pjActionCheckout&session_id=", self.opts.session_id].join(""), params).done(function (data) {
 				self.$container.html(data);
+				pjQ.$('.pjFdBtnCart').css('display', 'none');
 				self.bindCheckout.call(self);
 				if (pjQ.$('.input-group.date').length) {
 					pjQ.$('.input-group.date').datepicker({
@@ -1330,6 +1336,7 @@
 					}
 				}else{
 					self.$container.html(data);
+					pjQ.$('.pjFdBtnCart').css('display', 'none');
 					pjQ.$('.fdLoader').css('display', 'none');
 				}
 			}).fail(function () {

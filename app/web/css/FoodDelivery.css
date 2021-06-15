@@ -1,4 +1,4 @@
-/* ==========================================================================
+ ==========================================================================
 	#General
 ========================================================================== */
 #pjWrapper .pjFdVerticalTop { vertical-align: top; }
@@ -48,10 +48,10 @@
 #pjWrapper .pjFdAccourdionOuterHead > .panel-title > [aria-expanded="true"] .fa-minus { display: inline-block; }
 #pjWrapper .pjFdAccourdionOuterHead > .panel-title > [aria-expanded="false"] .fa-minus { display: none; }
 
-#pjWrapper .pjFdProductHead > .panel-title > [aria-expanded="true"] .fa-arrow-down { display: none; }
-#pjWrapper .pjFdProductHead > .panel-title > [aria-expanded="false"] .fa-arrow-down { display: inline-block; }
-#pjWrapper .pjFdProductHead > .panel-title > [aria-expanded="true"] .fa-arrow-up { display: inline-block; }
-#pjWrapper .pjFdProductHead > .panel-title > [aria-expanded="false"] .fa-arrow-up { display: none; }
+#pjWrapper .pjFdProductHead > .panel-title > [aria-expanded="true"] .fa-chevron-down { display: none; }
+#pjWrapper .pjFdProductHead > .panel-title > [aria-expanded="false"] .fa-chevron-down { display: inline-block; }
+#pjWrapper .pjFdProductHead > .panel-title > [aria-expanded="true"] .fa-chevron-up { display: inline-block; }
+#pjWrapper .pjFdProductHead > .panel-title > [aria-expanded="false"] .fa-chevron-up { display: none; }
 
 #pjWrapper .pjFdPanelLeft .panel-group .panel-heading { padding: 0; }
 #pjWrapper .pjFdPanelLeft .panel-group .panel-heading a { display: block; padding: 15px 20px; }
@@ -210,6 +210,9 @@ nav {
 	footer {
 		display: none !important;
 	}
+	#btn-checkout {
+		margin-bottom: 30px;
+	}
 	/*[id^=fdCart_] {
         display: none !important;
     }*/
@@ -266,6 +269,7 @@ h1{
 	height: 90vh;
 	padding: 5px;
 	margin-bottom: 20px;
+	border-radius: 5px;
 }
 li .text-list:hover {
 	color: #e85d4b !important;
@@ -310,6 +314,15 @@ li .text-list:hover {
     border-radius: 3px;
     margin-top: -5px;
 }
+.prdRow {
+	margin-top: 0px !important;
+}
+/*.upDown {
+	display: inline-block;
+	margin-left: 95%;
+}*/
+.pjFdBtnOrder {
+	margin-top: 0px !important;
+}
 
-
-/** !MEGAMIND **/
+/** !MEGAMIND *
