@@ -2,7 +2,6 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 (function ($, undefined) {
   $(function () {
     "use strict";
-
     var validator,
       
       //MEGAMIND
@@ -2025,22 +2024,19 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
       });
     }
     function getAddresses($this) { 
-      //console.log($this);
-      //import { lookupAddress } from "@ideal-postcodes/core-browser";
-      Client = IdealPostcodes.Client;
-
-      client = new Client({ api_key: "iddqd" });
-      //ak_kpxurptcicariQqz2QFMrpjaXEMhi
-
+      var Client = IdealPostcodes.Client;
+      var lookupPostcode = IdealPostcodes.lookupPostcode;
+      var client = new Client({ api_key: "iddqd" });
       postcode = $this.val();
-      // console.log(client);
+      //console.log(client.lookupPostcode());
       if (postcode) {
         var addressList = $(
           '<select id="selAddress" name="selectAddress" class="form-control"/>'
         );
         $("<option />", { value: 0, text: "--Choose--"}).appendTo(addressList);
        
-        client.lookupPostcode({ postcode }).then(function (result) {
+        lookupPostcode({ postcode, client }).then(function (result) {
+          console.log(result);
           postalResult = result;
           if (result.length > 0) {
             var i = 1;
@@ -2068,11 +2064,19 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
             $("#postCodeErr").css("display","block");
           }
           if (result.length == 1) {
-            $("#selAddress").click(function(){
+            $("#selAddress").change(function(){
             var index = $(this).val();
-            $("#d_address_1").val(result[index-1].line_1);
-            $("#d_address_2").val(result[index-1].line_2);
-            $("#d_city").val(result[index-1].post_town);
+            index = index - 1;
+            console.log('Index', index);
+            if (index >= 0) {
+              $("#d_address_1").val(result[index].line_1);
+              $("#d_address_2").val(result[index].line_2);
+              $("#d_city").val(result[index].post_town);
+            } else {
+              $("#d_address_1").val('');
+              $("#d_address_2").val('');
+              $("#d_city").val('');
+            }
           })
          }
         });
