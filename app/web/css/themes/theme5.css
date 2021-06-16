@@ -4,7 +4,7 @@
 #pjWrapper .pjFdBtnLink { color: #76a73e; }
 #pjWrapper .pjFdBtnLink:hover { color: #76a73e; }
 
-#pjWrapper .btn-default { border: 0; border-bottom: 2px solid #76a73e; background: #9acf5b; color: #fff; }
+#pjWrapper .btn-default { border: 0; border-bottom: 2px solid #41b3a3; background: #7ec5b7; color: #fff; }/*border-bottom: 2px solid #76a73e;background: #9acf5b*/
 #pjWrapper .btn-default:hover { border-color: #76a73e; background: #76a73e; color: #fff; }
 
 #pjWrapper .pjFdBtnHome,
@@ -94,3 +94,27 @@
 	#pjFdPanelRight
 ========================================================================== */
 #pjWrapper .pjFdPanelRight .alert { background: #fff; }
+
+footer,
+.left-box{
+	background-color: #f8f8f8; 
+}
+.pjFdContainer {
+	background-color: #7ec5b7;
+}
+.text-nav a{
+	color: #7ec5b7 !important;
+}
+li.active a:hover {
+	color: #7ec5b7 !important;
+}
+.text-list {
+	color: #7ec5b7 !important;
+}
+li .text-list:hover {
+	color: #7ec5b7 !important;
+} 
+li.active a {
+	color: #000 !important;
+	
+}

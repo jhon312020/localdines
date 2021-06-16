@@ -122,3 +122,35 @@
 #pjWrapper .pjFdProductPrice { color: #e73e1d; font-weight: bold; }
 #pjWrapper .pjFdAccourdionOuterHead > .panel-title > [aria-expanded="true"] { color: #35393a; }
 #pjWrapper .pjFdAccourdionOuterHead > .panel-title > [aria-expanded="false"] { color: #6b7479; }
+
+nav,
+footer{
+	background-color: #3d3938 !important;
+}
+
+.text-nav a{
+	color: rgb(243,76,42) !important;
+}
+li.active a:hover {
+	color: rgb(243,76,42) !important;
+}
+.pjFdContainer {
+	background-color: rgb(232 92 77);
+}
+.left-box {
+	background-color: #3d3938;
+	color: #fff;
+}
+.text-list {
+	color: rgb(243,76,42) !important;
+}
+i .text-list:hover {
+	color: rgb(243,76,42) !important;
+} 
+.footer-title {
+	color: #fff !important;
+}
+li.active a {
+	color: #fff !important;
+	background-color: #f8f8f8 !important;
+}

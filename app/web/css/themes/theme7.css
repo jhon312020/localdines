@@ -90,3 +90,30 @@
 	#pjFdGroupVaucher
 ========================================================================== */
 #pjWrapper .pjFdGroupVaucher .btn { border-width: 1px; }
+
+nav,
+footer {
+	background-color: #7d8381 !important;
+}
+.pjFdContainer {
+	background-color: #8ee4af;
+}
+.left-box {
+	background-color: #fff;
+}
+.text-nav a{
+	color: #8ee4af !important;
+}
+li.active a:hover {
+	color: #8ee4af !important;
+}
+.text-list {
+	color: #8ee4af !important;
+}
+li .text-list:hover {
+	color: #8ee4af !important;
+} 
+li.active a {
+	color: #fff !important;
+	
+}

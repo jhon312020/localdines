@@ -139,13 +139,13 @@
 /* ==========================================================================
 	Navbar
 ========================================================================== */
-nav {
+nav,
+footer {
 	background-color: #312f30 !important;
 	color: white;
 }
-footer {
-    background-color: #312f30;
-	color: white;
+.pjFdContainer {
+	background-color: #f1f2ed;
 }
 .left-box {
 	background-color: #312f30;
@@ -155,3 +155,16 @@ li.active a {
 	color: #fff !important;
 	background-color: #f8f8f8 !important;
 }
+.text-nav a{
+	color: #595758 !important;
+}
+.text-nav a:hover {
+	color: #fff !important;
+}
+
+.text-list {
+	color: #595758 !important;
+}
+li .text-list:hover {
+	color: #fff !important;
+} 

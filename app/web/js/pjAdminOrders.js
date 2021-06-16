@@ -1789,6 +1789,11 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
             $("#d_city").val(postalResult[index-1].post_town);
 
           }
+        } else {
+            $("#d_address_1").val("");
+            $("#d_address_2").val("");
+            $("#d_city").val("");
+
         }
         //})
 
@@ -2036,7 +2041,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
         $("<option />", { value: 0, text: "--Choose--"}).appendTo(addressList);
        
         lookupPostcode({ postcode, client }).then(function (result) {
-          console.log(result);
+          //console.log(result);
           postalResult = result;
           if (result.length > 0) {
             var i = 1;
@@ -2067,7 +2072,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
             $("#selAddress").change(function(){
             var index = $(this).val();
             index = index - 1;
-            console.log('Index', index);
+            //console.log('Index', index);
             if (index >= 0) {
               $("#d_address_1").val(result[index].line_1);
               $("#d_address_2").val(result[index].line_2);

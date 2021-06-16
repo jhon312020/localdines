@@ -6,6 +6,8 @@
 
 #pjWrapper .pjFdBtnHome,
 #pjWrapper .pjFdBtnAcc,
+#pjWrapper .pjFdBtnReservation,
+#pjWrapper .pjFdBtnLink,
 #pjWrapper .pjFdBtnNav { border-color: transparent; background-color: transparent; text-transform: uppercase; }
 #pjWrapper .pjFdBtnTotal,
 #pjWrapper .panel-title > .pjFdBtnTotal { border-color: #f65a1f; background: #f65a1f; color: #f2f1ed; font-weight: bold; }
@@ -147,3 +149,34 @@
 	#pjFdGroupVaucher
 ========================================================================== */
 #pjWrapper .pjFdGroupVaucher .btn { border-width: 1px; }
+
+nav,
+footer{
+	background-color: #1a1004 !important;
+}
+.pjFdContainer {
+	background-color: #fcd34a30;
+}
+.left-box{
+	background-color: #3c270a;
+	color: #fff;
+}
+.text-nav a{
+	color: #ffd25b !important;
+}
+li.active a:hover {
+	color: #ffd25b !important;
+}
+.text-list {
+	color: #ffd25b !important;
+}
+li .text-list:hover {
+	color: #ffd25b !important;
+} 
+li.active a {
+	color: #fff !important;
+	
+}
+.footer-title {
+	color: #fff !important;
+}

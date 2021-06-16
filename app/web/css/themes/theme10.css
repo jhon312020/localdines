@@ -107,3 +107,32 @@
 ========================================================================== */
 #pjWrapper .pjFdAlert { border-color: #d2201e; background: #ea3634; color: #fff; }
 #pjWrapper .pjFdAlert .close { text-shadow: none; }
+
+
+footer,
+.left-box {
+	background-color: #f8f8f8;
+}
+.pjFdContainer {
+	background-color: #373c42;
+}
+
+.text-nav a{
+	color: #083063 !important;
+}
+li.active a:hover {
+	color: #083063 !important;
+}
+.text-list {
+	color: #083063 !important;
+}
+li .text-list:hover {
+	color: #083063 !important;
+} 
+li.active a {
+	color: #000 !important;
+	
+}
+.footer-title {
+	color: #000 !important;
+}

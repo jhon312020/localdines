@@ -91,3 +91,34 @@
 	#pjFdAlert
 ========================================================================== */
 #pjWrapper .pjFdAlert { border-color: #18b4c0; background: #1bc2cf; color: #fff; }
+
+nav,
+footer {
+	background-color: #f8f8f8 !important;
+}
+.pjFdContainer {
+	background-color: #592409;
+}
+.left-box {
+	background-color: #f8f8f8;
+    color: #18b4c1;
+}
+.text-nav a{
+	color: #18b4c1 !important;
+}
+li.active a:hover {
+	color: #18b4c1 !important;
+}
+.text-list {
+	color: #18b4c1 !important;
+}
+li .text-list:hover {
+	color: #18b4c1 !important;
+} 
+li.active a {
+	color: #592409 !important;
+	
+}
+.footer-title {
+   color: #592409 !important;
+}

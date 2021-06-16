@@ -7,8 +7,7 @@
 #pjWrapper .btn-default { border-color: #bf5521; background: #d66e3b; color: #fff; }
 #pjWrapper .btn-default:hover { border-color: #bf5521; background: #bf5521; color: #fff; }
 
-#pjWrapper .pjFdBtnHome,
-#pjWrapper .pjFdBtnAcc,
+
 #pjWrapper .pjFdBtnTotal,
 #pjWrapper .pjFdBtnNav { border: 0; background: #fff; -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, .1); box-shadow: 0 1px 3px rgba(0, 0, 0, .1); }
 #pjWrapper .pjFdBtnHome:hover,
@@ -99,3 +98,31 @@
 	#alert
 ========================================================================== */
 #pjWrapper .pjFdPanelRight .alert { border-top: 0; }
+
+nav,
+footer{
+	background-color: #f9f8f3 !important;
+}
+.pjFdContainer {
+	background-color: #e37e4cd6;
+}
+.left-box {
+	background-color: #f9f8f3;
+	color: #d66e3b;
+}
+.text-nav a{
+	color: #d66e3b !important;
+}
+li.active a:hover {
+	color: #d66e3b !important;
+}
+.text-list {
+	color: #d66e3b !important;
+}
+li .text-list:hover {
+	color: #d66e3b !important;
+} 
+li.active a {
+	color: #000 !important;
+	
+}
