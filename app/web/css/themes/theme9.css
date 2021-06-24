@@ -180,3 +180,12 @@ li.active a {
 .footer-title {
 	color: #fff !important;
 }
+.pjFdBtnOrder {
+    background-color: #f65a1f;
+    color: #fff !important;
+}
+.text-list.pjFdBtnHome,
+.text-list.pjFdBtnLink {
+	color: #ffd25b !important;
+	text-transform: none !important; 
+}

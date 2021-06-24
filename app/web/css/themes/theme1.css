@@ -120,7 +120,9 @@ li.active a:hover {
 .left-box {
 	background-color: #f7f7f7;
 }
-.text-list {
+.text-list,
+.text-list.pjFdBtnHome,
+.text-list.pjFdBtnLink {
 	color: #2f87d1 !important;
 }
 i .text-list:hover {
@@ -129,4 +131,8 @@ i .text-list:hover {
 li.active a {
 	color: #000 !important;
 	background-color: #f8f8f8 !important;
+}
+.pjFdBtnOrder {
+    background-color: #2f87d1;
+    color: #fff !important;
 }

@@ -136,3 +136,11 @@ li.active a {
 .footer-title {
 	color: #000 !important;
 }
+.pjFdBtnOrder {
+    background-color: rgb(25,70,127);
+    color: #fff !important;
+}
+.text-list.pjFdBtnHome,
+.text-list.pjFdBtnLink {
+	color: #083063 !important;
+}

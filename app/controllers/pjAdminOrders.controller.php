@@ -50,7 +50,7 @@ class pjAdminOrders extends pjAdmin
             $client_info = pjClientModel::factory()
                           ->join('pjOrder', "t2.client_id = t1.id")
                           ->join('pjAuthUser', "t3.id = t1.foreign_id")
-                          ->select('t1.*, t2.mobile_delivery_info,t2.mobile_offer,t2.email_delivery_info,t2.email_offer,t2.email_receipt, t3.name,t3.u_surname,t3.email')
+                          ->select('t1.*, t2.mobile_delivery_info,t2.mobile_offer,t2.email_offer,t2.email_receipt, t3.name,t3.u_surname,t3.email')
                           ->where('t3.phone',$this->_post->toString('value')) 
 
                           ->limit(1)
@@ -427,12 +427,11 @@ class pjAdminOrders extends pjAdmin
 			$data['chef_id'] = $this->session->getData('chef');
 			//$data['mobile_delivery_info'] = $this->_post->toBool('mobile_delivery_info');
 			//$data['mobile_offer'] = $this->_post->toBool('mobile_offer');
-			//$data['email_delivery_info'] = $this->_post->toBool('email_delivery_info');
+			
 			//$data['email_receipt'] = $this->_post->toBool('email_receipt');
 			//$data['email_offer'] = $this->_post->toBool('email_offer');
 			//$data['preparation_time'] = $this->_post->toInt('preparation_time');
-			// print_r($data);
-			// exit;
+			
 
 	            $c_data = array();
 	            
@@ -557,7 +556,7 @@ class pjAdminOrders extends pjAdmin
 	        {
 	            $data['cc_exp'] = $this->_post->toString('cc_exp_month') . "/" . $this->_post->toString('cc_exp_year');
 			}
-			// print_r($data);
+			// print_r($post);
 			// exit;
 			
 	        $id = pjOrderModel::factory(array_merge($post, $data, $post_total))->insert()->getInsertId();
@@ -678,7 +677,7 @@ class pjAdminOrders extends pjAdmin
 
             $client_info = pjOrderModel::factory()
             ->join('pjClient', "t2.id = t1.client_id")
-            ->select('t1.id, t1.surname,t1.phone_no, t1.sms_email, t1.post_code, t1.d_address_1, t1.d_address_2, t1.d_city, t1.first_name, t1.client_id, t1.kprint, t2.c_title, t1.type, t1.is_paid, t1.order_despatched, t1.mobile_delivery_info, t1.mobile_offer, t1.email_delivery_info, t1.email_offer, t1.email_receipt, t1.created, t1.preparation_time')
+            ->select('t1.id, t1.surname,t1.phone_no, t1.sms_email, t1.post_code, t1.d_address_1, t1.d_address_2, t1.d_city, t1.first_name, t1.client_id, t1.kprint, t2.c_title, t1.type, t1.is_paid, t1.order_despatched, t1.mobile_delivery_info, t1.mobile_offer, t1.email_offer, t1.email_receipt, t1.created, t1.preparation_time')
             ->findAll()
             ->getData();
             $this->set('client_info', $client_info);
@@ -765,20 +764,13 @@ class pjAdminOrders extends pjAdmin
 	        
 	        $new_client_id = NULL;
 	        $c_data['phone'] = $this->_post->toInt('phone_no');
-	        // $isExist = $pjOrderModel
-	        //            ->select('t1.*')
-	        //            ->where('phone_no', $c_data['phone'])
-	        //            ->findAll()
-	        //            ->getData();
 	        $client_exist = pjClientModel::factory()
 	            ->join("pjAuthUser", "t2.id = t1.foreign_id", "left")
 	            ->select("t1.*, t2.phone")
 	            ->where("t2.phone",$c_data['phone'])
 	            ->findAll()
 	            ->getData();
-	        // echo "<pre>";print_r($client_exist);
-	        // exit;           
-	        //if(!$isExist)
+	        
 	        if(!$client_exist)
 	        {   
 	            $c_data = array();
@@ -857,9 +849,6 @@ class pjAdminOrders extends pjAdmin
 	                    ->insert()
 	                    ->getInsertId();
                         
-	                    // print_r($post);
-	                    // exit;
-	                    
 	                    if ($oid !== false && (int) $oid > 0)
 	                    {
 	                        if (isset($post['extra_id']) && isset($post['extra_id'][$k]))
@@ -1047,7 +1036,7 @@ class pjAdminOrders extends pjAdmin
 
 			$client_info = pjOrderModel::factory()
             ->join('pjClient', "t2.id = t1.client_id")
-            ->select('t1.id, t1.phone_no, t1.surname, t1.sms_email, t1.post_code, t1.d_address_1, t1.d_address_2, t1.d_city, t1.first_name, t1.client_id, t1.kprint, t2.c_title, t1.type, t1.is_paid, t1.order_despatched, t1.mobile_delivery_info, t1.mobile_offer, t1.email_delivery_info, t1.email_offer, t1.email_receipt, t1.created, t1.preparation_time')
+            ->select('t1.id, t1.phone_no, t1.surname, t1.sms_email, t1.post_code, t1.d_address_1, t1.d_address_2, t1.d_city, t1.first_name, t1.client_id, t1.kprint, t2.c_title, t1.type, t1.is_paid, t1.order_despatched, t1.mobile_delivery_info, t1.mobile_offer, t1.email_offer, t1.email_receipt, t1.created, t1.preparation_time')
             ->findAll()
             ->getData();
             $this->set('client_info', $client_info);

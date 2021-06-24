@@ -147,3 +147,7 @@ li.active a {
 hr {
 	border-top: 1px solid #b5b8b6 !important;
 }
+.text-list.pjFdBtnHome,
+.text-list.pjFdBtnLink {
+	color: #3ca76cd6 !important;
+}

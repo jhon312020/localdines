@@ -303,7 +303,7 @@ l
     border: none;
     padding: 7px 10px !important;
     border-radius: 3px;
-    margin-top: -5px;
+    margin-top: 0px !important;
 }
 .prdRow {
 	margin-top: 0px !important;
@@ -312,9 +312,7 @@ l
 	display: inline-block;
 	margin-left: 95%;
 }*/
-.pjFdBtnOrder {
-	margin-top: 0px !important;
-}
+
 
 
 /** !MEGAMIND *

@@ -118,3 +118,10 @@ li.active a {
 	color: #000 !important;
 	
 }
+.pjFdBtnOrder {
+    background-color: gray;
+}
+.text-list.pjFdBtnHome,
+.text-list.pjFdBtnLink {
+	color: #7ec5b7 !important;
+}

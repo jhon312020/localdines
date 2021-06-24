@@ -65,7 +65,7 @@ class pjOrderModel extends pjAppModel
 	    array('name' => 'chef_id', 'type' => 'int', 'default' => ':NULL'),
 	    array('name' => 'mobile_delivery_info', 'type' => 'tinyint', 'default' => 0),
 	    array('name' => 'mobile_offer', 'type' => 'tinyint', 'default' => 0),
-	    array('name' => 'email_delivery_info', 'type' => 'tinyint', 'default' => 0),
+	    
 	    array('name' => 'email_receipt', 'type' => 'tinyint', 'default' => 0),
 	    array('name' => 'email_offer', 'type' => 'tinyint', 'default' => 0),
 	    array('name' => 'd_time', 'type' => 'int', 'default' => 0),

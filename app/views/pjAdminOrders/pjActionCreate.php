@@ -1,17 +1,5 @@
 <div class="row wrapper border-bottom white-bg page-heading">
-     <?php //print_r("<pre>");print_r($tpl['extras']); ?>  
-   <!--  <?php //print_r($tpl['arr']['i18n']); ?>  -->
-    <?php //echo "<pre>";print_r($tpl['product_arr']); ?>
-    <!-- <?php 
-    //$date = date('')
-    // $dates[0] = date('Y-m-d');
-    //     //print_r($date);
-    //     $i = 6;
-    //     $dates[1] = date('Y-m-d',strtotime("-$i days"));
-    //     $yr = explode("-",$dates[0])[0];
-    //     print_r($yr);
-   //exit; ?> -->
-   <!-- <?php //print_r($tpl['kprint_arr']); ?> -->
+     
     <div class="col-sm-12">
         <div class="row">
             <div class="col-sm-10">
@@ -56,8 +44,6 @@ unset($statuses['delivered']);
                                 }
                                 ?>
 
-                           <!--  <option value="1">one</option>
-                            <option value="2">two</option> -->
                     </select>
                 </div>
                 
@@ -74,12 +60,12 @@ unset($statuses['delivered']);
 			<input type="hidden" id="total" name="total" value="" />
 			<input type="hidden" id="call_start" name="call_start" value="<?php echo date('h:i:s A'); ?>" />
 			
-			<!-- <div id="dateTimePickerOptions" style="display:none;" data-wstart="<?php //echo (int) $tpl['option_arr']['o_week_start']; ?>" data-dateformat="<?php ///echo pjUtil::toMomemtJS($tpl['option_arr']['o_date_format']); ?>" data-format="<?php //echo pjUtil::toMomemtJS($tpl['option_arr']['o_date_format']); ?> <?php //echo $time_format;?>" data-months="<?php //echo implode("_", $months);?>" data-days="<?php //echo implode("_", $short_days);?>"></div> -->
+            <!-- MEGAMIND -->
+
             <div id="datePickerOptions" style="display:none;" data-wstart="<?php echo (int) $tpl['option_arr']['o_week_start']; ?>" data-format="<?php echo pjUtil::toBootstrapDate($tpl['option_arr']['o_date_format']); ?>" data-months="<?php echo implode("_", $months);?>" data-days="<?php echo implode("_", $short_days);?>"></div>
             <div class="tabs-container tabs-reservations m-b-lg">
                 <ul class="nav nav-tabs" role="tablist">
                     <li role="presentation" class="active"><a href="#order-details" aria-controls="order-details" role="tab" data-toggle="tab"><?php __('menuOrders'); ?></a></li>
-                    <!-- <li role="presentation"><a href="#client-details" aria-controls="client-details" role="tab" data-toggle="tab"><?php //__('menuClients'); ?></a></li> -->
                 </ul>
     
                 <div class="tab-content">
@@ -106,8 +92,7 @@ unset($statuses['delivered']);
                                                 if($order['kprint'] == 1) {
 
                                                     $dateOnly = explode(" ",$order['created']);
-                                                    // print_r("<pre>");print_r($dateOnly);print_r("</pre>");
-                                                    // print_r(date( 'Y-m-d' ));
+                                                    
                                                     if ($dateOnly[0] == date( 'Y-m-d' )) {
                                                         $printedOrders[] = $order['id'];
                                                     }
@@ -120,9 +105,7 @@ unset($statuses['delivered']);
 
 
                                             foreach ($printedOrders as $pOrder) {
-                                                // $i = 0;
-                                                // $i = $i+1;
-
+                                                
                                                 foreach ($tpl['client_info'] as $orders => $order) {
                                                     if ($pOrder == $order['id'] && $order['order_despatched'] == 1) {
                                                         unset($printedOrders[array_search($pOrder,$printedOrders)]);
@@ -142,10 +125,6 @@ unset($statuses['delivered']);
                             </div><!-- /.row -->
     
                             <div class="hr-line-dashed"></div>
-    
-                            <!-- <div class="m-b-md">
-                                <a href="#" class="btn btn-primary btn-outline m-t-xs" id="btnAddProduct"><i class="fa fa-plus"></i> <?php //__('btnAddProduct');?></a>
-                            </div> -->
     
                             <div class="form-group ibox-content">
                             	<div class="sk-spinner sk-spinner-double-bounce"><div class="sk-double-bounce1"></div><div class="sk-double-bounce2"></div></div>
@@ -216,15 +195,6 @@ unset($statuses['delivered']);
 
                                                 <!-- MEGAMIND -->
 
-                                               <!--  <td id="fdPriceTD_<?php //echo $index;?>">
-                									<div class="business-<?php //echo $index;?>" style="display: none;">
-                										<select id="fdPrice_<?php //echo $index;?>" name="price_id[<?php //echo $index;?>]" data-type="select" class="fdSize form-control">
-                											<option value="">-- <?php 
-
-                                                            //__('lblChoose'); ?>--</option>
-                										</select>
-                									</div>
-                								</td> -->
                                                 <td id="fdPriceTD_<?php echo $index;?>">
                                                     <div class="business-<?php echo $index;?>" style="display: none;">
                                                         <select id="fdPrice_<?php echo $index;?>" name="price_id[<?php echo $index;?>]" data-type="select" class="fdSize form-control">
@@ -385,7 +355,7 @@ unset($statuses['delivered']);
                                         <div class="col-md-6 col-sm-6">
                                              <label class="control-label"><?php echo 'Address';// __('lblZip'); ?></label>
                                             <div class='form-group' id='addressList'> 
-                                                <!-- <input type="hidden" name="address"> -->
+                                               
                                             </div>
                                             
                                         </div>
@@ -447,8 +417,7 @@ unset($statuses['delivered']);
     							    	<?php echo $ob_fields;?>
     							    </div><!-- /.row -->
     							    <?php
-    							    // ob_start();
-    							    // $field = 3;
+    							    
                                 }
                                 ?> 
                             </div>

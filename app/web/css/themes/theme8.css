@@ -168,3 +168,13 @@ li.active a {
 li .text-list:hover {
 	color: #fff !important;
 } 
+.pjFdBtnOrder {
+    background-color: #0f0d0e;
+    color: #fff !important;
+}
+.text-list.pjFdBtnHome,
+.text-list.pjFdBtnLink {
+	color: #595758 !important;
+	text-transform: none !important; 
+	font-weight: normal !important;
+}

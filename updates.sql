@@ -14,3 +14,6 @@ INSERT INTO `food_delivery_plugin_auth_users_permissions` (`id`, `user_id`, `per
 
 INSERT INTO `food_delivery_plugin_auth_permissions` (`id`, `parent_id`, `inherit_id`, `key`, `is_shown`) VALUES (NULL, '48', NULL, 'pjAdminClients_pjActionCheckPhoneNumber', 'T')
 INSERT INTO `food_delivery_plugin_auth_users_permissions` (`id`, `user_id`, `permission_id`) VALUES (NULL, '2', '130')
+
+kNG0JeIvYPTQuoESrRvMeo1THevMMaEyoLoxqwiFB2Wwga
+old = NTY1NGVmYWI4N2Y2ODA2YzllYzQwOTFhZWVjOWNlMGQ=
