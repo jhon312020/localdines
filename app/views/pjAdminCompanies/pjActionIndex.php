@@ -46,9 +46,11 @@
     pjGrid.queryString = "";
 var myLabel = myLabel || {};
 myLabel.date = "Date";
-myLabel.company_name = "Name";
+myLabel.company_name = "Company Name";
 myLabel.contact_name = "Contact Name";
+myLabel.contact_number = "Contact Number";
 myLabel.address = "Address";
+myLabel.postal_code = "Postal Code";
 myLabel.delete_selected = <?php x__encode('delete_selected'); ?>;
 myLabel.delete_confirmation = <?php x__encode('delete_confirmation'); ?>;
 myLabel.localeId = "<?php echo $controller->getLocaleId(); ?>";

@@ -14,7 +14,9 @@ class pjCompanyModel extends pjAppModel {
 		array('name' => 'name', 'type' => 'varchar', 'default' => ':NULL'),
 		array('name' => 'address', 'type' => 'text', 'default' => ':NULL'),
 		array('name' => 'contact_person', 'type' => 'varchar', 'default' => ':NULL'),
-		array('name' => 'is_active', 'type' => 'boolean', 'default' => ':NULL')
+    array('name' => 'is_active', 'type' => 'boolean', 'default' => ':NULL'),
+    array('name' => 'postal_code', 'type' => 'varchar', 'default' => ':NULL'),
+		array('name' => 'contact_number', 'type' => 'varchar', 'default' => ':NULL')
 	);
 	
 	public static function factory($attr=array()) {

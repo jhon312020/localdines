@@ -91,6 +91,9 @@ class pjAdminCompanies extends pjAdmin {
         $data['name'] = $post['name'];
         $data['contact_person'] = $post['contact_person'];
         $data['address'] = $post['address'];
+        $data['contact_number'] = $post['contact_number'];
+        $data['postal_code'] = $post['postal_code'];
+        $data['is_active'] = 1;
         //$data['created_date'] = date("Y-m-d H:i:s");
         //$data['updated_date'] = date("Y-m-d H:i:s");
         $err = 'AP09';
@@ -115,7 +118,7 @@ class pjAdminCompanies extends pjAdmin {
       $this->appendJs('jquery.tipsy.js', PJ_THIRD_PARTY_PATH . 'tipsy/');
       $this->appendCss('jquery.tipsy.css', PJ_THIRD_PARTY_PATH . 'tipsy/');
       $this->appendJs('jquery.datagrid.js', PJ_FRAMEWORK_LIBS_PATH . 'pj/js/');
-      $this->appendJs('pjAdminCompanies.js');
+      $this->appendJs('pjAdminCompany.js');
     }
   }
 
@@ -162,6 +165,8 @@ class pjAdminCompanies extends pjAdmin {
         $data['name'] = $post['name'];
         $data['contact_person'] = $post['contact_person'];
         $data['address'] = $post['address'];
+        $data['contact_number'] = $post['contact_number'];
+        $data['postal_code'] = $post['postal_code'];
         //$data['updated_date'] = date("Y-m-d H:i:s");
         $err = 'AP09';
         $pjCompanyModel->reset()->where('id', $id)->limit(1)->modifyAll($data);

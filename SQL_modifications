@@ -1,0 +1,9 @@
+food_delivery_companies
+-----------------------
+
+Date (15/02/23) -> 
+
+    ALTER TABLE food_delivery_companies 
+    ADD COLUMN postal_code VARCHAR(10) NULL,
+    ADD COLUMN contact_number VARCHAR(15) NULL;
+
