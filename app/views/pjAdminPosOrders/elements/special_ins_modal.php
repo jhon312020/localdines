@@ -3,7 +3,7 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header text-center">
-        <h2 class="modal-title" style="display: inline-block;">Choose Special Instructions</h2>
+        <h2 class="modal-title" id="spl_ins_type_title" style="display: inline-block;">Choose Special Instructions</h2>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>

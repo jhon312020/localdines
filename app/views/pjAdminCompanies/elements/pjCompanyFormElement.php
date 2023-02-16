@@ -24,7 +24,7 @@
 
     <div class="form-group">
       <label class="control-label">Postal Code</label>
-      <input type="text" name="postal_code" id="postal_code" value="<?php echo array_key_exists('arr', $tpl) && $tpl['arr']['postal_code'] ? $tpl['arr']['postal_code'] : '' ?>" class="form-control required number" data-msg-required="This field is required." />
+      <input type="text" name="postal_code" id="postal_code" value="<?php echo array_key_exists('arr', $tpl) && $tpl['arr']['postal_code'] ? $tpl['arr']['postal_code'] : '' ?>" class="form-control required" data-msg-required="This field is required." />
     </div><!-- /.form-group -->
 
   </div>

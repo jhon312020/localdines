@@ -444,6 +444,20 @@ td .btn-secondary:hover {
     border-radius: 12px;
     cursor: pointer;
 }
+
+.table-bg-primary {
+  background-color: #0a5114;
+}
+
+.table-bg-primary a, .table-bg-primary .index  {
+  color: #ffffff;
+}
+
+
+.table-bg-default {
+  background-color: #ffffff;
+}
+
 #sizeModal {
     position: fixed;
     top: 50%;

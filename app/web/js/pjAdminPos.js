@@ -3218,13 +3218,15 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
         })
         .on("click", '#fdOrderList_1 .main-body .fdLine .spcl_ins',function (e) { 
           var index_id = $(this).attr("data-index");
+          var product_name = $(this).attr("data-pdname");
           var product_qty = parseInt($("#fdProductQty_" + index_id).val(), 10);
+          $("#spl_ins_type_title").html(product_name+" X"+ product_qty);
           var special_instructions = $(this).siblings(".special-instruction").val();
           //var custom_special_instructions = $(this).siblings(".custom-special-instruction").val();
           var special_instructions_imgs = $("#fdSpecialInstructionImgs_"+index_id).children("input").attr("data-imgs");
           var product_qty = parseInt($("#fdProductQty_" + index_id).val(), 10);
           $.get(
-            "index.php?controller=pjAdminPosOrders&action=pjActionGetSpecialInstructionTypes&selected_ins="+special_instructions+ "&qty=" + product_qty,
+            "index.php?controller=pjAdminPosOrders&action=pjActionGetSpecialInstructionTypes&selected_ins="+special_instructions+ "&qty=" + product_qty+ "&pdname=" + product_name,
           ).done(function (data) {
             $("#specialInstructionsModal").modal();
             $("#specialInstructionsModal .modal-body").html(data);
@@ -3336,6 +3338,21 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
 
           $("#arr_"+qty_id).val(selected_inst_arry);
           $("#arr_"+qty_id).attr("data-images", selected_inst_imgs);
+
+          var imgs_arr = selected_inst_imgs.split(",");
+          var loadimgParent = $("#imgs_"+qty_id).empty();
+
+          for (var i = 0; i < imgs_arr.length; i++) {
+            if (imgs_arr[i] != "") {
+              var img = new Image();
+              img.src = imgs_arr[i];
+              img.width = 20;
+              img.height = 20;
+              loadimgParent.append(img);
+            }
+            
+          }
+          console.log(loadimgParent);
 
           var current_si = {
             "qid": qty_id,
@@ -3505,8 +3522,8 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
 
       $(document).on('click', '.page-link', function(e) {
         e.preventDefault();
-        $('#spl_pagination_container').children().removeClass('btn-primary').addClass('btn-default');
-        $(this).removeClass('btn-default').addClass('btn-primary');
+        $('#spl_pagination_container').children().removeClass('table-bg-primary').addClass('table-bg-default');
+        $(this).removeClass('table-bg-default').addClass('table-bg-primary');
         var page = $(this).data('page');
         $("#pos_si_qty").children().addClass('d-none');
         $("#"+page).removeClass('d-none');

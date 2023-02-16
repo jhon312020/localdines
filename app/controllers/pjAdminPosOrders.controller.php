@@ -30,6 +30,7 @@ class pjAdminPosOrders extends pjAdmin {
 
   public function pjActionCreateEatin() {
     $this->checkLogin();
+    $this->setLayout('pjActionOrder');
     if (!pjAuth::factory()->hasAccess()) {
       $this->sendForbidden();
       return;
