@@ -157,6 +157,7 @@ class pjAdminPosOrders extends pjAdmin {
 
   public function pjActionCreateTelephone() {
     $this->checkLogin();
+    $this->setLayout('pjActionOrder');
     if (!pjAuth::factory()->hasAccess()) {
       $this->sendForbidden();
       return;
@@ -167,6 +168,7 @@ class pjAdminPosOrders extends pjAdmin {
 
   public function pjActionCreate() {
     $this->checkLogin();
+    $this->setLayout('pjActionOrder');
     if (!pjAuth::factory()->hasAccess()) {
       $this->sendForbidden();
       return;
@@ -386,6 +388,7 @@ class pjAdminPosOrders extends pjAdmin {
 
   public function pjActionUpdate() {
     $this->checkLogin();
+    $this->setLayout('pjActionOrder');
     if (!pjAuth::factory()->hasAccess()) {
       $this->sendForbidden();
       return;

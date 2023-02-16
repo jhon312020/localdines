@@ -19,16 +19,16 @@
   <!-- <?php //print_r($tpl['data']); ?> -->
   <div class="col-sm-12" style="margin-bottom: 20px;">
     <div class="row">
-      <div class="col-sm-6 col-lg-4"style="margin-top: 20px;">
+      <div class="col-sm-1 col-lg-1"style="margin-top: 20px;">
         <a style="margin-left: 16px;" href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdmin&amp;action=pjActionIndex" class="btn btn-default"><i class="fa fa-home" aria-hidden="true"></i></a>
-        <a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminPosOrders&amp;action=pjActionCreate" class="btn btn-primary pos-list-button"><i class="fa fa-plus"> </i> TAKE AWAY</a>
-         <a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminPosOrders&amp;action=pjActionCreateEatin" class="btn btn-primary"><i class="fa fa-plus"> </i> EAT IN </a>
-         <a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminPosOrders&amp;action=pjActionCreateTelephone" class="btn btn-primary pos-list-button" style='margin-right: 5%;'><i class="fa fa-plus"> </i> TEL </a>
+         
       </div>
-      <div class="col-sm-6 col-lg-8">
-        <h2 id="orderIndexTitle" style="margin-left: 15%; margin-bottom: 0px; font-size:30px"><strong><?php __('infoOrdersListTitle');?></strong></h2>
+      <div class="col-sm-5 col-lg-7">
+        <h2 id="orderIndexTitle" style="margin-left: 48%; text-align:center; margin-bottom: 0px; font-size:30px"><strong><?php __('infoOrdersListTitle');?></strong></h2>
       </div>
-      <!-- <div class="col-sm-1 col-lg-1"></div> -->
+      <div class="col-sm-6 col-lg-4" style="margin-top: 20px; text-align: right;"><a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminPosOrders&amp;action=pjActionCreateEatin" class="btn btn-primary"><i class="fa fa-plus"> </i> EAT IN </a>
+         <a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminPosOrders&amp;action=pjActionCreateTelephone" class="btn btn-primary pos-list-button"><i class="fa fa-plus"> </i> TEL </a>
+         <a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminPosOrders&amp;action=pjActionCreate" class="btn btn-primary pos-list-button"><i class="fa fa-plus"> </i> TAKE AWAY</a></div>
     </div><!-- /.row -->
         <!-- <p class="m-b-none"><i class="fa fa-info-circle"></i> <?php //__('infoOrdersListDesc');?> </p> -->
   </div><!-- /.col-md-12 -->
