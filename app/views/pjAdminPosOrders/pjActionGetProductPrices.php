@@ -8,7 +8,7 @@ $index = "new_" . mt_rand(0, 999999);
         <input type="hidden" id="fdProduct_<?php echo $index; ?>" name="product_id[<?php echo $index; ?>]" value="<?php echo $tpl['product_arr'][0]['id']; ?>">
         <?php echo $tpl['product_arr'][0]['name']; ?>
         <i class="fa fa-info-circle product_desc" aria-hidden="true"></i>
-        <div id="fdSpecialInstructionImgs_<?php echo $index;?>" class="special_instruction_imgs">
+        <div id="fdSpecialInstructionImgs_<?php echo $index;?>" data-name="<?php echo $tpl['product_arr'][0]['name']; ?>" class="special_instruction_imgs">
             <input type="hidden" data-imgs="" >
         </div>  
         <!-- <i data-index = "<?php //echo $index; ?>" class="fa fa-align-right product_spcl_ins" aria-hidden="true"></i> -->

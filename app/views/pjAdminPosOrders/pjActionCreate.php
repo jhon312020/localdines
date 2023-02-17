@@ -156,6 +156,7 @@
   include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/price_modal.php'; 
   include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/special_ins_modal.php';
   include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/special_ins_view_model.php';
+  include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/extra_model.php';
   include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/client_phone_modal.php';
 
   include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/payment_modal.php'; 

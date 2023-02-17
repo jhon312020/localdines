@@ -7,6 +7,12 @@
     color: #FFFFFF;
 }
 
+.td-img-class {
+  height: 40px;
+  width: 40px;
+  padding: 3px;
+}
+
 .rect {
     cursor: pointer;
     display: block;

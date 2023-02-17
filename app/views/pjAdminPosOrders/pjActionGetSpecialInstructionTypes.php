@@ -39,7 +39,7 @@
         <td>
           <textarea id="custom_special_qty_<?php echo $i; ?>" data-id="qty_<?php echo $i; ?>" placeholder="Type Here..."  class="js-kioskboard-input form-control custom_inst"  data-kioskboard-specialcharacters="true"><?php echo $arr ? $grouped_sel_ins_arr[$current_qty_id]['cus_ins'] : ""; ?></textarea>
         </td>
-        <td class="spl_reset"><a ><i class="fa fa-repeat" aria-hidden="true"></i> reset</a></td>
+        <td class="spl_reset" data-id="qty_<?php echo $i; ?>" data-ins="custom_special_qty_<?php echo $i; ?>" data-clear="imgs_qty_<?php echo $i; ?>"><a ><i class="fa fa-repeat" aria-hidden="true"></i> reset</a></td>
       </tr>
     <?php } ?>
   </tbody>
@@ -73,9 +73,8 @@
                 ?>
               <img src="<?php echo $spcl_ins_child['image'] ?>" 
                 alt="" data-qty_id="qty_<?php echo $i; ?>" 
-                class="img-fluid img_<?php echo $spcl_ins_child['id']; ?> 
-                <?php
-                 echo in_array($spcl_ins_child['id'], $selected_ins_arr) ? 'spcl_ins_selected': '' ?>" 
+                class="img_class_qty_<?php echo $i; ?> img-fluid img_<?php echo $spcl_ins_child['id']; ?> 
+                <?php echo in_array($spcl_ins_child['id'], $selected_ins_arr) ? 'spcl_ins_selected': '' ?>" 
                 data-id="<?php echo $spcl_ins_child['id']; ?>"><br>
               <?php }
           } ?></td>

@@ -1077,7 +1077,7 @@ class pjAdminPosOrders extends pjAdmin {
     if ($this->isXHR()) {
       // print_r($this->_get);
       // echo $this->_get->toInt('product_id');
-      if ($product_id = $this->_get->toInt('product_id')) {
+      if ($product_id = $this->_get->toInt('product_id') && $index = $this->_get->toString('index')) {
         $extra_arr = pjExtraModel::factory()->join('pjMultiLang', "t2.foreign_id = t1.id AND t2.model = 'pjExtra' AND t2.locale = '" . $this->getLocaleId() . "' AND t2.field = 'name'", 'left')
           ->select("t1.*, t2.content AS name")
           ->where("t1.id IN (SELECT TPE.extra_id FROM `" . pjProductExtraModel::factory()
@@ -1085,6 +1085,7 @@ class pjAdminPosOrders extends pjAdmin {
           ->findAll()
           ->getData();
         $this->set('extra_arr', $extra_arr);
+        $this->set('index', $index);
       }
     }
   }

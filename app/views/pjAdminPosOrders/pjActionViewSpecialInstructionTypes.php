@@ -4,7 +4,7 @@
 // echo "</pre>";
 // echo count($tpl["selected_ins_arr"]);
 ?>
-<table class="table">
+<table class="table table-bordered">
   <thead>
     <tr>
       <th scope="col">S.No</th>
@@ -15,13 +15,13 @@
   <tbody>
   	<?php for($i = 0, $counter = 1; $i < count($tpl["selected_ins_arr"]); $i++, $counter++) {  ?>
   		<tr>
-	      <th scope="row"><?php echo $counter ?></th>
+	      <td scope="row"><?php echo $counter ?></td>
 	      <td>
 	      	<?php if ( $tpl["selected_ins_arr"][$i]['imgs'] != "") {
 					// $img_src = explode(',', $tpl["selected_ins_arr"][$i]['imgs']);
 					foreach(explode(',', $tpl["selected_ins_arr"][$i]['imgs']) as $imgs) { 
 						if ($imgs != "") {
-							?><img src="<?php echo $imgs ?>" alt=""><?php
+							?><img src="<?php echo $imgs ?>" class="td-img-class" alt=""><?php
 						}
 					}
 				} ?>

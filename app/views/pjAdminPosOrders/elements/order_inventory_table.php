@@ -35,7 +35,7 @@
           <input type="hidden" data-index="<?php echo $oi['hash']; ?>" data-extra="<?php echo $product['cnt_extras']; ?>" id="fdProduct_<?php echo $oi['hash']; ?>" name="product_id[<?php echo $oi['hash']; ?>]" value="<?php echo $product['id']; ?>">
           <?php echo stripslashes($product['name']); ?>
           <i class="fa fa-info-circle" aria-hidden="true"></i>
-          <div id="fdSpecialInstructionImgs_<?php echo $oi['hash']; ?>" class="special_instruction_imgs">
+          <div id="fdSpecialInstructionImgs_<?php echo $oi['hash']; ?>" data-name="<?php echo stripslashes($product['name']); ?>" class="special_instruction_imgs">
             <i data-index ="<?php echo $oi['hash']; ?>" class='fa fa-paperclip product_spcl_ins'></i>
           </div>
           <?php } ?>

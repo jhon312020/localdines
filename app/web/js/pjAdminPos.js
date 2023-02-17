@@ -2126,7 +2126,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           }
           return false;
         })
-        .on("click", ".pj-add-extra", function (e) {
+        .on("click", ".add_more_extras", function (e) {
           if (e && e.preventDefault) {
             e.preventDefault();
           }
@@ -2150,6 +2150,31 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
               });
             });
           }
+          return false;
+        })
+        .on("click", ".pj-add-extra", function (e) {
+          if (e && e.preventDefault) {
+            e.preventDefault();
+          }
+          var $this = $(this);
+          var index = $this.attr("data-index");
+          var table = $("#fdExtraTable_"+index).html();
+          var tableID = "fdExtraTable_show_"+index;
+          $("#extraModal").modal();
+          $("#extraModal .modal-body .add_more_extras").attr("data-index", index);
+          $("#extraModal .copy-extra-table").attr("data-index", index);
+          $("#extraModal .modal-body table").html(table);
+          $("#extraModal .modal-body table").attr("id", tableID);
+          return false;
+        })
+        .on("click", ".copy-extra-table", function (e) {
+          if (e && e.preventDefault) {
+            e.preventDefault();
+          }
+          var $this = $(this);
+          var index = $this.attr("data-index");
+          var table = $("#fdExtraTable_show_"+index).html();
+          var hiddenTable = $("#fdExtraTable_"+index).html(table);
           return false;
         })
         .on("click", ".pj-remove-extra", function (e) {
@@ -3239,6 +3264,9 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
         })
         .on("click", '.product_spcl_ins',function (e) {
           var index = $(this).attr("data-index");
+          var product_qty = parseInt($("#fdProductQty_" + index).val(), 10);
+          var product_name = $("#fdSpecialInstructionImgs_"+index).attr("data-name");
+          $("#spl_ins_view_title").html(product_name+" X"+ product_qty);
           var custom_ins = $("tr[data-index='"+index+"'] #fdCustomSpecialInstruction_"+index).val(); 
           $.get(
             "index.php?controller=pjAdminPosOrders&action=pjActionViewSpecialInstructionTypes&selected_ins="+custom_ins,
@@ -3290,6 +3318,25 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
         //   //doubleClick.call(this, e);
           
         // })
+        .on("click", '.spl_reset', function (e) {
+          var id = $(this).attr("data-id");
+          var clear = $(this).attr("data-clear");
+          var clearSpl = $(this).attr("data-ins");
+          var clearImgClass = $(".img_class_"+id);
+          // $("#arr_"+id).attr("data-images", "");
+          clearImgClass.removeClass("spcl_ins_selected");
+          $("#"+clear).empty();
+          $("#"+clearSpl).val("");
+          var selected_ins_arr = $("#selectedInsValue").val();
+          if (selected_ins_arr) {
+            var ins_arr = JSON.parse(selected_ins_arr);
+            var new_ins_arr = ins_arr.filter((temp) => {
+              return temp.qid != id;
+            });
+            $("#selectedInsValue").val(JSON.stringify(new_ins_arr));
+          }
+          
+        })
         .on("click", '#section-special-instructions img',function (e) { 
           var id = $(this).attr("data-id");
           var img = $(this).attr("src");
@@ -3352,7 +3399,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             }
             
           }
-          console.log(loadimgParent);
+          // console.log(loadimgParent);
 
           var current_si = {
             "qid": qty_id,
