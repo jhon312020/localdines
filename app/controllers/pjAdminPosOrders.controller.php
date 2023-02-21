@@ -1077,15 +1077,23 @@ class pjAdminPosOrders extends pjAdmin {
     if ($this->isXHR()) {
       // print_r($this->_get);
       // echo $this->_get->toInt('product_id');
-      if ($product_id = $this->_get->toInt('product_id') && $index = $this->_get->toString('index')) {
-        $extra_arr = pjExtraModel::factory()->join('pjMultiLang', "t2.foreign_id = t1.id AND t2.model = 'pjExtra' AND t2.locale = '" . $this->getLocaleId() . "' AND t2.field = 'name'", 'left')
+      if ($product_id = $this->_get->toInt('product_id')) {
+          $extra_arr = pjExtraModel::factory()->join('pjMultiLang', "t2.foreign_id = t1.id AND t2.model = 'pjExtra' AND t2.locale = '" . $this->getLocaleId() . "' AND t2.field = 'name'", 'left')
           ->select("t1.*, t2.content AS name")
           ->where("t1.id IN (SELECT TPE.extra_id FROM `" . pjProductExtraModel::factory()
           ->getTable() . "` AS TPE WHERE TPE.product_id=" . $product_id . ")")->orderBy("name ASC")
           ->findAll()
           ->getData();
+          if ($this->_get->toString('hidden_extra_val')) {
+            $extra_val = $this->_get->toString('hidden_extra_val');
+            $this->set('extra_val', $extra_val);
+          }
+        $index = $this->_get->toString('index');
+        $extra_count = $this->_get->toInt('hidden_extra_count');
         $this->set('extra_arr', $extra_arr);
         $this->set('index', $index);
+        $this->set('extra_count', $extra_count);
+        
       }
     }
   }

@@ -2132,6 +2132,14 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           }
           var $this = $(this);
           var index = $this.attr("data-index");
+          var hidden_extra = $("#extra-"+index).attr("data-count");
+          if (hidden_extra) {
+            $("#extra-"+index).attr("data-count", Number(hidden_extra)+1);
+          }
+          var hidden_val = $("#extra-"+index).val();
+          if (hidden_val == "") {
+            hidden_val = 1;
+          }
           var $productEle = $("#fdProduct_" + index);
           var product_id = $productEle.val();
           var $extra_table = $this.parent().siblings(".pj-extra-table");
@@ -2139,15 +2147,18 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             $.get("index.php?controller=pjAdminPosOrders&action=pjActionGetExtras", {
               product_id: product_id,
               index: $this.attr("data-index"),
+              hidden_extra_count: Number(hidden_extra)+1,
+              hidden_extra_val: hidden_val,
             }).done(function (data) {
-              $(data).appendTo($extra_table.find("tbody"));
-              $extra_table.find(".pj-field-count").TouchSpin({
-                verticalbuttons: true,
+              var loaded_data = $(data).filter("tr");
+              loaded_data.find(".pj-field-count").TouchSpin({
+                verticalbuttons: false,
                 buttondown_class: "btn btn-white",
                 buttonup_class: "btn btn-white",
                 min: 1,
                 max: 4294967295,
               });
+              $("#extraModal .modal-body table tbody").html(loaded_data);
             });
           }
           return false;
@@ -2156,31 +2167,62 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           if (e && e.preventDefault) {
             e.preventDefault();
           }
+
           var $this = $(this);
           var index = $this.attr("data-index");
-          var table = $("#fdExtraTable_"+index).html();
-          var tableID = "fdExtraTable_show_"+index;
-          $("#extraModal").modal();
-          $("#extraModal .modal-body .add_more_extras").attr("data-index", index);
-          $("#extraModal .copy-extra-table").attr("data-index", index);
-          $("#extraModal .modal-body table").html(table);
-          $("#extraModal .modal-body table").attr("id", tableID);
-          return false;
-        })
-        .on("click", ".copy-extra-table", function (e) {
-          if (e && e.preventDefault) {
-            e.preventDefault();
+          var hidden_extra = $("#extra-"+index).attr("data-count");
+
+          if (hidden_extra == "") {
+            hidden_extra = 1;
+            $("#extra-"+index).attr("data-count", 1);
           }
-          var $this = $(this);
-          var index = $this.attr("data-index");
-          var table = $("#fdExtraTable_show_"+index).html();
-          var hiddenTable = $("#fdExtraTable_"+index).html(table);
+          var hidden_arr_val = $("#extra-"+index).val();
+          if (hidden_arr_val == "") {
+            hidden_arr_val = 1;
+          }
+          var tableID = "fdExtraTable_show_"+index;
+          var $productEle = $("#fdProduct_" + index);
+          var product_id = $productEle.val();
+          if (product_id != "") {
+            $.get("index.php?controller=pjAdminPosOrders&action=pjActionGetExtras", {
+              product_id: product_id,
+              index: $this.attr("data-index"),
+              hidden_extra_count: hidden_extra,
+              hidden_extra_val: hidden_arr_val,
+            }).done(function (data) {
+              
+              $("#extraModal .modal-body .add_more_extras").attr("data-index", index);
+              $("#extraModal .copy-extra-table").attr("data-index", index);
+              $("#extraModal .modal-body table").attr("id", tableID);
+              var loaded_data = $(data).filter("tr");
+              loaded_data.find(".pj-field-count").TouchSpin({
+                verticalbuttons: false,
+                buttondown_class: "btn btn-white",
+                buttonup_class: "btn btn-white",
+                min: 1,
+                max: 4294967295,
+              });
+              $("#extraModal .modal-body table tbody").html(loaded_data);
+              $("#extraModal").modal();
+            });
+          }
           return false;
         })
         .on("click", ".pj-remove-extra", function (e) {
           if (e && e.preventDefault) {
             e.preventDefault();
           }
+          var index = $(this).attr("data-index");
+          var counting = $(this).attr("data-count");
+          var hidden_count = $("#extra-"+index).attr("data-count");
+          var hidden_val = $("#extra-"+index).val();
+          if (hidden_val) {
+            var hidden_arr = JSON.parse(hidden_val).filter((temp) => {
+              return temp.id != counting
+            });
+            $("#extra-"+index).val(JSON.stringify(hidden_arr));
+          }
+          $("#extra-"+index).attr("data-count", Number(hidden_count)-1);
           $(this).parent().parent().remove();
           calPrice(1);
           return false;
@@ -2518,10 +2560,65 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           calPrice(1);
         })
         .on("change", ".fdExtra", function (e) {
+          var index = $(this).attr("data-index-only");
+          var counting = $(this).attr("data-count");
+          var select_val = $(this).val();
+          var input_val = $("#fdExtraQty_"+index+"_"+counting).val();
+          var hidden_extra = $("#extra-"+index);
+          var hidden_arr = [];
+          var extra_json = {
+            id : counting,
+            select: select_val,
+            value: input_val
+          }
+          console.log('test',input_val);
+          console.log('extra',extra_json);
+          if (hidden_extra.val()) {
+            hidden_arr = JSON.parse(hidden_extra.val());
+            var i = hidden_arr.findIndex((temp) => {
+              return temp.id == counting
+            });
+            if (i != -1) {
+              hidden_arr[i] = extra_json;
+            } else {
+              hidden_arr.push(extra_json);
+            }
+            $("#extra-"+index).val(JSON.stringify(hidden_arr));
+          } else {
+            
+            hidden_arr.push(extra_json);
+            $("#extra-"+index).val(JSON.stringify(hidden_arr));
+
+          }
           calPrice(1);
         })
         .on("change", ".pj-field-count", function (e) {
-         
+          var index = $(this).attr("data-index-only");
+          var counting = $(this).attr("data-count");
+          var input_val = $(this).val();
+          var select_val = $("#fdExtra_"+index+"_"+counting).val();
+          var hidden_extra = $("#extra-"+index);
+          var hidden_arr = [];
+          var extra_json = {
+            id : counting,
+            select: select_val,
+            value: input_val
+          }
+          if (hidden_extra.val()) {
+            hidden_arr = JSON.parse(hidden_extra.val());
+            var i = hidden_arr.findIndex((temp) => {
+              return temp.id == counting
+            });
+            if (i != -1) {
+              hidden_arr[i] = extra_json;
+            } else {
+              hidden_arr.push(extra_json);
+            }
+            $("#extra-"+index).val(JSON.stringify(hidden_arr));
+          } else {
+            hidden_arr.push(extra_json);
+            $("#extra-"+index).val(JSON.stringify(hidden_arr));
+          }
           calPrice(1);
         })
         .on("change", "#filter_type", function (e) {
@@ -3323,7 +3420,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           var clear = $(this).attr("data-clear");
           var clearSpl = $(this).attr("data-ins");
           var clearImgClass = $(".img_class_"+id);
-          // $("#arr_"+id).attr("data-images", "");
+          $("#arr_"+id).attr("data-images", "");
           clearImgClass.removeClass("spcl_ins_selected");
           $("#"+clear).empty();
           $("#"+clearSpl).val("");

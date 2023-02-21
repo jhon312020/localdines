@@ -50,6 +50,7 @@
         </td>                                 
         <td>
           <div class="business-<?php echo $oi['hash']; ?>">
+            <input id="extra-<?php echo $oi['hash']; ?>" type="hidden" name="hidden_extra" value data-count>
             <table id="fdExtraTable_<?php echo $oi['hash']; ?>" class="table no-margins pj-extra-table">
               <tbody>
                 <?php
