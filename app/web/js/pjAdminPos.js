@@ -2216,14 +2216,29 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           var counting = $(this).attr("data-count");
           var hidden_count = $("#extra-"+index).attr("data-count");
           var hidden_val = $("#extra-"+index).val();
+          // console.log('hidden_count',hidden_count);
+          // console.log('hidden_val',hidden_val);
           if (hidden_val) {
-            var hidden_arr = JSON.parse(hidden_val).filter((temp) => {
+            var hidden_arr = [];
+            var deleted_arr = JSON.parse(hidden_val).filter((temp) => {
               return temp.id != counting
             });
+            console.log("deleted_arr: ", deleted_arr);
+            deleted_arr.forEach((item, index) => {
+              item.id = index + 1;
+              hidden_arr.push(item);
+            });
+            console.log("hidden_arr: ", hidden_arr);
             $("#extra-"+index).val(JSON.stringify(hidden_arr));
           }
           $("#extra-"+index).attr("data-count", Number(hidden_count)-1);
+          var tableObj = $(this).parent().parent().parent();
           $(this).parent().parent().remove();
+          //Reseting the data count after removing the element from the table.
+          tableObj.find('.pj-remove-extra').each(function(index){
+            $(this).attr("data-count", ++index);
+          });
+          console.log('Stored in hidden',$("#extra-"+index).val(JSON.stringify(hidden_arr)));
           calPrice(1);
           return false;
         })
@@ -2568,8 +2583,8 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           var hidden_arr = [];
           var extra_json = {
             id : counting,
-            select: select_val,
-            value: input_val
+            extra_sel_id: select_val,
+            extra_count: input_val
           }
           console.log('test',input_val);
           console.log('extra',extra_json);
@@ -2601,8 +2616,8 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           var hidden_arr = [];
           var extra_json = {
             id : counting,
-            select: select_val,
-            value: input_val
+            extra_sel_id: select_val,
+            extra_count: input_val
           }
           if (hidden_extra.val()) {
             hidden_arr = JSON.parse(hidden_extra.val());
@@ -3619,14 +3634,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             //   });
             // }
             // return false;
-          }).on("click", ".pj-remove-extra", function (e) {
-            if (e && e.preventDefault) {
-              e.preventDefault();
-            }
-            $(this).parent().parent().remove();
-            calPrice(1);
-            return false;
-        }).on("click", ".close-keyboard", function (e) {
+          }).on("click", ".close-keyboard", function (e) {
           $('.keyboard-container').addClass('d-none');
         }).on("click", "#sel_table_name_modal", function() {
           console.log('Called me');
@@ -3902,15 +3910,28 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
                     var extra_index = $(this).attr("data-index"),
                       extra = $(this).val(),
                       extra_qty = parseInt($("#fdExtraQty_" + extra_index).val(), 10);
+                      console.log('Extras:', extra);
+                      console.log('Extras Qty:',extra_qty);
+                      console.log('extra_index:',extra_index);
                     if (extra != "" && extra_qty > 0) {
                       var extra_price = 0;
+                      //var extra_attr = $("option:selected", this).attr("data-price");
                       var extra_attr = $("option:selected", this).attr("data-price");
+                      console.log('Extra Attr', extra_attr);
                       if (
                         typeof extra_attr !== typeof undefined &&
                         extra_attr !== false
                       ) {
                         extra_price = parseFloat(extra_attr, 10);
+                      } else {
+                        extra_attr = parseInt($("#fdExtra_" + extra_index).val(), 10);
+                        console.log('Extra Attr', extra_attr);
+                        if (typeof extra_attr !== typeof undefined &&
+                        extra_attr) {
+                          extra_price = parseFloat(extra_attr, 10);
+                        }
                       }
+
                       if (extra_price > 0) {
                         total += extra_price * extra_qty;
                       }

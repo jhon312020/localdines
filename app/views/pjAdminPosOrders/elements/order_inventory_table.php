@@ -39,8 +39,6 @@
             <i data-index ="<?php echo $oi['hash']; ?>" class='fa fa-paperclip product_spcl_ins'></i>
           </div>
           <?php } ?>
-
-
         </td>                       
         <td>
           <div class="business-<?php echo $oi['hash']; ?>">
@@ -54,7 +52,9 @@
             <table id="fdExtraTable_<?php echo $oi['hash']; ?>" class="table no-margins pj-extra-table">
               <tbody>
                 <?php
-                //print_r($product['allowed_extras']);
+                //echo '<pre>'; print_r($tpl['oi_arr']); echo '</pre>';
+                $oi_extras_array = null;
+                $sel_extra_cnt = 1;
                   foreach ($tpl['extra_arr'] as $extra) {
                     foreach ($tpl['oi_arr'] as $oi_sub) {
                       if ($oi_sub['type'] == 'extra' && $oi_sub['hash'] == $oi['hash'] && $oi_sub['foreign_id'] == $extra['id']) {
@@ -62,10 +62,11 @@
                 <tr>
                   <td>
                     <?php
+                    $oi_extras_array[] = array('id'=>$sel_extra_cnt,'extra_sel_id'=>$oi_sub['foreign_id'],'extra_count'=>$oi_sub['cnt']);
+                    $sel_extra_cnt++;
                     foreach ($tpl['extra_arr'] as $e) {
                       if (in_array($e['id'], $product['allowed_extras']) && $e['id'] == $extra['id'] ) { 
                     ?>
-                        <input type='hidden' id="fdExtra_<?php echo $oi['hash']; ?>" name="extra_id[<?php echo $oi['hash']; ?>][<?php echo $oi_sub['id']; ?>]" data-index="<?php echo $oi['hash']; ?>_<?php echo $oi_sub['id']; ?>" class="fdExtra fdExtra_<?php echo $oi['hash']; ?> form-control" value="<?php echo $e['id']; ?>"/>
                         <span>
                           <?php echo stripslashes($e['name']); ?>: <?php echo pjCurrency::formatPrice($e['price']); ?>
                         </span>
@@ -78,6 +79,7 @@
                   <span><?php echo $oi_sub['cnt']; ?></span>
                   </td>
                   <!-- <td><a href="#" class="btn btn-xs btn-danger btn-outline pj-remove-extra"><i class="fa fa-times"></i></a></td> -->
+                  <input type='hidden' id="fdExtra_<?php echo $oi['hash']; ?>_<?php echo $oi_sub['id']; ?>" name="extras[<?php echo $oi['hash']; ?>]" data-index="<?php echo $oi['hash']; ?>_<?php echo $oi_sub['id']; ?>" class="fdExtra fdExtra_<?php echo $oi['hash']; ?> form-control" value='<?php echo json_encode($oi_extras_array); ?>'/>
                 </tr>
                 <?php
                       }
@@ -105,6 +107,7 @@
             } else {
               if (isset($oi['price_arr']) && $oi['price_arr']) {
                 foreach ($oi['price_arr'] as $pr) {
+                  //echo '<pre>'; print_r($pr); echo '</pre>';
                   if ($pr['id'] == $oi['price_id']) {
                ?>
                   <input type="hidden" id="fdPrice_<?php echo $oi['hash']; ?>" name="price_id[<?php echo $oi['hash']; ?>]" value="<?php echo $pr['id']; ?>" data-price="<?php echo $pr['price']; ?>"/>

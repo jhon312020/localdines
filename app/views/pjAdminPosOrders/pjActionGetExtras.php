@@ -9,10 +9,12 @@ if ($tpl['extra_val'] == 1) {
   $selected_arr = [];
 } else {
   $selected_arr = json_decode($tpl['extra_val'], true);
+  $counter = 1;
   foreach($selected_arr as $selected_value) {
-    $selected_arr[$selected_value['id']] = $selected_value;
+    $selected_arr[$counter] = $selected_value;
+    $counter++;
   }
-  // echo "<pre>"; print_r($selected_arr); echo "</pre>";
+  //echo "<pre>"; print_r($selected_arr); echo "</pre>";
 }
 
 ?>
@@ -26,7 +28,7 @@ if ($tpl['extra_val'] == 1) {
     if (isset($tpl['extra_arr']))
     {
       foreach ($tpl['extra_arr'] as $e) { ?>
-        <option value="<?php echo $e['id']; ?>" <?php if (array_key_exists($counter, $selected_arr)) { if($e['id'] == $selected_arr[$counter]['select']) { echo "selected"; } } ?> data-price="<?php echo $e['price'];?>"><?php echo stripslashes($e['name']); ?>: <?php echo pjCurrency::formatPrice($e['price']);?></option>
+        <option value="<?php echo $e['id']; ?>" <?php if (array_key_exists($counter, $selected_arr)) { if($e['id'] == $selected_arr[$counter]['extra_sel_id']) { echo "selected"; } } ?> data-price="<?php echo $e['price'];?>"><?php echo stripslashes($e['name']); ?>: <?php echo pjCurrency::formatPrice($e['price']);?></option>
         <?php
       }
     }
@@ -35,7 +37,7 @@ if ($tpl['extra_val'] == 1) {
   </td>
   
   <td>
-    <input type="text" id="fdExtraQty_<?php echo $index; ?>_<?php echo $counter; ?>" data-index-only='<?php echo $index; ?>' data-count="<?php echo $counter; ?>" name="extra_cnt[<?php echo $index; ?>][<?php echo $counter; ?>]" class="form-control pj-field-count" value="<?php if(array_key_exists($counter, $selected_arr)) { echo $selected_arr[$counter]['value']; } else { echo "1"; } ?>" placeholder="Qty"/>
+    <input type="text" id="fdExtraQty_<?php echo $index; ?>_<?php echo $counter; ?>" data-index-only='<?php echo $index; ?>' data-count="<?php echo $counter; ?>" name="extra_cnt[<?php echo $index; ?>][<?php echo $counter; ?>]" class="form-control pj-field-count" value="<?php if(array_key_exists($counter, $selected_arr)) { echo $selected_arr[$counter]['extra_count']; } else { echo "1"; } ?>" placeholder="Qty"/>
   </td>
 
   <td>

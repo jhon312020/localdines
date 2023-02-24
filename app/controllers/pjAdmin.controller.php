@@ -365,6 +365,12 @@ class pjAdmin extends pjAppController {
   public function isClient() {
     return true;
 	}
+	public function pr($data) {
+		echo '<pre>'; print_r($data); echo '</pre>';
+	}
+	public function pr_die($data) {
+		echo '<pre>'; print_r($data); echo '</pre>'; die;
+	}
 //public function pjActionCheckNewOrder() {
 	// 	$this->setAjax(true);
   //     if ($this->isXHR())

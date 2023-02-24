@@ -23,7 +23,7 @@ $index = "new_" . mt_rand(0, 999999);
     </td>
     <td>
         <div class="business-<?php echo $index;?>">
-            <input id="extra-<?php echo $index;?>" type="hidden" name="hidden_extra" value data-count>
+            <input id="extra-<?php echo $index;?>" type="hidden" name='extras[<?php echo $index; ?>]' value data-count>
           
             <?php if ($tpl['product_arr'][0]['cnt_extras'] > 0) { ?>
             <table id="fdExtraTable_<?php echo $index;?>" class="table no-margins pj-extra-table">							

@@ -489,7 +489,7 @@ class pjAdminPosOrders extends pjAdmin {
           $price = 0;
           $price_id = ":NULL";
           // print_r($k);
-          //     exit;
+          // exit;
           if ($product['set_different_sizes'] == 'T') {
             $price_id = $post['price_id'][$k];
             $price_arr = $pjProductPriceModel->reset()->find($price_id)->getData();
@@ -794,22 +794,15 @@ class pjAdminPosOrders extends pjAdmin {
         ->getData();
       $this->set('price_arr', $price_arr);
     }
-
   }
   // !MEGAMIND
-  public function pjActionGetPrices()
-  {
+  public function pjActionGetPrices() {
     $this->setAjax(true);
-
-    if ($this->isXHR())
-    {
-      if ($product_id = $this->_get->toInt('product_id'))
-      {
+    if ($this->isXHR()) {
+      if ($product_id = $this->_get->toInt('product_id')) {
         $arr = pjProductModel::factory()->find($product_id)->getData();
-        if (!empty($arr))
-        {
-          if ($arr['set_different_sizes'] == 'T')
-          {
+        if (!empty($arr)) {
+          if ($arr['set_different_sizes'] == 'T') {
             $price_arr = pjProductPriceModel::factory()->join('pjMultiLang', "t2.foreign_id = t1.id AND t2.model = 'pjProductPrice' AND t2.locale = '" . $this->getLocaleId() . "' AND t2.field = 'price_name'", 'left')
               ->select("t1.*, t2.content AS price_name")
               ->where("product_id", $product_id)->orderBy("price_name ASC")
@@ -817,17 +810,13 @@ class pjAdminPosOrders extends pjAdmin {
               ->getData();
             $this->set('price_arr', $price_arr);
           }
-
           //MEGAMIND
           $product_category = pjProductCategoryModel::factory()->where("product_id", $product_id)->findAll()
             ->getData();
-          if ($product_category)
-          {
+          if ($product_category) {
             $arr['category_id'] = $product_category[0]['category_id'];
           }
-
           //MEGAMIND
-          
         }
         //Added by JR to get product description
         $pjMultiLangModel = pjMultiLangModel::factory();
@@ -838,7 +827,6 @@ class pjAdminPosOrders extends pjAdmin {
         //exit;
         $this->set('arr', $arr);
         //return $arr;
-        
       }
     }
   }
@@ -909,11 +897,12 @@ class pjAdminPosOrders extends pjAdmin {
     }
     exit;
   }
-
-  protected function getTotal() {
+   protected function getTotal() {
     $is_null = true;
     $product_id_arr = $this->_post->toArray('product_id');
-    //print_r($product_id_arr);
+    // $this->pr($product_id_arr);
+    // $this->pr($this->_post);
+    // $this->pr($this->_post->toArray('price_id'));
     foreach ($product_id_arr as $v) {
       if ((int)$v > 0) {
         $is_null = false;
@@ -944,6 +933,7 @@ class pjAdminPosOrders extends pjAdmin {
         ->findAll()
         ->getData();
       $extra_arr = $pjExtraModel->findAll()->getData();
+      //$this->pr($product_arr);
       foreach ($product_id_arr as $hash => $product_id) {
         foreach ($product_arr as $product) {
           if ($product['id'] == $product_id) {
@@ -958,20 +948,20 @@ class pjAdminPosOrders extends pjAdmin {
             } else {
               $_price = $product['price'];
             }
-            $extra_id_arr = $this->_post->toArray('extra_id');
+            $extra_id_arr = $this->_post->toArray('extras');
+            //$this->pr($extra_id_arr);
             $cnt_arr = $this->_post->toArray('cnt');
             $product_price = $_price * $cnt_arr[$hash];
             $price_packing += $product['packing_fee'] * $cnt_arr[$hash];
-            if (!empty($extra_id_arr) && isset($extra_id_arr[$hash])) {
-              foreach ($extra_id_arr[$hash] as $oi_id => $extra_id) {
-                $extra_cnt_arr = $this->_post->toArray('extra_cnt');
-                if (!empty($extra_cnt_arr)) {
-                  if (isset($extra_cnt_arr[$hash][$oi_id]) && (int)$extra_cnt_arr[$hash][$oi_id] > 0) {
-                    foreach ($extra_arr as $extra) {
-                      if ($extra['id'] == $extra_id) {
-                        $extra_price += $extra['price'] * $extra_cnt_arr[$hash][$oi_id];
-                        break;
-                      }
+            if (array_key_exists($hash, $extra_id_arr) && isset($extra_id_arr[$hash])) {
+              $decode_extras = json_decode(stripslashes($extra_id_arr[$hash]));
+              //$this->pr($decode_extras);
+              if ($decode_extras) {
+                foreach ($decode_extras as $i=>$selectedExtra) {
+                  foreach ($extra_arr as $extra) {
+                    if ($extra['id'] == $selectedExtra->extra_sel_id) {
+                      $extra_price += $extra['price'] * $selectedExtra->extra_count;
+                      break;
                     }
                   }
                 }
@@ -1032,6 +1022,128 @@ class pjAdminPosOrders extends pjAdmin {
     );
   }
 
+  // protected function getTotal() {
+  //   $is_null = true;
+  //   $product_id_arr = $this->_post->toArray('product_id');
+  //   //print_r($product_id_arr);
+  //   foreach ($product_id_arr as $v) {
+  //     if ((int)$v > 0) {
+  //       $is_null = false;
+  //     }
+  //   }
+  //   if ($is_null == false) {
+  //     $price = 0;
+  //     $discount = 0;
+  //     $subtotal = 0;
+  //     $price_packing = 0;
+  //     $price_delivery = 0;
+  //     $tax = 0;
+  //     $total = 0;
+  //     $price_format = "";
+  //     $discount_format = "";
+  //     $packing_format = "";
+  //     $subtotal_format = "";
+  //     $delivery_format = "";
+  //     $tax_format = "";
+  //     $total_format = "";
+      
+  //     $pjProductPriceModel = pjProductPriceModel::factory();
+  //     $pjExtraModel = pjExtraModel::factory();
+  //     $product_arr = pjProductModel::factory()->select('t1.id, t1.set_different_sizes, t1.price, MIN(t3.packing_fee) AS `packing_fee`')
+  //       ->join('pjProductCategory', 't2.product_id=t1.id', 'left outer')
+  //       ->join('pjCategory', 't3.id=t2.category_id', 'left outer')
+  //       ->whereIn("t1.id", $product_id_arr)->groupBy('t1.id, t1.set_different_sizes, t1.price')
+  //       ->findAll()
+  //       ->getData();
+  //     $extra_arr = $pjExtraModel->findAll()->getData();
+  //     foreach ($product_id_arr as $hash => $product_id) {
+  //       foreach ($product_arr as $product) {
+  //         if ($product['id'] == $product_id) {
+  //           $_price = 0;
+  //           $extra_price = 0;
+  //           if ($product['set_different_sizes'] == 'T') {
+  //             $price_id_arr = $this->_post->toArray('price_id');
+  //             $price_arr = $pjProductPriceModel->reset()->find($price_id_arr[$hash])->getData();
+  //             if ($price_arr) {
+  //               $_price = $price_arr['price'];
+  //             }
+  //           } else {
+  //             $_price = $product['price'];
+  //           }
+  //           $extra_id_arr = $this->_post->toArray('extra_id');
+  //           $cnt_arr = $this->_post->toArray('cnt');
+  //           $product_price = $_price * $cnt_arr[$hash];
+  //           $price_packing += $product['packing_fee'] * $cnt_arr[$hash];
+  //           if (!empty($extra_id_arr) && isset($extra_id_arr[$hash])) {
+  //             foreach ($extra_id_arr[$hash] as $oi_id => $extra_id) {
+  //               $extra_cnt_arr = $this->_post->toArray('extra_cnt');
+  //               if (!empty($extra_cnt_arr)) {
+  //                 if (isset($extra_cnt_arr[$hash][$oi_id]) && (int)$extra_cnt_arr[$hash][$oi_id] > 0) {
+  //                   foreach ($extra_arr as $extra) {
+  //                     if ($extra['id'] == $extra_id) {
+  //                       $extra_price += $extra['price'] * $extra_cnt_arr[$hash][$oi_id];
+  //                       break;
+  //                     }
+  //                   }
+  //                 }
+  //               }
+  //             }
+  //           }
+  //           $_price = $product_price + $extra_price;
+  //           $price += $_price;
+  //           break;
+  //         }
+  //       }
+  //     }
+  //     //if ($this->_post->has('type') && $this->_post->has('delivery_fee'))
+  //     if ($this->_post->has('delivery_fee')) {
+  //       $d_fee = $this->_post->toFloat('delivery_fee');
+  //       if ($d_fee) {
+  //         $price_delivery = $d_fee;
+  //       }
+  //     }
+  //     if ($this->_post->has('vouchercode') && $this->_post->has('vouchercode') != '') {
+  //       $post = $this->_post->raw();
+  //       $resp = pjAppController::getDiscount($post, $this->option_arr);
+  //       //print_r($resp);
+  //       if ($resp['code'] == 200) {
+  //         $voucher_discount = $resp['voucher_discount'];
+  //         switch ($resp['voucher_type']) {
+  //           case 'percent':
+  //             $discount = (($price + $price_packing) * $voucher_discount) / 100;
+  //           break;
+  //           case 'amount':
+  //             $discount = $voucher_discount;
+  //           break;
+  //         }
+  //       }
+  //     }
+  //     if ($discount > $price + $price_packing) {
+  //       $discount = $price + $price_packing;
+  //     }
+  //     $subtotal = $price + $price_packing + $price_delivery - $discount;
+  //     if (!empty($this->option_arr['o_tax_payment'])) {
+  //       if ($this->option_arr['o_add_tax'] == '1' && $this->_post->has('type')) {
+  //         $tax = (($subtotal - $price_delivery) * $this->option_arr['o_tax_payment']) / 100;
+  //       } else {
+  //         $tax = ($subtotal * $this->option_arr['o_tax_payment']) / 100;
+  //       }
+  //     }
+  //     $total = $subtotal + $tax;
+  //     $price_format = pjCurrency::formatPrice($price);
+  //     $discount_format = pjCurrency::formatPrice($discount);
+  //     $packing_format = pjCurrency::formatPrice($price_packing);
+  //     $delivery_format = pjCurrency::formatPrice($price_delivery);
+  //     $subtotal_format = pjCurrency::formatPrice($subtotal);
+  //     $tax_format = pjCurrency::formatPrice($tax);
+  //     $total_format = pjCurrency::formatPrice($total);
+  //     return compact('price', 'discount', 'price_packing', 'price_delivery', 'subtotal', 'tax', 'total', 'price_format', 'discount_format', 'packing_format', 'delivery_format', 'subtotal_format', 'tax_format', 'total_format');
+  //   }
+  //   return array(
+  //     'price' => 'NULL'
+  //   );
+  // }
+
   public function pjActionFormatPrice() {
     $this->setAjax(true);
     if (!$this->isXHR()) {
@@ -1075,7 +1187,7 @@ class pjAdminPosOrders extends pjAdmin {
     $this->setAjax(true);
 
     if ($this->isXHR()) {
-      // print_r($this->_get);
+      //print_r($this->_get);
       // echo $this->_get->toInt('product_id');
       if ($product_id = $this->_get->toInt('product_id')) {
           $extra_arr = pjExtraModel::factory()->join('pjMultiLang', "t2.foreign_id = t1.id AND t2.model = 'pjExtra' AND t2.locale = '" . $this->getLocaleId() . "' AND t2.field = 'name'", 'left')
@@ -1986,7 +2098,7 @@ class pjAdminPosOrders extends pjAdmin {
           $printMessage = "Printed";
           $this->updateKitchenPrint($id);
         } else {
-           $printMessage = "Failed";
+          $printMessage = "Failed";
         }
         //$closePath = $_SERVER['PHP_SELF'].'?controller=pjAdminPosOrders&amp;action='.$this->getActionName($source);
         //echo "<a href='$closePath' class='btn btn-primary nextbutton'><i class='fa fa-plus'></i>Close</a>";
@@ -3061,7 +3173,7 @@ class pjAdminPosOrders extends pjAdmin {
     if (self::isPost() && $this->_post->toInt('order_create')) {
       $post_total = $this->getTotal();
       $post = $this->_post->raw();
-      // echo '<pre>'; print_r($post); echo '</pre>'; exit;
+      //$this->pr($post);
       $data = array();
       $data['uuid'] = time();
       $data['ip'] = pjUtil::getClientIp();
@@ -3107,7 +3219,6 @@ class pjAdminPosOrders extends pjAdmin {
             if (strpos($k, 'new_') === 0) {
               $price = 0;
               $price_id = ":NULL";
-
               if ($product['set_different_sizes'] == 'T') {
                 $price_id = $post['price_id'][$k];
                 $price_arr = $pjProductPriceModel->reset()->find($price_id)->getData();
@@ -3118,7 +3229,7 @@ class pjAdminPosOrders extends pjAdmin {
                 $price = $product['price'];
               }
               $hash = md5(uniqid(rand() , true));
-              echo $oid = $pjOrderItemModel->reset()
+              $oid = $pjOrderItemModel->reset()
                 ->setAttributes(array(
                 'order_id' => $id,
                 'foreign_id' => $pid,
@@ -3132,27 +3243,51 @@ class pjAdminPosOrders extends pjAdmin {
               ))->insert()
                 ->getInsertId();
               if ($oid !== false && (int)$oid > 0) {
-                if (isset($post['extra_id']) && isset($post['extra_id'][$k])) {
-                  foreach ($post['extra_id'][$k] as $i => $eid) {
+                //$this->pr($post['extras'][$k]);
+                if (array_key_exists($k, $post['extras']) && isset($post['extras'][$k])) {
+                  $decode_extras = json_decode($post['extras'][$k]);
+                  foreach ($decode_extras as $i=>$extra) {
                     $extra_price = 0;
-                    $extra_arr = $pjExtraModel->reset()->find($eid)->getData();
+                    $extra_arr = $pjExtraModel->reset()->find($extra->extra_sel_id)->getData();
                     if (!empty($extra_arr) && !empty($extra_arr['price'])) {
                       $extra_price = $extra_arr['price'];
                     }
                     $pjOrderItemModel->reset()
                       ->setAttributes(array(
                       'order_id' => $id,
-                      'foreign_id' => $eid,
+                      'foreign_id' => $extra->extra_sel_id,
                       'type' => 'extra',
                       'hash' => $hash,
                       'price_id' => ':NULL',
                       'price' => $extra_price,
-                      'cnt' => $post['extra_cnt'][$k][$i],
-                      'special_instruction' => $post['special_instruction'][$k][$i],
-                      'custom_special_instruction' => $post['custom_special_instruction'][$k][$i]
+                      'cnt' => $extra->extra_count,
+                      'special_instruction' => ':NULL',
+                      'custom_special_instruction' => ':NULL'
                     ))->insert();
                   }
                 }
+                //exit;
+                // if (isset($post['extra_id']) && isset($post['extra_id'][$k])) {
+                //   foreach ($post['extra_id'][$k] as $i => $eid) {
+                //     $extra_price = 0;
+                //     $extra_arr = $pjExtraModel->reset()->find($eid)->getData();
+                //     if (!empty($extra_arr) && !empty($extra_arr['price'])) {
+                //       $extra_price = $extra_arr['price'];
+                //     }
+                //     $pjOrderItemModel->reset()
+                //       ->setAttributes(array(
+                //       'order_id' => $id,
+                //       'foreign_id' => $eid,
+                //       'type' => 'extra',
+                //       'hash' => $hash,
+                //       'price_id' => ':NULL',
+                //       'price' => $extra_price,
+                //       'cnt' => $post['extra_cnt'][$k][$i],
+                //       'special_instruction' => $post['special_instruction'][$k][$i],
+                //       'custom_special_instruction' => $post['custom_special_instruction'][$k][$i]
+                //     ))->insert();
+                //   }
+                // }
               }
             }
           }
