@@ -45,6 +45,17 @@
 </style>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simple-keyboard@latest/build/css/index.css">
 <script src="https://cdn.jsdelivr.net/npm/simple-keyboard@latest/build/index.js"></script>
+
+<div id="js-categories" class="row wrapper wrapper-content animated">
+  <?php foreach($tpl['category_list'] as $key=>$category)  { ?>
+  <div class="col-sm-2 col-lg-1 cus-category" data-id="<?php echo $key; ?>" data-category="<?php echo $category; ?>">
+    <div class="category-container cus-pt-2 cus-pb-2" data-id="<?php echo $key; ?>">
+      <div class="content"><h4><?php echo $category; ?></h4></div>
+    </div>
+  </div>
+  <?php } ?>
+</div>
+
 <div class="row wrapper wrapper-content animated fadeInRight">
   <?php
     $time_format = 'HH:mm';
@@ -86,27 +97,8 @@
           <div class="hidden-xs col-sm-6 hidden-lg"></div>
         </div>
       </div>
-      <div class="col-sm-12 bg-blue-secondary topnav-two">
-        <div class="row" style="margin-top: 5px;margin-bottom: 5px;">
-          <div class="col-sm-8" style="display: flex;">
-            <div id="btnCategories" style="width: 50%; margin-right: 15px">Menu</div>
-            <div id="slideCategories" style="display: none; border-radius: 50%; width:60px; color: black; padding:0px; height: 60px;">
-              <i class="fa fa-chevron-circle-left fa-3x" aria-hidden="true"></i>
-            </div>
-          </div>
-          <div id="page_navigation" class="col-sm-4" style="text-align: right;"></div>
-        </div>
-      </div>
+      
       <div class="col-sm-12 bg-blue-secondary" style="min-height: 700px;">
-        <div id="categories-sec" class="row categories"> 
-          <?php foreach($tpl['category_list'] as $key=>$category)  { ?>
-          <div class="col-sm-3">
-            <div class="category-container" data-id="<?php echo $key; ?>">
-              <div class="content"><h4><?php echo $category; ?></h4></div>
-            </div>
-          </div>
-          <?php } ?>
-        </div>
         <input type='hidden' id='current_page' />
         <input type='hidden' id='show_per_page' />
         <input type='hidden' id='nop' />
@@ -118,29 +110,53 @@
           <div id="products-sec" class="row products" style="display: none;"></div>
         </div>  
       </div>
+
+      <div class="col-sm-12 bg-blue-secondary topnav-two">
+        <div class="row" style="margin-top: 5px;margin-bottom: 5px;">
+          <!-- <div class="col-sm-8" style="display: flex;">
+            <div id="btnCategories" style="width: 50%; margin-right: 15px">Menu</div>
+            <div id="slideCategories" style="display: none; border-radius: 50%; width:60px; color: black; padding:0px; height: 60px;">
+              <i class="fa fa-chevron-circle-left fa-3x" aria-hidden="true"></i>
+            </div>
+          </div> -->
+          <div id="page_navigation" class="col-sm-12 text-right" style="text-align: right;"></div>
+        </div>
+      </div>
+
     </div>
   </div><!-- /.col-sm-6 -->
   <div class="col-sm-7  bg-light" id="col-7">
     <div class="col-sm-12" style="margin-top: 10px;">
-      <div style="float: right;">
-        <?php if ($_SESSION[$controller->defaultUser]['role_id'] != WAITER_R0LE_ID) { ?>
-        <a href="#" class="btn btn-primary" id="btn-openDrawer">
-          <i class="fa fa-unlock" aria-hidden="true"> TOpen</i>
-        </a>
-        <?php } ?>
-        <a href="#" class="btn btn-primary" id="btn-pause">
-          <i class="fa fa-pause" aria-hidden="true"></i>
-        </a>
-        <a href="#" class="btn btn-primary" id="showPostalCodes">
-          <i class="fa fa-map-marker" aria-hidden="true"></i>
-        </a>
-        <a href="#" class="btn btn-primary" id="showCart">
-          <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-          <span id="cartPriceBottom"><?php echo pjCurrency::formatPrice(0); ?></span>
-        </a>
+      <div class="row">
+        <div class="col-sm-1">
+          <div class="arr arr-left"><i class="fa fa-bars"></i></div>
+          <div class="arr arr-right" style="display:none;"><i class="fa fa-bars"></i></div>
+        </div>
+        <div class="col-sm-4 text-left">
+          <a href="#" class="btn btn-primary" id="btn-pause">
+            <i class="fa fa-pause" aria-hidden="true"></i>
+          </a>
+          <a href="#" class="btn btn-primary" id="showPostalCodes">
+            <i class="fa fa-map-marker" aria-hidden="true"></i>
+          </a>
+        </div>
+        <div class="col-sm-2 text-center">
+          <p>hello</p>
+        </div>
+        <div class="col-sm-5 text-right">
+          <?php if ($_SESSION[$controller->defaultUser]['role_id'] != WAITER_R0LE_ID) { ?>
+          <a href="#" class="btn btn-primary" id="btn-openDrawer">
+            <i class="fa fa-unlock" aria-hidden="true"> TOpen</i>
+          </a>
+          <?php } ?>
+          
+          <a href="#" class="btn btn-primary" id="showCart">
+            <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+            <span id="cartPriceBottom"><?php echo pjCurrency::formatPrice(0); ?></span>
+          </a>
+        </div>
       </div>
-      <div class="arr arr-left"><i class="fa fa-bars"></i></div>
-      <div class="arr arr-right" style="display:none;"><i class="fa fa-bars"></i></div>   
+         
     </div>  
     <div class="col-sm-12">
       <input type="hidden" id="frm-type" value="#frmCreateOrder_pos">

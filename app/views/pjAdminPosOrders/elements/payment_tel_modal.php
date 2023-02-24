@@ -1,5 +1,5 @@
 <!-- Start of Payment Modal -->
-<div class="modal" tabindex="-1" id="paymentTelModal" role="dialog">
+<div class="modal" tabindex="-1" id="paymentTelModal_old" role="dialog">
   <div class="modal-dialog modal-lg" role="document" style="width: 95%;">
     <div class="modal-content">
       <div class="modal-header text-center">

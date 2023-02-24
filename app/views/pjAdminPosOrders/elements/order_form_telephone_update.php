@@ -79,10 +79,10 @@
 
                     </div><!-- /.m-b-lg -->
                     <div class="clearfix">
-                        <a class="btn btn-white btn-lg pull-left" href="<?php echo PJ_INSTALL_URL; ?>index.php?controller=pjAdminPosOrders&action=pjActionIndex&type=Telephone"><?php __('btnCancel'); ?></a>
+                        
                         <a class="nav-link next-tab ladda-button btn btn-primary btn-lg pull-right" id="client-tab" data-toggle="tab" href="#client" role="tab" aria-controls="client" aria-selected="false">Next</a>
                         <?php if ($tpl['arr']['status'] == PENDING_STATUS) { ?>
-                        <a class="nav-link ladda-button btn btn-primary btn-lg pull-right" data-cart="<?php echo $tpl['arr']['total']; ?>" id="btn-payment-tel" style="margin-right: 10px;">Payment</a>
+                        <!-- <a class="nav-link ladda-button btn btn-primary btn-lg pull-right" data-cart="<?php echo $tpl['arr']['total']; ?>" id="btn-payment-tel" style="margin-right: 10px;">Payment</a> -->
                       <?php } ?>
                     </div>
                     
@@ -550,7 +550,6 @@
 
 
                         <div class="clearfix">
-                            <a class="btn btn-white btn-lg pull-left" href="<?php echo PJ_INSTALL_URL; ?>index.php?controller=pjAdminPosOrders&action=pjActionIndex"><?php __('btnCancel'); ?></a>
                             <button type="submit" id="submitJs" class="ladda-button btn btn-primary btn-lg btn-phpjabbers-loader pull-right" data-style="zoom-in" style="margin-right: 15px;" name="submitTel">
                                 <span class="ladda-label"><?php __('btnSave'); ?></span>
                                 <?php include $controller->getConstant('pjBase', 'PLUGIN_VIEWS_PATH') . 'pjLayouts/elements/button-animation.php'; ?>
@@ -703,7 +702,6 @@
                         </div><!-- /.new-client-area -->
                       </fieldset>
                         <div class="clearfix">
-                            <a class="btn btn-white btn-lg pull-left" href="<?php echo PJ_INSTALL_URL; ?>index.php?controller=pjAdminPosOrders&action=pjActionIndex"><?php __('btnCancel'); ?></a>
                             <a class="nav-link next-tab ladda-button btn btn-primary btn-lg pull-right" id="type-tab" data-toggle="tab" href="#type" role="tab" aria-controls="type" aria-selected="false">Next</a>
                             
                         </div>

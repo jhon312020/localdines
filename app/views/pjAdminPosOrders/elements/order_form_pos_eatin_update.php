@@ -37,11 +37,11 @@
         </div><!-- /.col-md-3 -->
       </div><!-- /.m-b-lg -->
       <div class="clearfix" id="btns-epos">
-        <a class="btn btn-white btn-lg pull-left" href="<?php echo PJ_INSTALL_URL; ?>index.php?controller=pjAdminPosOrders&action=pjActionIndex"><?php __('btnCancel'); ?></a>
+        <!-- <a class="btn btn-white btn-lg pull-left" href="<?php echo PJ_INSTALL_URL; ?>index.php?controller=pjAdminPosOrders&action=pjActionIndex"><?php __('btnCancel'); ?></a> -->
         <?php if ($_SESSION[$controller->defaultUser]['role_id'] == WAITER_R0LE_ID) { ?>
         <a href="#" class="btn btn-primary btn-lg pull-right" data-cart="" id="btn-save">Save</a> 
         <?php } else if ($tpl['arr']['status'] == PENDING_STATUS) { ?>
-         <a class="nav-link ladda-button btn btn-primary btn-lg pull-right" data-cart="<?php echo $tpl['arr']['total']; ?>" id="btn-payment">Payment</a> 
+         <!-- <a class="nav-link ladda-button btn btn-primary btn-lg pull-right" data-cart="<?php echo $tpl['arr']['total']; ?>" id="btn-payment">Payment</a>  -->
         <?php } ?>
       </div>
     </div>

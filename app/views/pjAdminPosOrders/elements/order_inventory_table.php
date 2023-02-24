@@ -12,9 +12,10 @@
       <th><?php __('lblSizeAndPrice');?></th>
       <th><?php __('lblTotal');?></th>
       <th><?php echo 'S.I';?></th>
+      <th></th>
     </tr>
   </thead>
-  <tbody class="main-body">
+  <tbody class="main-body" style="display: block; height: 200px; overflow-x: hidden; overflow-y: auto;">
     <?php
     if (array_key_exists('oi_arr', $tpl) && count($tpl['oi_arr']) > 0) {
       //echo '<pre>';

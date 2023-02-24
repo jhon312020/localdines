@@ -1943,6 +1943,9 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           }
         })
         .on("click", "#paymentModal #paymentBtn", function() {
+          if($("#fdOrderList_1 .main-body tr").length == 0) {
+            cartEmptyPopup();
+          }
           if ($(shownModalName+' #confirm-table-error-msg').text() != '') {
             return;
           }
@@ -1951,7 +1954,8 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           }
           var $form = null;
           var $activeForm = null;
-          if($(this).attr("data-valid") == "true") {
+          var total = $("#payment_modal_tot").text();
+          if($(this).attr("data-valid") == "true" && total != "") {
             if($frmUpdatePosOrder.length > 0) {
               $("#is_paused").val(0);
               $("#is_paid").val(1);
@@ -1962,6 +1966,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             $(this).attr("disabled", true);
             $form.submit();
           } else {
+            $("#paymentModal input").css("border", "2px solid red");
             $("#paymentModal #error-msg").removeClass("d-none");
           }
            $(this).attr("disabled",false)
@@ -2001,7 +2006,9 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           } 
         })
         .on("click", "#paymentTelModal #paymentBtn", function() {
-          if($(this).attr("data-valid") == "true") {
+          
+          var total = $("#payment_modal_tot").text();
+          if($(this).attr("data-valid") == "true" && total != "") {
             var $activeForm = getActiveForm();
             var $form = $($activeForm);
             $("#is_paid").prop("checked", true);
@@ -2013,9 +2020,10 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             $form.find('#customer_paid').val($('#paymentTelModal').find('#payment_modal_pay').val());
             $(this).attr("disabled", true);
             $form.submit();
-            $("#paymentTelModal").modal("hide");
+            // $("#paymentTelModal").modal("hide");
           } else {
-            $("#paymentTelModal").modal("hide");
+            // $("#paymentTelModal").modal("hide");
+            $("#paymentTelModal input").css("border", "2px solid red");
             $("#paymentTelModal #error-msg").removeClass("d-none");
           }
           $(this).attr("disabled",false)
@@ -2081,6 +2089,10 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           $("#pause_phone-error").addClass("d-none");
         })
         .on("input", "#paymentModal #payment_modal_pay", function() {
+          
+          if ($("#paymentModal #payment_modal_pay").val() == "") {
+            $("#paymentModal #payment_modal_pay").css("border", "2px solid red");
+          }
           $("#paymentModal #payment_modal_pay").inputFilter(function(value) {
             return /^\d*\.?\d*$/.test(value);    // Allow digits only, using a RegExp
            },"Only digits allowed");
@@ -2088,6 +2100,9 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           showBalance($(this).val(), curModalName);
         })
         .on("input", "#paymentTelModal #payment_modal_pay", function() {
+          if ($("#paymentModal #payment_modal_pay").val() == "") {
+            $("#paymentModal #payment_modal_pay").css("border", "2px solid red");
+          }
           $("#paymentTelModal #payment_modal_pay").inputFilter(function(value) {
             return /^\d*\.?\d*$/.test(value);    // Allow digits only, using a RegExp
            },"Only digits allowed");
@@ -3102,6 +3117,11 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
         //alert("Update page");
        }    
       });
+      $(window).on("load", function() {
+        var id = $("#js-categories div:first-child").attr("data-id");
+        var category = $("#js-categories div:first-child").attr("data-category");
+        load_initial_items(id, category);
+      })
        $(window).on('beforeunload', function(){
           if ($("#createPage").text()=="Add new order" || $("#updatePage").text()=="Update Order") {
           return 'Are you sure you want to leave?';
@@ -3829,9 +3849,11 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
                   // FOR BOTTOM CART TOTAL
                   $("#cartPriceBottom").html(data.total_format);
                   // FOR EPOS PAYMENT BUTTON 
-                  
                   $("#btn-payment").attr("data-cart", data.total.toFixed(2));
                   $("#btn-payment-tel").attr("data-cart", data.total.toFixed(2));
+
+                  pos_payment(data.total.toFixed(2));
+                  tel_payment(data.total.toFixed(2));
 
                   var min_amt = $("#min_amt").val();
                   var type = !$(".onoffswitch-order .onoffswitch-checkbox").prop("checked");
@@ -4218,6 +4240,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
               balance_format = currency + " 0.00" ;
               $($modalName+" #paymentBtn").attr("data-valid", "false");
             } else {
+              $($modalName+" #payment_modal_pay").css("border", "2px solid #075114");
               $($modalName+" #error-msg").addClass("d-none");
               balance = parseFloat(paying) - tot_int;
               balance_format = currency +" "+ parseFloat(balance).toFixed(2);
@@ -4389,6 +4412,78 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
               swal.close();
             });
           }
+        }
+        function pos_payment(argument) {
+          if($("#fdOrderList_1 .main-body tr").length == 0) {
+            cartEmptyPopup();
+          }
+          else if (!validateCart()) {
+            $(getActiveForm()).find('#customer_paid').val(0);
+            var $curModalName = "#paymentModal";
+            shownModalName = "#paymentModal";
+            $(".payment-method-btn").removeClass("selected");
+            $(".confirm_payment_method button:first-child").addClass("selected");
+            $('#pos_payment_method').val($(".confirm_payment_method button:first-child").text());
+            $(".confirm-table-btn").removeClass("selected");
+            tableID = $('#res_table_name').val();
+            $('#paymentModal .confirm-table-btn').each(function(index, obj) {
+              if (obj.id == tableID) {
+                $(obj).addClass("selected");
+                return false;
+              }
+            });
+            var currency_sign = $($curModalName+" #payment_modal_curr").text();
+            var cart_tot = argument;
+            // var htmlBtns = currencyBtns(cart_tot, $curModalName);
+            var htmlBtns =  "<a href='javascript:;' class='btn' data-rs='"+ cart_tot +"'>"+ currency_sign +" "+ cart_tot +"</a>";
+            $($curModalName+" .money-container #payment_btn_val").html(htmlBtns);
+            $($curModalName+' #confirm-table-error-msg').text('');
+            // $($curModalName).modal();
+            $($curModalName+" #payment_modal_tot").text(cart_tot);
+          }
+        }
+
+        function tel_payment(argument) {
+          var active_frm = getActiveForm();
+          var frm = $(active_frm);
+          var total = parseFloat($(active_frm +" #total").val());
+          var min_amt = parseFloat($(active_frm +" #min_amt").val());
+          var currency = $("#paymentModal #payment_modal_curr").text();
+          if(validateOrderTab(total, min_amt, currency)) {
+            $(getActiveForm()).find('#customer_paid').val(0);
+            var $curModalName = "#paymentTelModal";
+            shownModalName = "#paymentTelModal";
+            $(".payment-method-btn").removeClass("selected");
+            $(".confirm_payment_method button:first-child").addClass("selected");
+            // $('#payment_method').val($(".confirm_payment_method button:first-child").text());
+            var cart_tot = argument;
+            var htmlBtns = currencyBtns(cart_tot, $curModalName);
+            $($curModalName+" .money-container").html(htmlBtns);
+            $($curModalName+' #confirm-table-error-msg').text('');
+            // $($curModalName).modal();
+            $($curModalName+" #payment_modal_tot").text(cart_tot);
+          } else {
+            cartEmptyPopup();
+          }
+        }
+
+        function load_initial_items(id, category) {
+          $("#btnCategories").text(category);
+          $("#slideCategories").css("display", "block");
+          $("#categories-sec").slideUp(); 
+          $.ajax({
+            type: "POST",
+            url: "index.php?controller=pjAdminPosOrders&action=pjActionGetProductsForCategory",
+            data: {"category_id": id},
+            success: function (data) {
+              $("#products-sec").parents(".ibox-content").fadeIn();
+                $("#products-sec").html(data);
+                $("#products-sec").fadeIn();
+                if ($("#products-sec")) {
+                  showPage(1);
+                }
+            }
+          })
         }
    
 

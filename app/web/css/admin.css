@@ -548,15 +548,15 @@ td .btn-secondary:hover {
     margin-left: 3px;
     margin-right: 3px;
     margin-bottom: 3px;
-    min-width:  120px;
-    line-height:  60px;
-    height: 75px;
+    min-width:  90px;
+    line-height:  40px;
+    height: 55px;
     font-size: 28px;
     font-weight: bold;
     width:auto;
 }
 #paymentModal, #paymentTelModal {
-    font-size: 28px;
+    font-size: 20px;
     font-weight: bold;
 }
 #paymentModal h2, #paymentTelModal h2 {
@@ -564,12 +564,12 @@ td .btn-secondary:hover {
     font-size: 30px;
 }
 #paymentModal input, #paymentTelModal input {
-    height: 50px;
-    font-size: 28px;
+    height: 55px;
+    font-size: 30px;
     border: 2px solid #075114;
 }
 #paymentModal .btn, #paymentTelModal .btn {
-    font-size: 28px;
+    font-size: 20px;
 }
 @media only screen and (max-width: 1024px) {
     .topnav-one .btn-light {
@@ -593,7 +593,7 @@ td .btn-secondary:hover {
     margin-right: 3px;
     margin-bottom: 3px;
     width: auto;
-    height: 75px;
+    height: 45px;
     font-size: 18px;
     font-weight: bold;
 }
@@ -645,7 +645,7 @@ td .btn-secondary:hover {
   background-color: #0a5114!important;
 }
 #payment_modal_bal {
-    font-size: 72px;
+    font-size: 40px;
 }
 .list-pos-type {
     font-size: 20px;
@@ -674,4 +674,35 @@ td .btn-secondary:hover {
 .input-disabled {
   border: 0px !important;
   background: none !important;
+}
+
+
+/******* New Layout Orders *******/
+
+.cus-pt-2 {
+  padding-top: 1.5rem;
+}
+
+.cus-pb-2 {
+  padding-bottom: 1.5rem;
+}
+
+.cus-category {
+  padding: 5px !important;
+}
+
+.cus-bottom {
+  padding-bottom: 0;
+}
+
+#fdOrderList_1 thead,
+#fdOrderList_1 tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+    }
+
+#fdOrderList_1 thead tr th:last-child,
+#fdOrderList_1 tbody tr td:last-child {
+  width: 5%;
 }
