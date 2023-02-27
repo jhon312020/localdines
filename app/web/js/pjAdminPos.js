@@ -1813,17 +1813,15 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           $("#frmCreateOrder_pos").find(".voucher").attr("id", "voucher_code");
           hideTelPhoneDelivery();
         })
-        .on("click", "#paymentModal .money-container .btn", function() {
-          var amt = $(this).attr("data-rs");
-          var curModalName = "#paymentModal";
-          $(curModalName+" #payment_modal_pay").val(amt);
-          showBalance(amt, curModalName);
-        })
-        .on("click", "#paymentTelModal .money-container .btn", function() {
-          var amt = $(this).attr("data-rs");
-          var curModalName = "#paymentTelModal";
-          $(curModalName+" #payment_modal_pay").val(amt);
-          showBalance(amt, curModalName);
+        .on("click", ".money-container .btn", function() {
+          if($("#fdOrderList_1 .main-body tr").length == 0) {
+            cartEmptyPopup();
+          } else {
+            var amt = $(this).attr("data-rs");
+            $(" #payment_modal_pay").val(amt);
+            showBalance(amt);
+          }
+          
         })
         .on("click", "#btn-clear", function() {
           $('#payment_modal_pay').val('');
@@ -1889,87 +1887,34 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           
             });
         })
-        .on("click", "#btn-payment", function() {
+        .on("click", "#paymentBtn", function() {
           if($("#fdOrderList_1 .main-body tr").length == 0) {
             cartEmptyPopup();
-          }
-          else if (!validateCart()) {
-            $(getActiveForm()).find('#customer_paid').val(0);
-            var $curModalName = "#paymentModal";
-            shownModalName = "#paymentModal";
-            $(".payment-method-btn").removeClass("selected");
-            $(".confirm_payment_method button:first-child").addClass("selected");
-            $('#pos_payment_method').val($(".confirm_payment_method button:first-child").text());
-            $(".confirm-table-btn").removeClass("selected");
-            tableID = $('#res_table_name').val();
-            $('#paymentModal .confirm-table-btn').each(function(index, obj) {
-              if (obj.id == tableID) {
-                $(obj).addClass("selected");
-                return false;
-              }
-            });
-            var cart_tot = $(this).attr("data-cart");
-            var htmlBtns = currencyBtns(cart_tot, $curModalName);
-            $($curModalName+" .money-container").html(htmlBtns);
-            $($curModalName+' #confirm-table-error-msg').text('');
-            $($curModalName).modal();
-            $($curModalName+" #payment_modal_tot").text(cart_tot);
-          } 
-          // else {
-          //   cartEmptyPopup();
-          // }
-        })
-        .on("click", "#btn-payment-tel", function() {
-          var active_frm = getActiveForm();
-          var frm = $(active_frm);
-          var total = parseFloat($(active_frm +" #total").val());
-          var min_amt = parseFloat($(active_frm +" #min_amt").val());
-          var currency = $("#paymentModal #payment_modal_curr").text();
-          if(validateOrderTab(total, min_amt, currency)) {
-            $(getActiveForm()).find('#customer_paid').val(0);
-            var $curModalName = "#paymentTelModal";
-            shownModalName = "#paymentTelModal";
-            $(".payment-method-btn").removeClass("selected");
-            $(".confirm_payment_method button:first-child").addClass("selected");
-            // $('#payment_method').val($(".confirm_payment_method button:first-child").text());
-            var cart_tot = $(this).attr("data-cart");
-            var htmlBtns = currencyBtns(cart_tot, $curModalName);
-            $($curModalName+" .money-container").html(htmlBtns);
-            $($curModalName+' #confirm-table-error-msg').text('');
-            $($curModalName).modal();
-            $($curModalName+" #payment_modal_tot").text(cart_tot);
           } else {
-            cartEmptyPopup();
+            var $form = null;
+            var $activeForm = null;
+            var total = $("#payment_modal_tot").text();
+            if($(this).attr("data-valid") == "true" && total != "") {
+              if($frmUpdatePosOrder.length > 0) {
+                $("#is_paused").val(0);
+                $("#is_paid").val(1);
+              } 
+
+              $("#is_paid").prop("checked", true);
+              $("#order_despatched_tel").val(1);
+              $("#delivered_customer_tel").val(1);
+
+              $activeForm = getActiveForm();
+              $form = $($activeForm);
+              $form.find('#customer_paid').val($('#payment_modal_pay').val());
+              $(this).attr("disabled", true);
+              $form.submit();
+            } else {
+              $("#payment_modal_pay").css("border", "2px solid red");
+              $("#error-msg").removeClass("d-none");
+            }
           }
-        })
-        .on("click", "#paymentModal #paymentBtn", function() {
-          if($("#fdOrderList_1 .main-body tr").length == 0) {
-            cartEmptyPopup();
-          }
-          if ($(shownModalName+' #confirm-table-error-msg').text() != '') {
-            return;
-          }
-          if (tableID) {
-            $('#res_table_name').val(tableID);
-          }
-          var $form = null;
-          var $activeForm = null;
-          var total = $("#payment_modal_tot").text();
-          if($(this).attr("data-valid") == "true" && total != "") {
-            if($frmUpdatePosOrder.length > 0) {
-              $("#is_paused").val(0);
-              $("#is_paid").val(1);
-            } 
-            $activeForm = getActiveForm();
-            $form = $($activeForm);
-            $form.find('#customer_paid').val($('#paymentModal').find('#payment_modal_pay').val());
-            $(this).attr("disabled", true);
-            $form.submit();
-          } else {
-            $("#paymentModal input").css("border", "2px solid red");
-            $("#paymentModal #error-msg").removeClass("d-none");
-          }
-           $(this).attr("disabled",false)
+           $(this).attr("disabled",false);
         })
         .on("click", "#pauseModal #paymentBtn", function() {
           if (tableID) {
@@ -2005,29 +1950,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             $('#confirm-table-error-msg').html("All fields are required.");
           } 
         })
-        .on("click", "#paymentTelModal #paymentBtn", function() {
-          
-          var total = $("#payment_modal_tot").text();
-          if($(this).attr("data-valid") == "true" && total != "") {
-            var $activeForm = getActiveForm();
-            var $form = $($activeForm);
-            $("#is_paid").prop("checked", true);
-            //$("#status").val('delivered');
-            $("#order_despatched_tel").val(1);
-            $("#delivered_customer_tel").val(1);
-            //$("#submitJs").trigger("click");
-            //console.log('2010', $('#paymentTelModal').find('#payment_modal_pay').val());
-            $form.find('#customer_paid').val($('#paymentTelModal').find('#payment_modal_pay').val());
-            $(this).attr("disabled", true);
-            $form.submit();
-            // $("#paymentTelModal").modal("hide");
-          } else {
-            // $("#paymentTelModal").modal("hide");
-            $("#paymentTelModal input").css("border", "2px solid red");
-            $("#paymentTelModal #error-msg").removeClass("d-none");
-          }
-          $(this).attr("disabled",false)
-        })
+        
         .on("click", ".confirm-table-btn", function() {
           $(".confirm-table-btn").removeClass("selected");
           $(this).addClass('selected');
@@ -2052,31 +1975,21 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             });
           }
         })
-        .on("click", "#paymentModal .payment-method-btn", function() {
+        .on("click", ".payment-method-btn", function() {
           $(".payment-method-btn").removeClass("selected");
           $(this).addClass('selected');
           var paymentType = $(this).text().trim().toLowerCase();
           var amt = $('#payment_modal_tot').text();
-          var $modalName = '#paymentModal' ;
           if (paymentType == 'card') {
             $('#pos_payment_method').val(paymentType); 
             $('#payment_modal_pay').val(amt);
-            showBalance(amt, $modalName);
+            showBalance(amt);
           } else {
             $('#payment_modal_pay').val('');
             $('#payment_modal_bal').text('');
-            $($modalName+" #paymentBtn").attr("data-valid", "false");
+            $("#paymentBtn").attr("data-valid", "false");
           }
 
-        })
-        .on("click", "#paymentTelModal .payment-method-btn", function() {
-          $(".payment-method-btn").removeClass("selected");
-          $(this).addClass('selected');
-          if ($(this).text().toLowerCase == 'card') {
-            $('#payment_method').val('bank');
-          } else {
-            $('#payment_method').val('cash');
-          } 
         })
         .on("hidden.bs.modal", "#paymentModal, #paymentTelModal", function (e) {
           var modalID = '#'+e.target.id;
@@ -2088,26 +2001,15 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           $("#clientPhoneNumberBtn").attr("data-phone", $(this).val());
           $("#pause_phone-error").addClass("d-none");
         })
-        .on("input", "#paymentModal #payment_modal_pay", function() {
+        .on("input", "#payment_modal_pay", function() {
           
-          if ($("#paymentModal #payment_modal_pay").val() == "") {
-            $("#paymentModal #payment_modal_pay").css("border", "2px solid red");
+          if ($("#payment_modal_pay").val() == "") {
+            $("#payment_modal_pay").css("border", "2px solid red");
           }
-          $("#paymentModal #payment_modal_pay").inputFilter(function(value) {
+          $(" #payment_modal_pay").inputFilter(function(value) {
             return /^\d*\.?\d*$/.test(value);    // Allow digits only, using a RegExp
            },"Only digits allowed");
-          var curModalName = "#paymentModal";
-          showBalance($(this).val(), curModalName);
-        })
-        .on("input", "#paymentTelModal #payment_modal_pay", function() {
-          if ($("#paymentModal #payment_modal_pay").val() == "") {
-            $("#paymentModal #payment_modal_pay").css("border", "2px solid red");
-          }
-          $("#paymentTelModal #payment_modal_pay").inputFilter(function(value) {
-            return /^\d*\.?\d*$/.test(value);    // Allow digits only, using a RegExp
-           },"Only digits allowed");
-          var curModalName = "#paymentTelModal";
-          showBalance($(this).val(), curModalName);
+          showBalance($(this).val());
         })
         .on("click", "#clientPhoneNumberBtn", function() {
           if($(this).attr("data-phone") == '') {
@@ -3121,6 +3023,8 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
         var id = $("#js-categories div:first-child").attr("data-id");
         var category = $("#js-categories div:first-child").attr("data-category");
         load_initial_items(id, category);
+        clockUpdate();
+        setInterval(clockUpdate, 1000);
       })
        $(window).on('beforeunload', function(){
           if ($("#createPage").text()=="Add new order" || $("#updatePage").text()=="Update Order") {
@@ -3131,6 +3035,32 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
         
       // });
       // $(document).ready()
+      function clockUpdate() {
+        var date = new Date();
+        function addZero(x) {
+          if (x < 10) {
+            return x = '0' + x;
+          } else {
+            return x;
+          }
+        }
+
+        function twelveHour(x) {
+          if (x > 12) {
+            return x = x - 12;
+          } else if (x == 0) {
+            return x = 12;
+          } else {
+            return x;
+          }
+        }
+
+        var h = addZero(twelveHour(date.getHours()));
+        var m = addZero(date.getMinutes());
+        var s = addZero(date.getSeconds());
+
+        $('#currentTimeUpdate').text("Time:"+h + ':' + m + ':' + s)
+      }
       function myTinyMceInit(pSelector, pValue) {
         tinymce.init({
           relative_urls: false,
@@ -3670,6 +3600,16 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           console.log('Called me');
           $('#tableModal').modal();
         });
+        $("#productSearchHide").click(function() {
+          if($("#product_input").hasClass("d-none")) {
+            $("#product_input").removeClass("d-none");
+            $(this).html('<i class="fa fa-times" aria-hidden="true"></i>');
+          } else {
+            $("#product_input").addClass("d-none");
+            $(this).html('<i class="fa fa-search" aria-hidden="true"></i>');
+          }
+
+        })
         $("#productSearch").click(function() {
           var $key = $("#inputSearch").val();
           if ($key != '') {
@@ -3763,7 +3703,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           var frm = $(active_frm);
           var total = parseFloat($(active_frm +" #total").val());
           var min_amt = parseFloat($(active_frm +" #min_amt").val());
-          var currency = $("#paymentModal #payment_modal_curr").text();
+          var currency = $("#payment_modal_curr").text();
           switch(caseValue) {
             case '#client':
               if (validateOrderTab(total, min_amt, currency)) {
@@ -3850,10 +3790,8 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
                   $("#cartPriceBottom").html(data.total_format);
                   // FOR EPOS PAYMENT BUTTON 
                   $("#btn-payment").attr("data-cart", data.total.toFixed(2));
-                  $("#btn-payment-tel").attr("data-cart", data.total.toFixed(2));
 
                   pos_payment(data.total.toFixed(2));
-                  tel_payment(data.total.toFixed(2));
 
                   var min_amt = $("#min_amt").val();
                   var type = !$(".onoffswitch-order .onoffswitch-checkbox").prop("checked");
@@ -4228,25 +4166,25 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             $('#current_page').val(new_page);
             showPage(new_page);
           }
-          function showBalance(paying, $modalName) {
-            var tot = $($modalName+" #payment_modal_tot").text();
+          function showBalance(paying) {
+            var tot = $("#payment_modal_tot").text();
             var tot_int = parseFloat(tot);
             var balance;
             var balance_format;
             paying = paying.trim();
-            var currency = $($modalName+" #payment_modal_curr").text();
+            var currency = $("#payment_modal_curr").text();
             if(isNaN(paying) || paying == '' ||  parseFloat(paying) < tot_int ) {
-              $($modalName+" #error-msg").removeClass("d-none");
+              $("#error-msg").removeClass("d-none");
               balance_format = currency + " 0.00" ;
-              $($modalName+" #paymentBtn").attr("data-valid", "false");
+              $("#paymentBtn").attr("data-valid", "false");
             } else {
-              $($modalName+" #payment_modal_pay").css("border", "2px solid #075114");
-              $($modalName+" #error-msg").addClass("d-none");
+              $("#payment_modal_pay").css("border", "2px solid #075114");
+              $("#error-msg").addClass("d-none");
               balance = parseFloat(paying) - tot_int;
               balance_format = currency +" "+ parseFloat(balance).toFixed(2);
-              $($modalName+" #paymentBtn").attr("data-valid", "true");
+              $("#paymentBtn").attr("data-valid", "true");
             }
-            $($modalName+" #payment_modal_bal").text(balance_format);
+            $("#payment_modal_bal").text(balance_format);
           }
           function currencyBtns(cart_tot, $modalName) {
             var currency_sign = $($modalName+" #payment_modal_curr").text();
@@ -4419,51 +4357,23 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           }
           else if (!validateCart()) {
             $(getActiveForm()).find('#customer_paid').val(0);
-            var $curModalName = "#paymentModal";
-            shownModalName = "#paymentModal";
             $(".payment-method-btn").removeClass("selected");
             $(".confirm_payment_method button:first-child").addClass("selected");
             $('#pos_payment_method').val($(".confirm_payment_method button:first-child").text());
             $(".confirm-table-btn").removeClass("selected");
             tableID = $('#res_table_name').val();
-            $('#paymentModal .confirm-table-btn').each(function(index, obj) {
+            $('.confirm-table-btn').each(function(index, obj) {
               if (obj.id == tableID) {
                 $(obj).addClass("selected");
                 return false;
               }
             });
-            var currency_sign = $($curModalName+" #payment_modal_curr").text();
+            var currency_sign = $("#payment_modal_curr").text();
             var cart_tot = argument;
-            // var htmlBtns = currencyBtns(cart_tot, $curModalName);
             var htmlBtns =  "<a href='javascript:;' class='btn' data-rs='"+ cart_tot +"'>"+ currency_sign +" "+ cart_tot +"</a>";
-            $($curModalName+" .money-container #payment_btn_val").html(htmlBtns);
-            $($curModalName+' #confirm-table-error-msg').text('');
-            // $($curModalName).modal();
-            $($curModalName+" #payment_modal_tot").text(cart_tot);
-          }
-        }
-
-        function tel_payment(argument) {
-          var active_frm = getActiveForm();
-          var frm = $(active_frm);
-          var total = parseFloat($(active_frm +" #total").val());
-          var min_amt = parseFloat($(active_frm +" #min_amt").val());
-          var currency = $("#paymentModal #payment_modal_curr").text();
-          if(validateOrderTab(total, min_amt, currency)) {
-            $(getActiveForm()).find('#customer_paid').val(0);
-            var $curModalName = "#paymentTelModal";
-            shownModalName = "#paymentTelModal";
-            $(".payment-method-btn").removeClass("selected");
-            $(".confirm_payment_method button:first-child").addClass("selected");
-            // $('#payment_method').val($(".confirm_payment_method button:first-child").text());
-            var cart_tot = argument;
-            var htmlBtns = currencyBtns(cart_tot, $curModalName);
-            $($curModalName+" .money-container").html(htmlBtns);
-            $($curModalName+' #confirm-table-error-msg').text('');
-            // $($curModalName).modal();
-            $($curModalName+" #payment_modal_tot").text(cart_tot);
-          } else {
-            cartEmptyPopup();
+            $(".money-container #payment_btn_val").html(htmlBtns);
+            $('#confirm-table-error-msg').text('');
+            $("#payment_modal_tot").text(cart_tot);
           }
         }
 

@@ -372,8 +372,8 @@ td .btn-secondary:hover {
     padding: 0px;
 }
 .topnav-one #inputSearch {
-    width: 70%;
-    border-radius: 5px;
+    
+    border-radius: 5px 0 0 5px;
     color: gray;
 }
 #orderTab > li.active {

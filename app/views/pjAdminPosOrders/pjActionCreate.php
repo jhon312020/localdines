@@ -45,15 +45,16 @@
 </style>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simple-keyboard@latest/build/css/index.css">
 <script src="https://cdn.jsdelivr.net/npm/simple-keyboard@latest/build/index.js"></script>
-<?php //echo "<pre>"; print_r($tpl['category_list'] ); echo "</pre>"; ?>
-<div id="js-categories" class="row wrapper wrapper-content animated">
-  <?php foreach($tpl['category_list'] as $key=>$category)  { ?>
-  <div class="col-sm-2 col-lg-1 cus-category" data-id="<?php echo $key; ?>" data-category="<?php echo $category; ?>">
-    <div class="category-container cus-pt-2 cus-pb-2" data-id="<?php echo $key; ?>">
-      <div class="content"><h4><?php echo $category; ?></h4></div>
-    </div>
-  </div>
-  <?php } ?>
+<?php //echo "<pre>"; print_r($tpl['category_list'] ); echo "</pre>";
+// echo $_SESSION[$controller->defaultUser]['name'];
+?>
+
+<div class="row" style="height: 30px;">
+  <div class="col-sm-2"><?php echo "Date:". date($tpl['option_arr']['o_date_format']);  ?></div>
+  <div class="col-sm-2"><?php echo "Day:". date("l"); ?></div>
+  <div id="currentTimeUpdate" class="col-sm-2"><?php echo "time"; ?></div>
+  <div class="col-sm-2"><?php echo $tpl['order_title']; ?></div>
+  <div class="col-sm-3"><?php echo $_SESSION[$controller->defaultUser]['name']; ?></div>
 </div>
 <div class="row wrapper wrapper-content animated fadeInRight">
   <div class="col-sm-5" id="col-5">
@@ -68,12 +69,16 @@
             </a>
             <!-- <button class="btn btn-light activeFrmBtn" id="btn-epos" disabled>POS</button>
             <button class="btn btn-light" id="btn-telephone">TEL</button> -->
-            <span><?php echo $tpl['order_title']; ?></span>
+            <span><?php //echo $tpl['order_title']; ?></span>
           </div>
-          <div class="hidden-md col-lg-6">
+          <div class="hidden-md col-lg-6 text-right">
             <form class="form-inline" style="" onkeydown="return event.key != 'Enter';">
-              <input id="inputSearch" class="form-control mr-sm-2" type="search" placeholder="Search Products..." aria-label="Search">
-              <button id="productSearch" class="btn btn-outline-success my-2 my-sm-0" type="button" style="background-color: #fff;color: #000;"><i class="fa fa-search" aria-hidden="true"></i></button>
+              <div id="product_input" class="input-group d-none">
+                <input id="inputSearch" type="text" class="form-control" type="search" placeholder="Search Products..." aria-label="Search">
+                <div id="productSearch" class="input-group-addon btn btn-outline-success my-2 my-sm-0" type="button" style="background-color: #fff;color: #000;"><i class="fa fa-search" aria-hidden="true"></i></div>
+              </div>
+              <!-- <input id="inputSearch" class="form-control mr-sm-2 " > -->
+              <button id="productSearchHide" class="btn btn-outline-success my-2 my-sm-0" type="button" style="background-color: #fff;color: #000;"><i class="fa fa-search" aria-hidden="true"></i></button>
             </form>
           </div>
           <div class="hidden-xs col-sm-6 hidden-lg"></div>
@@ -110,11 +115,11 @@
   <div class="col-sm-7  bg-light" id="col-7">
     <div class="col-sm-12" style="margin-top: 10px;">
       <div class="row">
-        <div class="col-sm-1">
+        <!-- <div class="col-sm-1">
           <div class="arr arr-left"><i class="fa fa-bars"></i></div>
           <div class="arr arr-right" style="display:none;"><i class="fa fa-bars"></i></div> 
-        </div>
-        <div class="col-sm-4 text-left">
+        </div> -->
+        <div class="col-sm-5 text-left">
           <a href="#" class="btn btn-primary" id="btn-pause">
             <i class="fa fa-pause" aria-hidden="true"></i>
           </a>
@@ -123,7 +128,7 @@
           </a>
         </div>
         <div class="col-sm-2 text-center">
-          <span><?php echo $tpl['order_title']; ?></span>
+          <span></span>
         </div>
         <div class="col-sm-5 text-right">
           <a href="#" class="btn btn-primary" id="showCart">
@@ -145,6 +150,21 @@
       ?>
     </div>
   </div>
+</div>
+<div class="row cus-pb-2 cus-pt-2" style="background-color: white;">
+  <div class="col-sm-5"></div>
+  <div class="col-sm-7">
+    <?php include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/payment_bottom_element.php'; ?>
+  </div>
+</div>
+<div id="js-categories" class="row wrapper wrapper-content animated">
+  <?php foreach($tpl['category_list'] as $key=>$category)  { ?>
+  <div class="col-sm-2 col-lg-1 cus-category" data-id="<?php echo $key; ?>" data-category="<?php echo $category; ?>">
+    <div class="category-container cus-pt-2 cus-pb-2" data-id="<?php echo $key; ?>">
+      <div class="content"><h4><?php echo $category; ?></h4></div>
+    </div>
+  </div>
+  <?php } ?>
 </div>
 <div class="row wrapper wrapper-content animated fadeInRight">
   <?php

@@ -90,8 +90,12 @@
           </div>
           <div class="hidden-md col-lg-6">
             <form class="form-inline" style="" onkeydown="return event.key != 'Enter';">
-              <input id="inputSearch" class="form-control mr-sm-2" type="search" placeholder="Search Products..." aria-label="Search">
-              <button id="productSearch" class="btn btn-outline-success my-2 my-sm-0" type="button" style="background-color: #fff;color: #000;"><i class="fa fa-search" aria-hidden="true"></i></button>
+              <div id="product_input" class="input-group d-none">
+                <input id="inputSearch" type="text" class="form-control" type="search" placeholder="Search Products..." aria-label="Search">
+                <div id="productSearch" class="input-group-addon btn btn-outline-success my-2 my-sm-0" type="button" style="background-color: #fff;color: #000;"><i class="fa fa-search" aria-hidden="true"></i></div>
+              </div>
+              <!-- <input id="inputSearch" class="form-control mr-sm-2 " > -->
+              <button id="productSearchHide" class="btn btn-outline-success my-2 my-sm-0" type="button" style="background-color: #fff;color: #000;"><i class="fa fa-search" aria-hidden="true"></i></button>
             </form>
           </div>
           <div class="hidden-xs col-sm-6 hidden-lg"></div>

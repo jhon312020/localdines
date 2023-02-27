@@ -37,17 +37,7 @@
 </style>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simple-keyboard@latest/build/css/index.css">
 <script src="https://cdn.jsdelivr.net/npm/simple-keyboard@latest/build/index.js"></script>
-
-<div id="js-categories" class="row wrapper wrapper-content animated">
-  <?php foreach($tpl['category_list'] as $key=>$category)  { ?>
-  <div class="col-sm-2 col-lg-1 cus-category" data-id="<?php echo $key; ?>" data-category="<?php echo $category; ?>">
-    <div class="category-container cus-pt-2 cus-pb-2" data-id="<?php echo $key; ?>">
-      <div class="content"><h4><?php echo $category; ?></h4></div>
-    </div>
-  </div>
-  <?php } ?>
-</div>
-
+<div class="row" style="height: 30px;"></div>
 <div class="row wrapper wrapper-content animated fadeInRight">
   <div class="col-sm-5" id="col-5">
     <div class="row">
@@ -98,11 +88,11 @@
   <div class="col-sm-7 bg-light" id="col-7">
     <div class="col-sm-12">
       <div class="row">
-        <div class="col-sm-1">
+        <!-- <div class="col-sm-1">
           <div class="arr arr-left"> <i class="fa fa-bars"></i></div>
           <div class="arr arr-right" style="display:none;"> <i class="fa fa-bars"></i></div>
-        </div>
-        <div class="col-sm-4 text-left">
+        </div> -->
+        <div class="col-sm-5 text-left">
           <?php if($tpl['arr']['origin'] == 'Pos') { ?>
           <a href="#" class="btn btn-primary" id="btn-pause">
             <i class="fa fa-pause" aria-hidden="true"></i>
@@ -130,25 +120,48 @@
       
     </div>
       <?php if (strtolower($tpl['arr']['origin']) == "telephone" || (strtolower($tpl['arr']['origin']) == "web" )) { ?>
-          <div class="col-sm-12" style="min-height: 500px;">
-            <?php include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/order_form_telephone_update.php'; ?>
-          </div>
-          <div class="col-sm-12">
-            <?php 
-            if ($tpl['arr']['status'] == PENDING_STATUS) { 
-              include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/payment_tel_element.php';
-            } ?>
-          </div>
+        <div class="col-sm-12" style="min-height: 500px;">
+          <?php include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/order_form_telephone_update.php'; ?>
+        </div>
+        <div class="col-sm-12">
+          <?php 
+          if ($tpl['arr']['status'] == PENDING_STATUS) { 
+            include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/payment_element.php';
+          } ?>
+        </div>
 
-        <?php } elseif ($tpl['arr']['origin'] == "Pos") { ?>
-          <div class="col-sm-12" style="min-height: 500px;">
-            <?php include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/order_form_pos_eatin_update.php'; ?>
-          </div>
-          <div class="col-sm-12">
-            <?php include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/payment_element.php'; ?>
-          </div> 
-        <?php } ?>
+      <?php } elseif ($tpl['arr']['origin'] == "Pos") { ?>
+        <div class="col-sm-12" style="min-height: 500px;">
+          <?php include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/order_form_pos_eatin_update.php'; ?>
+        </div>
+        <div class="col-sm-12">
+          <?php include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/payment_element.php'; ?>
+        </div> 
+      <?php } ?>
   </div>
+</div>
+<div class="row cus-pb-2 cus-pt-2" style="background-color: white;"> 
+  <div class="col-sm-5"></div>
+  <div class="col-sm-7">
+    <?php
+  if (strtolower($tpl['arr']['origin']) == "telephone" || (strtolower($tpl['arr']['origin']) == "web" )) {  
+    if ($tpl['arr']['status'] == PENDING_STATUS) { 
+      include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/payment_bottom_element.php';
+    }
+  } elseif ($tpl['arr']['origin'] == "Pos") {
+    include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/payment_bottom_element.php';
+  } ?>
+  </div>
+</div>
+
+<div id="js-categories" class="row wrapper wrapper-content animated">
+  <?php foreach($tpl['category_list'] as $key=>$category)  { ?>
+  <div class="col-sm-2 col-lg-1 cus-category" data-id="<?php echo $key; ?>" data-category="<?php echo $category; ?>">
+    <div class="category-container cus-pt-2 cus-pb-2" data-id="<?php echo $key; ?>">
+      <div class="content"><h4><?php echo $category; ?></h4></div>
+    </div>
+  </div>
+  <?php } ?>
 </div>
 
 <div class="row wrapper wrapper-content animated fadeInRight">

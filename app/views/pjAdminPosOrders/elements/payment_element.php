@@ -26,10 +26,10 @@ if(isset($tpl['arr']['total'])) {
       <div class="row" style="padding-bottom: 10px;">
         <div class="col-sm-7 text-left">
           <div class="money-container">
-            <a href="javascript:;" data-rs = "50" class="btn"><?php echo $si; ?>50</a>
-            <a href="javascript:;" data-rs = "20" class="btn"><?php echo $si; ?>20</a>
-            <a href="javascript:;" data-rs = "10" class="btn"><?php echo $si; ?>10</a>
-            <a href="javascript:;" data-rs = "5" class="btn"><?php echo $si; ?>5</a>
+            <a href="javascript:;" data-rs = "50.00" class="btn"><?php echo $si; ?>50</a>
+            <a href="javascript:;" data-rs = "20.00" class="btn"><?php echo $si; ?>20</a>
+            <a href="javascript:;" data-rs = "10.00" class="btn"><?php echo $si; ?>10</a>
+            <a href="javascript:;" data-rs = "5.00" class="btn"><?php echo $si; ?>5</a>
             <span id="payment_btn_val">
               <?php if(isset($tpl['arr']['total'])) { ?>
                 <a href="javascript:;" data-rs = "<?php echo $total_val; ?>" class="btn"><?php echo $total;?></a>
@@ -53,34 +53,6 @@ if(isset($tpl['arr']['total'])) {
       <div class="row text-right">
         <div class="col-sm-12">
           <p><b>Balance: </b> <span id="payment_modal_bal"></span></p>
-        </div>
-      </div>
-     
-      <div class="row">
-        <div class="col-sm-4 text-left">
-          <div>
-            <span class="confirm_payment_method" id="confirm_payment_method">
-              <button id = "paymentTypeCash" class="btn payment-method-btn"><?php echo "Cash"; ?></button>
-              <button id = "paymentTypeCard" class="btn payment-method-btn"><?php echo "Card"; ?></button>
-            </span>
-          </div>
-        </div>
-        <div class="col-sm-4 text-center">
-          <div>
-            <button type="button" id="paymentBtn" data-valid = "false" data-phone="" class="btn btn-primary btn-w-m">Pay</button>
-          </div>
-        </div>
-        <div class="col-sm-4 text-right">
-          <div>
-            <span style="padding-left:10px">
-              <?php if ($_SESSION[$controller->defaultUser]['role_id'] != WAITER_R0LE_ID) { ?>
-              <a href="#" class="btn btn-primary" id="btn-openDrawer"><i class="fa fa-unlock" aria-hidden="true"> TOpen</i></a>
-              <?php } ?>
-              <button type="button" class="btn btn-secondary" id="btn-clear">Clear</button>
-              <a class="btn btn-secondary" href="<?php echo PJ_INSTALL_URL; ?>index.php?controller=pjAdminPosOrders&action=pjActionIndex"><?php __('btnCancel'); ?></a>
-              
-            </span>
-          </div>
         </div>
       </div>
 
