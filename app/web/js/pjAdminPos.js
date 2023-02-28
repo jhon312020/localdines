@@ -2149,25 +2149,15 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           }
           var id = $(this).attr("data-id");
           var index = $(this).attr("data-index");
-          var counting = $(this).attr("data-count");
-          var hidden_count = $("#extra-"+index).attr("data-count");
           var hidden_val = $("#extra-"+index).val();
-          // console.log('hidden_count',hidden_count);
-          // console.log('hidden_val',hidden_val);
+          var hidden_arr = [];
           if (hidden_val) {
-            var hidden_arr = [];
-            var deleted_arr = JSON.parse(hidden_val).filter((temp) => {
+            var hidden_arr = JSON.parse(hidden_val).filter((temp) => {
               return temp.id != id
             });
-            console.log("deleted_arr: ", deleted_arr);
-            deleted_arr.forEach((item, index) => {
-              item.id = index + 1;
-              hidden_arr.push(item);
-            });
-            console.log("hidden_arr: ", hidden_arr);
             $("#extra-"+index).val(JSON.stringify(hidden_arr));
           }
-          $("#extra-"+index).attr("data-count", Number(hidden_count)-1);
+          // $("#extra-"+index).attr("data-count", Number(hidden_count)-1);
           var tableObj = $(this).parent().parent().parent();
           $(this).parent().parent().remove();
           //Reseting the data count after removing the element from the table.
@@ -2512,50 +2502,45 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
         })
         .on("click", ".extra_item", function (e) {
           var index = $(this).attr("data-index");
-          var count = $(this).attr("data-count");
-          var extra_id = $(this).attr("data-id");
-          var extra_val = $(this).attr("id");
-          var extra_name = $(this).text();
+          var id = $(this).attr("data-id");
+          var select_val = $(this).attr("data-val");
+          var extra_name = $(this).attr("data-name");
           var hidden_extra = $("#extra-"+index);
-          var veiwElement = $("#fdExtraTable_show_"+index);
           var hidden_arr = [];
           var extra_json = {
-            id : extra_id,
+            id : id,
             extra_index: index,
             extra_name: extra_name,
-            extra_sel_id: extra_val,
+            extra_sel_id: select_val,
             extra_count: 1
           }
           if (hidden_extra.val()) {
             hidden_arr = JSON.parse(hidden_extra.val());
             var i = hidden_arr.findIndex((temp) => {
-              return temp.id == extra_id
+              return temp.id == id
             });
             if (i != -1) {
               hidden_arr[i].extra_count += 1;
             } else {
-              var hidden_count = $("#extra-"+index).attr("data-count");
-              $("#extra-"+index).attr("data-count", Number(hidden_count)+1);
               hidden_arr.push(extra_json);
             }
             $("#extra-"+index).val(JSON.stringify(hidden_arr));
           } else {
             hidden_arr.push(extra_json);
             $("#extra-"+index).val(JSON.stringify(hidden_arr));
-
           }
-          // console.log(veiwElement);
+          var veiwElement = $("#fdExtraTable_show_"+index);
           veiwElement.empty();
-          for(let count = 0; count< hidden_arr.length; count++) {
-            var content = hidden_arr[count].extra_name+" X"+hidden_arr[count].extra_count;
-            var button_text = $("<button>").addClass("btn btn-default").text(content);
-            var td1 = $("<td>").append(button_text);
+          for (let i=0;i < hidden_arr.length; i++) {
+            var text = hidden_arr[i].extra_name+" X"+hidden_arr[i].extra_count;
+            var button = $("<button>").addClass("btn btn-default").text(text);
             var icon = $("<i>").addClass("fa fa-times");
-            var a = $("<a>").addClass("btn btn-xs btn-danger btn-outline pj-remove-extra").attr("data-id", hidden_arr[count].id).attr("data-index",hidden_arr[count].extra_index).attr("data-count",hidden_arr[count].extra_count).append(icon);
-            var td2 = $("<td>").append(a);
-            var tr = $("<tr>").append(td1).append(td2);
+            var a = $("<a>").addClass("btn btn-xs btn-danger btn-outline pj-remove-extra").attr("data-id",hidden_arr[i].id).attr("data-index", hidden_arr[i].extra_index).append(icon);
+            var td = $("<td>").append(button).append(a);
+            var tr = $("<tr>").append(td);
             veiwElement.append(tr);
           }
+          calPrice(1);
         })
         .on("change", ".fdExtra", function (e) {
           var index = $(this).attr("data-index-only");
