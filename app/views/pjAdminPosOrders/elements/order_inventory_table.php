@@ -1,13 +1,18 @@
 <?php
   $index = "new_" . mt_rand(0, 999999); 
 ?>  
+<style>
+  tbody::-webkit-scrollbar {
+    width: 20px;
+  }
+</style>
 <table id="fdOrderList_1" class="table table-striped table-hover">
   <thead>
     <tr>
       <th><?php __('lblProduct');?></th>
       <th><?php __('lblQty');?></th>
       <th>
-          <div class="p-w-xs"><?php __('lblExtra');?></div>
+        <div class="p-w-xs"><?php //__('lblExtra');?>Extras</div>
       </th>
       <th><?php __('lblSizeAndPrice');?></th>
       <th><?php __('lblTotal');?></th>
@@ -69,6 +74,7 @@
                       if (in_array($e['id'], $product['allowed_extras']) && $e['id'] == $extra['id'] ) { 
                     ?>
                         <span>
+                          <input type="hidden" value="<?php echo $e['price']; ?>" id="fdExtra_<?php echo $oi['hash']; ?>_<?php echo $oi_sub['id']; ?>">
                           <?php echo stripslashes($e['name']); ?>: <?php echo pjCurrency::formatPrice($e['price']); ?>
                         </span>
                     <?php
@@ -80,7 +86,7 @@
                   <span><?php echo $oi_sub['cnt']; ?></span>
                   </td>
                   <!-- <td><a href="#" class="btn btn-xs btn-danger btn-outline pj-remove-extra"><i class="fa fa-times"></i></a></td> -->
-                  <input type='hidden' id="fdExtra_<?php echo $oi['hash']; ?>_<?php echo $oi_sub['id']; ?>" name="extras[<?php echo $oi['hash']; ?>]" data-index="<?php echo $oi['hash']; ?>_<?php echo $oi_sub['id']; ?>" class="fdExtra fdExtra_<?php echo $oi['hash']; ?> form-control" value='<?php echo json_encode($oi_extras_array); ?>'/>
+                  <input type='hidden' id="oldfdExtra_<?php echo $oi['hash']; ?>_<?php echo $oi_sub['id']; ?>" name="extras[<?php echo $oi['hash']; ?>]" data-index="<?php echo $oi['hash']; ?>_<?php echo $oi_sub['id']; ?>" class="fdExtra fdExtra_<?php echo $oi['hash']; ?> form-control" value='<?php echo json_encode($oi_extras_array); ?>'/>
                 </tr>
                 <?php
                       }

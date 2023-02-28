@@ -3059,7 +3059,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
         var m = addZero(date.getMinutes());
         var s = addZero(date.getSeconds());
 
-        $('#currentTimeUpdate').text("Time:"+h + ':' + m + ':' + s)
+        $('#currentTimeUpdate').text("Time: "+h + ':' + m + ':' + s)
       }
       function myTinyMceInit(pSelector, pValue) {
         tinymce.init({

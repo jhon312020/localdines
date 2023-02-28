@@ -37,21 +37,7 @@
 </style>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simple-keyboard@latest/build/css/index.css">
 <script src="https://cdn.jsdelivr.net/npm/simple-keyboard@latest/build/index.js"></script>
-<div class="row" style="height: 30px;">
-  <div class="col-sm-5">
-    <div class="row">
-      <div class="col-sm-4"><?php echo "Date:". date($tpl['option_arr']['o_date_format']);  ?></div>
-      <div class="col-sm-4 text-center"><?php echo "Day:". date("l"); ?></div>
-      <div id="currentTimeUpdate" class="col-sm-4 text-right"></div>
-    </div>
-  </div>
-  <div class="col-sm-7">
-    <div class="row">
-      <div class="col-sm-7 text-right"><strong><?php echo $tpl['order_title']; ?></strong></div>
-      <div class="col-sm-5 text-right"><strong><?php echo $_SESSION[$controller->defaultUser]['name']; ?></strong></div>
-    </div>
-  </div>
-</div>
+<?php include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/order_welcome_header.php'; ?>
 <div class="row wrapper wrapper-content animated fadeInRight">
   <div class="col-sm-5" id="col-5">
     <div class="row">
@@ -120,7 +106,7 @@
         <div class="col-lg-4 col-sm-2 text-right">
           <a href="#" class="btn btn-primary" id="showCart">
             <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-            <span id="cartPriceBottom"><?php echo pjCurrency::formatPrice(0); ?></span>
+            <span id="cartPriceBottom"><?php echo pjCurrency::formatPrice($tpl['arr']['total']); ?></span>
           </a>
         </div>
       </div>
