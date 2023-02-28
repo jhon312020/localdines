@@ -2108,27 +2108,46 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
               hidden_extra_val: hidden_arr_val,
             }).done(function (data) {
               
-              $("#extraModal .modal-body .add_more_extras").attr("data-index", index);
-              $("#extraModal .copy-extra-table").attr("data-index", index);
-              $("#extraModal .modal-body table").attr("id", tableID);
-              var loaded_data = $(data).filter("tr");
-              loaded_data.find(".pj-field-count").TouchSpin({
-                verticalbuttons: false,
-                buttondown_class: "btn btn-white",
-                buttonup_class: "btn btn-white",
-                min: 1,
-                max: 4294967295,
-              });
-              $("#extraModal .modal-body table tbody").html(loaded_data);
+              // $("#extraModal .modal-body .add_more_extras").attr("data-index", index);
+              // $("#extraModal .copy-extra-table").attr("data-index", index);
+              // // $("#extraModal .modal-body table").attr("id", tableID);
+              // // $("#extraModal .modal-body table").attr("id", tableID);
+              // var loaded_data = $(data).filter("tr");
+              // loaded_data.find(".pj-field-count").TouchSpin({
+              //   verticalbuttons: false,
+              //   buttondown_class: "btn btn-white",
+              //   buttonup_class: "btn btn-white",
+              //   min: 1,
+              //   max: 4294967295,
+              // });
+              $("#extraModal .modal-body").html(data);
               $("#extraModal").modal();
             });
           }
           return false;
         })
+        .on("click", ".copy-extra-table", function (e) {
+          if (e && e.preventDefault) {
+            e.preventDefault();
+          }
+          var index = $(this).attr("data-index");
+          var hidden_extra = $("#extra-"+index).val();
+          if (hidden_extra != '') {
+            var extra = JSON.parse(hidden_extra);
+            for (let i=0; i < extra.length; i++) {
+              console.log(extra[i].id);
+              console.log(extra[i].extra_sel_id);
+              console.log(extra[i].extra_count);
+            }
+          }
+          var table = $("#fdExtraTable_"+index);
+          console.log(hidden_extra);
+        })
         .on("click", ".pj-remove-extra", function (e) {
           if (e && e.preventDefault) {
             e.preventDefault();
           }
+          var id = $(this).attr("data-id");
           var index = $(this).attr("data-index");
           var counting = $(this).attr("data-count");
           var hidden_count = $("#extra-"+index).attr("data-count");
@@ -2138,7 +2157,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           if (hidden_val) {
             var hidden_arr = [];
             var deleted_arr = JSON.parse(hidden_val).filter((temp) => {
-              return temp.id != counting
+              return temp.id != id
             });
             console.log("deleted_arr: ", deleted_arr);
             deleted_arr.forEach((item, index) => {
@@ -2491,6 +2510,53 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
         .on("change", ".fdSize", function (e) {
           calPrice(1);
         })
+        .on("click", ".extra_item", function (e) {
+          var index = $(this).attr("data-index");
+          var count = $(this).attr("data-count");
+          var extra_id = $(this).attr("data-id");
+          var extra_val = $(this).attr("id");
+          var extra_name = $(this).text();
+          var hidden_extra = $("#extra-"+index);
+          var veiwElement = $("#fdExtraTable_show_"+index);
+          var hidden_arr = [];
+          var extra_json = {
+            id : extra_id,
+            extra_index: index,
+            extra_name: extra_name,
+            extra_sel_id: extra_val,
+            extra_count: 1
+          }
+          if (hidden_extra.val()) {
+            hidden_arr = JSON.parse(hidden_extra.val());
+            var i = hidden_arr.findIndex((temp) => {
+              return temp.id == extra_id
+            });
+            if (i != -1) {
+              hidden_arr[i].extra_count += 1;
+            } else {
+              var hidden_count = $("#extra-"+index).attr("data-count");
+              $("#extra-"+index).attr("data-count", Number(hidden_count)+1);
+              hidden_arr.push(extra_json);
+            }
+            $("#extra-"+index).val(JSON.stringify(hidden_arr));
+          } else {
+            hidden_arr.push(extra_json);
+            $("#extra-"+index).val(JSON.stringify(hidden_arr));
+
+          }
+          // console.log(veiwElement);
+          veiwElement.empty();
+          for(let count = 0; count< hidden_arr.length; count++) {
+            var content = hidden_arr[count].extra_name+" X"+hidden_arr[count].extra_count;
+            var button_text = $("<button>").addClass("btn btn-default").text(content);
+            var td1 = $("<td>").append(button_text);
+            var icon = $("<i>").addClass("fa fa-times");
+            var a = $("<a>").addClass("btn btn-xs btn-danger btn-outline pj-remove-extra").attr("data-id", hidden_arr[count].id).attr("data-index",hidden_arr[count].extra_index).attr("data-count",hidden_arr[count].extra_count).append(icon);
+            var td2 = $("<td>").append(a);
+            var tr = $("<tr>").append(td1).append(td2);
+            veiwElement.append(tr);
+          }
+        })
         .on("change", ".fdExtra", function (e) {
           var index = $(this).attr("data-index-only");
           var counting = $(this).attr("data-count");
@@ -2503,8 +2569,8 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             extra_sel_id: select_val,
             extra_count: input_val
           }
-          console.log('test',input_val);
-          console.log('extra',extra_json);
+          // console.log('test',input_val);
+          // console.log('extra',extra_json);
           if (hidden_extra.val()) {
             hidden_arr = JSON.parse(hidden_extra.val());
             var i = hidden_arr.findIndex((temp) => {
