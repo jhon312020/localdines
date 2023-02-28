@@ -50,42 +50,25 @@
 ?>
 
 <div class="row" style="height: 30px;">
-  <div class="col-sm-2"><?php echo "Date:". date($tpl['option_arr']['o_date_format']);  ?></div>
-  <div class="col-sm-2"><?php echo "Day:". date("l"); ?></div>
-  <div id="currentTimeUpdate" class="col-sm-2"><?php echo "time"; ?></div>
-  <div class="col-sm-2"><?php echo $tpl['order_title']; ?></div>
-  <div class="col-sm-3"><?php echo $_SESSION[$controller->defaultUser]['name']; ?></div>
+  <div class="col-sm-5">
+    <div class="row">
+      <div class="col-sm-4"><?php echo "Date:". date($tpl['option_arr']['o_date_format']);  ?></div>
+      <div class="col-sm-4 text-center"><?php echo "Day:". date("l"); ?></div>
+      <div id="currentTimeUpdate" class="col-sm-4 text-right"></div>
+    </div>
+  </div>
+  <div class="col-sm-7">
+    <div class="row">
+      <div class="col-sm-7 text-right"><strong><?php echo $tpl['order_title']; ?></strong></div>
+      <div class="col-sm-5 text-right"><strong><?php echo $_SESSION[$controller->defaultUser]['name']; ?></strong></div>
+    </div>
+  </div>
 </div>
 <div class="row wrapper wrapper-content animated fadeInRight">
   <div class="col-sm-5" id="col-5">
     <div class="row">
-
-      <div class="col-sm-12 bg-darkblue topnav-one">
-        <!-- <div class="col-sm-4"></div> -->
-        <div class="row">
-          <div class="col-sm-6">
-            <a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminPosOrders&amp;action=pjActionIndex" class="btn btn-default" style="color: #676a6c;">
-              <i class="fa fa-chevron-circle-left fa-2x" aria-hidden="true"></i>
-            </a>
-            <!-- <button class="btn btn-light activeFrmBtn" id="btn-epos" disabled>POS</button>
-            <button class="btn btn-light" id="btn-telephone">TEL</button> -->
-            <span><?php //echo $tpl['order_title']; ?></span>
-          </div>
-          <div class="hidden-md col-lg-6 text-right">
-            <form class="form-inline" style="" onkeydown="return event.key != 'Enter';">
-              <div id="product_input" class="input-group d-none">
-                <input id="inputSearch" type="text" class="form-control" type="search" placeholder="Search Products..." aria-label="Search">
-                <div id="productSearch" class="input-group-addon btn btn-outline-success my-2 my-sm-0" type="button" style="background-color: #fff;color: #000;"><i class="fa fa-search" aria-hidden="true"></i></div>
-              </div>
-              <!-- <input id="inputSearch" class="form-control mr-sm-2 " > -->
-              <button id="productSearchHide" class="btn btn-outline-success my-2 my-sm-0" type="button" style="background-color: #fff;color: #000;"><i class="fa fa-search" aria-hidden="true"></i></button>
-            </form>
-          </div>
-          <div class="hidden-xs col-sm-6 hidden-lg"></div>
-        </div>
-      </div>
       
-      <div class="col-sm-12 bg-blue-secondary" style="min-height: 700px;">
+      <div class="col-sm-12 bg-blue-secondary" style="min-height: 500px;">
         <input type='hidden' id='current_page' />
         <input type='hidden' id='show_per_page' />
         <input type='hidden' id='nop' />
@@ -119,7 +102,10 @@
           <div class="arr arr-left"><i class="fa fa-bars"></i></div>
           <div class="arr arr-right" style="display:none;"><i class="fa fa-bars"></i></div> 
         </div> -->
-        <div class="col-sm-5 text-left">
+        <div class="col-lg-4 col-sm-5 text-left">
+          <a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminPosOrders&amp;action=pjActionIndex" class="btn btn-default" style="color: #676a6c;">
+            <i class="fa fa-chevron-circle-left fa-3x" aria-hidden="true"></i>
+          </a>
           <a href="#" class="btn btn-primary" id="btn-pause">
             <i class="fa fa-pause" aria-hidden="true"></i>
           </a>
@@ -127,10 +113,16 @@
             <i class="fa fa-map-marker" aria-hidden="true"></i>
           </a>
         </div>
-        <div class="col-sm-2 text-center">
-          <span></span>
+        <div class="col-lg-4 col-sm-5 text-right">
+          <form class="form-inline" style="" onkeydown="return event.key != 'Enter';">
+            <div id="product_input" class="input-group d-none">
+              <input id="inputSearch" type="text" class="form-control" type="search" placeholder="Search Products..." aria-label="Search">
+              <div id="productSearch" class="input-group-addon btn btn-outline-success my-2 my-sm-0" type="button" style="background-color: #fff;color: #000;"><i class="fa fa-search" aria-hidden="true"></i></div>
+            </div>
+            <button id="productSearchHide" class="btn btn-outline-success my-2 my-sm-0" type="button" style="background-color: #0a5114;color: white;"><i class="fa fa-search" aria-hidden="true"></i></button>
+          </form>
         </div>
-        <div class="col-sm-5 text-right">
+        <div class="col-lg-4 col-sm-2 text-right">
           <a href="#" class="btn btn-primary" id="showCart">
             <i class="fa fa-shopping-cart" aria-hidden="true"></i>
             <span id="cartPriceBottom"><?php echo pjCurrency::formatPrice(0); ?></span>
@@ -138,7 +130,7 @@
         </div>
       </div>
     </div>  
-    <div class="col-sm-12" style="min-height: 500px">
+    <div class="col-sm-12">
       <input type="hidden" id="frm-type" value="#frmCreateOrder_epos">
       <?php  
         include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/order_form_pos_eatin.php';

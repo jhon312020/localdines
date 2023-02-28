@@ -371,10 +371,17 @@ td .btn-secondary:hover {
 .topnav-one .col-sm-6 {
     padding: 0px;
 }
-.topnav-one #inputSearch {
-    
+#inputSearch {
+    height: 55px;
     border-radius: 5px 0 0 5px;
     color: gray;
+}
+#productSearch {
+  border-radius: 0 5px 5px 0;
+}
+#productSearchHide {
+  height: 55px;
+  width: 55px;
 }
 #orderTab > li.active {
     background-color: #f8fafb !important;
@@ -471,18 +478,7 @@ td .btn-secondary:hover {
     transform: translate(-50%, -50%);
     width: 100%;
 }
-@media only screen and (min-width: 769px) and (max-width: 1024px) {
-    #btnCategories,#slideCategories {
-        padding: 5px !important;
-        font-size: 17px;
-    }
-    .img-container .content h4 {
-        font-size: 11px;
-    }
-    /* .topnav-two .row {
-        height: 55px !important;
-    } */
-}
+
 /* .topnav-two .row {
     max-height: 70px;
 } */
@@ -549,8 +545,8 @@ td .btn-secondary:hover {
     margin-right: 3px;
     margin-bottom: 3px;
     min-width:  90px;
-    line-height:  40px;
-    height: 55px;
+    line-height:  35px;
+    height: 50px;
     font-size: 28px;
     font-weight: bold;
     width:auto;
@@ -564,7 +560,7 @@ td .btn-secondary:hover {
     font-size: 30px;
 }
 #paymentModal input, #paymentTelModal input {
-    height: 55px;
+    height: 50px;
     font-size: 30px;
     border: 2px solid #075114;
 }
@@ -676,6 +672,37 @@ td .btn-secondary:hover {
   background: none !important;
 }
 
+@media only screen and (min-width: 769px) and (max-width: 1024px) {
+    #btnCategories,#slideCategories {
+        padding: 5px !important;
+        font-size: 17px;
+    }
+    .img-container .content h4 {
+        font-size: 11px;
+    }
+    .money-container .btn {
+    background-color: #ffab23;
+    color: #fff;
+    margin-left: 3px;
+    margin-right: 3px;
+    margin-bottom: 3px;
+    min-width:  62px;
+    line-height:  35px;
+    height: 50px;
+    font-size: 28px;
+    font-weight: bold;
+    width:auto;
+  }
+  #payment_modal_pay {
+    width: 105px !important;
+  }
+  #inputSearch {
+    width: 100px;
+  }
+  #showCart {
+    padding: 12px 0;
+  }
+}
 
 /******* New Layout Orders *******/
 

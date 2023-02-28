@@ -37,25 +37,24 @@
 </style>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simple-keyboard@latest/build/css/index.css">
 <script src="https://cdn.jsdelivr.net/npm/simple-keyboard@latest/build/index.js"></script>
-<div class="row" style="height: 30px;"></div>
+<div class="row" style="height: 30px;">
+  <div class="col-sm-5">
+    <div class="row">
+      <div class="col-sm-4"><?php echo "Date:". date($tpl['option_arr']['o_date_format']);  ?></div>
+      <div class="col-sm-4 text-center"><?php echo "Day:". date("l"); ?></div>
+      <div id="currentTimeUpdate" class="col-sm-4 text-right"></div>
+    </div>
+  </div>
+  <div class="col-sm-7">
+    <div class="row">
+      <div class="col-sm-7 text-right"><strong><?php echo $tpl['order_title']; ?></strong></div>
+      <div class="col-sm-5 text-right"><strong><?php echo $_SESSION[$controller->defaultUser]['name']; ?></strong></div>
+    </div>
+  </div>
+</div>
 <div class="row wrapper wrapper-content animated fadeInRight">
   <div class="col-sm-5" id="col-5">
     <div class="row">
-      <div class="col-sm-12 bg-darkblue topnav-one">
-        <div class="col-sm-6">
-          <a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminPosOrders&amp;action=pjActionIndex&origin=<?php echo $tpl['arr']['origin']; ?>" class="btn btn-default" style="color: #676a6c;margin: 5px 0px;">
-            <i class="fa fa-chevron-circle-left fa-2x" aria-hidden="true"></i>
-          </a>
-          <span><?php echo $tpl['order_title']; ?></span>
-        </div>
-        <div class="col-sm-6">
-          <form class="form-inline my-2 my-lg-0" style="margin: 5px 0px;" onkeydown="return event.key != 'Enter';">
-            <input id="inputSearch" class="form-control mr-sm-2" type="search" placeholder="Search Products..." aria-label="Search">
-            <button id="productSearch" class="btn btn-outline-success my-2 my-sm-0" type="button" style="background-color: #fff;color: #000;"><i class="fa fa-search" aria-hidden="true"></i></button>
-          </form>
-        </div>
-      </div>
-      
       <div class="col-sm-12 bg-blue-secondary" style="min-height: 700px;">
         <input type='hidden' id='current_page' />
         <input type='hidden' id='show_per_page' />
@@ -87,12 +86,15 @@
   </div>
   <div class="col-sm-7 bg-light" id="col-7">
     <div class="col-sm-12">
-      <div class="row">
+       <div class="row">
         <!-- <div class="col-sm-1">
-          <div class="arr arr-left"> <i class="fa fa-bars"></i></div>
-          <div class="arr arr-right" style="display:none;"> <i class="fa fa-bars"></i></div>
+          <div class="arr arr-left"><i class="fa fa-bars"></i></div>
+          <div class="arr arr-right" style="display:none;"><i class="fa fa-bars"></i></div> 
         </div> -->
-        <div class="col-sm-5 text-left">
+        <div class="col-lg-4 col-sm-5 text-left">
+          <a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminPosOrders&amp;action=pjActionIndex" class="btn btn-default" style="color: #676a6c;">
+            <i class="fa fa-chevron-circle-left fa-3x" aria-hidden="true"></i>
+          </a>
           <?php if($tpl['arr']['origin'] == 'Pos') { ?>
           <a href="#" class="btn btn-primary" id="btn-pause">
             <i class="fa fa-pause" aria-hidden="true"></i>
@@ -106,14 +108,19 @@
             <i class="fa fa-map-marker" aria-hidden="true"></i>
           </a>
         </div>
-        <div class="col-sm-2">
-          <span><?php echo $tpl['order_title']; ?></span>
+        <div class="col-lg-4 col-sm-5 text-right">
+          <form class="form-inline" style="" onkeydown="return event.key != 'Enter';">
+            <div id="product_input" class="input-group d-none">
+              <input id="inputSearch" type="text" class="form-control" type="search" placeholder="Search Products..." aria-label="Search">
+              <div id="productSearch" class="input-group-addon btn btn-outline-success my-2 my-sm-0" type="button" style="background-color: #fff;color: #000;"><i class="fa fa-search" aria-hidden="true"></i></div>
+            </div>
+            <button id="productSearchHide" class="btn btn-outline-success my-2 my-sm-0" type="button" style="background-color: #0a5114;color: white;"><i class="fa fa-search" aria-hidden="true"></i></button>
+          </form>
         </div>
-        <div class="col-sm-5 text-right">
-
+        <div class="col-lg-4 col-sm-2 text-right">
           <a href="#" class="btn btn-primary" id="showCart">
             <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-            <span id="cartPriceBottom"><?php echo pjCurrency::formatPrice($tpl['arr']['total']);?></span>
+            <span id="cartPriceBottom"><?php echo pjCurrency::formatPrice(0); ?></span>
           </a>
         </div>
       </div>
