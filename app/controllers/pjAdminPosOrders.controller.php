@@ -3175,7 +3175,7 @@ class pjAdminPosOrders extends pjAdmin {
     if (self::isPost() && $this->_post->toInt('order_create')) {
       $post_total = $this->getTotal();
       $post = $this->_post->raw();
-      $this->pr_die($post);
+      //$this->pr_die($post);
       $data = array();
       $data['uuid'] = time();
       $data['ip'] = pjUtil::getClientIp();
