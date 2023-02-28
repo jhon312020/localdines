@@ -31,7 +31,7 @@ $index = "new_" . mt_rand(0, 999999);
                 </tbody>
             </table>
             <div class="p-w-xs">
-                <a href="#" class="btn btn-primary btn-xs btn-outline pj-add-extra fdExtraBusiness_<?php echo $index;?> fdExtraButton_<?php echo $index;?>" data-index="<?php echo $index;?>"><i class="fa fa-plus"></i> <?php __('btnAddExtra');?></a>
+                <a href="#" class="btn btn-primary btn-xs btn-outline pj-add-extra fdExtraBusiness_<?php echo $index;?> fdExtraButton_<?php echo $index;?>" data-index="<?php echo $index;?>"><i class="fa fa-plus"></i> <?php //__('btnAddExtra');?></a>
             </div><!-- /.p-w-xs -->
             <?php } else { ?>
             <span class="fdExtraBusiness_<?php echo $index;?> fdExtraNA_<?php echo $index;?>"><?php __('lblNA');?></span>

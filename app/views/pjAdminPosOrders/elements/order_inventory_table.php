@@ -7,7 +7,7 @@
       <th><?php __('lblProduct');?></th>
       <th><?php __('lblQty');?></th>
       <th>
-          <div class="p-w-xs"><?php __('lblExtra');?></div>
+          <div class="p-w-xs"><?php echo "Extras"; //__('lblExtra');?></div>
       </th>
       <th><?php __('lblSizeAndPrice');?></th>
       <th><?php __('lblTotal');?></th>

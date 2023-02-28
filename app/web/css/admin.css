@@ -733,3 +733,7 @@ td .btn-secondary:hover {
 #fdOrderList_1 tbody tr td:last-child {
   width: 5%;
 }
+
+.extra_item {
+  cursor: pointer;
+}
