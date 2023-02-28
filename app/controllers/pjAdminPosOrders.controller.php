@@ -402,6 +402,7 @@ class pjAdminPosOrders extends pjAdmin {
 
       $id = $this->_post->toInt('id');
       $post = $this->_post->raw();
+      $this->pr_die($post);
       $arr = $pjOrderModel->find($id)->getData();
       if (empty($arr)) {
         pjUtil::redirect($_SERVER['PHP_SELF'] . "?controller=pjAdminPosOrders&action=pjActionIndex&err=AR08&origin=Telephone");
@@ -3337,6 +3338,7 @@ class pjAdminPosOrders extends pjAdmin {
       $arr = $pjOrderModel->find($id)->getData();
       // echo '<pre>'; print_r($post); echo '</pre>';
       // exit;
+      $this->pr_die($post);
       if (empty($arr)) {
         pjUtil::redirect($_SERVER['PHP_SELF'] . "?controller=pjAdminPosOrders&action=pjActionIndex&err=AR08");
       }

@@ -18,8 +18,8 @@
   <tbody class="main-body" style="display: block; height: 200px; overflow-x: hidden; overflow-y: auto;">
     <?php
     if (array_key_exists('oi_arr', $tpl) && count($tpl['oi_arr']) > 0) {
-      //echo '<pre>';
-      //print_r($tpl['oi_arr']);
+      // echo '<pre>';
+      // print_r($tpl['oi_arr']);
       foreach ($tpl['product_arr'] as $product) {
         foreach ($tpl['oi_arr'] as $k => $oi) {
           if ($oi['type'] == 'product' && $oi['foreign_id'] == $product['id'])  {
