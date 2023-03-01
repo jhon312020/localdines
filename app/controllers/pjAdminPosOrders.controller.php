@@ -1202,12 +1202,17 @@ class pjAdminPosOrders extends pjAdmin {
             $extra_val = $this->_get->toString('hidden_extra_val');
             $this->set('extra_val', $extra_val);
           }
+          if($this->_get->toInt('edit')) {
+            $edit = 1;
+          } else {
+            $edit = 0;
+          }
         $index = $this->_get->toString('index');
         $extra_count = $this->_get->toInt('hidden_extra_count');
         $this->set('extra_arr', $extra_arr);
         $this->set('index', $index);
         $this->set('extra_count', $extra_count);
-        
+        $this->set("edit",$edit);
       }
     }
   }

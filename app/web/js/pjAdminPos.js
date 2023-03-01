@@ -2079,6 +2079,54 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           }
           return false;
         })
+        .on("click", ".pj-veiw-extra", function (e) {
+          if (e && e.preventDefault) {
+            e.preventDefault();
+          }
+
+          var $this = $(this);
+          var index = $this.attr("data-index");
+          var hidden_extra = $("#extra-"+index).attr("data-count");
+
+          if (hidden_extra == "") {
+            hidden_extra = 1;
+            $("#extra-"+index).attr("data-count", 1);
+          }
+          var hidden_arr_val = $("#extra-"+index).val();
+          if (hidden_arr_val == "") {
+            hidden_arr_val = 1;
+          }
+          var tableID = "fdExtraTable_show_"+index;
+          var $productEle = $("#fdProduct_" + index);
+          var product_id = $productEle.val();
+          if (product_id != "") {
+            $.get("index.php?controller=pjAdminPosOrders&action=pjActionGetExtras", {
+              product_id: product_id,
+              index: $this.attr("data-index"),
+              hidden_extra_count: hidden_extra,
+              hidden_extra_val: hidden_arr_val,
+              edit: 1,
+            }).done(function (data) {
+              
+              // $("#extraModal .modal-body .add_more_extras").attr("data-index", index);
+              // $("#extraModal .copy-extra-table").attr("data-index", index);
+              // // $("#extraModal .modal-body table").attr("id", tableID);
+              // // $("#extraModal .modal-body table").attr("id", tableID);
+              // var loaded_data = $(data).filter("tr");
+              // loaded_data.find(".pj-field-count").TouchSpin({
+              //   verticalbuttons: false,
+              //   buttondown_class: "btn btn-white",
+              //   buttonup_class: "btn btn-white",
+              //   min: 1,
+              //   max: 4294967295,
+              // });
+              $("#extraModal .modal-title").text("Extras");
+              $("#extraModal .modal-body").html(data);
+              $("#extraModal").modal();
+            });
+          }
+          return false;
+        })
         .on("click", ".pj-add-extra", function (e) {
           if (e && e.preventDefault) {
             e.preventDefault();
@@ -2119,6 +2167,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
               //   min: 1,
               //   max: 4294967295,
               // });
+              $("#extraModal .modal-title").text("Add Extras");
               $("#extraModal .modal-body").html(data);
               $("#extraModal").modal();
             });
@@ -2149,11 +2198,14 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           var id = $(this).attr("data-id");
           var index = $(this).attr("data-index");
           var hidden_val = $("#extra-"+index).val();
-          var hidden_arr = [];
+          // var hidden_arr = [];
           if (hidden_val) {
             var hidden_arr = JSON.parse(hidden_val).filter((temp) => {
               return temp.id != id
             });
+            if (!hidden_arr.length) {
+              $("#cus-extra_"+index).removeClass("btn-has-extra");
+            }
             $("#extra-"+index).val(JSON.stringify(hidden_arr));
           }
           // $("#extra-"+index).attr("data-count", Number(hidden_count)-1);
@@ -2530,11 +2582,12 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             hidden_arr.push(extra_json);
             $("#extra-"+index).val(JSON.stringify(hidden_arr));
           }
+          $("#cus-extra_"+index).addClass("btn-has-extra");
           var veiwElement = $("#fdExtraTable_show_"+index);
           veiwElement.empty();
           for (let i=0;i < hidden_arr.length; i++) {
             var text = hidden_arr[i].extra_name+" X"+hidden_arr[i].extra_count;
-            var button = $("<button>").addClass("btn btn-default").text(text);
+            var button = $("<button>").addClass("btn btn-default cus-extra").text(text);
             var icon = $("<i>").addClass("fa fa-times");
             var a = $("<a>").addClass("btn btn-xs btn-danger btn-outline pj-remove-extra").attr("data-id",hidden_arr[i].id).attr("data-index", hidden_arr[i].extra_index).append(icon);
             var td = $("<td>").append(button).append(a);
@@ -3473,34 +3526,58 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           var img = $(this).attr("src");
           var cus_ins = $("#custom_special_"+qty_id).val();
           
-          var selected_inst_arry = $("#arr_"+qty_id).val();
-          var selected_inst_imgs = $("#arr_"+qty_id).attr("data-images");
-          var sibling_select = $(this).siblings(".spcl_ins_selected");
+          var selected_val = $("#selectedInsValue").val();
+          var selected_img = $("#selectedInsValue").attr("data-images");
 
-          if (sibling_select.length > 0) {
-            sibling_select.removeClass("spcl_ins_selected");
-            var siblin_id = sibling_select.attr("data-id");
-            var siblin_img = sibling_select.attr("src");
-            selected_inst_arry = selected_inst_arry.replace(siblin_id + ',','');
-            selected_inst_imgs = selected_inst_imgs.replace(siblin_img + ',','');
+          var current_si = {
+            "qid": qty_id,
+            "ids": id+",",
+            "imgs": img+",",
+            "cus_ins": cus_ins
           }
-          $(this).toggleClass('spcl_ins_selected');
-
-          if ($(this).hasClass('spcl_ins_selected')) {
-            selected_inst_arry = selected_inst_arry + id + ",";
-            selected_inst_imgs = selected_inst_imgs + img + ",";
+          var imgs_arr = [];
+          var selected_arr = []
+          if (selected_val) {
+            selected_arr = JSON.parse(selected_val);
+            var i = selected_arr.findIndex((temp) => {
+              return temp.qid == qty_id
+            });
+            if (i != -1) {
+              var selected_inst_arry = selected_arr[i].ids;
+              var selected_inst_imgs = selected_arr[i].imgs;
+              var sibling_select = $(this).siblings(".spcl_ins_selected");
+              if (sibling_select.length > 0) {
+                sibling_select.removeClass("spcl_ins_selected");
+                var siblin_id = sibling_select.attr("data-id");
+                var siblin_img = sibling_select.attr("src");
+                selected_inst_arry = selected_inst_arry.replace(siblin_id + ',','');
+                selected_inst_imgs = selected_inst_imgs.replace(siblin_img + ',','');
+              }
+              $(this).toggleClass('spcl_ins_selected');
+              if ($(this).hasClass('spcl_ins_selected')) {
+                selected_inst_arry = selected_inst_arry + id + ",";
+                selected_inst_imgs = selected_inst_imgs + img + ",";
+              } else {
+                selected_inst_arry = selected_inst_arry.replace(id + ',','');
+                selected_inst_imgs = selected_inst_imgs.replace(img + ',','');
+              }
+              selected_arr[i].ids = selected_inst_arry;
+              selected_arr[i].imgs = selected_inst_imgs;
+              imgs_arr = selected_inst_imgs.split(",");
+              
+              $("#selectedInsValue").val(JSON.stringify(selected_arr));
+            } else {
+              imgs_arr.push(img);
+              $(this).addClass("spcl_ins_selected");
+              selected_arr.push(current_si);
+              $("#selectedInsValue").val(JSON.stringify(selected_arr));
+            }
           } else {
-            selected_inst_arry = selected_inst_arry.replace(id + ',','');
-            selected_inst_imgs = selected_inst_imgs.replace(img + ',','');
+            imgs_arr.push(img);
+            $(this).addClass("spcl_ins_selected");
+            selected_arr.push(current_si);
+            $("#selectedInsValue").val(JSON.stringify(selected_arr));
           }
-
-          var selected_ins_arr = $("#selectedInsValue").val();
-          var selected_ins_imgs = $("#selectedInsValue").attr("data-images");
-
-          $("#arr_"+qty_id).val(selected_inst_arry);
-          $("#arr_"+qty_id).attr("data-images", selected_inst_imgs);
-
-          var imgs_arr = selected_inst_imgs.split(",");
           var loadimgParent = $("#imgs_"+qty_id).empty();
 
           for (var i = 0; i < imgs_arr.length; i++) {
@@ -3514,60 +3591,37 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             
           }
           // console.log(loadimgParent);
-
-          var current_si = {
-            "qid": qty_id,
-            "ids": selected_inst_arry,
-            "imgs": selected_inst_imgs,
-            "cus_ins": cus_ins
-          }
-
-          let spl_ins = [];
-          if (selected_ins_arr) {
-            let pars = JSON.parse(selected_ins_arr);
-            const index = pars.findIndex(obj => obj.qid == qty_id);
-            if (index == -1) {
-              pars.push(current_si);
-            } else {
-              pars[index] = current_si;
-            }
-            spl_ins = pars;
-          } else {
-            spl_ins.push(current_si);
-          }
-          selected_ins_arr = JSON.stringify(spl_ins);
-          // console.log(spl_ins);
-          $("#selectedInsValue").val(selected_ins_arr);
-          $("#selectedInsValue").attr("data-images", selected_ins_imgs);
         })
         .on("click", '#specialInstructionsModal .specialInstructionsBtn',function (e) { 
           var index = $("#selectedInsValue").attr("data-index");
           var selected_ins_arr = $("#selectedInsValue").val();
-          var selected_ins_imgs = $("#selectedInsValue").attr("data-images");
-          var selected_imgs = selected_ins_imgs.split(",");
-          var custom_si = $("#specialInstructionsModal #custom_special-instruction").val();
           
           var $elem_images = '';
-          if (selected_ins_arr) {
-            var parse = JSON.parse(selected_ins_arr);
-          } else {
-            var parse = [];
-          }
+          // if (selected_ins_arr) {
+          //   var parse = JSON.parse(selected_ins_arr);
+          // } else {
+          //   var parse = [];
+          // }
           
-          // const output = parse.reduce((prev, curr) => {
-          //   return `${prev}<img src=${curr.imgs}>`;
-          // }, "")
-          var img_arr = parse.map( temp => temp.imgs);
-          $.each(img_arr, function($img) {
-            if (img_arr[$img] != '' && img_arr[$img] != 'undefined') {
-              var $Img = "<img src='"+img_arr[$img]+"' />";
-              $elem_images = $elem_images + $Img;
+          // var img_arr = parse.map( temp => temp.imgs);
+          // $.each(img_arr, function($img) {
+          //   if (img_arr[$img] != '' && img_arr[$img] != 'undefined') {
+          //     var $Img = "<img src='"+img_arr[$img]+"' />";
+          //     $elem_images = $elem_images + $Img;
+          //   }
+          // });
+          $("#cus-si_"+index).removeClass("btn-has-si");
+          if(selected_ins_arr) {
+            var selected_arr = JSON.parse(selected_ins_arr);
+            for(let i=0; i<selected_arr.length; i++) {
+              if(selected_arr[i].ids != "" || selected_arr[i].cus_ins != "") {
+                $("#cus-si_"+index).addClass("btn-has-si");
+                break;
+              }
             }
-          });
+          }
 
           var custom_si = $("#selectedInsValue").val();
-
-          // var custom_si = $("#specialInstructionsModal #custom_special-instruction").val();
 
           if(custom_si != '') {
             $("tr[data-index='"+index+"'] #fdCustomSpecialInstruction_"+index).val(custom_si);

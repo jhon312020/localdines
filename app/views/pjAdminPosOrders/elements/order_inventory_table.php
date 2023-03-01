@@ -51,7 +51,7 @@
           </div>
         </td>                                 
         <td>
-          <div class="business-<?php echo $oi['hash']; ?>">
+          <div class="business-<?php echo $oi['hash']; ?> p-w-xs">
             <?php
               $sel_extra_cnt = 1;
               foreach ($tpl['extra_arr'] as $extra) {
@@ -65,7 +65,7 @@
               }
               if ($has_extra) {
             ?>
-               <a href="#" class="btn btn-primary btn-xs btn-outline pj-add-extra btn-has-extra" data-index="<?php echo $oi['hash']?>"><i class="fa fa-plus"></i> <?php //__('btnAddExtra');?></a>
+               <a href="#" class="btn btn-primary btn-xs btn-outline <?php if(count($oi_extras_array)) { echo "pj-veiw-extra btn-has-extra"; } ?> " data-index="<?php echo $oi['hash']?>"><i class="fa fa-plus"></i> <?php //__('btnAddExtra');?></a>
              <input type='hidden' id="extra-<?php echo $oi['hash']; ?>" name="extras[<?php echo $oi['hash']; ?>]" data-index="<?php echo $oi['hash']; ?>_<?php echo $oi_sub['id']; ?>" class="fdExtra fdExtra_<?php echo $oi['hash']; ?> form-control" value='<?php echo json_encode($oi_extras_array); ?>'/>
 
             <?php } else { ?>

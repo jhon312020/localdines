@@ -17,14 +17,25 @@ if ($tpl['extra_val'] == 1) {
   // }
   // echo "<pre>"; print_r($selected_arr); echo "</pre>";
 }
-
-?>
+if ($tpl['edit']) { ?>
+  <table  class=" no-margins pj-extra-table">              
+    <tbody id="fdExtraTable_show_<?php echo $index; ?>">
+      <tr>
+      <?php foreach($selected_arr as $selected_value) { ?>
+        <td>
+          <button class="btn btn-default cus-extra"><?php echo $selected_value['extra_name']; ?><span style="font-weight: 800"><?php echo " X ".$selected_value['extra_count']; ?></span></button>
+        </td>
+      <?php } ?>
+      </tr>
+    </tbody>
+  </table>
+<?php } else { ?>
 <table  class="table no-margins pj-extra-table">              
   <tbody id="fdExtraTable_show_<?php echo $index; ?>">
     <?php foreach($selected_arr as $selected_value) { ?>
     <tr>
       <td>
-        <button class="btn btn-default"><?php echo $selected_value['extra_name']." X".$selected_value['extra_count']; ?></button>
+        <button class="btn btn-default cus-extra"><?php echo $selected_value['extra_name']; ?><span style="font-weight: 800"><?php echo " X ".$selected_value['extra_count']; ?></span></button>
         <a href="#" class="btn btn-xs btn-danger btn-outline pj-remove-extra" data-id="<?php echo $selected_value['id']; ?>" data-index="<?php echo $index; ?>"><i class="fa fa-times"></i></a>
       </td>
     </tr>
@@ -36,11 +47,14 @@ if ($tpl['extra_val'] == 1) {
 <table class="table no-margins">
   <tbody>
     <tr>
+      <td>
     <?php
       foreach($tpl['extra_arr'] as $key => $extra) { ?>
-        <td><button data-val="<?php echo $extra['id']; ?>" data-name="<?php echo stripslashes($extra['name']); ?>" data-price="<?php echo $extra['price'];?>" data-id="<?php echo $key+1; ?>" data-index="<?php echo $index; ?>" class="btn btn-primary extra_item"><?php echo stripslashes($extra['name']); ?>: <?php echo pjCurrency::formatPrice($extra['price']);?></button></td>
+        <button data-val="<?php echo $extra['id']; ?>" data-name="<?php echo stripslashes($extra['name']); ?>" data-price="<?php echo $extra['price'];?>" data-id="<?php echo $key+1; ?>" data-index="<?php echo $index; ?>" class="btn btn-primary extra_item"><?php echo stripslashes($extra['name']); ?>: <?php echo pjCurrency::formatPrice($extra['price']);?></button>
       <?php }
     ?>
+    </td>
     </tr>
   </tbody>
 </table>
+<?php } ?>
