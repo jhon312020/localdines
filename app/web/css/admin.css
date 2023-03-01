@@ -256,7 +256,7 @@ td .btn-secondary:hover {
 }
 .bg-blue-secondary {
     /* background-color: #f0f9f1; */
-    background-color: #08250C;
+    background-color: #337ab7;
 }
 .categories div {
     min-height: 100px;
@@ -393,7 +393,7 @@ td .btn-secondary:hover {
     background-color: #f8fafb !important;
 }
 #orderTab > li.active > a {
-    background-color: #0a5114 !important;
+    background-color: #337ab7 !important;
 } 
 /* .fdPriceLabel, span[id^='fdTotalPrice_'] {
     font-size: 11px !important;
@@ -458,14 +458,14 @@ td .btn-secondary:hover {
 #fdOrderList_1 .fa-comment-o {
     display: inline-block;
     padding: 5px;
-    background-color: #0a5114;
+    background-color: #337ab7;
     color: #fff;
     border-radius: 12px;
     cursor: pointer;
 }
 
 .table-bg-primary {
-  background-color: #0a5114;
+  background-color: #337ab7;
 }
 
 .table-bg-primary a, .table-bg-primary .index  {
@@ -491,11 +491,11 @@ td .btn-secondary:hover {
 #section-special-instructions img {
     width: 200px;
     height: 150px;
-    border: 5px solid #0a5114;
+    border: 5px solid #337ab7;
     cursor: pointer;
 }
 .spcl_ins_selected {
-    border-color: #ffab23 !important;
+    border-color: #337ab7 !important;
 }
 #fdOrderList_1 .special_instruction_imgs img {
     width: 30px;
@@ -520,7 +520,7 @@ td .btn-secondary:hover {
 .col-special-instructions img{
     width: 100px;
     height: 100px;
-    border: 5px solid #0a5114;
+    border: 5px solid #337ab7;
     cursor: pointer;
 }
 .topnav-one .row {
@@ -612,7 +612,7 @@ td .btn-secondary:hover {
     padding-top: 50px;
 }
 .confirm_table_name .btn.selected, .confirm_payment_method .btn.selected, #sizeModal .radio-buttons.selected {
-    background-color: #0a5114;
+    background-color: #337ab7;
 }
 #pos-grid-header .pos-list-button.selected{
     background-color: #ffab23;
@@ -644,7 +644,7 @@ td .btn-secondary:hover {
   height: 20px;
 }
 .cancel_popup button.cancel {
-  background-color: #0a5114!important;
+  background-color: #337ab7!important;
 }
 #payment_modal_bal {
     font-size: 40px;
