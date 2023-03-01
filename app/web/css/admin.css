@@ -198,6 +198,12 @@ input[type = radio] {
 .mt-25 {
     margin-top: 25px;
 }
+.mt-10 {
+    margin-top: 10px;
+}
+.mt-5 {
+    margin-top: 5px;
+}
 #notify_count,
 #credits_count {
     display: inline-block;

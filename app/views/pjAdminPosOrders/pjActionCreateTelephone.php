@@ -96,11 +96,9 @@
     </div>
   </div><!-- /.col-sm-6 -->
   <div class="col-sm-7  bg-light" id="col-7">
-    <div class="col-sm-12" style="margin-top: 10px;">
-      <?php 
-        include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/order_inventory_header_buttons.php'; 
-      ?>     
-    </div>  
+    <?php 
+      include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/order_inventory_header_buttons.php'; 
+    ?> 
     <div class="col-sm-12">
       <input type="hidden" id="frm-type" value="#frmCreateOrder_pos">
       <?php 

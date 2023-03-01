@@ -78,11 +78,9 @@
     </div>
   </div>
   <div class="col-sm-7  bg-light" id="col-7">
-    <div class="col-sm-12" style="margin-top: 10px;">
-      <?php 
-        include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/order_inventory_header_buttons.php'; 
-      ?>   
-    </div>  
+    <?php 
+      include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/order_inventory_header_buttons.php'; 
+    ?>  
     <div class="col-sm-12" style="min-height: 500px">
       <input type="hidden" id="frm-type" value="#frmCreateOrder_epos">
       <?php 
