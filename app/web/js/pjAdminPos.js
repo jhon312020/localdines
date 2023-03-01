@@ -1937,7 +1937,6 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
         })
         .on("click", "#tableModal #selectTableBtn", function() {
           var no_of_persons = parseInt($('#no_of_persons').val());
-          tableID = parseInt($('#no_of_persons').val());
           if (tableID && no_of_persons) {
             var lblText = 'Table'+tableID+'-Count-'+no_of_persons;
             $('#tableModal #confirm-table-error-msg').val("");
@@ -2126,7 +2125,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           }
           return false;
         })
-        .on("click", ".copy-extra-table", function (e) {
+        .on("click", ".del-copy-extra-table", function (e) {
           if (e && e.preventDefault) {
             e.preventDefault();
           }
@@ -2505,6 +2504,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           var id = $(this).attr("data-id");
           var select_val = $(this).attr("data-val");
           var extra_name = $(this).attr("data-name");
+          var extra_price = $(this).attr("data-price");
           var hidden_extra = $("#extra-"+index);
           var hidden_arr = [];
           var extra_json = {
@@ -2512,6 +2512,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             extra_index: index,
             extra_name: extra_name,
             extra_sel_id: select_val,
+            extra_price: extra_price,
             extra_count: 1
           }
           if (hidden_extra.val()) {
@@ -2542,68 +2543,68 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           }
           calPrice(1);
         })
-        .on("change", ".fdExtra", function (e) {
-          var index = $(this).attr("data-index-only");
-          var counting = $(this).attr("data-count");
-          var select_val = $(this).val();
-          var input_val = $("#fdExtraQty_"+index+"_"+counting).val();
-          var hidden_extra = $("#extra-"+index);
-          var hidden_arr = [];
-          var extra_json = {
-            id : counting,
-            extra_sel_id: select_val,
-            extra_count: input_val
-          }
-          // console.log('test',input_val);
-          // console.log('extra',extra_json);
-          if (hidden_extra.val()) {
-            hidden_arr = JSON.parse(hidden_extra.val());
-            var i = hidden_arr.findIndex((temp) => {
-              return temp.id == counting
-            });
-            if (i != -1) {
-              hidden_arr[i] = extra_json;
-            } else {
-              hidden_arr.push(extra_json);
-            }
-            $("#extra-"+index).val(JSON.stringify(hidden_arr));
-          } else {
+        // .on("change", ".fdExtra", function (e) {
+        //   var index = $(this).attr("data-index-only");
+        //   var counting = $(this).attr("data-count");
+        //   var select_val = $(this).val();
+        //   var input_val = $("#fdExtraQty_"+index+"_"+counting).val();
+        //   var hidden_extra = $("#extra-"+index);
+        //   var hidden_arr = [];
+        //   var extra_json = {
+        //     id : counting,
+        //     extra_sel_id: select_val,
+        //     extra_count: input_val
+        //   }
+        //   // console.log('test',input_val);
+        //   // console.log('extra',extra_json);
+        //   if (hidden_extra.val()) {
+        //     hidden_arr = JSON.parse(hidden_extra.val());
+        //     var i = hidden_arr.findIndex((temp) => {
+        //       return temp.id == counting
+        //     });
+        //     if (i != -1) {
+        //       hidden_arr[i] = extra_json;
+        //     } else {
+        //       hidden_arr.push(extra_json);
+        //     }
+        //     $("#extra-"+index).val(JSON.stringify(hidden_arr));
+        //   } else {
             
-            hidden_arr.push(extra_json);
-            $("#extra-"+index).val(JSON.stringify(hidden_arr));
+        //     hidden_arr.push(extra_json);
+        //     $("#extra-"+index).val(JSON.stringify(hidden_arr));
 
-          }
-          calPrice(1);
-        })
-        .on("change", ".pj-field-count", function (e) {
-          var index = $(this).attr("data-index-only");
-          var counting = $(this).attr("data-count");
-          var input_val = $(this).val();
-          var select_val = $("#fdExtra_"+index+"_"+counting).val();
-          var hidden_extra = $("#extra-"+index);
-          var hidden_arr = [];
-          var extra_json = {
-            id : counting,
-            extra_sel_id: select_val,
-            extra_count: input_val
-          }
-          if (hidden_extra.val()) {
-            hidden_arr = JSON.parse(hidden_extra.val());
-            var i = hidden_arr.findIndex((temp) => {
-              return temp.id == counting
-            });
-            if (i != -1) {
-              hidden_arr[i] = extra_json;
-            } else {
-              hidden_arr.push(extra_json);
-            }
-            $("#extra-"+index).val(JSON.stringify(hidden_arr));
-          } else {
-            hidden_arr.push(extra_json);
-            $("#extra-"+index).val(JSON.stringify(hidden_arr));
-          }
-          calPrice(1);
-        })
+        //   }
+        //   calPrice(1);
+        // })
+        // .on("change", ".pj-field-count", function (e) {
+        //   var index = $(this).attr("data-index-only");
+        //   var counting = $(this).attr("data-count");
+        //   var input_val = $(this).val();
+        //   var select_val = $("#fdExtra_"+index+"_"+counting).val();
+        //   var hidden_extra = $("#extra-"+index);
+        //   var hidden_arr = [];
+        //   var extra_json = {
+        //     id : counting,
+        //     extra_sel_id: select_val,
+        //     extra_count: input_val
+        //   }
+        //   if (hidden_extra.val()) {
+        //     hidden_arr = JSON.parse(hidden_extra.val());
+        //     var i = hidden_arr.findIndex((temp) => {
+        //       return temp.id == counting
+        //     });
+        //     if (i != -1) {
+        //       hidden_arr[i] = extra_json;
+        //     } else {
+        //       hidden_arr.push(extra_json);
+        //     }
+        //     $("#extra-"+index).val(JSON.stringify(hidden_arr));
+        //   } else {
+        //     hidden_arr.push(extra_json);
+        //     $("#extra-"+index).val(JSON.stringify(hidden_arr));
+        //   }
+        //   calPrice(1);
+        // })
         .on("change", "#filter_type", function (e) {
           $(".frm-filter").submit();
         })
@@ -3917,37 +3918,53 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
                 }
                 if (price > 0 && product_qty > 0) {
                   total += parseFloat(price) * product_qty;
-                  $(".fdExtra_" + index).each(function () {
-                    var extra_index = $(this).attr("data-index"),
-                      extra = $(this).val(),
-                      extra_qty = parseInt($("#fdExtraQty_" + extra_index).val(), 10);
-                      console.log('Extras:', extra);
-                      console.log('Extras Qty:',extra_qty);
-                      console.log('extra_index:',extra_index);
-                    if (extra != "" && extra_qty > 0) {
-                      var extra_price = 0;
-                      //var extra_attr = $("option:selected", this).attr("data-price");
-                      var extra_attr = $("option:selected", this).attr("data-price");
-                      console.log('Extra Attr', extra_attr);
-                      if (
-                        typeof extra_attr !== typeof undefined &&
-                        extra_attr !== false
-                      ) {
-                        extra_price = parseFloat(extra_attr, 10);
-                      } else {
-                        extra_attr = parseInt($("#fdExtra_" + extra_index).val(), 10);
-                        console.log('Extra Attr', extra_attr);
-                        if (typeof extra_attr !== typeof undefined &&
-                        extra_attr) {
-                          extra_price = parseFloat(extra_attr, 10);
-                        }
-                      }
-
-                      if (extra_price > 0) {
-                        total += extra_price * extra_qty;
+                  var extraID = '#extra-'+index;
+                  if($(extraID).length) {
+                    var extras = $(extraID).val();
+                    if (extras) {
+                      extras = JSON.parse(extras);
+                      console.log(`extras ${extras}`);
+                      var extras_count = extras.length;
+                      for (var count = 0; count < extras_count; count++) {
+                        console.log(`extras -`,extras[count], extras[count].extra_price);
+                         console.log(`total ${total}`);
+                         total += parseFloat(extras[count].extra_price) * parseInt(extras[count].extra_count);
+                         console.log(`total ${total}`);
                       }
                     }
-                  });
+                  }
+
+                  // $(".fdExtra_" + index).each(function () {
+                  //   var extra_index = $(this).attr("data-index"),
+                  //     extra = $(this).val(),
+                  //     extra_qty = parseInt($("#fdExtraQty_" + extra_index).val(), 10);
+                  //     console.log('Extras:', extra);
+                  //     console.log('Extras Qty:',extra_qty);
+                  //     console.log('extra_index:',extra_index);
+                  //   if (extra != "" && extra_qty > 0) {
+                  //     var extra_price = 0;
+                  //     //var extra_attr = $("option:selected", this).attr("data-price");
+                  //     var extra_attr = $("option:selected", this).attr("data-price");
+                  //     console.log('Extra Attr', extra_attr);
+                  //     if (
+                  //       typeof extra_attr !== typeof undefined &&
+                  //       extra_attr !== false
+                  //     ) {
+                  //       extra_price = parseFloat(extra_attr, 10);
+                  //     } else {
+                  //       extra_attr = parseInt($("#fdExtra_" + extra_index).val(), 10);
+                  //       console.log('Extra Attr', extra_attr);
+                  //       if (typeof extra_attr !== typeof undefined &&
+                  //       extra_attr) {
+                  //         extra_price = parseFloat(extra_attr, 10);
+                  //       }
+                  //     }
+
+                  //     if (extra_price > 0) {
+                  //       total += extra_price * extra_qty;
+                  //     }
+                  //   }
+                  // });
                 }
                 prices[index] = total;
               });

@@ -3,7 +3,7 @@
     <div class="col-lg-4 col-sm-4 text-left">
       <div>
         <span class="confirm_payment_method" id="confirm_payment_method">
-          <button id = "paymentTypeCash" class="btn payment-method-btn"><?php echo "Cash"; ?></button>
+          <button id = "paymentTypeCash" class="btn payment-method-btn selected"><?php echo "Cash"; ?></button>
           <button id = "paymentTypeCard" class="btn payment-method-btn"><?php echo "Card"; ?></button>
         </span>
       </div>
