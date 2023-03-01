@@ -147,6 +147,7 @@
   include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/special_ins_modal.php';
   include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/special_ins_view_model.php';
   include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/extra_model.php';
+  include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/extra_view_modal.php';
   
   include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/payment_modal.php';
   include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/pause_modal.php'; 

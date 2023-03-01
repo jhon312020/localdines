@@ -458,7 +458,7 @@ td .btn-secondary:hover {
 #fdOrderList_1 .fa-comment-o {
     display: inline-block;
     padding: 5px;
-    background-color: #ffab23;
+    background-color: #0a5114;
     color: #fff;
     border-radius: 12px;
     cursor: pointer;
@@ -742,4 +742,32 @@ td .btn-secondary:hover {
 
 .extra_item {
   cursor: pointer;
+}
+
+.pj-remove-extra {
+  font-size: 20px;
+  line-height: 2.5;
+  width: 3.5em;
+}
+
+.cus-extra {
+  font-size: 28px;
+}
+
+.extra_item {
+  font-size: 28px;
+}
+
+.btn-has-extra {
+  color: #ffab23 !important;
+  border-color: #ffab23 !important;
+}
+.btn-has-extra:hover {
+  color: white !important;
+  background-color: #ffab23 !important;
+  border-color: #ffab23 !important;
+}
+
+.btn-has-si {
+  background-color: #ffab23 !important;
 }
