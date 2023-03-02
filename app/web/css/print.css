@@ -92,7 +92,7 @@ h5{
 }
 
 .nextbutton {
-    background-color: #0a5114;
+    background-color: #337ab7;
     border: 1px solid #C9C9C9;
     color: #ffffff !important;
     display: inline-block;
@@ -105,12 +105,12 @@ h5{
 }
 .nextbutton:hover
 {
-    background-color: #36703E;
-    border-color: #36703E;
+    background-color: #286090;
+    border-color: #286090;
     color: #FFFFFF;
 }
 .printbutton {
-    background-color: #0a5114;
+    background-color: #337ab7;
     border: 1px solid #C9C9C9;
     color: #ffffff !important;
     display: inline-block;
@@ -123,7 +123,7 @@ h5{
 }
 .printbutton:hover
 {
-    background-color: #36703E;
-    border-color: #36703E;
+    background-color: #286090;
+    border-color: #286090;
     color: #FFFFFF;
 }

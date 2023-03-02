@@ -3152,9 +3152,11 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
        }    
       });
       $(window).on("load", function() {
-        var id = $("#js-categories div:first-child").attr("data-id");
-        var category = $("#js-categories div:first-child").attr("data-category");
-        load_initial_items(id, category);
+        var firstCategory = $("#js-categories div:first-child");
+        if (firstCategory.length) {
+          var category = $("#js-categories div:first-child").attr("data-category");
+          load_initial_items(firstCategory.attr("data-id"), category);
+        }
         clockUpdate();
         setInterval(clockUpdate, 1000);
       })
