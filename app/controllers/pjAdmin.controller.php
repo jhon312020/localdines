@@ -111,6 +111,11 @@ class pjAdmin extends pjAppController {
 			'pjAdminPosOrders::pjActionGetPendingOrders' => 'pjAdminPosOrders::pjActionCreate',
 			'pjAdminPosOrders::pjActionCancelOrder' => 'pjAdminPosOrders::pjActionCreate',
 			'pjAdminPosOrders::pjActionGetReasonList' => 'pjAdminPosOrders::pjActionCreate',
+      // Gokul edit 
+      'pjAdminPosOrders::pjActionViewSpecialInstructionTypes' => 'pjAdminPosOrders::pjActionCreate',
+      'pjAdminPosOrders::pjActionCreateEatin' => 'pjAdminPosOrders::pjActionCreate',
+      'pjAdminPosOrders::pjActionCreateTelephone' => 'pjAdminPosOrders::pjActionCreate',
+      
 			// Default allowed actions for special instructions
 			'pjAdminSpecialInstructions::pjActionGetSpecialInstruction'  => 'pjAdminSpecialInstructions::pjActionIndex',
 			'pjAdminSpecialInstructions::pjActionUpdate'                 => 'pjAdminSpecialInstructions::pjActionIndex',
