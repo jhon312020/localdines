@@ -131,7 +131,7 @@
             echo $element;
             ?>
           <?php } else { ?>
-            <a href="" class="btn btn-primary" disabled><i class="fa fa-comment-o"></i></a>
+            <a href="#" class="btn btn-primary" disabled><i class="fa fa-comment-o"></i></a>
           <?php } ?>
           
           <input type="hidden" id="fdSpecialInstruction_<?php echo $oi['hash']; ?>" name="special_instruction[<?php echo $oi['hash']; ?>]" class="form-control special-instruction" value='<?php echo $oi['special_instruction']; ?>' />
