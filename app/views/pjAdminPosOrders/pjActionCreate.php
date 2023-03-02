@@ -53,7 +53,7 @@
   <div class="col-sm-5" id="col-5">
     <div class="row">
       
-      <div class="col-sm-12 bg-blue-secondary" style="min-height: 500px;">
+      <div class="col-sm-12 bg-blue-secondary" style="min-height: 700px;">
         <input type='hidden' id='current_page' />
         <input type='hidden' id='show_per_page' />
         <input type='hidden' id='nop' />
@@ -138,7 +138,7 @@
   include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/postal_modal.php'; 
   include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/price_modal.php'; 
   include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/special_ins_modal.php';
-  include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/special_ins_view_model.php';
+  // include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/special_ins_view_model.php';
   include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/extra_model.php';
   include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/client_phone_modal.php';
 

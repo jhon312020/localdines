@@ -177,7 +177,7 @@ class pjAdminPosOrders extends pjAdmin {
       $post_total = $this->getTotal();
       $post = $this->_post->raw();
       //echo '<pre>'; print_r($post); echo '<//pre>'; exit;
-      $this->pr_die($post);
+      // $this->pr_die($post);
       $data = array();
       $data['uuid'] = time();
       $data['ip'] = pjUtil::getClientIp();
@@ -199,7 +199,7 @@ class pjAdminPosOrders extends pjAdmin {
       $data['origin'] = 'Telephone';
       $c_data = array();
       $c_data['c_phone'] = $this->_post->toString('phone_no');
-      $client_exist = pjClientModel::factory()->join("pjAuthUser", "t2.id = t1.foreign_id")
+      $client_exist = pjClientModel::fapjActionCreatectory()->join("pjAuthUser", "t2.id = t1.foreign_id")
         ->select("t1.*, t2.phone")
         ->where("t2.phone", $c_data['c_phone'])->findAll()
         ->getData();

@@ -102,7 +102,8 @@ $index = "new_" . mt_rand(0, 999999);
     </td>
                 
     <td>
-        <span id="cus-si_<?php echo $index;?>" class="fa fa-comment-o spcl_ins" data-pdname="<?php echo $tpl['product_arr'][0]['name']; ?>" aria-hidden="true" data-index = "<?php echo $index;?>"></span>
+      <a href="#" id="cus-si_<?php echo $index;?>" data-pdname="<?php echo $tpl['product_arr'][0]['name']; ?>" aria-hidden="true" data-index = "<?php echo $index;?>" class="btn btn-primary spcl_ins"><i class="fa fa-comment-o"></i></a>
+        <!-- <span  class="fa fa-comment-o spcl_ins" ></span> -->
         <input type="hidden" id="fdSpecialInstruction_<?php echo $index;?>" name="special_instruction[<?php echo $index;?>]" class="form-control special-instruction" value="" />
         <input type="hidden" id="fdCustomSpecialInstruction_<?php echo $index;?>" name="custom_special_instruction[<?php echo $index;?>]" class="form-control custom-special-instruction" value="" />  
         

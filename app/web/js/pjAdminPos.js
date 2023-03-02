@@ -21,6 +21,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
       tableID,
       shownModalName,
       defaultTableValue = 'Take Away',
+      eatInTableInUse = null,
       $products_in_cart = [],
       // ! MEGAMIND
       $frmCreateOrder = $("#frmCreateOrder_pos"),
@@ -1910,7 +1911,9 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
               $(this).attr("disabled", true);
               $form.submit();
             } else {
-              $("#payment_modal_pay").css("border", "2px solid red");
+              $("#payment_modal_pay").removeClass("cus-input-valid");
+
+              $("#payment_modal_pay").addClass("cus-input-err");
               $("#error-msg").removeClass("d-none");
             }
           }
@@ -1937,7 +1940,10 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
         })
         .on("click", "#tableModal #selectTableBtn", function() {
           var no_of_persons = parseInt($('#no_of_persons').val());
-          if (tableID && no_of_persons) {
+          var msgArea = $('#confirm-table-error-msg');
+          var previousMessage = msgArea.text();
+          console.log(msgArea.text());
+          if (tableID && no_of_persons && eatInTableInUse == null) {
             var lblText = 'Table'+tableID+'-Count-'+no_of_persons;
             $('#tableModal #confirm-table-error-msg').val("");
             $('#res_table_name').val(tableID);
@@ -1946,7 +1952,9 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             $("#sel_table_name").removeClass("d-none");
             $("#sel_table_name_modal").html(lblText);
           } else {
-            $('#confirm-table-error-msg').html("All fields are required.");
+            if (eatInTableInUse == null) {
+              $('#confirm-table-error-msg').html("All fields are required.");
+            }
           } 
         })
         
@@ -1954,7 +1962,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           $(".confirm-table-btn").removeClass("selected");
           $(this).addClass('selected');
           tableID = this.id;
-          var msgArea = $(shownModalName+' #confirm-table-error-msg');
+          var msgArea = $('#confirm-table-error-msg');
           if (tableID) {
              $.ajax({
               type: "POST",
@@ -1966,8 +1974,10 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
               success: function (msg) {
                 if (msg.code == 200 && msg.count > 0) {
                   msgArea.html(msg.text);
+                  eatInTableInUse = true;
                 }
                 else {
+                  eatInTableInUse = null;
                   msgArea.html('');
                 }
               },
@@ -2001,14 +2011,19 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           $("#pause_phone-error").addClass("d-none");
         })
         .on("input", "#payment_modal_pay", function() {
-          
-          if ($("#payment_modal_pay").val() == "") {
-            $("#payment_modal_pay").css("border", "2px solid red");
+          if($("#fdOrderList_1 .main-body tr").length == 0) {
+            cartEmptyPopup();
+          } else {
+            if ($("#payment_modal_pay").val() == "") {
+              $("#payment_modal_pay").removeClass("cus-input-valid");
+              $("#payment_modal_pay").addClass("cus-input-err");
+            }
+            $(" #payment_modal_pay").inputFilter(function(value) {
+              return /^\d*\.?\d*$/.test(value);    // Allow digits only, using a RegExp
+             },"Only digits allowed");
+            showBalance($(this).val());
           }
-          $(" #payment_modal_pay").inputFilter(function(value) {
-            return /^\d*\.?\d*$/.test(value);    // Allow digits only, using a RegExp
-           },"Only digits allowed");
-          showBalance($(this).val());
+          
         })
         .on("click", "#clientPhoneNumberBtn", function() {
           if($(this).attr("data-phone") == '') {
@@ -2584,13 +2599,25 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           }
           $("#cus-extra_"+index).addClass("btn-has-extra");
           var veiwElement = $("#fdExtraTable_show_"+index);
+
+          // <div class="form-group">
+          //   <div class="input-group">
+          //     <div class="input-group-addon font-28"><?php echo $selected_value['extra_name']; ?></div>
+          //     <input type="text" class="form-control cus-extra" value="<?php echo " X ".$selected_value['extra_count']; ?>" disabled placeholder="qty">
+          //     <div class="input-group-addon btn btn-xs btn-danger btn-outline pj-remove-extra" data-id="<?php echo $selected_value['id']; ?>" data-index="<?php echo $index; ?>"><i class="fa fa-times"></i></div>
+          //   </div>
+          // </div>
+
           veiwElement.empty();
           for (let i=0;i < hidden_arr.length; i++) {
-            var text = hidden_arr[i].extra_name+" X"+hidden_arr[i].extra_count;
-            var button = $("<button>").addClass("btn btn-default cus-extra").text(text);
+            var child1 = $("<div>").addClass("input-group-addon font-28 cus-w-70 text-left").text(hidden_arr[i].extra_name);
+            var child2 = $("<input>").addClass("form-control cus-extra").attr({ type: "text", disabled: true }).val(" X "+hidden_arr[i].extra_count);
             var icon = $("<i>").addClass("fa fa-times");
-            var a = $("<a>").addClass("btn btn-xs btn-danger btn-outline pj-remove-extra").attr("data-id",hidden_arr[i].id).attr("data-index", hidden_arr[i].extra_index).append(icon);
-            var td = $("<td>").append(button).append(a);
+            var child3 = $("<div>").addClass("input-group-addon btn btn-xs btn-danger btn-outline pj-remove-extra").attr("data-id",hidden_arr[i].id).attr("data-index", hidden_arr[i].extra_index).append(icon);
+            var div2 = $("<div>").addClass("input-group").append(child1).append(child2).append(child3);
+            var div1 = $("<div>").addClass("form-group").append(div2);
+            
+            var td = $("<td>").append(div1);
             var tr = $("<tr>").append(td);
             veiwElement.append(tr);
           }
@@ -3432,7 +3459,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
         .on("click", '.product_spcl_ins',function (e) {
           var index = $(this).attr("data-index");
           var product_qty = parseInt($("#fdProductQty_" + index).val(), 10);
-          var product_name = $("#fdSpecialInstructionImgs_"+index).attr("data-name");
+          var product_name = $(this).attr("data-name");
           $("#spl_ins_view_title").html(product_name+" X"+ product_qty);
           var custom_ins = $("tr[data-index='"+index+"'] #fdCustomSpecialInstruction_"+index).val(); 
           $.get(
@@ -3625,7 +3652,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
 
           if(custom_si != '') {
             $("tr[data-index='"+index+"'] #fdCustomSpecialInstruction_"+index).val(custom_si);
-            $elem_images ="<i data-index ="+ index +" class='fa fa-paperclip product_spcl_ins'></i>";
+            // $elem_images ="<i data-index ="+ index +" class='fa fa-paperclip product_spcl_ins'></i>";
           }
           
           $("tr[data-index='"+index+"'] #fdSpecialInstruction_"+index).val(selected_ins_arr);
@@ -4297,10 +4324,13 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             var currency = $("#payment_modal_curr").text();
             if(isNaN(paying) || paying == '' ||  parseFloat(paying) < tot_int ) {
               $("#error-msg").removeClass("d-none");
+              $("#payment_modal_pay").removeClass("cus-input-valid")
+              $("#payment_modal_pay").addClass("cus-input-err");
               balance_format = currency + " 0.00" ;
               $("#paymentBtn").attr("data-valid", "false");
             } else {
-              $("#payment_modal_pay").css("border", "2px solid #075114");
+              $("#payment_modal_pay").removeClass("cus-input-err");
+              $("#payment_modal_pay").addClass("cus-input-valid");
               $("#error-msg").addClass("d-none");
               balance = parseFloat(paying) - tot_int;
               balance_format = currency +" "+ parseFloat(balance).toFixed(2);

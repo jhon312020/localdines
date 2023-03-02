@@ -65,11 +65,15 @@
               }
               if ($has_extra) {
             ?>
-               <a href="#" class="btn btn-primary btn-xs btn-outline <?php if(count($oi_extras_array)) { echo "pj-veiw-extra btn-has-extra"; } ?> " data-index="<?php echo $oi['hash']?>"><i class="fa fa-plus"></i> <?php //__('btnAddExtra');?></a>
-             <input type='hidden' id="extra-<?php echo $oi['hash']; ?>" name="extras[<?php echo $oi['hash']; ?>]" data-index="<?php echo $oi['hash']; ?>_<?php echo $oi_sub['id']; ?>" class="fdExtra fdExtra_<?php echo $oi['hash']; ?> form-control" value='<?php echo json_encode($oi_extras_array); ?>'/>
-
+              <?php if(count($oi_extras_array)) { ?>
+                <a href="#" class="btn btn-primary btn-xs btn-outline pj-veiw-extra btn-has-extra" data-index="<?php echo $oi['hash']?>"><i class="fa fa-plus"></i> <?php //__('btnAddExtra');?></a>
+                 <input type='hidden' id="extra-<?php echo $oi['hash']; ?>" name="extras[<?php echo $oi['hash']; ?>]" data-index="<?php echo $oi['hash']; ?>_<?php echo $oi_sub['id']; ?>" class="fdExtra fdExtra_<?php echo $oi['hash']; ?> form-control" value='<?php echo json_encode($oi_extras_array); ?>'/>
+              <?php } else { ?>
+                <a class="btn btn-danger btn-xs" disabled><i class="fa fa-times"></i></a>
+              <?php } ?>
+            
             <?php } else { ?>
-              <a class="btn btn-danger btn-outline btn-xs"><i class="fa fa-times"></i></a>
+              <a class="btn btn-danger btn-xs" disabled><i class="fa fa-times"></i></a>
             <?php } ?>
            
             
@@ -111,9 +115,23 @@
         </td>                                                
         <td>
           <?php if ($oi['special_instruction']) { ?>
-            <span class="fa fa-comment-o product_spcl_ins btn-has-si" aria-hidden="true" data-index = "<?php echo $oi['hash']; ?>"></span>
+            <?php $selected_ins = json_decode($oi['special_instruction']); ?>
+            <?php 
+            $selected_ins = json_decode($oi['special_instruction']);
+            for($i =0; $i < count($selected_ins); $i ++) {
+              if($selected_ins[$i]->ids != "" || $selected_ins[$i]->cus_ins != "") {
+                $name = stripslashes($product['name']);
+                $hash = $oi['hash'];
+                $element = "<a href='#' class='btn product_spcl_ins btn-has-si' data-name='$name' data-index = '$hash'><i class='fa fa-comment-o'></i></a>";
+                break;
+              } else {
+                $element = "<a href='#'' class='btn btn-primary' disabled><i class='fa fa-comment-o'></i></a>";
+              }
+            } 
+            echo $element;
+            ?>
           <?php } else { ?>
-            <span class="fa fa-comment-o" aria-hidden="true" data-index = "<?php echo $oi['hash']; ?>"></span>
+            <a href="" class="btn btn-primary" disabled><i class="fa fa-comment-o"></i></a>
           <?php } ?>
           
           <input type="hidden" id="fdSpecialInstruction_<?php echo $oi['hash']; ?>" name="special_instruction[<?php echo $oi['hash']; ?>]" class="form-control special-instruction" value='<?php echo $oi['special_instruction']; ?>' />

@@ -449,20 +449,20 @@ td .btn-secondary:hover {
 #fdOrderList_1 .fa-info-circle {
     color: #ffab23;
 } 
-#fdOrderList_1 .product_spcl_ins {
+/*#fdOrderList_1 .product_spcl_ins {
     background-color: #ffab23;
     padding: 5px;
     border-radius: 50%;
     color: #fff;
-}
-#fdOrderList_1 .fa-comment-o {
+}*/
+/*#fdOrderList_1 .fa-comment-o {
     display: inline-block;
     padding: 5px;
     background-color: #337ab7;
     color: #fff;
     border-radius: 12px;
     cursor: pointer;
-}
+}*/
 
 .table-bg-primary {
   background-color: #337ab7;
@@ -495,7 +495,7 @@ td .btn-secondary:hover {
     cursor: pointer;
 }
 .spcl_ins_selected {
-    border-color: #337ab7 !important;
+    border-color: #ffab23 !important;
 }
 #fdOrderList_1 .special_instruction_imgs img {
     width: 30px;
@@ -752,6 +752,13 @@ td .btn-secondary:hover {
 
 .cus-extra {
   font-size: 28px;
+  /*width: 100px !important;*/
+  font-weight: 800;
+  height: 60px;
+}
+
+.font-28 {
+  font-size: 28px !important;
 }
 
 .extra_item {
@@ -770,4 +777,25 @@ td .btn-secondary:hover {
 
 .btn-has-si {
   background-color: #ffab23 !important;
+  color: #fff;
+  border-color: #ffab23 !important;
+}
+.btn-has-si:hover {
+  color: #fff;
+}
+.cus-input-err {
+  border: 2px solid red !important;
+}
+.cus-input-valid {
+  border: 2px solid #075114 !important;
+}
+.cus-p-10 {
+  padding: 10px;
+}
+.cus-w-70 {
+  width: 70%;
+}
+
+.cus-text-left {
+  text-align: left !important;
 }
