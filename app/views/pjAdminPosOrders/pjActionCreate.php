@@ -45,8 +45,23 @@
 </style>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simple-keyboard@latest/build/css/index.css">
 <script src="https://cdn.jsdelivr.net/npm/simple-keyboard@latest/build/index.js"></script>
-<?php //echo "<pre>"; print_r($tpl['category_list'] ); echo "</pre>";
-// echo $_SESSION[$controller->defaultUser]['name'];
+<?php
+  $time_format = 'HH:mm';
+  if ((strpos($tpl['option_arr']['o_time_format'], 'a') > -1)) {
+    $time_format = 'hh:mm a';
+  }
+  if ((strpos($tpl['option_arr']['o_time_format'], 'A') > -1)) {
+    $time_format = 'hh:mm A';
+  }
+  $months = __('months', true);
+  if ($months) {
+    ksort($months);
+  }
+  $short_days = __('short_days', true);
+  $statuses = __('order_statuses', true, false);
+  unset($statuses['cancelled'], $statuses['delivered'], $statuses['confirmed']);
+  //unset($statuses['delivered']);
+  $times = ["08:00","08:30","09:00","09:30","10:00","10:30","11:00","11:30","12:00","12:30","13:00","13:30","14:00","14:30","15:00","15:30","16:00","16:30","17:00","17:30","18:00","18:30","19:00","19:30","20:00","20:30","21:00","21:30","22:00","22:30","23:00","23:30"];
 ?>
 <?php include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/order_welcome_header.php'; ?>
 <div class="row wrapper wrapper-content animated fadeInRight">
@@ -113,25 +128,6 @@
   <?php } ?>
 </div>
 <div class="row wrapper wrapper-content animated fadeInRight">
-  <?php
-    $time_format = 'HH:mm';
-    if ((strpos($tpl['option_arr']['o_time_format'], 'a') > -1)) {
-      $time_format = 'hh:mm a';
-    }
-    if ((strpos($tpl['option_arr']['o_time_format'], 'A') > -1)) {
-      $time_format = 'hh:mm A';
-    }
-    $months = __('months', true);
-    if ($months) {
-      ksort($months);
-    }
-    $short_days = __('short_days', true);
-    $statuses = __('order_statuses', true, false);
-    unset($statuses['cancelled'], $statuses['delivered'], $statuses['confirmed']);
-    //unset($statuses['delivered']);
-    $times = ["08:00","08:30","09:00","09:30","10:00","10:30","11:00","11:30","12:00","12:30","13:00","13:30","14:00","14:30","15:00","15:30","16:00","16:30","17:00","17:30","18:00","18:30","19:00","19:30","20:00","20:30","21:00","21:30","22:00","22:30","23:00","23:30"];
-  ?>
-
 </div>
 <?php
   include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/cart_modal.php'; 
@@ -141,7 +137,6 @@
   // include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/special_ins_view_model.php';
   include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/extra_model.php';
   include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/client_phone_modal.php';
-
   // include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/payment_modal.php'; 
   include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/pause_modal.php'; 
   include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/no_print.php'; 
@@ -149,22 +144,19 @@
 <script src="https://cdn.jsdelivr.net/npm/@ideal-postcodes/core-browser-bundled/dist/core-browser.umd.min.js"></script>
 
 <script type="text/javascript">
-
-
-//console.log(client_info);
-var myLabel = myLabel || {};
-myLabel.currency = "<?php echo $tpl['option_arr']['o_currency'];?>";
-myLabel.restaurant_closed = <?php x__encode('lblRestaurantClosed');?>;
-myLabel.email_exists = <?php x__encode('email_taken'); ?>;
-myLabel.phoneNumber_err = '<?php echo 'Mobile Number is invalid'; ?>';
-myLabel.email_err = '<?php echo 'Email address is invalid'; ?>';
-myLabel.voucher_err = '<?php echo 'Voucher code is invalid'; ?>';
-myLabel.delivery_fee_err = '<?php echo 'This field only accepts integer and float values'; ?>'; 
-myLabel.mobileDelivery_err = '<?php echo 'Please select any one of the delivery info'; ?>'; 
-myLabel.emailReceipt_err = '<?php echo 'Please select any one of the delivery info'; ?>'; 
-var categoryList = '<?php echo json_encode($tpl['category_list']); ?>';  
-categoryList =  JSON.parse(categoryList);  
-var client_info = '<?php echo json_encode($tpl['client_info']); ?>';
-client_info = JSON.parse(client_info);
+  var myLabel = myLabel || {};
+  myLabel.currency = "<?php echo $tpl['option_arr']['o_currency'];?>";
+  myLabel.restaurant_closed = <?php x__encode('lblRestaurantClosed');?>;
+  myLabel.email_exists = <?php x__encode('email_taken'); ?>;
+  myLabel.phoneNumber_err = '<?php echo 'Mobile Number is invalid'; ?>';
+  myLabel.email_err = '<?php echo 'Email address is invalid'; ?>';
+  myLabel.voucher_err = '<?php echo 'Voucher code is invalid'; ?>';
+  myLabel.delivery_fee_err = '<?php echo 'This field only accepts integer and float values'; ?>'; 
+  myLabel.mobileDelivery_err = '<?php echo 'Please select any one of the delivery info'; ?>'; 
+  myLabel.emailReceipt_err = '<?php echo 'Please select any one of the delivery info'; ?>'; 
+  var categoryList = '<?php echo json_encode($tpl['category_list']); ?>';  
+  categoryList =  JSON.parse(categoryList);  
+  var client_info = '<?php echo json_encode($tpl['client_info']); ?>';
+  client_info = JSON.parse(client_info);
 </script>
 

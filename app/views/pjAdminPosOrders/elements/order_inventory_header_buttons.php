@@ -24,7 +24,13 @@
       </a>
       <a href="#" class="btn btn-primary" id="showCart">
         <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-        <span id="cartPriceBottom"><?php echo pjCurrency::formatPrice(0); ?></span>
+        <?php if (array_key_exists('arr', $tpl) && array_key_exists('total', $tpl['arr'])) { 
+            $total = $tpl['arr']['total']; 
+          } else {
+            $total = 0; 
+          }
+        ?>
+        <span id="cartPriceBottom"><?php echo pjCurrency::formatPrice($total); ?></span>
       </a>
     </div>
   </div>

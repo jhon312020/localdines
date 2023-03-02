@@ -37,6 +37,21 @@
 </style>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simple-keyboard@latest/build/css/index.css">
 <script src="https://cdn.jsdelivr.net/npm/simple-keyboard@latest/build/index.js"></script>
+<?php
+  $time_format = 'HH:mm';
+  if((strpos($tpl['option_arr']['o_time_format'], 'a') > -1)) {
+    $time_format = 'hh:mm a';
+  }
+  if((strpos($tpl['option_arr']['o_time_format'], 'A') > -1)) {
+    $time_format = 'hh:mm A';
+  }
+  $months = __('months', true);
+  if ($months) {
+    ksort($months);
+  }
+  $short_days = __('short_days', true);
+  $times = ["08:00","08:30","09:00","09:30","10:00","10:30","11:00","11:30","12:00","12:30","13:00","13:30","14:00","14:30","15:00","15:30","16:00","16:30","17:00","17:30","18:00","18:30","19:00","19:30","20:00","20:30","21:00","21:30","22:00","22:30","23:00","23:30"];
+?>
 <?php include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/order_welcome_header.php'; ?>
 <div class="row wrapper wrapper-content animated fadeInRight">
   <div class="col-sm-5" id="col-5">
@@ -119,22 +134,7 @@
 </div>
 
 <div class="row wrapper wrapper-content animated fadeInRight">
-<?php
-//echo '<pre>'; print_r($tpl['arr']); echo '</pre>';
-  $time_format = 'HH:mm';
-  if((strpos($tpl['option_arr']['o_time_format'], 'a') > -1)) {
-    $time_format = 'hh:mm a';
-  }
-  if((strpos($tpl['option_arr']['o_time_format'], 'A') > -1)) {
-    $time_format = 'hh:mm A';
-  }
-  $months = __('months', true);
-  if ($months) {
-    ksort($months);
-  }
-  $short_days = __('short_days', true);
-  $times = ["08:00","08:30","09:00","09:30","10:00","10:30","11:00","11:30","12:00","12:30","13:00","13:30","14:00","14:30","15:00","15:30","16:00","16:30","17:00","17:30","18:00","18:30","19:00","19:30","20:00","20:30","21:00","21:30","22:00","22:30","23:00","23:30"];
-?>
+
 </div>
 
 <!-- End of Modal -->
