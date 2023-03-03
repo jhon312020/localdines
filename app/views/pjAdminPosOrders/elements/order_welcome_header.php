@@ -8,7 +8,15 @@
   </div>
   <div class="col-sm-7">
     <div class="row">
-      <div class="col-sm-7 text-right"><strong><?php echo $tpl['order_title']; ?></strong></div>
+      <div class="col-sm-7 text-right">
+        <?php 
+        $orderTitle = strtolower($tpl['order_title']); 
+        if (in_array($orderTitle, HAS_TABLE_SELECTION)) { ?>
+          <strong><?php echo $tpl['order_title']; ?></strong> <span id="sel_table_name"> <a href="#tableModal" id="sel_table_name_modal" class="btn btn-primary"><?php echo $tpl['selTableName']; ?></a>
+        <?php } else { ?>
+        <strong><?php echo $tpl['order_title']; ?></strong>
+        <?php } ?>
+      </div>
       <div class="col-sm-5 text-right"><strong><?php echo $_SESSION[$controller->defaultUser]['name']; ?></strong></div>
     </div>
   </div>

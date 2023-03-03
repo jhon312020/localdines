@@ -69,6 +69,7 @@
     <div class="row">
       
       <div class="col-sm-12 bg-blue-secondary" style="min-height: 700px;">
+        <?php include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/hot_keys_list.php'; ?>
         <input type='hidden' id='current_page' />
         <input type='hidden' id='show_per_page' />
         <input type='hidden' id='nop' />
@@ -107,15 +108,7 @@
     </div>
   </div><!-- /.col-sm-6 -->
 </div>
-<div id="js-categories" class="row wrapper wrapper-content animated">
-  <?php foreach($tpl['category_list'] as $key=>$category)  { ?>
-  <div class="col-sm-2 col-lg-1 cus-category" data-id="<?php echo $key; ?>" data-category="<?php echo $category; ?>">
-    <div class="category-container cus-pt-2 cus-pb-2" data-id="<?php echo $key; ?>">
-      <div class="content"><h4><?php echo $category; ?></h4></div>
-    </div>
-  </div>
-  <?php } ?>
-</div>
+<?php include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/category_list.php'; ?>
 <?php
   include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/table_select_modal.php';
   include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/cart_modal.php'; 

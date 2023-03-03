@@ -1942,6 +1942,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           var no_of_persons = parseInt($('#no_of_persons').val());
           var msgArea = $('#confirm-table-error-msg');
           var previousMessage = msgArea.text();
+          var errorMessage = "";
           console.log(msgArea.text());
           if (tableID && no_of_persons && eatInTableInUse == null) {
             var lblText = 'Table'+tableID+'-Count-'+no_of_persons;
@@ -1952,8 +1953,18 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             $("#sel_table_name").removeClass("d-none");
             $("#sel_table_name_modal").html(lblText);
           } else {
-            if (eatInTableInUse == null) {
-              $('#confirm-table-error-msg').html("All fields are required.");
+            if (!tableID) {
+              errorMessage = "Select Table number";
+            } else if (!no_of_persons) {
+              errorMessage = "Enter number of persons";
+            }
+            else if (eatInTableInUse == null) {
+              errorMessage = "All fields are required."
+            } else {
+              errorMessage = "Already pending order in queue for this table!"
+            }
+            if (errorMessage) {
+              $('#confirm-table-error-msg').html(errorMessage);
             }
           } 
         })
@@ -3722,12 +3733,13 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           }).on("click", ".close-keyboard", function (e) {
           $('.keyboard-container').addClass('d-none');
         }).on("click", "#sel_table_name_modal", function() {
-          console.log('Called me');
           tableID = parseInt($('#res_table_name').val());
           $('#tableModal #no_of_persons').val($('#total_persons').val());
           $('#tableModal .confirm-table-btn').each(function(index, obj) {
             if (obj.id == tableID) {
               $(obj).addClass("selected");
+              $('#tableModal #jsRedirectList').addClass('d-none');
+               $('#tableModal #jsCloseModal').removeClass('d-none');
             }
           });
           $('#tableModal').modal({backdrop: 'static', keyboard: false}, 'show');

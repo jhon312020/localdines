@@ -26,7 +26,8 @@
       </div>
       <div class="modal-footer">
         <button type="button" id="selectTableBtn" data-valid = "false" data-phone="" class="btn btn-primary btn-w-m-75 btn-h-m-40" style="margin-right: 10px">Ok</button>
-        <a href="index.php?controller=pjAdminPosOrders&action=pjActionIndex" class="btn btn-default btn-w-m-75 btn-h-m-40" style="padding-top:8px">Cancel</a>
+        <a id="jsCloseModal" href="#" class="btn btn-default btn-w-m-75 btn-h-m-40 d-none" data-dismiss="modal" style="padding-top:8px">Cancel</a>
+        <a id="jsRedirectList" href="index.php?controller=pjAdminPosOrders&action=pjActionIndex" class="btn btn-default btn-w-m-75 btn-h-m-40" style="padding-top:8px">Cancel</a>
       </div>
     </div>
   </div>

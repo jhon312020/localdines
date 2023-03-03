@@ -39,6 +39,7 @@ class pjAdminPosOrders extends pjAdmin {
     $this->appendJs('eatin.js');
     $this->getInculdeData();
     $arr['table_name'] = '';
+    $this->set('selTableName', '');
     $this->set('arr', $arr);
   }
 
@@ -71,8 +72,6 @@ class pjAdminPosOrders extends pjAdmin {
         ->getData();
       $this->set('product_arr', $product_arr);
 
-
-
       $postal_codes = pjPostalcodeModel::factory()->select("t1.*")
         ->findAll()
         ->getData();
@@ -98,6 +97,7 @@ class pjAdminPosOrders extends pjAdmin {
         ->orderBy("t1.order ASC")
         ->findAll()
         ->getData();
+
       $this->set('category_arr', $category_arr);
       $category_list = [];
       foreach ($category_arr as $category) {
@@ -770,7 +770,8 @@ class pjAdminPosOrders extends pjAdmin {
     if ($arr['origin'] == 'Pos') {
       if (array_key_exists($arr['table_name'], $table_list)) {
         $total_persons = $arr['total_persons'];
-        $order_title = 'Eat In <span id="sel_table_name" class=""> <a href="#tableModal" id="sel_table_name_modal" class="btn btn-primary">'.$table_list[$arr['table_name']].'-Count-'.$total_persons.'</a></span></span>';
+        $order_title = 'Eat In';
+        $selTableName = $table_list[$arr['table_name']].' Count '.$total_persons;
       } else {
         $order_title = 'Take Away';
       }
@@ -780,6 +781,7 @@ class pjAdminPosOrders extends pjAdmin {
       $order_title = 'Web';
     }
     $this->set('order_title', $order_title);
+    $this->set('selTableName', $selTableName);
   }
 
   /* Added by JR */

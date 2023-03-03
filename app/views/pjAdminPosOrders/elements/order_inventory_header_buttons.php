@@ -4,10 +4,7 @@
       <a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminPosOrders&amp;action=pjActionIndex" class="btn btn-primary">
         <i class="fa fa-chevron-circle-left fa-3x" aria-hidden="true"></i>
       </a>
-      <a href="#" class="btn btn-primary" id="btn-pause">
-        <i class="fa fa-pause" aria-hidden="true"></i>
-      </a>
-      <span id="sel_table_name" class="d-none"> <a href="#tableModal" id="sel_table_name_modal" class="btn btn-primary"></a></span>
+      </span>
     </div>
     <div class="col-lg-4 col-sm-5 text-right">
       <form class="form-inline" style="" onkeydown="return event.key != 'Enter';">

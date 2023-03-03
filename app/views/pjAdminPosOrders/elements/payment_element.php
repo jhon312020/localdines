@@ -22,7 +22,7 @@ if(isset($tpl['arr']['total'])) {
   </div>
   
   <div class="row">
-    <div class="col-lg-7 col-sm-9 text-left">
+    <div class="col-lg-6 col-sm-7 text-left">
       <div class="money-container">
         <a href="javascript:;" data-rs = "50.00" class="btn"><?php echo $si; ?>50</a>
         <a href="javascript:;" data-rs = "20.00" class="btn"><?php echo $si; ?>20</a>
@@ -35,7 +35,8 @@ if(isset($tpl['arr']['total'])) {
         </span>
       </div>
     </div>
-    <div class="col-lg-5 col-sm-3 text-right">
+    <div class="col-lg-3 col-sm-3 text-left"> <b>Balance: </b> <span id="payment_modal_bal"></span></div>
+    <div class="col-lg-3 col-sm-2 text-right">
       <div class="input-group money-container" >
         <span id="payment_modal_curr" class="d-none"><?php echo $si; ?> </span>
         <span id="payment_modal_tot" class="d-none" style="padding-right:20px;"><?php echo $total_val; ?></span>
@@ -49,7 +50,7 @@ if(isset($tpl['arr']['total'])) {
     </div>
   </div>
   <div class="row text-right">
-    <p><b>Balance: </b> <span id="payment_modal_bal"></span></p>
+    <p></p>
   </div>
 
 </div>
