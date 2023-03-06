@@ -20,7 +20,7 @@
         </div>
         <div class="form-group">
           <label for="exampleInputEmail1">No.of Persons</label>
-          <input type="number" class="js-kioskboard-input form-control"  data-kioskboard-type="numpad" id="no_of_persons" aria-describedby="" placeholder="Enter total no of persons" name="no_of_persons" >
+          <input type="text" class="jsVK-numpad-table form-control"  data-kioskboard-type="numpad" id="no_of_persons" aria-describedby="" placeholder="Enter total no of persons" name="no_of_persons" >
         </div>
         <div id="confirm-table-error-msg" class="error-msg"></div>
       </div>

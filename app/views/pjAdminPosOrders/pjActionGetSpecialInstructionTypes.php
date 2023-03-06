@@ -37,7 +37,7 @@
           <?php } ?>
         </td>
         <td>
-          <textarea id="custom_special_qty_<?php echo $i; ?>" data-id="qty_<?php echo $i; ?>" placeholder="Type Here..."  class="js-kioskboard-input form-control custom_inst"  data-kioskboard-specialcharacters="true"><?php echo $arr ? $grouped_sel_ins_arr[$current_qty_id]['cus_ins'] : ""; ?></textarea>
+          <textarea id="custom_special_qty_<?php echo $i; ?>" data-id="qty_<?php echo $i; ?>" placeholder="Type Here..."  class="jsVK-normal form-control custom_inst"  data-kioskboard-specialcharacters="true"><?php echo $arr ? $grouped_sel_ins_arr[$current_qty_id]['cus_ins'] : ""; ?></textarea>
         </td>
         <td class="spl_reset" data-id="qty_<?php echo $i; ?>" data-ins="custom_special_qty_<?php echo $i; ?>" data-clear="imgs_qty_<?php echo $i; ?>"><a ><i class="fa fa-repeat" aria-hidden="true"></i> reset</a></td>
       </tr>

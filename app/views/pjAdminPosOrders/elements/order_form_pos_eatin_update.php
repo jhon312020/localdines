@@ -31,7 +31,7 @@
           <div class="form-group row">
             <label class="control-label col-sm-6"><?php __('lblVoucher'); ?></label>
             <div class="col-sm-6">
-              <input type="text" name="voucher_code" id="voucher_code" class="form-control" value="<?php echo  stripslashes($tpl['arr']['voucher_code']);?>">
+              <input type="text" name="voucher_code" id="voucher_code" class="jsVK-normal form-control" value="<?php echo  stripslashes($tpl['arr']['voucher_code']);?>">
             </div>
           </div>
         </div><!-- /.col-md-3 -->

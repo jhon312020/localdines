@@ -149,10 +149,10 @@ class pjAdminPosOrders extends pjAdmin {
     }
     $this->appendJs('jquery.datagrid.js', PJ_FRAMEWORK_LIBS_PATH . 'pj/js/');
     $this->appendJs('pjAdminPos.js');
-    $this->appendCss('kioskboard/kioskboard-2.3.0.min.css');
-    $this->appendJs('kioskboard/kioskboard-2.3.0.min.js');
-    $this->appendJs('kioskboard.js');
-    $this->appendJs('keyboard.js');
+    $this->appendJs('VirtualKeyboard/jquery.keyboard.js');
+    $this->appendCss('VirtualKeyboard/keyboard.css');
+    $this->appendCss('VirtualKeyboard/custom_ui/jquery-ui.min.css');
+    $this->appendJs('VirtualKeyboard/custom_ui/jquery-ui-custom.min.js');;
   }
 
   public function pjActionCreateTelephone() {

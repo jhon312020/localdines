@@ -292,7 +292,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
     $('[name=email_offer]').on("click", function() {
       $('[name=email_offer]').attr("data-wt","valid");
     })
-    $('#voucher-container input').on("input keyup", function() {
+    $('#voucher-container input').on("change", function() {
       if ($(this).val()) {
         validateVoucher($(this).val());
       } else {
@@ -2021,7 +2021,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           $("#clientPhoneNumberBtn").attr("data-phone", $(this).val());
           $("#pause_phone-error").addClass("d-none");
         })
-        .on("input", "#payment_modal_pay", function() {
+        .on("change", "#payment_modal_pay", function() {
           if($("#fdOrderList_1 .main-body tr").length == 0) {
             cartEmptyPopup();
           } else {
@@ -3167,6 +3167,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
         if (firstCategory.length) {
           var category = $("#js-categories div:first-child").attr("data-category");
           load_initial_items(firstCategory.attr("data-id"), category);
+          load_keyboard();
         }
         clockUpdate();
         setInterval(clockUpdate, 1000);
@@ -3180,6 +3181,94 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
         
       // });
       // $(document).ready()
+
+      function keyboard_price(cls, length) {
+        $(cls).keyboard({
+          layout: 'custom',
+          customLayout: {
+            'normal' : [
+              '1 2 3',
+              '4 5 6',
+              '7 8 9',
+              '. 0 00',
+              '{a} {c} {bksp}'
+            ]
+          },
+          maxLength : length,
+          restrictInput : true,
+        });
+      }
+      function keyboard_normal(cls) {
+        $(cls).keyboard({ layout: 'qwerty' });
+      }
+      function keyboard_email(cls) {
+        $(cls).keyboard({
+
+          display: {
+            'bksp'   : '\u2190',
+            'enter'  : 'return',
+            'normal' : 'ABC',
+            'meta1'  : '.?123',
+            'meta2'  : '#+=',
+            'accept' : '\u21d3'
+          },
+
+          layout: 'custom',
+
+          customLayout: {
+
+            'normal': [
+              'q w e r t y u i o p {bksp}',
+              'a s d f g h j k l {enter}',
+              '{s} z x c v b n m @ . {s}',
+              '{meta1} {space} _ - {accept}'
+            ],
+            'shift': [
+              'Q W E R T Y U I O P {bksp}',
+              'A S D F G H J K L {enter}',
+              '{s} Z X C V B N M @ . {s}',
+              '{meta1} {space} _ - {accept}'
+            ],
+            'meta1': [
+              '1 2 3 4 5 6 7 8 9 0 {bksp}',
+              '` | { } % ^ * / \' {enter}',
+              '{meta2} $ & ~ # = + . {meta2}',
+              '{normal} {space} ! ? {accept}'
+            ],
+            'meta2': [
+              '[ ] { } \u2039 \u203a ^ * " , {bksp}',
+              '\\ | / < > $ \u00a3 \u00a5 \u2022 {enter}',
+              '{meta1} \u20ac & ~ # = + . {meta1}',
+              '{normal} {space} ! ? {accept}'
+            ]
+
+          }
+
+        });
+      }
+      function keyboard_numpad(cls, length) {
+        $(cls).keyboard({
+          layout: 'custom',
+          customLayout: {
+            'normal' : [
+              '1 2 3',
+              '4 5 6',
+              '7 8 9',
+              '{a} 0 {c}',
+              '{bksp}'
+            ]
+          },
+          maxLength: length,
+          restrictInput: true,
+        });
+      }
+      function load_keyboard() {
+        keyboard_normal(".jsVK-normal");
+        keyboard_price(".jsVK-price", 8);
+        keyboard_email(".jsVK-email");
+        keyboard_numpad(".jsVK-numpad", 11);
+        keyboard_numpad(".jsVK-numpad-table", 2);
+      }
       function clockUpdate() {
         var date = new Date();
         function addZero(x) {
@@ -3460,13 +3549,17 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           $.get(
             "index.php?controller=pjAdminPosOrders&action=pjActionGetSpecialInstructionTypes&selected_ins="+special_instructions+ "&qty=" + product_qty+ "&pdname=" + product_name,
           ).done(function (data) {
-            $("#specialInstructionsModal").modal();
             $("#specialInstructionsModal .modal-body").html(data);
             //$("#specialInstructionsModal #custom_special-instruction").val(custom_special_instructions)
             $("#selectedInsValue").attr("data-index", index_id);
             $("#selectedInsValue").val(special_instructions);
             $("#selectedInsValue").attr("data-images", special_instructions_imgs);
-            KioskBoard.run('.js-kioskboard-input');
+            $("#specialInstructionsModal").modal();
+            for(let i =1; i <= product_qty; i++) {
+              $('#specialInstructionsModal .modal-body #custom_special_qty_'+i).keyboard({ layout: 'qwerty'});
+            }
+
+            // KioskBoard.run('.js-kioskboard-input');
           });
         })
         .on("click", '.product_spcl_ins',function (e) {

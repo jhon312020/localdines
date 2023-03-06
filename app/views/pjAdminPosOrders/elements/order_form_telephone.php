@@ -62,7 +62,7 @@
                 <div class="form-group row">
                   <label class="control-label col-sm-6"><?php __('lblVoucher'); ?></label>
                   <div class="col-sm-6">
-                      <input type="text" name="voucher_code" class="form-control voucher">
+                      <input type="text" name="voucher_code" class="jsVK-normal form-control voucher">
                   </div>
                 </div>
               </div><!-- /.col-md-3 -->
@@ -80,7 +80,7 @@
               <div class="col-md-4 col-sm-6">
                 <div class="form-group">
                   <label class="control-label"><?php echo 'Mobile' //__('lblPhone'); ?></label>
-                  <input type="text" name="phone_no" id="phone_no" class="js-kioskboard-input form-control<?php echo $tpl['option_arr']['o_bf_include_phone'] == 3 ? ' fdRequired required' : NULL; ?>" data-msg-required="<?php __('fd_field_required', false, true);?>" data-kioskboard-type="numpad" data-kioskboard-placement="bottom" placeholder="Your Number" />
+                  <input type="text" name="phone_no" id="phone_no" class="jsVK-numpad form-control<?php echo $tpl['option_arr']['o_bf_include_phone'] == 3 ? ' fdRequired required' : NULL; ?>" data-msg-required="<?php __('fd_field_required', false, true);?>" data-kioskboard-type="numpad" data-kioskboard-placement="bottom" placeholder="Your Number" />
                 </div>
               </div><!-- /.col-md-3 --> 
               <div class="col-md-4 col-sm-6">
@@ -102,7 +102,7 @@
               <div class="col-md-4 col-sm-6">
                 <div class="form-group">
                   <label class="control-label"><?php echo 'Email' //__('lblPhone'); ?></label>
-                  <input type="text" name="sms_email" id="c_email" class="js-kioskboard-input form-control email"  data-kioskboard-specialcharacters="true" />
+                  <input type="text" name="sms_email" id="c_email" class="jsVK-email form-control email"  data-kioskboard-specialcharacters="true" />
                 </div>
               </div><!-- /.col-md-3 -->
               <div class="col-md-4 col-sm-6">
@@ -158,13 +158,13 @@
               <div class="col-md-5 col-sm-6">
                 <div class="form-group">
                   <label class="control-label"><?php echo 'Firstname'//__('lblName'); ?></label>
-                  <input type="text" name="c_name" id="c_name" class="js-kioskboard-input form-control<?php echo $tpl['option_arr']['o_bf_include_name'] == 3 ? ' fdRequired required' : NULL; ?>" data-msg-required="Firstname or Surname is required"/>
+                  <input type="text" name="c_name" id="c_name" class="jsVK-normal form-control<?php echo $tpl['option_arr']['o_bf_include_name'] == 3 ? ' fdRequired required' : NULL; ?>" data-msg-required="Firstname or Surname is required"/>
                 </div>
               </div><!-- /.col-md-3 -->
               <div class="col-md-5 col-sm-6">
                 <div class="form-group">
                   <label class="control-label"><?php echo 'Surname'//__('lblName'); ?></label>
-                  <input type="text" name="surname" id="c_surname" class="js-kioskboard-input form-control<?php echo $tpl['option_arr']['o_bf_include_name'] == 3 ? ' fdRequired required' : NULL; ?>" data-msg-required="Firstname or Surname is required"/>
+                  <input type="text" name="surname" id="c_surname" class="jsVK-normal form-control<?php echo $tpl['option_arr']['o_bf_include_name'] == 3 ? ' fdRequired required' : NULL; ?>" data-msg-required="Firstname or Surname is required"/>
                 </div>
               </div><!-- /.col-md-3 -->
               <?php
@@ -216,7 +216,7 @@
                   <div class="form-group">
                     <label class="control-label"><?php echo 'Postcode'; ?></label>
                     <div class="input-group" id="post_code">
-                      <input type="text" class="form-control fdRequired required" placeholder="Type your postCode" name="post_code" id="inputPostCode">
+                      <input type="text" class="jsVK-normal form-control fdRequired required" placeholder="Type your postCode" name="post_code" id="inputPostCode">
                       <span class="input-group-btn">
                           <button class="btn btn-default" type="button" id="btnFindPostCode"><i class="glyphicon glyphicon-ok"></i></button>
                       </span>
@@ -250,19 +250,19 @@
               <div class="col-md-4 col-sm-6">
                 <div class="form-group">
                   <label class="control-label"><?php __('lblAddress1'); ?></label>
-                  <input type="text" name="d_address_1" id="d_address_1" class="form-control<?php echo $tpl['option_arr']['o_df_include_address_1'] == 3 ? ' fdRequired required' : NULL; ?>" data-msg-required="<?php __('fd_field_required', false, true);?>"/>
+                  <input type="text" name="d_address_1" id="d_address_1" class="jsVK-normal form-control<?php echo $tpl['option_arr']['o_df_include_address_1'] == 3 ? ' fdRequired required' : NULL; ?>" data-msg-required="<?php __('fd_field_required', false, true);?>"/>
                 </div>
               </div>
               <div class="col-md-4 col-sm-6">
                 <div class="form-group">
                   <label class="control-label"><?php __('lblAddress2'); ?></label>
-                  <input type="text" name="d_address_2" id="d_address_2" class="form-control"/>
+                  <input type="text" name="d_address_2" id="d_address_2" class="jsVK-normal form-control"/>
                 </div>
               </div>
               <div class="col-md-4 col-sm-6">
                 <div class="form-group">
                   <label class="control-label"><?php __('lblCity'); ?></label>
-                  <input type="text" name="d_city" id="d_city" class="form-control<?php echo $tpl['option_arr']['o_df_include_city'] == 3 ? ' fdRequired required' : NULL; ?>" data-msg-required="<?php __('fd_field_required', false, true);?>"/>
+                  <input type="text" name="d_city" id="d_city" class="jsVK-normal form-control<?php echo $tpl['option_arr']['o_df_include_city'] == 3 ? ' fdRequired required' : NULL; ?>" data-msg-required="<?php __('fd_field_required', false, true);?>"/>
                 </div>
               </div>
               <?php
@@ -300,7 +300,7 @@
                     <label class="control-label"><?php echo "Delivery fee"; ?></label>
                     <div class="input-group">
                       <span class="input-group-addon"><?php echo pjCurrency::getCurrencySign($tpl['option_arr']['o_currency'], false) ?></span> 
-                      <input type="text" name="delivery_fee" id="delivery_fee" class="form-control">
+                      <input type="text" name="delivery_fee" id="delivery_fee" class="jsVK-price form-control">
                     </div>
                   </div>
                 </div><!-- /.col-md-3 -->
@@ -459,7 +459,7 @@
               <div class="col-md-8 col-sm-6">
                 <div class="form-group">
                   <label class="control-label"><?php __('lblSpecialInstructions'); ?></label>
-                  <textarea name="d_notes" id="d_notes" class="form-control"></textarea>
+                  <textarea name="d_notes" id="d_notes" class="jsVK-normal form-control"></textarea>
                 </div>
               </div><!-- /.col-md-3 -->
             </div>

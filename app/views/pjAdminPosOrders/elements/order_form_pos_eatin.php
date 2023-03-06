@@ -28,7 +28,7 @@
           <div class="form-group row" style="margin-bottom: 2px;">
             <label class="control-label col-sm-6"><?php __('lblVoucher'); ?></label>
             <div class="col-sm-6">
-              <input type="text" name="voucher_code" class="form-control voucher">
+              <input type="text" name="voucher_code" class="jsVK-normal form-control voucher">
             </div>
           </div>
         </div><!-- /.col-md-3 -->

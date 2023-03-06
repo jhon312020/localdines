@@ -69,7 +69,7 @@
                                 <div class="form-group row">
                                     <label class="control-label col-sm-6"><?php __('lblVoucher'); ?></label>
                                     <div class="col-sm-6">
-                                    <input type="text" name="voucher_code" id="voucher_code" class="form-control" value="<?php echo  stripslashes($tpl['arr']['voucher_code']);?>" data-wt="valid">
+                                    <input type="text" name="voucher_code" id="voucher_code" class="jsVk-normal form-control" value="<?php echo  stripslashes($tpl['arr']['voucher_code']);?>" data-wt="valid">
                                     </div>
                                     
 
@@ -539,7 +539,7 @@
                               <div class="col-md-8 col-sm-6">
                                 <div class="form-group">
                                   <label class="control-label"><?php __('lblSpecialInstructions'); ?></label>
-                                  <textarea name="d_notes" id="d_notes" class="form-control"><?php echo $tpl['arr']['d_notes']; ?></textarea>
+                                  <textarea name="d_notes" id="d_notes" class="jsVK-normal form-control"><?php echo $tpl['arr']['d_notes']; ?></textarea>
                                 </div>
                               </div><!-- /.col-md-3 -->
                             </div>   
@@ -568,7 +568,7 @@
                             <div class="col-md-4 col-sm-6">
                                 <div class="form-group">
                                     <label class="control-label"><?php echo 'Mobile' //__('lblPhone'); ?></label>
-                                    <input type="text" name="phone_no" id="phone_no" class="js-kioskboard-input form-control<?php echo $tpl['option_arr']['o_bf_include_phone'] == 3 ? ' fdRequired required' : NULL; ?>" data-msg-required="<?php __('fd_field_required', false, true);?>" value = "<?php echo $tpl['arr']['phone_no']; ?>" data-wt = "<?php if($tpl['arr']['phone_no'] == ''){ echo 'invalid'; }else{ echo 'valid';} ?>" data-kioskboard-type="numpad" data-kioskboard-placement="bottom" placeholder="Your Number"/>
+                                    <input type="text" name="phone_no" id="phone_no" class="jsVK-numpad form-control<?php echo $tpl['option_arr']['o_bf_include_phone'] == 3 ? ' fdRequired required' : NULL; ?>" data-msg-required="<?php __('fd_field_required', false, true);?>" value = "<?php echo $tpl['arr']['phone_no']; ?>" data-wt = "<?php if($tpl['arr']['phone_no'] == ''){ echo 'invalid'; }else{ echo 'valid';} ?>" data-kioskboard-type="numpad" data-kioskboard-placement="bottom" placeholder="Your Number"/>
 
                                 </div>
                             </div><!-- /.col-md-3 --> 
@@ -591,7 +591,7 @@
                         <div class="col-md-4 col-sm-6">
                                 <div class="form-group">
                                     <label class="control-label"><?php echo 'Email' //__('lblPhone'); ?></label>
-                                    <input type="text" name="sms_email" id="c_email" class="form-control email"
+                                    <input type="text" name="sms_email" id="c_email" class="jsVK-email form-control email"
                                     value = "<?php echo $tpl['arr']['sms_email']; ?>" data-wt = "<?php if($tpl['arr']['sms_email'] == ''){ echo 'invalid'; }else{ echo 'valid';} ?>" />
                                 </div>
                             </div><!-- /.col-md-3 --> 
@@ -672,14 +672,14 @@
                                     <div class="form-group">
                                         <label class="control-label"><?php echo 'Firstname'//__('lblName'); ?></label>
 
-                                        <input type="text" name="c_name" id="c_name" class="js-kioskboard-input form-control<?php echo $tpl['option_arr']['o_bf_include_name'] == 3 && $tpl['arr']['surname'] == '' ? ' fdRequired required' : NULL; ?>" data-msg-required="Firstname or Surname is required" value="<?php echo $tpl['arr']['first_name']? $tpl['arr']['first_name']:'' ?>"/>
+                                        <input type="text" name="c_name" id="c_name" class="jsVK-normal form-control<?php echo $tpl['option_arr']['o_bf_include_name'] == 3 && $tpl['arr']['surname'] == '' ? ' fdRequired required' : NULL; ?>" data-msg-required="Firstname or Surname is required" value="<?php echo $tpl['arr']['first_name']? $tpl['arr']['first_name']:'' ?>"/>
                                     </div>
                                 </div><!-- /.col-md-3 -->
                                 <div class="col-md-5 col-sm-6">
                                     <div class="form-group">
                                         <label class="control-label"><?php echo 'Surname'//__('lblName'); ?></label>
 
-                                        <input type="text" name="surname" id="c_surname" class="js-kioskboard-input form-control<?php echo $tpl['option_arr']['o_bf_include_name'] == 3  && $tpl['arr']['first_name'] == '' ? '' : NULL; ?>" data-msg-required="Firstname or Surname is required"  value="<?php echo $tpl['arr']['surname']?$tpl['arr']['surname']:'' ?>"/>
+                                        <input type="text" name="surname" id="c_surname" class="jsVK-normal form-control<?php echo $tpl['option_arr']['o_bf_include_name'] == 3  && $tpl['arr']['first_name'] == '' ? '' : NULL; ?>" data-msg-required="Firstname or Surname is required"  value="<?php echo $tpl['arr']['surname']?$tpl['arr']['surname']:'' ?>"/>
                                     </div>
                                 </div><!-- /.col-md-3 -->
                                 <?php
