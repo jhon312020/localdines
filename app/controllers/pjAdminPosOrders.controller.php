@@ -766,6 +766,7 @@ class pjAdminPosOrders extends pjAdmin {
       ->findAll()
       ->getData();
     $this->set('special_instructions', $special_instructions);
+    $selTableName = '';
     $table_list = $this->getRestaurantTables();
     if ($arr['origin'] == 'Pos') {
       if (array_key_exists($arr['table_name'], $table_list)) {

@@ -764,25 +764,6 @@ td .btn-secondary:hover {
 .extra_item {
   font-size: 28px;
 }
-
-.btn-has-extra {
-  color: #ffab23 !important;
-  border-color: #ffab23 !important;
-}
-.btn-has-extra:hover {
-  color: white !important;
-  background-color: #ffab23 !important;
-  border-color: #ffab23 !important;
-}
-
-.btn-has-si {
-  background-color: #ffab23 !important;
-  color: #fff;
-  border-color: #ffab23 !important;
-}
-.btn-has-si:hover {
-  color: #fff;
-}
 .cus-input-err {
   border: 2px solid red !important;
 }
@@ -813,3 +794,51 @@ td .btn-secondary:hover {
   color: #fff;
   text-shadow: 1px 1px 1px black;
 }
+#fdEposTableContainer .btn-extras-add, #fdEposTableContainer .btn-spl-ins-add {
+  background-color: #ffab23;
+  border-color: #ffab23; 
+  color: #fff;
+}
+
+#fdEposTableContainer .btn-has-extra, #fdOrderList_1 .btn-has-extra {
+  color: #fff;
+  border-color: #337ab7;
+  background-color: #2e6da4;
+}
+
+#fdEposTableContainer .btn-has-extra:hover, #fdOrderList_1 .btn-has-extra:hover {
+  color: #fff;
+  border-color: #286090;
+  background-color: #286090;
+}
+
+#fdEposTableContainer .btn-has-si, #fdOrderList_1 .btn-has-si {
+  background-color: #337ab7;
+  color: #fff;
+  border-color: #337ab7;
+}
+#fdEposTableContainer .btn-has-si:hover, #fdOrderList_1 .btn-has-si:hover {
+  color: #fff;
+  border-color: #286090;
+  background-color: #286090;
+}
+#jsClientMessage {
+  font-size: 18px;
+}
+#jsClientTitle {
+  font-size: 18px;
+  color: red;
+}
+#jsClientMessage h1 {
+  font-size: 80px;
+  clear: both;
+  width: 80%;
+  margin-left: 20%;
+  color: red;
+  font-weight: bold;
+}
+/*.btn-has-extra:hover {
+  color: white !important;
+  background-color: #ffab23 !important;
+  border-color: #ffab23 !important;
+}*/

@@ -2230,7 +2230,11 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
               return temp.id != id
             });
             if (!hidden_arr.length) {
+              $("#cus-extra_"+index).addClass("btn-extras-add");
               $("#cus-extra_"+index).removeClass("btn-has-extra");
+            } else {
+              $("#cus-extra_"+index).addClass("btn-has-extra");
+              $("#cus-extra_"+index).removeClass("btn-extras-add");
             }
             $("#extra-"+index).val(JSON.stringify(hidden_arr));
           }
@@ -2609,6 +2613,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             $("#extra-"+index).val(JSON.stringify(hidden_arr));
           }
           $("#cus-extra_"+index).addClass("btn-has-extra");
+          $("#cus-extra_"+index).removeClass("btn-extras-add");
           var veiwElement = $("#fdExtraTable_show_"+index);
 
           // <div class="form-group">

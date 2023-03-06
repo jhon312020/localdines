@@ -119,8 +119,8 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
 		}
 		function showClientMessage(message) {
 			console.log(message);
-			$("#jsClientTitle").text(message[0].title);
-			$("#jsClientMessage").text(message[0].message);
+			$("#jsClientTitle").html(message[0].title);
+			$("#jsClientMessage").html(message[0].message);
       $("#jsClientMessageModal").modal("show");
 		}
 		$("#orderViewed-btn").on("click", function() {

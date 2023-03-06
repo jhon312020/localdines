@@ -31,7 +31,7 @@ $index = "new_" . mt_rand(0, 999999);
                 </tbody>
             </table>
             <div class="p-w-xs">
-                <a href="#" id="cus-extra_<?php echo $index; ?>" class="btn btn-primary btn-xs btn-outline pj-add-extra fdExtraBusiness_<?php echo $index;?> fdExtraButton_<?php echo $index;?>" data-index="<?php echo $index;?>"><i class="fa fa-plus"></i> <?php //__('btnAddExtra');?></a>
+                <a href="#" id="cus-extra_<?php echo $index; ?>" class="btn btn-extras-add btn-xs pj-add-extra fdExtraBusiness_<?php echo $index;?> fdExtraButton_<?php echo $index;?>" data-index="<?php echo $index;?>"><i class="fa fa-plus"></i> <?php //__('btnAddExtra');?></a>
             </div><!-- /.p-w-xs -->
             <?php } else { ?>
               <div class="p-w-xs">
@@ -102,7 +102,7 @@ $index = "new_" . mt_rand(0, 999999);
     </td>
                 
     <td>
-      <a href="#" id="cus-si_<?php echo $index;?>" data-pdname="<?php echo $tpl['product_arr'][0]['name']; ?>" aria-hidden="true" data-index = "<?php echo $index;?>" class="btn btn-primary spcl_ins"><i class="fa fa-comment-o"></i></a>
+      <a href="#" id="cus-si_<?php echo $index;?>" data-pdname="<?php echo $tpl['product_arr'][0]['name']; ?>" aria-hidden="true" data-index = "<?php echo $index;?>" class="btn btn-spl-ins-add spcl_ins"><i class="fa fa-comment-o"></i></a>
         <!-- <span  class="fa fa-comment-o spcl_ins" ></span> -->
         <input type="hidden" id="fdSpecialInstruction_<?php echo $index;?>" name="special_instruction[<?php echo $index;?>]" class="form-control special-instruction" value="" />
         <input type="hidden" id="fdCustomSpecialInstruction_<?php echo $index;?>" name="custom_special_instruction[<?php echo $index;?>]" class="form-control custom-special-instruction" value="" />  
