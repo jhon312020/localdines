@@ -3165,17 +3165,18 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             $('#fdProduct_new_'+index).addClass('selectpicker').selectpicker('refresh');
           }
         //alert("Update page");
-       }    
-      });
-      $(window).on("load", function() {
-        var firstCategory = $("#js-categories div:first-child");
+       }   
+
+       var firstCategory = $("#js-categories div:first-child");
         if (firstCategory.length) {
-          var category = $("#js-categories div:first-child").attr("data-category");
-          load_initial_items(firstCategory.attr("data-id"), category);
+          load_initial_items(firstCategory.attr("data-id"), firstCategory.attr("data-category"));
           load_keyboard();
         }
         clockUpdate();
-        setInterval(clockUpdate, 1000);
+        setInterval(clockUpdate, 1000); 
+      });
+      $(window).on("load", function() {
+        
       })
        $(window).on('beforeunload', function(){
           if ($("#createPage").text()=="Add new order" || $("#updatePage").text()=="Update Order") {

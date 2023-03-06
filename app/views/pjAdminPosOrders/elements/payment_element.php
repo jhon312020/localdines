@@ -41,7 +41,7 @@ if(isset($tpl['arr']['total'])) {
         <span id="payment_modal_curr" class="d-none"><?php echo $si; ?> </span>
         <span id="payment_modal_tot" class="d-none" style="padding-right:20px;"><?php echo $total_val; ?></span>
         
-        <input type="text" id="payment_modal_pay" class="jsVK-price form-control pull-right input" style="width:150px" value="0.00" name="payment_modal_pay">
+        <input type="text" id="payment_modal_pay" class="jsVK-price form-control pull-right input cus-w-150" value="0.00" name="payment_modal_pay">
         <span class="input-group-addon"><?php echo pjCurrency::getCurrencySign($tpl['option_arr']['o_currency'], false) ?></span> 
       </div>
       <div class="col-sm-12 text-right">

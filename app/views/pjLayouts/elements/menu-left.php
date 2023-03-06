@@ -204,7 +204,7 @@ $hasAccessScriptOptionsPrintOrder       = pjAuth::factory('pjAdminOptions', 'pjA
 
 <?php if($hasAccessScriptCompanies): ?>
     <li <?php echo $isScriptCompaniesController ? ' class="active"' : NULL; ?>><a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminCompanies&amp;action=pjActionIndex">
-        <i class="fa fa-money"></i>
+        <i class="fa fa-building-o" aria-hidden="true"></i>
         <span class="nav-label"><?php echo "Companies";?></span>
     </a></li>
 <?php endif; ?>

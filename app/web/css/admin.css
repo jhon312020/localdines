@@ -720,6 +720,10 @@ td .btn-secondary:hover {
   padding-bottom: 1.5rem;
 }
 
+.cus-w-150 {
+  width: 150px;
+}
+
 .cus-category {
   padding: 5px !important;
 }
