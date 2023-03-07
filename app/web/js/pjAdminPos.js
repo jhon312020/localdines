@@ -3450,7 +3450,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
         })
       }
     })
-		$(document).on('click', '#products-sec .img-container' ,function (e) {
+		$(document).on('click', '#products-sec .img-container, #jsHotItems .hot-item' ,function (e) {
             if (e && e.preventDefault) {
                 e.preventDefault();
             }

@@ -1,12 +1,28 @@
-<div id="js-categories" class="row wrapper wrapper-content animated">
-  <?php foreach($tpl['category_list'] as $key=>$category)  { 
-    if ($key == 10) break;
-    $category = strlen($category) >13 ? substr($category, 0, 10)."..." : $category;
-  ?>
-  <div class="col-lg-3 cus-category" data-id="<?php echo $key; ?>" data-category="<?php echo $category; ?>">
-    <div class="category-container cus-pt-2 cus-pb-2" data-id="<?php echo $key; ?>">
-      <div class="content"><h4><?php echo $category;?></h4></div>
+<?php
+$products1 = array_slice($tpl['product_arr'], 0, 5);
+$products2 = array_slice($tpl['product_arr'], 5, 5);
+?>
+<div id="jsHotItems" class="row wrapper wrapper-content animated">
+  <div class='row'>
+    <div class='col center' style="padding: 2px; display: list-item; text-align: center;">
+    <?php foreach($products1 as $key=>$product)  { 
+      $productName = $product['name'];
+      //$productName = strlen($productName) >13 ? substr($productName, 0, 10)."..." : $productName;
+    ?>
+        <button class='btn btn-warning btn-lg hot-item' data-id="<?php echo $product['id'];?>" data-extra="<?php echo $product['cnt_extras'];?>" data-hassize="<?php echo $product['set_different_sizes'];?>"><?php echo $productName; ?></button>
+
+    <?php } ?>
     </div>
-  </div>
+  </div> 
+  <div class='row'>
+    <div class='col center' style="padding: 2px; display: list-item; text-align: center;">
+  <?php foreach($products2 as $key=>$product)  { 
+    $productName = $product['name'];
+    //$productName = strlen($productName) >13 ? substr($productName, 0, 10)."..." : $productName;
+  ?>
+      <button class='btn btn-warning btn-lg hot-item' data-id="<?php echo $product['id'];?>" data-extra="<?php echo $product['cnt_extras'];?>" data-hassize="<?php echo $product['set_different_sizes'];?>"><?php echo $productName; ?></button>
+
   <?php } ?>
+  </div>
+  </div> 
 </div>

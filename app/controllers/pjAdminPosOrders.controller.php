@@ -58,20 +58,38 @@ class pjAdminPosOrders extends pjAdmin {
       //   ->orderBy("name ASC")
       //   ->findAll()
       //   ->getData();
-      $product_arr = pjProductModel::factory()->join('pjMultiLang', sprintf("t2.foreign_id = t1.id AND t2.model = 'pjProduct' AND t2.locale = '%u' AND t2.field = 'name'", $this->getLocaleId()) , 'left')
-        //->join('pjProductCategory', "t3.product_id = t1.id", 'left')
-        ->select(sprintf("t1.*, t2.content AS name,
-                (SELECT GROUP_CONCAT(extra_id SEPARATOR '~:~') FROM `%s` WHERE product_id = t1.id GROUP BY product_id LIMIT 1) AS allowed_extras,
-                (SELECT COUNT(*) FROM `%s` AS TPE WHERE TPE.product_id=t1.id) as cnt_extras", pjProductExtraModel::factory()
-        ->getTable() , pjProductExtraModel::factory()
-        ->getTable()))
-        ->orderBy("name ASC")
-        //->whereIn('t1.id', $product_ids)
-        ->findAll()
-        ->toArray('allowed_extras', '~:~')
-        ->getData();
+      // $product_arr = pjProductModel::factory()->join('pjMultiLang', sprintf("t2.foreign_id = t1.id AND t2.model = 'pjProduct' AND t2.locale = '%u' AND t2.field = 'name'", $this->getLocaleId()) , 'left')
+      //   //->join('pjProductCategory', "t3.product_id = t1.id", 'left')
+      //   ->select(sprintf("t1.*, t2.content AS name,
+      //           (SELECT GROUP_CONCAT(extra_id SEPARATOR '~:~') FROM `%s` WHERE product_id = t1.id GROUP BY product_id LIMIT 1) AS allowed_extras,
+      //           (SELECT COUNT(*) FROM `%s` AS TPE WHERE TPE.product_id=t1.id) as cnt_extras", pjProductExtraModel::factory()
+      //   ->getTable() , pjProductExtraModel::factory()
+      //   ->getTable()))
+      //   ->orderBy("name ASC")
+      //   //->whereIn('t1.id', $product_ids)
+      //   ->findAll()
+      //   ->toArray('allowed_extras', '~:~')
+      //   ->getData();
+      $product_arr = array();
+      // $category_id = 1;
+      // $category_arr = pjProductCategoryModel::factory()->select('t1.product_id')
+      //   ->whereIn("t1.category_id", $category_id)->findAll()
+      //   ->getData();
+      // if ($category_arr) {
+        //$category_arr = array_column($category_arr, 'product_id');
+        $product_arr = pjProductModel::factory()->select('t1.id, t2.content AS name, t1.set_different_sizes, t1.price, t1.status, t1.image, (SELECT COUNT(*) FROM `' . pjProductExtraModel::factory()
+          ->getTable() . '` AS TPE WHERE TPE.product_id=t1.id) as cnt_extras')
+          ->join('pjMultiLang', "t2.foreign_id = t1.id AND t2.model = 'pjProduct' AND t2.locale = '" . $this->getLocaleId() . "' AND t2.field = 'name'", 'left')
+          //->whereIn("t1.id", $category_arr)
+          ->where('is_featured=1')
+          ->groupBy('t1.id, t1.set_different_sizes, t1.price')
+          ->limit(10)
+          ->findAll()
+          ->getData();
+      //}
+      
       $this->set('product_arr', $product_arr);
-
+      //$this->pr($product_arr);
       $postal_codes = pjPostalcodeModel::factory()->select("t1.*")
         ->findAll()
         ->getData();
@@ -3672,7 +3690,7 @@ class pjAdminPosOrders extends pjAdmin {
   	$this->setAjax(true);
     if ($this->isXHR() && $order_id) {
       $pjOrder = pjOrderItemModel::factory();
-      $pjOrder->where('order_id', $order_id)->modifyAll(array('print' => ':cnt'))->getAffectedRows();
+      //$pjOrder->where('order_id', $order_id)->modifyAll(array('print' => ':cnt'))->getAffectedRows();
     }
     exit;
   }
