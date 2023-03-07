@@ -25,12 +25,24 @@ $filter = __('filter', true);
             <?php
         }
         ?>
-        <div class="form-group">
-            <label class="control-label"><?php __('lblCategoryPackingFee'); ?></label>
-            <div class="input-group col-xs-6">
-            	<input type="text" name="packing_fee" id="packing_fee" class="form-control required number" maxlength="17" value="0.00">
-            	<span class="input-group-addon"><?php echo pjCurrency::getCurrencySign($tpl['option_arr']['o_currency']); ?></span>
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label class="control-label"><?php echo "Order" //__('lblCategoryPackingFee'); ?></label>
+              <div class="input-group col-xs-12">
+                <input type="text" name="order_no" id="order_no" class="form-control required number" maxlength="3">
+              </div>
             </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label class="control-label"><?php __('lblCategoryPackingFee'); ?></label>
+              <div class="input-group col-xs-12">
+                <input type="text" name="packing_fee" id="packing_fee" class="form-control required number" maxlength="17" value="0.00">
+                <span class="input-group-addon"><?php echo pjCurrency::getCurrencySign($tpl['option_arr']['o_currency']); ?></span>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="form-group">
             <label class="control-label"><?php __('lblStatus'); ?></label>

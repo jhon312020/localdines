@@ -149,6 +149,7 @@ class pjAdminCategories extends pjAdmin
 	        self::jsonResponse(array('status' => 'ERR', 'code' => 103, 'text' => 'Missing, empty or invalid parameters.'));
 	    }
 	    $post = $this->_post->raw();
+      // echo "<pre>"; print_r($post); echo "</pre>";
 	    if($post['packing_fee'] > 99999999999999.99)
 	    {
 	        self::jsonResponse(array('status' => 'ERR', 'code' => 104, 'text' => __('price_err_ARRAY_100', true)));
@@ -156,7 +157,8 @@ class pjAdminCategories extends pjAdmin
 	    $pjCategoryModel = pjCategoryModel::factory();
 	    $data = array();
 	    $data['status'] = $this->_post->check('status') ? 'T' : 'F';
-	    $data['order'] = $pjCategoryModel->getLastOrder();
+      // $data['order'] = $pjCategoryModel->getLastOrder();
+	    $data['order'] = $post['order_no'];
 	    
 	    $id = $pjCategoryModel->setAttributes(array_merge($post, $data))->insert()->getInsertId();
 	    if ($id !== false && (int) $id > 0)
@@ -196,12 +198,14 @@ class pjAdminCategories extends pjAdmin
 	        self::jsonResponse(array('status' => 'ERR', 'code' => 104, 'text' => 'Missing, empty or invalid parameters.'));
 	    }
 	    $post = $this->_post->raw();
+      // echo "<pre>"; print_r($post); echo "</pre>"; die;
 	    if($post['packing_fee'] > 99999999999999.99)
 	    {
 	        self::jsonResponse(array('status' => 'ERR', 'code' => 105, 'text' => __('price_err_ARRAY_100', true)));
 	    }
 	    $pjCategoryModel = pjCategoryModel::factory();
 	    $data = array();
+      $data['order'] = $post['order_no'];
 	    $data['status'] = $this->_post->check('status') ? 'T' : 'F';
 	    $pjCategoryModel->reset()->where('id', $this->_post->toInt('id'))->limit(1)->modifyAll(array_merge($post, $data));
 	    if (isset($post['i18n']))
