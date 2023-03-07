@@ -32,7 +32,7 @@
         <td id="imgs_qty_<?php echo $i; ?>">
           <?php foreach ($selected_ins_imgs as $img_src) { ?>
             <?php if ($img_src != "") { ?>
-              <img src="<?php echo $img_src ?>" height="20px" width="20px">
+              <img src="<?php echo $img_src ?>">
             <?php } ?>
           <?php } ?>
         </td>
@@ -75,7 +75,7 @@
                 alt="" data-qty_id="qty_<?php echo $i; ?>" 
                 class="img_class_qty_<?php echo $i; ?> img-fluid img_<?php echo $spcl_ins_child['id']; ?> 
                 <?php echo in_array($spcl_ins_child['id'], $selected_ins_arr) ? 'spcl_ins_selected': '' ?>" 
-                data-id="<?php echo $spcl_ins_child['id']; ?>"><br>
+                data-id="<?php echo $spcl_ins_child['id']; ?>" style="margin-left: 10px;">
               <?php }
           } ?></td>
           <?php } ?>

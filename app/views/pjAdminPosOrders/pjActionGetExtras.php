@@ -44,7 +44,7 @@ if ($tpl['edit']) { ?>
             <div class="input-group">
               <div class="input-group-addon font-28 cus-w-70 cus-text-left"><?php echo $selected_value['extra_name']; ?></div>
               <input type="text" class="form-control cus-extra" value="<?php echo " X ".$selected_value['extra_count']; ?>" disabled placeholder="qty">
-              <div class="input-group-addon btn btn-xs btn-danger btn-outline pj-remove-extra" data-id="<?php echo $selected_value['id']; ?>" data-index="<?php echo $index; ?>"><i class="fa fa-times"></i></div>
+              <div class="input-group-addon btn btn-xs btn-danger btn-outline pj-remove-extra" data-id="<?php echo $selected_value['id']; ?>" data-index="<?php echo $index; ?>"><i class="fa fa-times fa-3x"></i></div>
             </div>
           </div>
         </td>
