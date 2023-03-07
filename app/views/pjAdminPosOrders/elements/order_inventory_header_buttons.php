@@ -9,7 +9,7 @@
     <div class="col-lg-4 col-sm-5 text-right">
       <form class="form-inline" style="" onkeydown="return event.key != 'Enter';">
         <div id="product_input" class="input-group d-none">
-          <input id="inputSearch" type="text" class="form-control" type="search" placeholder="Search Products..." aria-label="Search">
+          <input id="inputSearch" type="text" class="jsVK-normal form-control" type="search" placeholder="Search Products..." aria-label="Search">
           <div id="productSearch" class="input-group-addon btn btn-primary btn-outline-success my-2 my-sm-0"><i class="fa fa-search" aria-hidden="true"></i></div>
         </div>
         <button id="productSearchHide" class="btn btn-primary btn-outline-success my-2 my-sm-0" type="button" ><i class="fa fa-search" aria-hidden="true"></i></button>
