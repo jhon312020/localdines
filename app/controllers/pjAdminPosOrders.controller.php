@@ -3690,7 +3690,7 @@ class pjAdminPosOrders extends pjAdmin {
   	$this->setAjax(true);
     if ($this->isXHR() && $order_id) {
       $pjOrder = pjOrderItemModel::factory();
-      //$pjOrder->where('order_id', $order_id)->modifyAll(array('print' => ':cnt'))->getAffectedRows();
+      $pjOrder->where('order_id', $order_id)->modifyAll(array('print' => ':cnt'))->getAffectedRows();
     }
     exit;
   }

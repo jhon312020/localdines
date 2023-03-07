@@ -57,16 +57,7 @@
             <div id="fdPosTableContainer">
               <?php include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/order_inventory_table.php';  ?>
             </div>
-            <div class="m-b-lg">
-              <div class="panel no-borders ibox-conten" id="voucher-container" style="padding: 10px 5px;">
-                <div class="form-group row">
-                  <label class="control-label col-sm-6"><?php __('lblVoucher'); ?></label>
-                  <div class="col-sm-6">
-                      <input type="text" name="voucher_code" class="jsVK-normal form-control voucher">
-                  </div>
-                </div>
-              </div><!-- /.col-md-3 -->
-            </div><!-- /.m-b-lg -->
+            <?php include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/voucher_code.php';  ?>
             <div class="clearfix" id="btns-pos">
               <a class="btn btn-white btn-lg pull-left" href="<?php echo PJ_INSTALL_URL; ?>index.php?controller=pjAdminPosOrders&action=pjActionIndex"><?php __('btnCancel'); ?></a>
               <a class="nav-link next-tab ladda-button btn btn-primary btn-lg pull-right" id="client-tab" data-toggle="tab" href="#client" role="tab" aria-controls="client" aria-selected="false">Next</a>  

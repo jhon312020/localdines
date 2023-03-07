@@ -26,16 +26,7 @@
   <div class="row">
     <div class="col-sm-12">
       <?php include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/order_inventory_table.php';  ?> 
-      <div class="m-b-lg">
-        <div class="panel no-borders ibox-content" id="voucher-container" style="padding: 10px 5px;">
-          <div class="form-group row">
-            <label class="control-label col-sm-6"><?php __('lblVoucher'); ?></label>
-            <div class="col-sm-6">
-              <input type="text" name="voucher_code" id="voucher_code" class="jsVK-normal form-control" value="<?php echo  stripslashes($tpl['arr']['voucher_code']);?>">
-            </div>
-          </div>
-        </div><!-- /.col-md-3 -->
-      </div><!-- /.m-b-lg -->
+      <?php include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/voucher_code.php';  ?>
       <div class="clearfix" id="btns-epos">
         <!-- <a class="btn btn-white btn-lg pull-left" href="<?php echo PJ_INSTALL_URL; ?>index.php?controller=pjAdminPosOrders&action=pjActionIndex"><?php __('btnCancel'); ?></a> -->
         <?php if ($_SESSION[$controller->defaultUser]['role_id'] == WAITER_R0LE_ID) { ?>

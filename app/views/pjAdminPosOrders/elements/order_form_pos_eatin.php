@@ -23,16 +23,7 @@
       <div id="fdEposTableContainer" style="margin-bottom: 40px;">
        <?php include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/order_inventory_table.php';  ?>
       </div>
-      <div class="">
-        <div class="panel no-borders ibox-content" id="voucher-container" style="padding: 5px 5px;">
-          <div class="form-group row" style="margin-bottom: 2px;">
-            <label class="control-label col-sm-6"><?php __('lblVoucher'); ?></label>
-            <div class="col-sm-6">
-              <input type="text" name="voucher_code" class="jsVK-normal form-control voucher">
-            </div>
-          </div>
-        </div><!-- /.col-md-3 -->
-      </div><!-- /.m-b-lg -->
+      <?php include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/voucher_code.php';  ?>
       <div class="clearfix" id="btns-epos">
           <?php if ($_SESSION[$controller->defaultUser]['role_id'] == WAITER_R0LE_ID) { ?>
         <a href="#" class="btn btn-primary btn-lg pull-right" data-cart="" id="btn-save">Save</a> 
