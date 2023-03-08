@@ -123,7 +123,7 @@ class pjAppController extends pjBaseAppController
 
         if(!in_array($this->_get->toString('controller'), array('pjFront')))
         {
-            $this->appendJs('pjAdminCore.js');
+            $this->appendJs('pjAdminCore.js?version=123');
             // TODO: DELETE unnecessary files
             #$this->appendCss('reset.css');
             #$this->appendCss('pj-all.css', PJ_FRAMEWORK_LIBS_PATH . 'pj/css/');

@@ -61,7 +61,7 @@
   //unset($statuses['delivered']);
   $times = ["08:00","08:30","09:00","09:30","10:00","10:30","11:00","11:30","12:00","12:30","13:00","13:30","14:00","14:30","15:00","15:30","16:00","16:30","17:00","17:30","18:00","18:30","19:00","19:30","20:00","20:30","21:00","21:30","22:00","22:30","23:00","23:30"];
 ?>
-<div class="row" style="height: 25px; background-color: #5bc0de; color: white; border-color: #46b8da;">
+<div class="row" id="order_welcome_header">
   <div class="col-sm-5">
     <div class="row">
       <div class="col-sm-8"><?php echo "Date: ". date($tpl['option_arr']['o_date_format']);  ?><span style="margin-left: 5px; margin-right: 5px;">-</span><?php echo  date("l"); ?></div>

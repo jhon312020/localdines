@@ -4390,9 +4390,9 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             if (current_page > 1)
                 current_link = current_page;
             if (current_link != 1) {
-              navigation_html += "<a class='nextbutton previous' >«</a>&nbsp;";
+              navigation_html += "<a class='nextbutton previous' >&larr;</a>&nbsp;";
             } else {
-              navigation_html += "<a class='nextbutton previousDisabled' >«</a>&nbsp;";
+              navigation_html += "<a class='nextbutton previousDisabled' >&larr;</a>&nbsp;";
             }
             
             if (current_link == number_of_pages - 1) current_link = current_link - 3;
@@ -4408,9 +4408,10 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
                 pages--;
             }
             if (number_of_pages > current_page){
-                navigation_html += "<a class='nextbutton next' >»</a>";
+                navigation_html += "<a class='nextbutton next' >&rarr;</a>";
+               // navigation_html += "<a class='nextbutton next'><i class='fa fa-arrow-left' aria-hidden='true'></a>";
             } else {
-                navigation_html += "<a class='nextbutton nextDisabled' >»</a>";
+                navigation_html += "<a class='nextbutton nextDisabled' >&rarr;</a>";
             }
             if (number_of_pages == 1) {
               $('#page_navigation').html("");

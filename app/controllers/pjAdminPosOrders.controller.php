@@ -77,18 +77,18 @@ class pjAdminPosOrders extends pjAdmin {
       //   ->getData();
       // if ($category_arr) {
         //$category_arr = array_column($category_arr, 'product_id');
-        $product_arr = pjProductModel::factory()->select('t1.id, t2.content AS name, t1.set_different_sizes, t1.price, t1.status, t1.image, (SELECT COUNT(*) FROM `' . pjProductExtraModel::factory()
+        $hot_products_arr = pjProductModel::factory()->select('t1.id, t2.content AS name, t1.set_different_sizes, t1.price, t1.status, t1.image, (SELECT COUNT(*) FROM `' . pjProductExtraModel::factory()
           ->getTable() . '` AS TPE WHERE TPE.product_id=t1.id) as cnt_extras')
           ->join('pjMultiLang', "t2.foreign_id = t1.id AND t2.model = 'pjProduct' AND t2.locale = '" . $this->getLocaleId() . "' AND t2.field = 'name'", 'left')
           //->whereIn("t1.id", $category_arr)
           ->where('is_featured=1')
           ->groupBy('t1.id, t1.set_different_sizes, t1.price')
-          ->limit(10)
+          ->limit(12)
           ->findAll()
           ->getData();
       //}
       
-      $this->set('product_arr', $product_arr);
+      $this->set('hot_products_arr', $hot_products_arr);
       //$this->pr($product_arr);
       $postal_codes = pjPostalcodeModel::factory()->select("t1.*")
         ->findAll()
@@ -744,9 +744,18 @@ class pjAdminPosOrders extends pjAdmin {
       }
       $oi_arr[] = $item;
     }
+    $product_ids = array_column($oi_arr, 'foreign_id');
+    $product_arr = pjProductModel::factory()->select('t1.id, t2.content AS name, t1.set_different_sizes, t1.price, t1.status, t1.image, (SELECT COUNT(*) FROM `' . pjProductExtraModel::factory()
+          ->getTable() . '` AS TPE WHERE TPE.product_id=t1.id) as cnt_extras')
+          ->join('pjMultiLang', "t2.foreign_id = t1.id AND t2.model = 'pjProduct' AND t2.locale = '" . $this->getLocaleId() . "' AND t2.field = 'name'", 'left')
+          ->whereIn("t1.id", $product_ids)->groupBy('t1.id, t1.set_different_sizes, t1.price')
+          ->findAll()
+          ->getData();
     $category = pjProductCategoryModel::factory()->select('t1.*')
       ->findAll()
       ->getData();
+    //$this->pr($product_arr);
+    $this->set('product_arr', $product_arr);
     foreach ($oi_arr as $oi => $o) {
       foreach ($category as $k => $v) {
         if ($o['foreign_id'] == $v['product_id']) {

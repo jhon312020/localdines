@@ -1,6 +1,6 @@
 <?php
-$products1 = array_slice($tpl['product_arr'], 0, 5);
-$products2 = array_slice($tpl['product_arr'], 5, 5);
+$products1 = array_slice($tpl['hot_products_arr'], 0, 6);
+$products2 = array_slice($tpl['hot_products_arr'], 6, 6);
 ?>
 <div id="jsHotItems" class="row wrapper wrapper-content animated">
   <div class='row'>

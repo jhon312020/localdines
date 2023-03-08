@@ -369,9 +369,10 @@ td .btn-secondary:hover {
 .topnav-two .row #page_navigation .numericButton,
 .topnav-two .row #page_navigation .currentPageButton
  {
-    width: 25px !important;
-    height: 35px;
-    padding-top: 10px;
+    width: 40px !important;
+    height: 45px;
+    padding-top: 15px;
+    font-size: 20px;
 }
 /* .topnav-one, */
 .topnav-one .col-sm-6 {
@@ -877,4 +878,16 @@ td .btn-secondary:hover {
 #extraModal .extra_item {
   background-color: #ffab23;
   border-color: #ffab23;
+}
+#jsHotItems button {
+  font-size: 14px;
+  height: 30px;
+  width: 15%;
+  padding: 0px;
+}
+#order_welcome_header {
+  height: 25px; 
+  background-color: #2d4afe; 
+  color: white; 
+  border-color: #2d4afe;  
 }
