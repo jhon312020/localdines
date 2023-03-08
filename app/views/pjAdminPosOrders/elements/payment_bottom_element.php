@@ -1,6 +1,6 @@
 <div id="paymentModal">
   <div class="row">
-    <div class="col-lg-4 col-sm-4 text-left">
+    <div class="col-lg-6 col-sm-6 text-left">
       <div>
         <?php if ($_SESSION[$controller->defaultUser]['role_id'] != WAITER_R0LE_ID) { ?>
           <a href="#" class="btn btn-primary" id="btn-openDrawer"><i class="fa fa-unlock" aria-hidden="true"> TOpen</i></a>
@@ -11,20 +11,15 @@
         </span>
       </div>
     </div>
-    <div class="col-lg-4 col-sm-1 text-center">
-      <div>
-       
-      </div>
-    </div>
-    <div class="col-lg-4 col-sm-7 text-right">
+    <div class="col-lg-6 col-sm-6 text-right">
       <div>
         <span style="padding-left:10px">
-          <a href="#" class="btn btn-primary" id="btn-pause" style="padding:6px 30px;">
+          <a href="#" class="btn btn-primary" id="btn-pause">
             <i class="fa fa-pause" aria-hidden="true"></i>
           </a>
            <button type="button" id="paymentBtn" data-valid = "false" data-phone="" class="btn btn-primary">&nbsp;&nbsp;Pay&nbsp;&nbsp;</button>
           <button type="button" class="btn btn-secondary" id="btn-clear">Clear</button>
-          <a class="btn btn-secondary" href="<?php echo PJ_INSTALL_URL; ?>index.php?controller=pjAdminPosOrders&action=pjActionIndex"><?php __('btnCancel'); ?></a>
+          <a class="btn btn-secondary" id="btn-cancel" href="<?php echo PJ_INSTALL_URL; ?>index.php?controller=pjAdminPosOrders&action=pjActionIndex"><?php __('btnCancel'); ?></a>
         </span>
       </div>
     </div>

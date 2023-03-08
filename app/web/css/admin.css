@@ -579,7 +579,9 @@ td .btn-secondary:hover {
     }
     
 }
-#btn-pause,
+#btn-pause {
+  padding: 6px 30px;
+}
 #showPostalCodes,
 #showCart,
 #update-btn-pause,
@@ -708,6 +710,17 @@ td .btn-secondary:hover {
   #showCart {
     padding: 12px 0;
   }
+  #btn-pause {
+    padding: 6px 12px;
+  }
+  #paymentModal .btn, #paymentTelModal .btn {
+    font-size: 19px;
+  }
+  #paymentBtn,
+  #btn-clear,
+  #btn-cancel {
+    padding: 6px;
+  }
 }
 
 /******* New Layout Orders *******/
@@ -763,6 +776,9 @@ td .btn-secondary:hover {
 
 .font-28 {
   font-size: 28px !important;
+}
+.font-20 {
+  font-size: 20px !important;
 }
 
 .extra_item {

@@ -15,56 +15,57 @@ if ($tpl['extra_val'] == 1) {
   //   $selected_arr[$counter] = $selected_value;
   //   $counter++;
   // }
-  // echo "<pre>"; print_r($selected_arr); echo "</pre>";
+  echo "<pre>"; print_r($selected_arr); echo "</pre>";
+  echo $tpl['qty'];
 }
-if ($tpl['edit']) { ?>
-  <table  class=" no-margins pj-extra-table">              
-    <tbody id="fdExtraTable_show_<?php echo $index; ?>">
-      <tr>
-      <?php foreach($selected_arr as $selected_value) { ?>
-        <td class="cus-p-10">
-          <div class="form-group">
-            <div class="input-group">
-              <div class="input-group-addon font-28 cus-w-70 cus-text-left"><?php echo $selected_value['extra_name']; ?></div>
-              <input type="text" class="form-control cus-extra" value="<?php echo " X ".$selected_value['extra_count']; ?>" disabled placeholder="qty">
-            </div>
-          </div>
-        </td>
-      <?php } ?>
-      </tr>
-    </tbody>
-  </table>
-<?php } else { ?>
-<table  class=" no-margins pj-extra-table">              
+ ?>
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th style="width: 40px;">#</th>
+      <th>Extras</th>
+    </tr>
+  </thead>
   <tbody id="fdExtraTable_show_<?php echo $index; ?>">
-    <?php foreach($selected_arr as $selected_value) { ?>
-      <tr>
-        <td>
-          <div class="form-group">
-            <div class="input-group">
-              <div class="input-group-addon font-28 cus-w-70 cus-text-left"><?php echo $selected_value['extra_name']; ?></div>
-              <input type="text" class="form-control cus-extra" value="<?php echo " X ".$selected_value['extra_count']; ?>" disabled placeholder="qty">
-              <div class="input-group-addon btn btn-xs btn-danger btn-outline pj-remove-extra" data-id="<?php echo $selected_value['id']; ?>" data-index="<?php echo $index; ?>"><i class="fa fa-times fa-3x"></i></div>
+    <?php for ($i=1; $i <= $tpl['qty'] ; $i++) { ?>
+      <tr class="page-link <?php echo $i == 1 ? "table-bg-primary" : "table-bg-default"; ?>" data-page_container="#fdExtraTable_show_<?php echo $index; ?>" data-qty_container="#extra_qty" data-page="<?php echo "qty_".$i; ?>">
+        <td scope="row" class="index"><?php echo $i; ?></td>
+        <td id="load_data_<?php echo $index; ?>_<?php echo "qty_".$i; ?>" class="load_data row">
+          <?php foreach($selected_arr as $selected_value) { ?>
+            <?php if ($selected_value['qty_no'] == "qty_".$i) { ?>
+            <div class="form-group col-sm-4">
+              <div class="input-group">
+                <div class="input-group-addon font-20"><?php echo $selected_value['extra_name']; ?></div>
+                <input type="text" class="form-control cus-extra" value="<?php echo " X ".$selected_value['extra_count']; ?>" disabled placeholder="qty">
+                <div class="input-group-addon btn btn-xs btn-danger btn-outline pj-remove-extra" data-qty="<?php echo "qty_".$i; ?>" data-id="<?php echo $selected_value['id']; ?>" data-index="<?php echo $index; ?>"><i class="fa fa-times fa-3x"></i></div>
+              </div>
             </div>
-          </div>
+            <?php } ?>
+          <?php } ?>
         </td>
       </tr>
-
     <?php } ?>
   </tbody>
 </table>
+<div id="extra_qty">
+  <?php for ($i=1; $i <= $tpl['qty'] ; $i++) { ?>
+    <div id="qty_<?php echo $i; ?>" <?php if ($i>1) echo "class='d-none'"?>>
+      <table class="table no-margins">
+        <tbody>
+          <tr>
+            <td>
+          <?php
+            foreach($tpl['extra_arr'] as $key => $extra) { ?>
+              <button data-val="<?php echo $extra['id']; ?>" data-name="<?php echo stripslashes($extra['name']); ?>" data-price="<?php echo $extra['price'];?>" data-id="<?php echo $key+1; ?>" data-index="<?php echo $index; ?>" data-page="<?php echo "qty_".$i; ?>" class="btn btn-primary extra_item"><?php echo stripslashes($extra['name']); ?>: <?php echo pjCurrency::formatPrice($extra['price']);?></button>
+            <?php }
+          ?>
+          </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  <?php } ?>
+</div>
 
-<table class="table no-margins">
-  <tbody>
-    <tr>
-      <td>
-    <?php
-      foreach($tpl['extra_arr'] as $key => $extra) { ?>
-        <button data-val="<?php echo $extra['id']; ?>" data-name="<?php echo stripslashes($extra['name']); ?>" data-price="<?php echo $extra['price'];?>" data-id="<?php echo $key+1; ?>" data-index="<?php echo $index; ?>" class="btn btn-primary extra_item"><?php echo stripslashes($extra['name']); ?>: <?php echo pjCurrency::formatPrice($extra['price']);?></button>
-      <?php }
-    ?>
-    </td>
-    </tr>
-  </tbody>
-</table>
-<?php } ?>
+
+

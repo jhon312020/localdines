@@ -1278,7 +1278,9 @@ class pjAdminPosOrders extends pjAdmin {
             $edit = 0;
           }
         $index = $this->_get->toString('index');
+        $qty = $this->_get->toInt('product_qty');
         $extra_count = $this->_get->toInt('hidden_extra_count');
+        $this->set('qty', $qty);
         $this->set('extra_arr', $extra_arr);
         $this->set('index', $index);
         $this->set('extra_count', $extra_count);

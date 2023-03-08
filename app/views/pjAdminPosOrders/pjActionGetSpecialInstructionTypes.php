@@ -27,7 +27,7 @@
       $selected_ins_imgs = array();
     }
     ?>
-      <tr class="page-link <?php echo $i == 1 ? "table-bg-primary" : "table-bg-default"; ?>" data-page="<?php echo "qty_".$i; ?>">
+      <tr class="page-link <?php echo $i == 1 ? "table-bg-primary" : "table-bg-default"; ?>" data-qty_container="#pos_si_qty" data-page_container="#spl_pagination_container" data-page="<?php echo "qty_".$i; ?>">
         <td scope="row" class="index"><?php echo $i; ?></td>
         <td id="imgs_qty_<?php echo $i; ?>">
           <?php foreach ($selected_ins_imgs as $img_src) { ?>

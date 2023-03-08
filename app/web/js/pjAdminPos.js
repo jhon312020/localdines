@@ -2123,6 +2123,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             hidden_arr_val = 1;
           }
           var tableID = "fdExtraTable_show_"+index;
+          var product_qty = parseInt($("#fdProductQty_" + index).val(), 10);
           var $productEle = $("#fdProduct_" + index);
           var product_id = $productEle.val();
           if (product_id != "") {
@@ -2130,6 +2131,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
               product_id: product_id,
               index: $this.attr("data-index"),
               hidden_extra_count: hidden_extra,
+              product_qty: product_qty,
               hidden_extra_val: hidden_arr_val,
               edit: 1,
             }).done(function (data) {
@@ -2173,9 +2175,11 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           var tableID = "fdExtraTable_show_"+index;
           var $productEle = $("#fdProduct_" + index);
           var product_id = $productEle.val();
+          var product_qty = parseInt($("#fdProductQty_" + index).val(), 10);
           if (product_id != "") {
             $.get("index.php?controller=pjAdminPosOrders&action=pjActionGetExtras", {
               product_id: product_id,
+              product_qty: product_qty,
               index: $this.attr("data-index"),
               hidden_extra_count: hidden_extra,
               hidden_extra_val: hidden_arr_val,
@@ -2223,11 +2227,15 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           }
           var id = $(this).attr("data-id");
           var index = $(this).attr("data-index");
+          var qty_no = $(this).attr("data-qty");
           var hidden_val = $("#extra-"+index).val();
           // var hidden_arr = [];
           if (hidden_val) {
             var hidden_arr = JSON.parse(hidden_val).filter((temp) => {
-              return temp.id != id
+              if (temp.qty_no == qty_no) {
+                return temp.id != id;
+              }
+              return true;
             });
             if (!hidden_arr.length) {
               $("#cus-extra_"+index).addClass("btn-extras-add");
@@ -2587,6 +2595,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           var select_val = $(this).attr("data-val");
           var extra_name = $(this).attr("data-name");
           var extra_price = $(this).attr("data-price");
+          var qty_no = $(this).attr("data-page");
           var hidden_extra = $("#extra-"+index);
           var hidden_arr = [];
           var extra_json = {
@@ -2595,12 +2604,13 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             extra_name: extra_name,
             extra_sel_id: select_val,
             extra_price: extra_price,
-            extra_count: 1
+            extra_count: 1,
+            qty_no: qty_no
           }
           if (hidden_extra.val()) {
             hidden_arr = JSON.parse(hidden_extra.val());
             var i = hidden_arr.findIndex((temp) => {
-              return temp.id == id
+              return temp.id == id && temp.qty_no == qty_no
             });
             if (i != -1) {
               hidden_arr[i].extra_count += 1;
@@ -2614,7 +2624,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           }
           $("#cus-extra_"+index).addClass("btn-has-extra");
           $("#cus-extra_"+index).removeClass("btn-extras-add");
-          var veiwElement = $("#fdExtraTable_show_"+index);
+          var veiwElement = $("#load_data_"+index+"_"+qty_no);
 
           // <div class="form-group">
           //   <div class="input-group">
@@ -2624,18 +2634,29 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           //   </div>
           // </div>
 
+          // <div class="form-group col-sm-4">
+          //   <div class="input-group">
+          //     <div class="input-group-addon font-20"><?php echo $selected_value['extra_name']; ?></div>
+          //     <input type="text" class="form-control cus-extra" value="<?php echo " X ".$selected_value['extra_count']; ?>" disabled placeholder="qty">
+          //     <div class="input-group-addon btn btn-xs btn-danger btn-outline pj-remove-extra" data-id="<?php echo $selected_value['id']; ?>" data-index="<?php echo $index; ?>"><i class="fa fa-times fa-3x"></i></div>
+          //   </div>
+          // </div>
+
           veiwElement.empty();
-          for (let i=0;i < hidden_arr.length; i++) {
-            var child1 = $("<div>").addClass("input-group-addon font-28 cus-w-70 text-left").text(hidden_arr[i].extra_name);
-            var child2 = $("<input>").addClass("form-control cus-extra").attr({ type: "text", disabled: true }).val(" X "+hidden_arr[i].extra_count);
+          var filtered = hidden_arr.filter((temp) => {
+            return temp.qty_no == qty_no;
+          });
+          for (let i=0;i < filtered.length; i++) {
+            var child1 = $("<div>").addClass("input-group-addon font-20").text(filtered[i].extra_name);
+            var child2 = $("<input>").addClass("form-control cus-extra").attr({ type: "text", disabled: true }).val(" X "+filtered[i].extra_count);
             var icon = $("<i>").addClass("fa fa-times fa-3x");
-            var child3 = $("<div>").addClass("input-group-addon btn btn-xs btn-danger btn-outline pj-remove-extra").attr("data-id",hidden_arr[i].id).attr("data-index", hidden_arr[i].extra_index).append(icon);
+            var child3 = $("<div>").addClass("input-group-addon btn btn-xs btn-danger btn-outline pj-remove-extra").attr("data-qty", filtered[i].qty_no).attr("data-id",filtered[i].id).attr("data-index", hidden_arr[i].extra_index).append(icon);
             var div2 = $("<div>").addClass("input-group").append(child1).append(child2).append(child3);
-            var div1 = $("<div>").addClass("form-group").append(div2);
+            var div1 = $("<div>").addClass("form-group col-sm-4").append(div2);
             
-            var td = $("<td>").append(div1);
-            var tr = $("<tr>").append(td);
-            veiwElement.append(tr);
+            // var td = $("<td>").append(div1);
+            // var tr = $("<tr>").append(td);
+            veiwElement.append(div1);
           }
           calPrice(1);
         })
@@ -3880,10 +3901,10 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
 
       $(document).on('click', '.page-link', function(e) {
         e.preventDefault();
-        $('#spl_pagination_container').children().removeClass('table-bg-primary').addClass('table-bg-default');
+        $($(this).attr("data-page_container")).children().removeClass('table-bg-primary').addClass('table-bg-default');
         $(this).removeClass('table-bg-default').addClass('table-bg-primary');
         var page = $(this).data('page');
-        $("#pos_si_qty").children().addClass('d-none');
+        $($(this).attr("data-qty_container")).children().addClass('d-none');
         $("#"+page).removeClass('d-none');
       });
       $(document).on('change', '.custom_inst', function(e) {
