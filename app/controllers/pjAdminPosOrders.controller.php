@@ -733,6 +733,7 @@ class pjAdminPosOrders extends pjAdmin {
     $this->getInculdeData();
     $pjProductPriceModel = pjProductPriceModel::factory();
     $oi_arr = array();
+    $oi_extras = array();
     $_oi_arr = pjOrderItemModel::factory()->where('t1.order_id', $arr['id'])->findAll()->getData();
     foreach ($_oi_arr as $item) {
       if ($item['type'] == 'product') {
@@ -741,9 +742,12 @@ class pjAdminPosOrders extends pjAdmin {
           ->select("t1.*, t2.content AS price_name")
           ->where('product_id', $item['foreign_id'])->findAll()
           ->getData();
+      } else if ($item['type'] == 'extra') {
+        $oi_extras[] = $item;
       }
       $oi_arr[] = $item;
     }
+    //$this->pr($oi_arr);
     $product_ids = array_column($oi_arr, 'foreign_id');
     $product_arr = pjProductModel::factory()->select('t1.id, t2.content AS name, t1.set_different_sizes, t1.price, t1.status, t1.image, (SELECT COUNT(*) FROM `' . pjProductExtraModel::factory()
           ->getTable() . '` AS TPE WHERE TPE.product_id=t1.id) as cnt_extras')
@@ -754,7 +758,8 @@ class pjAdminPosOrders extends pjAdmin {
     $category = pjProductCategoryModel::factory()->select('t1.*')
       ->findAll()
       ->getData();
-    //$this->pr($product_arr);
+    // $this->pr($product_arr);
+    // $this->pr($category);
     $this->set('product_arr', $product_arr);
     foreach ($oi_arr as $oi => $o) {
       foreach ($category as $k => $v) {
@@ -763,6 +768,7 @@ class pjAdminPosOrders extends pjAdmin {
         }
       }
     }
+    // $this->pr_die($oi_arr);
     $this->set('oi_arr', $oi_arr);
     $spcl_ins = pjOrderItemModel::factory()->where('t1.order_id', $id)->findAll()->getData();
     $this->set('spcl_ins', $spcl_ins);
@@ -3330,52 +3336,25 @@ class pjAdminPosOrders extends pjAdmin {
                 'custom_special_instruction' => $post['custom_special_instruction'][$k]
               ))->insert()
                 ->getInsertId();
+                //$this->pr($post);
+                //$this->pr_die($post['extras'][$k]);
               if ($oid !== false && (int)$oid > 0) {
-                //$this->pr($post['extras'][$k]);
+                //$this->pr_die($post['extras'][$k]);
                 if (array_key_exists($k, $post['extras']) && isset($post['extras'][$k])) {
-                  $decode_extras = json_decode($post['extras'][$k]);
-                  foreach ($decode_extras as $i=>$extra) {
-                    $extra_price = 0;
-                    $extra_arr = $pjExtraModel->reset()->find($extra->extra_sel_id)->getData();
-                    if (!empty($extra_arr) && !empty($extra_arr['price'])) {
-                      $extra_price = $extra_arr['price'];
-                    }
-                    $pjOrderItemModel->reset()
+                  //$decode_extras = json_decode($post['extras'][$k]);
+                   $pjOrderItemModel->reset()
                       ->setAttributes(array(
                       'order_id' => $id,
-                      'foreign_id' => $extra->extra_sel_id,
+                      'foreign_id' => ':NULL',
                       'type' => 'extra',
                       'hash' => $hash,
                       'price_id' => ':NULL',
-                      'price' => $extra_price,
-                      'cnt' => $extra->extra_count,
-                      'special_instruction' => ':NULL',
+                      'price' => ':NULL',
+                      'cnt' => ':NULL',
+                      'special_instruction' => $post['extras'][$k],
                       'custom_special_instruction' => ':NULL'
                     ))->insert();
-                  }
                 }
-                //exit;
-                // if (isset($post['extra_id']) && isset($post['extra_id'][$k])) {
-                //   foreach ($post['extra_id'][$k] as $i => $eid) {
-                //     $extra_price = 0;
-                //     $extra_arr = $pjExtraModel->reset()->find($eid)->getData();
-                //     if (!empty($extra_arr) && !empty($extra_arr['price'])) {
-                //       $extra_price = $extra_arr['price'];
-                //     }
-                //     $pjOrderItemModel->reset()
-                //       ->setAttributes(array(
-                //       'order_id' => $id,
-                //       'foreign_id' => $eid,
-                //       'type' => 'extra',
-                //       'hash' => $hash,
-                //       'price_id' => ':NULL',
-                //       'price' => $extra_price,
-                //       'cnt' => $post['extra_cnt'][$k][$i],
-                //       'special_instruction' => $post['special_instruction'][$k][$i],
-                //       'custom_special_instruction' => $post['custom_special_instruction'][$k][$i]
-                //     ))->insert();
-                //   }
-                // }
               }
             }
           }

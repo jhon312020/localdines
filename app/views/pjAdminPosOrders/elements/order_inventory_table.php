@@ -23,14 +23,14 @@
   <tbody class="main-body" style="display: block; height: 350px; overflow-x: hidden; overflow-y: auto;">
     <?php
     if (array_key_exists('oi_arr', $tpl) && count($tpl['oi_arr']) > 0) {
-      // echo '<pre>';
+     // echo '<pre>';
       // print_r($tpl['oi_arr']);
       // print_r($tpl['product_arr']);
       foreach ($tpl['product_arr'] as $product) {
         foreach ($tpl['oi_arr'] as $k => $oi) {
           if ($oi['type'] == 'product' && $oi['foreign_id'] == $product['id'])  {
           $has_extra = false;
-          $oi_extras_array = array();
+          $oi_extras = '';
     ?>
       <tr class="fdLine jsKprintDone" data-index="<?php echo $oi['hash']; ?>" data-preptime = "<?php echo $product['preparation_time']; ?>">
         <td class="tdProductName">
@@ -55,20 +55,21 @@
           <div class="business-<?php echo $oi['hash']; ?> p-w-xs">
             <?php
               $sel_extra_cnt = 1;
-              foreach ($tpl['extra_arr'] as $extra) {
+              //foreach ($tpl['extra_arr'] as $extra) {
                 foreach ($tpl['oi_arr'] as $oi_sub) {
-                  if ($oi_sub['type'] == 'extra' && $oi_sub['hash'] == $oi['hash'] && $oi_sub['foreign_id'] == $extra['id']) {
-                    $oi_extras_array[] = array('id'=>$sel_extra_cnt,'extra_sel_id'=>$oi_sub['foreign_id'],'extra_count'=>$oi_sub['cnt'], 'extra_price'=>$extra['price'],"extra_name"=>$extra['name']);
+                  if ($oi_sub['type'] == 'extra' && $oi_sub['hash'] == $oi['hash']) {
+                    $oi_extras = $oi_sub['special_instruction'];
                     $sel_extra_cnt++;
                     $has_extra = true;
+                    break;
                   }
                 }
-              }
+              //}
               if ($has_extra) {
             ?>
-              <?php if(count($oi_extras_array)) { ?>
+              <?php if($oi_extras) { ?>
                 <a href="#" class="btn btn-primary btn-xs btn-outline pj-veiw-extra btn-has-extra" data-index="<?php echo $oi['hash']?>"><i class="fa fa-plus"></i> <?php //__('btnAddExtra');?></a>
-                 <input type='hidden' id="extra-<?php echo $oi['hash']; ?>" name="extras[<?php echo $oi['hash']; ?>]" data-index="<?php echo $oi['hash']; ?>_<?php echo $oi_sub['id']; ?>" class="fdExtra fdExtra_<?php echo $oi['hash']; ?> form-control" value='<?php echo json_encode($oi_extras_array); ?>'/>
+                 <input type='hidden' id="extra-<?php echo $oi['hash']; ?>" name="extras[<?php echo $oi['hash']; ?>]" data-index="<?php echo $oi['hash']; ?>_<?php echo $oi_sub['id']; ?>" class="fdExtra fdExtra_<?php echo $oi['hash']; ?> form-control" value='<?php echo $oi_extras; ?>'/>
               <?php } else { ?>
                 <a class="btn btn-danger btn-xs" disabled><i class="fa fa-times"></i></a>
               <?php } ?>
@@ -76,8 +77,6 @@
             <?php } else { ?>
               <a class="btn btn-danger btn-xs" disabled><i class="fa fa-times"></i></a>
             <?php } ?>
-           
-            
           </div>
         </td>
         <td id="fdPriceTD_<?php echo $oi['hash']; ?>">
