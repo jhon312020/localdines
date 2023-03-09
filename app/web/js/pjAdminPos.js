@@ -249,8 +249,6 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
     //       $("#voucher-container input").removeAttr("disabled");
     //     }
     //   } else {
-    //     console.log("came here");
-    //     console.log("261",$("#pickup_time").parent().parent());
     //     $("#pickup_time").val('');
     //     $("#pickup_time").parent().parent().addClass("has-error");
     //     $("#aproxPt").text('');
@@ -398,8 +396,6 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
         $.validator.addMethod("inputPostCode", function (value, element) {
           var type = $(".onoffswitch-order .onoffswitch-checkbox").prop("checked");
           var override = $(".onoffswitch-overridePc .onoffswitch-checkbox").prop("checked");
-          console.log('override', override);
-          console.log('type', type);
           $("#postCodeErr").css("display","none");
           if (type) {
             return true;
@@ -631,7 +627,6 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           },
           ignore: "",
           invalidHandler: function (form, validator) {
-            console.log($(validator.errorList[0].element));
             var $ele = $(validator.errorList[0].element);
             var $closest = $ele.closest(".tab-pane");
             var id = $closest.attr("id");
@@ -832,8 +827,6 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           },
           ignore: "",
           invalidHandler: function (form, validator) {
-            console.log('845 invalidHandler ');
-            console.log($(validator.errorList[0].element));
             var $firstEle = $(validator.errorList[0].element);
             var $closest = $firstEle.closest(".tab-pane");
             var id = $closest.attr("id");
@@ -841,7 +834,6 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             $("#submitJs").prop('disabled', false);
           },
           submitHandler: function (form) {
-            console.log('852 submithandler ');
             $("#submitJs").prop('disabled', false);
             var valid = true;
             var $ele = null;
@@ -851,9 +843,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             // };
             // if ($("#inputPostCode").val()) {
             //   var $pc = $("#inputPostCode").val();
-            //   console.log($pc);
             //   $pc = $pc.trim();
-            //   console.log($pc);
             //   if (!$pc) {
             //     valid = false;
             //   }
@@ -1104,36 +1094,36 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           time = $(active_frm + " #pickup_time").val();
         }
         $.get(
-              "index.php?controller=pjVouchers&action=pjActionCheckVoucherCode",
-              {code,date,time}
-            ).done(function (data) {
-              // var active_frm;
-              // if ($frmCreateOrder.length > 0) {
-              //   active_frm = $("#frm-type").val();
-              // }     
-              // if ($frmUpdateOrder.length > 0) {
-              //   active_frm = "#frmUpdateOrder_pos";
-              // }
-              // if ($frmUpdatePosOrder.length > 0) {
-              //   active_frm = "#frmUpdateOrder_epos";
-              // }
-              
-              if (data == "true") {
-                $("#voucher-container input").attr("data-wt","valid");
-                $("#voucher-container input").parent().removeClass("has-error");
-                if ($("#voucher-container input-error").length > 0) {
-                  $("#voucher-container input-error").css("display","none");
-                }
-                $(active_frm + " #vouchercode").val(code);
-                calPrice(1);
-              } else {
-                $("#voucher-container input").attr("data-wt","invalid");
-                $("#voucher-container input").parent().addClass("has-error");
-                $(active_frm + " #vouchercode").val('');
-                calPrice(1);
-              }
-              
-            });
+          "index.php?controller=pjVouchers&action=pjActionCheckVoucherCode",
+          {code,date,time}
+        ).done(function (data) {
+          // var active_frm;
+          // if ($frmCreateOrder.length > 0) {
+          //   active_frm = $("#frm-type").val();
+          // }     
+          // if ($frmUpdateOrder.length > 0) {
+          //   active_frm = "#frmUpdateOrder_pos";
+          // }
+          // if ($frmUpdatePosOrder.length > 0) {
+          //   active_frm = "#frmUpdateOrder_epos";
+          // }
+          
+          if (data == "true") {
+            $("#voucher-container input").attr("data-wt","valid");
+            $("#voucher-container input").parent().removeClass("has-error");
+            if ($("#voucher-container input-error").length > 0) {
+              $("#voucher-container input-error").css("display","none");
+            }
+            $(active_frm + " #vouchercode").val(code);
+            calPrice(1);
+          } else {
+            $("#voucher-container input").attr("data-wt","invalid");
+            $("#voucher-container input").parent().addClass("has-error");
+            $(active_frm + " #vouchercode").val('');
+            calPrice(1);
+          }
+          
+        });
       }
       function validateDeliveryFee(deliveryfee){
         var regex = /^\d*[.]?\d*$/;
@@ -1147,9 +1137,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
       }
       function getActiveForm() {
         var active_frm;
-        console.log(`${$frmCreateOrder.length}`);
         if ($frmCreateOrder.length > 0 || $frmCreatePosOrder.length > 0) {
-          console.log(`${$frmCreateOrder.length}`);
           active_frm = $("#frm-type").val();
           //$frm = $(active_frm);
         }     
@@ -1429,9 +1417,6 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
               type: "delay",
               //text: "Delay",
               url: "#",
-              // .on("click",function() {
-              //   console.log("Delay Message")
-              // }
             },
             {
               type: "info",
@@ -1943,7 +1928,6 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           var msgArea = $('#confirm-table-error-msg');
           var previousMessage = msgArea.text();
           var errorMessage = "";
-          console.log(msgArea.text());
           if (tableID && no_of_persons && eatInTableInUse == null) {
             var lblText = 'Table'+tableID+'-Count-'+no_of_persons;
             $('#tableModal #confirm-table-error-msg').val("");
@@ -2213,13 +2197,9 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           if (hidden_extra != '') {
             var extra = JSON.parse(hidden_extra);
             for (let i=0; i < extra.length; i++) {
-              console.log(extra[i].id);
-              console.log(extra[i].extra_sel_id);
-              console.log(extra[i].extra_count);
             }
           }
           var table = $("#fdExtraTable_"+index);
-          console.log(hidden_extra);
         })
         .on("click", ".pj-remove-extra", function (e) {
           if (e && e.preventDefault) {
@@ -2253,7 +2233,6 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           tableObj.find('.pj-remove-extra').each(function(index){
             $(this).attr("data-count", ++index);
           });
-          console.log('Stored in hidden',$("#extra-"+index).val(JSON.stringify(hidden_arr)));
           calPrice(1);
           return false;
         })
@@ -2346,14 +2325,12 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
   
         })
         // .on("click", ".bootstrap-touchspin", function(e) {
-        //   console.log("hey");
           // var $qnty = $(this).val();
           // var index = $(this).attr('id');
   
           // var index = index.split("_");
           
           // var prept = parseInt($("#fdPrepTime_"+index[1]+"_"+index[2]).text());
-          // console.log(prept);
           // var preptOne = prept/($qnty - 1);
           // var preptNow = preptOne * $qnty;
           // $(this).parent().siblings(".pj-field-count").val(preptNow);
@@ -2403,7 +2380,6 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
         })
         .on("change", "#phone_no", function (e) {
           // $cinfo = client_info;
-          console.log('called me');
           getClientInfo($(this));
           validatePhoneNumber($(this).val());
         })
@@ -2672,8 +2648,6 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
         //     extra_sel_id: select_val,
         //     extra_count: input_val
         //   }
-        //   // console.log('test',input_val);
-        //   // console.log('extra',extra_json);
         //   if (hidden_extra.val()) {
         //     hidden_arr = JSON.parse(hidden_extra.val());
         //     var i = hidden_arr.findIndex((temp) => {
@@ -2727,7 +2701,6 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
         })
         .on("change", "#delay_reason", function (e) {
           var val = $(this).val();
-          console.log('val',val);
           var msgArea = $("#message");
           if (val == 5) {
             msgArea.val("");
@@ -2951,7 +2924,6 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
         // })
         .on("change", "#selAddress", function (e) {
           var index = $(this).val();
-          //console.log(postalResult);
           // return;
           //client.lookupPostcode({ postcode }).then(function (result) {
           if (index != 0) {
@@ -2977,7 +2949,6 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
         //       "index.php?controller=pjAdminOrders&action=pjActionGetProductsForCategory",
         //       {category_id: categoryID}
         //     ).done(function (data) {
-        //       //console.log(data);
         //       $('#catModalTitle').text(catName);
         //       $('#catModalBody').html(data);
         //       $("#catModal").modal();
@@ -3002,7 +2973,6 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           //   "index.php?controller=pjAdminOrders&action=pjActionGetProductsForCategory",
           //   {category_id: categoryID}
           // ).done(function (data) {
-          //   //console.log(data);
           //   $('#catModalTitle').text(catName);
           //   $('#catModalBody').html(data);
           //   if ($("#paginate")) {
@@ -3070,7 +3040,6 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
       
       $('#catModal').on('show.bs.modal', function (event) {
           // Fix Animate.css
-          //console.log('Called me');
           $('#orderContainer').removeClass('animated fadeInRight');
       });
   
@@ -3107,7 +3076,6 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
       // })
       // $("#inputPostCode").on("focusout", function() {
       //   var postCode = $(this).val();
-      //   console.log("check post code");
       //   if (postCode != '') {
       //     $.ajax({
       //       type: "POST",
@@ -3182,7 +3150,6 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             $("#fdOrderList").find("tbody.main-body").append($clone);
             bindTouchSpin();
             $("#fdOrderList").show();
-            // console.log('Index:',index);
             $('#fdProduct_new_'+index).addClass('selectpicker').selectpicker('refresh');
           }
         //alert("Update page");
@@ -3214,11 +3181,10 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           layout: 'custom',
           customLayout: {
             'normal' : [
-              '1 2 3',
-              '4 5 6',
-              '7 8 9',
-              '. 0 00',
-              '{a} {c} {bksp}'
+              '1 2 3 {b}',
+              '4 5 6 {clear}',
+              '7 8 9 {a}',
+              '. 0 00 {c}'
             ]
           },
           maxLength : length,
@@ -3281,8 +3247,8 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
               '1 2 3',
               '4 5 6',
               '7 8 9',
-              '{a} 0 {c}',
-              '{bksp}'
+              '{clear} 0 {b}',
+              '{a} 00 {c}'
             ]
           },
           maxLength: length,
@@ -3493,7 +3459,6 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
                 $totalPrepTime = $kordersPrepTime;
                 if ($("#fdOrderList_1").find("tbody.main-body > tr").length != 0) {
                   var rows = $("#fdOrderList_1").find("tbody.main-body > tr.new");
-                  console.log('Rows', rows);
                   rows.each(function() {
                     var $index = $(this).data("index");
                     var proInListId = $(this).children("td:nth-of-type(1)").children("input").val();
@@ -3750,7 +3715,6 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             }
             
           }
-          // console.log(loadimgParent);
         })
         .on("click", '#specialInstructionsModal .specialInstructionsBtn',function (e) { 
           var index = $("#selectedInsValue").attr("data-index");
@@ -3833,7 +3797,6 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             // var $productEle = $("#fdProduct_" + index);
             // var $product_id = $productEle.val();
             // var $extra_table = $this.parent().siblings(".pj-extra-table");
-            // console.log($product_id);
             // if ($product_id != "") {
             //   $.get("index.php?controller=pjAdminPos&action=pjActionGetExtras", {
             //     product_id: $product_id,
@@ -3864,7 +3827,6 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           });
           $('#tableModal').modal({backdrop: 'static', keyboard: false}, 'show');
         }).on("click", "#table_select", function() {
-          console.log('Called me');
           $('#tableModal').modal();
         });
         $("#productSearchHide").click(function() {
@@ -4140,13 +4102,9 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
                     var extras = $(extraID).val();
                     if (extras) {
                       extras = JSON.parse(extras);
-                      console.log(`extras ${extras}`);
                       var extras_count = extras.length;
                       for (var count = 0; count < extras_count; count++) {
-                        console.log(`extras -`,extras[count], extras[count].extra_price);
-                         console.log(`total ${total}`);
                          total += parseFloat(extras[count].extra_price) * parseInt(extras[count].extra_count);
-                         console.log(`total ${total}`);
                       }
                     }
                   }
@@ -4155,14 +4113,10 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
                   //   var extra_index = $(this).attr("data-index"),
                   //     extra = $(this).val(),
                   //     extra_qty = parseInt($("#fdExtraQty_" + extra_index).val(), 10);
-                  //     console.log('Extras:', extra);
-                  //     console.log('Extras Qty:',extra_qty);
-                  //     console.log('extra_index:',extra_index);
                   //   if (extra != "" && extra_qty > 0) {
                   //     var extra_price = 0;
                   //     //var extra_attr = $("option:selected", this).attr("data-price");
                   //     var extra_attr = $("option:selected", this).attr("data-price");
-                  //     console.log('Extra Attr', extra_attr);
                   //     if (
                   //       typeof extra_attr !== typeof undefined &&
                   //       extra_attr !== false
@@ -4170,7 +4124,6 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
                   //       extra_price = parseFloat(extra_attr, 10);
                   //     } else {
                   //       extra_attr = parseInt($("#fdExtra_" + extra_index).val(), 10);
-                  //       console.log('Extra Attr', extra_attr);
                   //       if (typeof extra_attr !== typeof undefined &&
                   //       extra_attr) {
                   //         extra_price = parseFloat(extra_attr, 10);
@@ -4569,9 +4522,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
         function validateCart() {
           var cartError = false;
           $('#fdOrderList_1 .main-body tr.fdLine').each(function(index, tr) {
-            //console.log(tr);
             var rowID = $(tr).data('index');
-            //console.log('RowID: ', rowID);
             var qtyID = 'fdProductQty_'+rowID;
             var extraID = 'fdExtra_'+rowID;
             var extraTableID = 'fdExtraTable_'+rowID;
@@ -4585,22 +4536,17 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             }
            //var $extraQtyObj = $(tr).find('#'+extraID);
             var $extraTableObj = $(tr).find('#'+extraTableID);
-            console.log('Length: ', $extraTableObj.length);
 
             if ($extraTableObj.length > 0) {
               $($extraTableObj).find('tr').each(function(extraIndex, extraTR) {
-                console.log("Extra tr", extraTR);
-                console.log($(extraTR).find('#'+extraID).val());
                 var $extraQtyObj = $(extraTR).find('#'+extraID);
                 var extraQtyID = 'fdExtraQty_'+$extraQtyObj.data('index');
                 var extraItemVal = $(extraTR).find('#'+extraID).val();
                 var extraQty = $extraQtyObj.val();
-                //console.log('extraItemVal: ',extraItemVal, 'extraQty: ', extraQty);
                 if (extraQty < 0 || extraQty == '' || extraItemVal == '') {
                   // if (extraQty < 0 || extraQty == '') {
                   //   $(tr).find('#'+extraQtyID).parent().addClass('has-error');
                   // }
-                  console.log('came in');
                   $extraQtyObj.parent().parent().addClass('has-error');
                   cartError = true;
                   //return false;
@@ -4687,7 +4633,6 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
    
 
         // $("#products-sec .img-container").on("click", function (e) {
-        //     console.log("clicked product");
         //     if (e && e.preventDefault) {
         //         e.preventDefault();
         //     }

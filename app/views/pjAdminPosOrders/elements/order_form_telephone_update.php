@@ -470,7 +470,7 @@
                          <div class="row">
                               <div class="col-md-4 col-sm-6 order-pickup" style="display:<?php echo $tpl['arr']['type']== 'pickup' || $tpl['arr']['type']== 'pickup & call' ? 'block' : 'none';?>;">
                                 <label>Time(Mins)</label>
-                                      <!-- <input type="text"  name="pickup_time" id="pickup_time" value="<?php //echo date("H:i"); ?>">   -->
+                                      <input type="hidden"  name="pickup_time" id="pickup_time" value="<?php echo date("H:i"); ?>">  
                                       <!-- <div class="form-group" id="jsPTimeDiv" style="display: <?php //echo $future == 0 ? 'block' : 'none'; ?>">
                                         <div class="input-group">
                                           <span class="input-group-addon"><i class="fa fa-clock-o"></i></span><input name="p_time" id="p_time" class="form-control fdRequired" data-msg-required="<?php //__('fd_field_required', false, true);?>"  value = "<?php //if($tpl['arr']['p_time']==0){ echo 40;}else{echo $tpl['arr']['p_time'];} ?>"/> 

@@ -15,8 +15,8 @@ if ($tpl['extra_val'] == 1) {
   //   $selected_arr[$counter] = $selected_value;
   //   $counter++;
   // }
-  echo "<pre>"; print_r($selected_arr); echo "</pre>";
-  echo $tpl['qty'];
+  // echo "<pre>"; print_r($selected_arr); echo "</pre>";
+  // echo $tpl['qty'];
 }
  ?>
 <table class="table table-bordered">
@@ -37,7 +37,9 @@ if ($tpl['extra_val'] == 1) {
               <div class="input-group">
                 <div class="input-group-addon font-20"><?php echo $selected_value['extra_name']; ?></div>
                 <input type="text" class="form-control cus-extra" value="<?php echo " X ".$selected_value['extra_count']; ?>" disabled placeholder="qty">
+                <?php if (!$tpl['edit']) { ?>
                 <div class="input-group-addon btn btn-xs btn-danger btn-outline pj-remove-extra" data-qty="<?php echo "qty_".$i; ?>" data-id="<?php echo $selected_value['id']; ?>" data-index="<?php echo $index; ?>"><i class="fa fa-times fa-3x"></i></div>
+                <?php } ?>
               </div>
             </div>
             <?php } ?>
@@ -47,6 +49,7 @@ if ($tpl['extra_val'] == 1) {
     <?php } ?>
   </tbody>
 </table>
+<?php if (!$tpl['edit']) { ?>
 <div id="extra_qty">
   <?php for ($i=1; $i <= $tpl['qty'] ; $i++) { ?>
     <div id="qty_<?php echo $i; ?>" <?php if ($i>1) echo "class='d-none'"?>>
@@ -66,6 +69,7 @@ if ($tpl['extra_val'] == 1) {
     </div>
   <?php } ?>
 </div>
+<?php } ?>
 
 
 
