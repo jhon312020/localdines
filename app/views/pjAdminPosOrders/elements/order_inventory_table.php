@@ -23,9 +23,9 @@
   <tbody class="main-body" style="display: block; height: 350px; overflow-x: hidden; overflow-y: auto;">
     <?php
     if (array_key_exists('oi_arr', $tpl) && count($tpl['oi_arr']) > 0) {
-     // echo '<pre>';
-      // print_r($tpl['oi_arr']);
-      // print_r($tpl['product_arr']);
+     //echo '<pre>';
+      //print_r($tpl['oi_arr']);
+      //print_r($tpl['oi_extras']);
       foreach ($tpl['product_arr'] as $product) {
         foreach ($tpl['oi_arr'] as $k => $oi) {
           if ($oi['type'] == 'product' && $oi['foreign_id'] == $product['id'])  {
@@ -54,26 +54,12 @@
         <td>
           <div class="business-<?php echo $oi['hash']; ?> p-w-xs">
             <?php
-              $sel_extra_cnt = 1;
-              //foreach ($tpl['extra_arr'] as $extra) {
-                foreach ($tpl['oi_arr'] as $oi_sub) {
-                  if ($oi_sub['type'] == 'extra' && $oi_sub['hash'] == $oi['hash']) {
-                    $oi_extras = $oi_sub['special_instruction'];
-                    $sel_extra_cnt++;
-                    $has_extra = true;
-                    break;
-                  }
-                }
-              //}
-              if ($has_extra) {
+              //$this->print_r($tpl['oi_extras']);
+              if ($has_extra && array_key_exists($oi['hash'], $tpl['oi_extras'])) {
+                $oi_extra = $tpl['oi_extras'][$oi['hash']]['special_instruction'];
             ?>
-              <?php if($oi_extras) { ?>
                 <a href="#" class="btn btn-primary btn-xs btn-outline pj-veiw-extra btn-has-extra" data-index="<?php echo $oi['hash']?>"><i class="fa fa-plus"></i> <?php //__('btnAddExtra');?></a>
-                 <input type='hidden' id="extra-<?php echo $oi['hash']; ?>" name="extras[<?php echo $oi['hash']; ?>]" data-index="<?php echo $oi['hash']; ?>_<?php echo $oi_sub['id']; ?>" class="fdExtra fdExtra_<?php echo $oi['hash']; ?> form-control" value='<?php echo $oi_extras; ?>'/>
-              <?php } else { ?>
-                <a class="btn btn-danger btn-xs" disabled><i class="fa fa-times"></i></a>
-              <?php } ?>
-            
+                 <input type='hidden' id="extra-<?php echo $oi['hash']; ?>" name="extras[<?php echo $oi['hash']; ?>]" data-index="<?php echo $oi['hash']; ?>_<?php echo $oi_sub['id']; ?>" class="fdExtra fdExtra_<?php echo $oi['hash']; ?> form-control" value='<?php echo $oi_extra; ?>'/>
             <?php } else { ?>
               <a class="btn btn-danger btn-xs" disabled><i class="fa fa-times"></i></a>
             <?php } ?>
@@ -133,7 +119,6 @@
           <?php } else { ?>
             <a href="#" class="btn btn-primary" disabled><i class="fa fa-comment-o"></i></a>
           <?php } ?>
-          
           <input type="hidden" id="fdSpecialInstruction_<?php echo $oi['hash']; ?>" name="special_instruction[<?php echo $oi['hash']; ?>]" class="form-control special-instruction" value='<?php echo $oi['special_instruction']; ?>' />
           <input type="hidden" id="fdCustomSpecialInstruction_<?php echo $oi['hash']; ?>" name="custom_special_instruction[<?php echo $oi['hash']; ?>]" class="form-control custom-special-instruction" value='<?php echo $oi['custom_special_instruction']; ?>' />
         </td>
