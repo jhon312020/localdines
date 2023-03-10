@@ -797,11 +797,15 @@ td .btn-secondary:hover {
 .cus-w-70 {
   width: 70%;
 }
-#extraModal .cus-w-70 {
+
+.cus-w-50 {
+  width: 50%;
+}
+/*#extraModal .cus-w-70 {
   background-color: #337ab7;
   border: 1px solid #2e6da4;
   color: #fff;
-}
+}*/
 .cus-text-left {
   text-align: left !important;
 }

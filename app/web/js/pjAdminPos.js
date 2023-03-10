@@ -2623,12 +2623,12 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             return temp.qty_no == qty_no;
           });
           for (let i=0;i < filtered.length; i++) {
-            var child1 = $("<div>").addClass("input-group-addon font-20").text(filtered[i].extra_name);
+            var child1 = $("<div>").addClass("input-group-addon font-20 cus-w-50 cus-text-left").text(filtered[i].extra_name);
             var child2 = $("<input>").addClass("form-control cus-extra").attr({ type: "text", disabled: true }).val(" X "+filtered[i].extra_count);
             var icon = $("<i>").addClass("fa fa-times fa-3x");
             var child3 = $("<div>").addClass("input-group-addon btn btn-xs btn-danger btn-outline pj-remove-extra").attr("data-qty", filtered[i].qty_no).attr("data-id",filtered[i].id).attr("data-index", hidden_arr[i].extra_index).append(icon);
             var div2 = $("<div>").addClass("input-group").append(child1).append(child2).append(child3);
-            var div1 = $("<div>").addClass("form-group col-sm-4").append(div2);
+            var div1 = $("<div>").addClass("form-group col-sm-5").append(div2);
             
             // var td = $("<td>").append(div1);
             // var tr = $("<tr>").append(td);
