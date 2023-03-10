@@ -20,12 +20,9 @@
       <th></th>
     </tr>
   </thead>
-  <tbody class="main-body" style="display: block; height: 350px; overflow-x: hidden; overflow-y: auto;">
+  <tbody class="main-body">
     <?php
     if (array_key_exists('oi_arr', $tpl) && count($tpl['oi_arr']) > 0) {
-     //echo '<pre>';
-      //print_r($tpl['oi_arr']);
-      //print_r($tpl['oi_extras']);
       foreach ($tpl['product_arr'] as $product) {
         foreach ($tpl['oi_arr'] as $k => $oi) {
           if ($oi['type'] == 'product' && $oi['foreign_id'] == $product['id'])  {
@@ -54,12 +51,11 @@
         <td>
           <div class="business-<?php echo $oi['hash']; ?> p-w-xs">
             <?php
-              //$this->print_r($tpl['oi_extras']);
               if ($has_extra && array_key_exists($oi['hash'], $tpl['oi_extras'])) {
                 $oi_extra = $tpl['oi_extras'][$oi['hash']]['special_instruction'];
             ?>
-                <a href="#" class="btn btn-primary btn-xs btn-outline pj-veiw-extra btn-has-extra" data-index="<?php echo $oi['hash']?>"><i class="fa fa-plus"></i> <?php //__('btnAddExtra');?></a>
-                 <input type='hidden' id="extra-<?php echo $oi['hash']; ?>" name="extras[<?php echo $oi['hash']; ?>]" data-index="<?php echo $oi['hash']; ?>_<?php echo $oi_sub['id']; ?>" class="fdExtra fdExtra_<?php echo $oi['hash']; ?> form-control" value='<?php echo $oi_extra; ?>'/>
+              <a href="#" class="btn btn-primary btn-xs btn-outline pj-veiw-extra btn-has-extra" data-index="<?php echo $oi['hash']?>"><i class="fa fa-plus"></i> <?php //__('btnAddExtra');?></a>
+               <input type='hidden' id="extra-<?php echo $oi['hash']; ?>" name="extras[<?php echo $oi['hash']; ?>]" data-index="<?php echo $oi['hash']; ?>_<?php echo $oi_sub['id']; ?>" class="fdExtra fdExtra_<?php echo $oi['hash']; ?> form-control" value='<?php echo $oi_extra; ?>'/>
             <?php } else { ?>
               <a class="btn btn-danger btn-xs" disabled><i class="fa fa-times"></i></a>
             <?php } ?>
@@ -78,7 +74,6 @@
             } else {
               if (isset($oi['price_arr']) && $oi['price_arr']) {
                 foreach ($oi['price_arr'] as $pr) {
-                  //echo '<pre>'; print_r($pr); echo '</pre>';
                   if ($pr['id'] == $oi['price_id']) {
                ?>
                   <input type="hidden" id="fdPrice_<?php echo $oi['hash']; ?>" name="price_id[<?php echo $oi['hash']; ?>]" value="<?php echo $pr['id']; ?>" data-price="<?php echo $pr['price']; ?>"/>
@@ -104,8 +99,8 @@
             <?php $selected_ins = json_decode($oi['special_instruction']); ?>
             <?php 
             $selected_ins = json_decode($oi['special_instruction']);
-            for($i =0; $i < count($selected_ins); $i ++) {
-              if($selected_ins[$i]->ids != "" || $selected_ins[$i]->cus_ins != "") {
+            for ($i =0; $i < count($selected_ins); $i ++) {
+              if ($selected_ins[$i]->ids != "" || $selected_ins[$i]->cus_ins != "") {
                 $name = stripslashes($product['name']);
                 $hash = $oi['hash'];
                 $element = "<a href='#' class='btn product_spcl_ins btn-has-si' data-name='$name' data-index = '$hash'><i class='fa fa-comment-o'></i></a>";

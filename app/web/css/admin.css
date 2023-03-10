@@ -895,3 +895,13 @@ td .btn-secondary:hover {
   color: white; 
   border-color: #2d4afe;  
 }
+
+#fdOrderList_1 tbody.main-body {
+  display: block; 
+  height: 475px; 
+  overflow-x: hidden; 
+  overflow-y: auto;
+}
+#tableModal #confirm-table-error-msg {
+  font-size: 20px;
+}
