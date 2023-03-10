@@ -1985,10 +1985,12 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           var paymentType = $(this).text().trim().toLowerCase();
           var amt = $('#payment_modal_tot').text();
           if (paymentType == 'card') {
+            $(".money-container .btn").addClass("d-none");
             $('#pos_payment_method').val(paymentType); 
             $('#payment_modal_pay').val(amt);
             showBalance(amt);
           } else {
+            $(".money-container .btn").removeClass("d-none");
             $('#payment_modal_pay').val('');
             $('#payment_modal_bal').text('');
             $("#paymentBtn").attr("data-valid", "false");
@@ -2623,7 +2625,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             return temp.qty_no == qty_no;
           });
           for (let i=0;i < filtered.length; i++) {
-            var child1 = $("<div>").addClass("input-group-addon font-20 cus-w-50 cus-text-left").text(filtered[i].extra_name);
+            var child1 = $("<div>").addClass("input-group-addon font-20 cus-w-50 cus-text").text(filtered[i].extra_name);
             var child2 = $("<input>").addClass("form-control cus-extra").attr({ type: "text", disabled: true }).val(" X "+filtered[i].extra_count);
             var icon = $("<i>").addClass("fa fa-times fa-3x");
             var child3 = $("<div>").addClass("input-group-addon btn btn-xs btn-danger btn-outline pj-remove-extra").attr("data-qty", filtered[i].qty_no).attr("data-id",filtered[i].id).attr("data-index", hidden_arr[i].extra_index).append(icon);
