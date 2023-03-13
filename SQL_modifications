@@ -9,3 +9,4 @@ Date (15/02/23) ->
 
 Date (13-Mar-2023)
 ALTER TABLE `food_delivery_orders_items`  ADD `item_order` INT NULL  AFTER `hash`;
+ALTER TABLE `food_delivery_orders` ADD `total_persons` INT NULL DEFAULT NULL AFTER `status`;

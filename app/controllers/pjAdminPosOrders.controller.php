@@ -3279,7 +3279,9 @@ class pjAdminPosOrders extends pjAdmin {
         ->findAll()
         ->toArray('allowed_extras', '~:~')
         ->getData();
-
+      $product_names = array_column($product_arr, 'name', 'id');
+      //$this->pr($product_arr);
+      //$this->pr($product_names);
       $extra_arr = pjExtraModel::factory()->join('pjMultiLang', "t2.foreign_id = t1.id AND t2.model = 'pjExtra' AND t2.locale = '" . $this->getLocaleId() . "' AND t2.field = 'name'", 'left')
           ->select("t1.*, t2.content AS name")
           ->where("t1.id IN (SELECT TPE.extra_id FROM `" . pjProductExtraModel::factory()
@@ -3310,10 +3312,14 @@ class pjAdminPosOrders extends pjAdmin {
             } else {
               $item['size'] = '';
             }
+            $item['product_name'] = $product_names[$item['foreign_id']];
         }
-        if ($item['type'] == 'extra' && $item['foreign_id']) {
-          $item['extra_name'] = $extras[$item['foreign_id']]['name'];
-          $oi_extras[$item['hash']][] = $item;
+        if ($item['type'] == 'extra') {
+          //$item['extra_name'] = $extras[$item['foreign_id']]['name'];
+          $extras = json_decode($item['special_instruction']);
+          //$extras = array_column($extras, array_map(function() {}, $extras), "" );
+          //$this->pr($extras);
+          $oi_extras[$item['hash']] = $extras;
         } else {
           $oi_arr[] = $item;
         }

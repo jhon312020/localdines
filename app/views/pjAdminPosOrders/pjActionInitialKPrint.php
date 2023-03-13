@@ -24,12 +24,12 @@
 		<tbody>
 			<?php
 			  $i = 0;
-			  echo '<pre>'; print_r($tpl['product_arr']); echo '</pre>';
-			  echo '<pre>'; print_r($tpl['oi_arr']); echo '</pre>';
+			  //echo '<pre>'; print_r($tpl['product_arr']); echo '</pre>';
+			  //echo '<pre>'; print_r($tpl['oi_arr']); echo '</pre>';
+			  //echo '<pre>'; print_r($tpl['oi_extras']); echo '</pre>';
 			  // echo "<pre>"; print_r($tpl['special_instructions']); echo "</pre>";
-			  foreach ($tpl['product_arr'] as $product) {
+			  //foreach ($tpl['product_arr'] as $product) {
 			    foreach ($tpl['oi_arr'] as $k => $oi) {
-			      if ($oi['cnt'] != $oi['print'] && $oi['foreign_id'] == $product['id']) {
 			        $i = $i + 1;
 			        if ($i == 1) {
 			?>
@@ -40,50 +40,56 @@
 				       	<tr>
 				          <td class="kitchen" style="font-size: 18pt;">
 				          	<?php
-				          	for ($i = 0, $counter = 0; $i <($oi['cnt'] - $oi['print']); $i++, $counter++) {
+				          	for ($i = 0, $counter = 0; $i < $oi['cnt'] ; $i++, $counter++) {
+				          		if ($i)
+				          		echo "<br/>";
 				          		echo 1 . " x ";
-				          		echo strtoupper($product['name'])." ".$oi['size']." ";
+				          		echo strtoupper($oi['product_name'])." ".$oi['size']." ";
+
+				          		if (array_key_exists($oi['hash'], $tpl['oi_extras']) && isset($tpl['oi_extras'][$oi['hash']][$counter])) { 
+				          			$extra = $tpl['oi_extras'][$oi['hash']][$counter]; //echo 'came here';
+				          			echo '<br/><span style="margin-left: 20px">'.$extra->extra_name ." x ".$extra->extra_count.'</span>';
+				          		}
+
+
 				          		if ($oi['special_instruction']) {
 				          			$obj = json_decode($oi['special_instruction'], true);
 				          			
 				          			if (isset($obj[$counter])) {
 				          				if ($obj[$counter]['ids']) {
+				          					echo "<br/><span style='margin-left: 10px'>";
 				          					$selected_ins_arr = explode(',', $obj[$counter]['ids']);
 						          			foreach ($selected_ins_arr as $ins) {
 						          				foreach ($tpl['special_instructions'] as $instruction) {
 						          					if ($ins == $instruction['id']) {
-						          						echo "<br><img src='".$instruction['image']."' style='height: 30px; width:30px;'/>";
+						          						echo "<img src='".$instruction['image']."' style='margin-left: 5px;height: 30px; width:30px;'/>";
 						          					}
 						          				}
 						          			}
-					          				echo "<br>";
+					          				echo "</span><br>";
 				          				}
 				          				
 					          			if ($obj[$counter]['cus_ins']) {
-						          			echo "#" . $obj[$counter]['cus_ins'];
+						          			echo "<span style='margin-left: 20px'># " . $obj[$counter]['cus_ins']. '</span>';
 					          			}
 				          			}
-				          			echo "<br>";
-				          			echo "<br>";
+				          			//echo "<br>";
+				          			//echo "<br>";
 				          		}
+				          		//echo $counter;
+				          		//echo $oi['hash'];
+				          		
 				          	}
 
 				          	?>
-										<br/>
-					           <?php if (array_key_exists($oi['hash'], $tpl['oi_extras'])) { 
-                      $proExtra = $tpl['oi_extras'][$oi['hash']]; 
-                      foreach($proExtra as $extra) {
-                      ?>
-                      <br/><span style="margin-left: 20px"><?php   echo $extra['extra_name'] ." x ".($extra['cnt'] - $extra['print']); ?></span> 
-                    <?php } } ?>
 										
 				          </td>
 				        </tr>
         					
         <?php
       					} 
-    					}
-  					}
+
+  					//}
 				?>
 			 <tr class="rowHead">
 	    	<td><hr></td>
