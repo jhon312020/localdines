@@ -289,7 +289,7 @@ td .btn-secondary:hover {
     text-transform: uppercase;
     text-align: center;
 }
-.category-container,#btnCategories,#slideCategories,.topnav-one {
+.category-container, #btnCategories, #slideCategories, .topnav-one {
     /* background-color: #fff; */
     /* background: #FF416C;  
     background: -webkit-linear-gradient(to right, #FF4B2B, #FF416C);  
@@ -315,6 +315,9 @@ td .btn-secondary:hover {
 .category-container .content h4 {
     font-size: 18px; 
     font-weight: 600;
+}
+#js-categories .selected {
+  background:linear-gradient(to bottom, #337ab7 5%, #337ab7 100%);
 }
 .products .img-container {
     height: 140px;
@@ -815,13 +818,13 @@ td .btn-secondary:hover {
   color: #FFFFFF;
 }
 #sel_table_name a {
-  font-size: 15px;
-  font-weight: bolder;
+  font-size: 20px;
   background-color: #337ab7;
-  padding: 0px 5px;
+  padding: 12px 10px;
   border: 1px solid #2e6da4;
   color: #fff;
   text-shadow: 1px 1px 1px black;
+  height: 55px;
 }
 #fdEposTableContainer .btn-extras-add, 
 #fdEposTableContainer .btn-spl-ins-add, 

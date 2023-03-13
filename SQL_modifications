@@ -6,3 +6,6 @@ Date (15/02/23) ->
     ALTER TABLE food_delivery_companies 
     ADD COLUMN postal_code VARCHAR(10) NULL DEFAULT NULL AFTER `address`,
     ADD COLUMN `contact_number` VARCHAR(12) NULL DEFAULT NULL AFTER `contact_person`;
+
+Date (13-Mar-2023)
+ALTER TABLE `food_delivery_orders_items`  ADD `item_order` INT NULL  AFTER `hash`;

@@ -12,7 +12,7 @@
           </div><!-- /.panel-heading -->
           <div class="panel-body">
             <p class="lead m-b-md"><?php __('lblPrice'); ?>: <span id="" class="pull-right price_format"><?php echo pjCurrency::formatPrice(0);?></span></p>
-            <!-- <p class="lead m-b-md"><?php//__('lblPacking'); ?>: <span id="packing_format" class="pull-right"><?php //echo pjCurrency::formatPrice(0);?></span></p> -->
+            <p class="lead m-b-md"><?php echo "Extras" ?>: <span id="" class="pull-right extras_format"><?php echo pjCurrency::formatPrice(0);?></span></p>
             <p class="lead m-b-md"><?php __('lblDelivery'); ?>: <span id="" class="pull-right delivery_format"><?php echo pjCurrency::formatPrice(0);?></span></p>
             <p class="lead m-b-md"><?php __('lblDiscount'); ?>: <span id="" class="pull-right text-right discount_format"><?php echo pjCurrency::formatPrice(0);?></span></p>
             <p class="lead m-b-md"><?php __('lblSubTotal'); ?>: <span id="" class="pull-right text-right subtotal_format"><?php echo pjCurrency::formatPrice(0);?></span></p>

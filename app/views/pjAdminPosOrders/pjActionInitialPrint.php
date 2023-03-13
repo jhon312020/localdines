@@ -25,6 +25,7 @@
       <?php
         //foreach ($tpl['categories'] as $cs => $c) {
           $i = 0;
+          //echo '<pre>'; print_r($tpl['oi_arr']); echo '</pre>';
           foreach ($tpl['product_arr'] as $product) {
             foreach ($tpl['oi_arr'] as $k => $oi) {
               //if ($oi['type'] == 'product' && $oi['foreign_id'] == $product['id'] && $c['id'] == $product['category_id']) {

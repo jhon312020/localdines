@@ -376,6 +376,81 @@ class pjAdmin extends pjAppController {
 	public function pr_die($data) {
 		echo '<pre>'; print_r($data); echo '</pre>'; die;
 	}
+	public function getCategoryList() {
+		return $category_arr = pjCategoryModel::factory()->join('pjMultiLang', "t2.foreign_id = t1.id AND t2.model = 'pjCategory' AND t2.locale = '" . $this->getLocaleId() . "' AND t2.field = 'name'", 'left')
+        ->select("t1.*, t2.content AS name")
+        ->orderBy("t1.order ASC")
+        ->findAll()
+        ->getData();
+	}
+	public function getProduct($productID) {
+		$pjProductModel = pjProductModel::factory();
+		return $pjProductModel->reset()->join('pjProductCategory', "t1.id = t2.product_id") ->select(sprintf("t1.*, t2.*, (SELECT COUNT(*) FROM `%s` AS TPE WHERE TPE.product_id=t1.id) as cnt_extras",pjProductExtraModel::factory()
+      ->getTable()))->find($productID)->getData();
+	}
+	public function saveOrderItems($post, $order_id) {
+		if (isset($post['product_id']) && count($post['product_id']) > 0) {
+      $pjOrderItemModel = pjOrderItemModel::factory();
+      $pjProductPriceModel = pjProductPriceModel::factory();
+      $pjProductModel = pjProductModel::factory();
+      $pjExtraModel = pjExtraModel::factory();
+      $category_arr = $this->getCategoryList();
+      $category_order = array_column($category_arr, 'order', 'id');
+      foreach ($post['product_id'] as $k => $pid) {
+        $product = $this->getProduct($pid);
+        $item_order = $category_order[$product['category_id']];
+        //$this->pr_die($product);
+        if (strpos($k, 'new_') === 0) {
+          $price = 0;
+          $price_id = ":NULL";
+          if ($product['set_different_sizes'] == 'T') {
+            $price_id = $post['price_id'][$k];
+            $price_arr = $pjProductPriceModel->reset()->find($price_id)->getData();
+            if ($price_arr) {
+              $price = $price_arr['price'];
+            }
+          } else {
+            $price = $product['price'];
+          }
+          $hash = md5(uniqid(rand() , true));
+          $oid = $pjOrderItemModel->reset()
+            ->setAttributes(array(
+            'order_id' => $order_id,
+            'foreign_id' => $pid,
+            'type' => 'product',
+            'hash' => $hash,
+            'item_order'=> $item_order,
+            'price_id' => $price_id,
+            'price' => $price,
+            'cnt' => $post['cnt'][$k],
+            'special_instruction' => $post['special_instruction'][$k],
+            'custom_special_instruction' => $post['custom_special_instruction'][$k]
+          ))->insert()
+            ->getInsertId();
+            //$this->pr($post);
+            //$this->pr_die($post['extras'][$k]);
+          if ($product['cnt_extras'] && $oid !== false && (int)$oid > 0) {
+            //$this->pr_die($post['extras'][$k]);
+            if (array_key_exists($k, $post['extras']) && isset($post['extras'][$k]) && $post['extras'][$k]!= "") {
+              //$decode_extras = json_decode($post['extras'][$k]);
+               $pjOrderItemModel->reset()
+                  ->setAttributes(array(
+                  'order_id' => $order_id,
+                  'foreign_id' => ':NULL',
+                  'type' => 'extra',
+                  'hash' => $hash,
+                  'price_id' => ':NULL',
+                  'price' => ':NULL',
+                  'cnt' => ':NULL',
+                  'special_instruction' => $post['extras'][$k],
+                  'custom_special_instruction' => ':NULL'
+                ))->insert();
+            }
+          }
+        }
+      }
+    }
+	}
 //public function pjActionCheckNewOrder() {
 	// 	$this->setAjax(true);
   //     if ($this->isXHR())

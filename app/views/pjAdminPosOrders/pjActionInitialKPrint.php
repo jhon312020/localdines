@@ -24,8 +24,8 @@
 		<tbody>
 			<?php
 			  $i = 0;
-			  // echo '<pre>'; print_r($tpl['product_arr']); echo '</pre>';
-			  // echo '<pre>'; print_r($tpl['oi_arr']); echo '</pre>';
+			  echo '<pre>'; print_r($tpl['product_arr']); echo '</pre>';
+			  echo '<pre>'; print_r($tpl['oi_arr']); echo '</pre>';
 			  // echo "<pre>"; print_r($tpl['special_instructions']); echo "</pre>";
 			  foreach ($tpl['product_arr'] as $product) {
 			    foreach ($tpl['oi_arr'] as $k => $oi) {

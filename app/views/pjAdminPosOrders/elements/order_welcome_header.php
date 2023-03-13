@@ -64,7 +64,10 @@
 <div class="row" id="order_welcome_header">
   <div class="col-sm-5">
     <div class="row">
-      <div class="col-sm-8"><?php echo "Date: ". date($tpl['option_arr']['o_date_format']);  ?><span style="margin-left: 5px; margin-right: 5px;">-</span><?php echo  date("l"); ?></div>
+      <div class="col-sm-8"><?php echo "Date: ". date($tpl['option_arr']['o_date_format']);  ?>
+      <span style="margin-left: 5px; margin-right: 5px;">-</span><?php echo  date("l"); ?>
+      <span style="margin-left: 35%;"><strong>Hot Keys</strong></span>
+    </div>
       <div id="currentTimeUpdate" class="col-sm-4 text-right"></div>
     </div>
   </div>
@@ -72,12 +75,8 @@
     <div class="row">
       <div class="col-sm-7 text-right">
         <?php 
-        $orderTitle = strtolower($tpl['order_title']); 
-        if (in_array($orderTitle, HAS_TABLE_SELECTION)) { ?>
-          <strong><?php echo $tpl['order_title']; ?></strong> <span id="sel_table_name"> <a href="#tableModal" id="sel_table_name_modal" class="btn btn-primary"><?php echo $tpl['selTableName']; ?></a>
-        <?php } else { ?>
+        $orderTitle = strtolower($tpl['order_title']); ?>
         <strong><?php echo $tpl['order_title']; ?></strong>
-        <?php } ?>
       </div>
       <div class="col-sm-5 text-right"><strong><?php echo $_SESSION[$controller->defaultUser]['name']; ?></strong></div>
     </div>
