@@ -22,53 +22,15 @@
       </tr>
 		</thead>
 		<tbody>		
-      <?php
-        //foreach ($tpl['categories'] as $cs => $c) {
-          $i = 0;
-          foreach ($tpl['product_arr'] as $product) {
-            foreach ($tpl['oi_arr'] as $k => $oi) {
-              //if ($oi['type'] == 'product' && $oi['foreign_id'] == $product['id'] && $c['id'] == $product['category_id']) {
-              if ($oi['type'] == 'product' && $oi['foreign_id'] == $product['id']) {
-                $has_extra = false;
-                $i = $i + 1; 
-                ?>
-                  <tr>
-                	 <td class="kitchen"><strong>
-                    <?php echo $oi['cnt']. ' x '; ?> <?php echo $product['name']; ?></strong>
-                    <?php echo $oi['size']; ?>
-                     <?php if (array_key_exists($oi['hash'], $tpl['oi_extras'])) { 
-                      $proExtra = $tpl['oi_extras'][$oi['hash']]; 
-                      foreach($proExtra as $extra) {
-                      ?>
-                      <br/><span style="margin-left: 5px"><?php   echo $extra['extra_name'] ." x ".$extra['cnt']; ?></span> 
-                    <?php } } ?>
-                   </td>
-                   <td class="nani" style="padding: 2px 5px; float: right; margin-right: 10px"> 
-                    <?php 
-                      echo pjCurrency::formatPrice($oi['cnt'] * $oi['price']); 
-                      if (array_key_exists($oi['hash'], $tpl['oi_extras'])) { 
-                      $proExtra = $tpl['oi_extras'][$oi['hash']]; 
-                      foreach($proExtra as $extra) { 
-                    ?>
-                    <br/><?php echo pjCurrency::formatPrice($extra['cnt'] * $extra['price']);?>
-                    <?php } } ?>
-                   </td>
-                  </tr>
-                  <?php
-              }
-            }
-          }
-        //}
-      ?>
-     
-     <?php if (strtolower($tpl['arr']['price_delivery']) == 'delivery' && $tpl['arr']['price_delivery'] && $tpl['arr']['price_delivery'] > 0) { ?>
-      <tr>
-        <td colspan="2"><hr/></td>
-      </tr>
-      <tr>
-        <td>Delivery Fee</td>
-        <td style="padding: 2px 15px; float: right;"><?php echo pjCurrency::formatPrice($tpl['arr']['price_delivery']); ?></td>
-      </tr>
+      <?php include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/print_receipt_items.php'; ?>
+      <?php if (strtolower($tpl['arr']['price_delivery']) == 'delivery' && $tpl['arr']['price_delivery'] && $tpl['arr']['price_delivery'] > 0) { ?>
+        <tr>
+          <td colspan="2"><hr/></td>
+        </tr>
+        <tr>
+          <td>Delivery Fee</td>
+          <td style="padding: 2px 15px; float: right;"><?php echo pjCurrency::formatPrice($tpl['arr']['price_delivery']); ?></td>
+        </tr>
     <?php } ?>
       <tr>
         <td colspan="2"><hr/></td>

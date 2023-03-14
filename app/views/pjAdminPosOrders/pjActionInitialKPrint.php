@@ -41,8 +41,6 @@
 				          <td class="kitchen" style="font-size: 18pt;">
 				          	<?php
 				          	for ($i = 0, $counter = 0; $i < $oi['cnt'] ; $i++, $counter++) {
-				          		if ($i)
-				          		echo "<br/>";
 				          		echo 1 . " x ";
 				          		echo strtoupper($oi['product_name'])." ".$oi['size']." ";
 
@@ -70,7 +68,7 @@
 				          				}
 				          				
 					          			if ($obj[$counter]['cus_ins']) {
-						          			echo "<span style='margin-left: 20px'># " . $obj[$counter]['cus_ins']. '</span>';
+						          			echo "<span style='margin-left: 20px'># " . $obj[$counter]['cus_ins']. '</span><br/>';
 					          			}
 				          			}
 				          			//echo "<br>";
@@ -121,7 +119,7 @@
 	      // !MEGAMIND
 	    });
   	}
-  	//updateKitchenPrint();
+  	updateKitchenPrint();
   	printDiv('kPrintContainer');
 	});
 </script>

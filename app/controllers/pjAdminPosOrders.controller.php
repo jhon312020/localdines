@@ -809,7 +809,7 @@ class pjAdminPosOrders extends pjAdmin {
                 }
               }
             }
-            $extras_total = $extra_price;
+            $extras_total += $extra_price;
             //$_price = $product_price + $extra_price;
             $_price = $product_price;
             $price += $_price;
@@ -1685,7 +1685,7 @@ class pjAdminPosOrders extends pjAdmin {
       $this->set('categories', $category_arr);
       $printBrowser = false;
       $printMessage = 'failed';
-      $data = $this->getOrderItems($id, $printBrowser);
+      $data = $this->getOrderItems($id, $printBrowser, true);
 
       $client_arr = pjClientModel::factory()->select("t1.*, t2.email as c_email, t2.name as c_name, t2.phone as c_phone")
         ->join("pjAuthUser", "t2.id=t1.foreign_id", 'left outer')
@@ -3113,7 +3113,7 @@ class pjAdminPosOrders extends pjAdmin {
         ->findAll()
         ->getData();
       $this->set('categories', $category_arr);
-      $this->getOrderItems($id);
+      $this->getOrderItems($id, false);
       $client_arr = pjClientModel::factory()->select("t1.*, t2.email as c_email, t2.name as c_name, t2.phone as c_phone")
         ->join("pjAuthUser", "t2.id=t1.foreign_id", 'left outer')
         ->orderBy('t2.name ASC')
@@ -3238,7 +3238,7 @@ class pjAdminPosOrders extends pjAdmin {
     }
   }
 
-  private function getOrderItems($id, $isForPrinting=false) {
+  private function getOrderItems($id, $isForPrinting=false, $kPrint=false) {
     if ($id) {
       $korder = pjOrderModel::factory()->select("t1.*")->find($id)->getData();
       $korder['kprint'] = 1;
@@ -3264,7 +3264,23 @@ class pjAdminPosOrders extends pjAdmin {
      
       $pjProductPriceModel = pjProductPriceModel::factory();
       $oi_arr = array();
-      $_oi_arr = pjOrderItemModel::factory()->where('t1.order_id', $arr['id'])->orderBy("item_order ASC")->findAll()->getData();
+      $pjOrderItemObject = pjOrderItemModel::factory()->where('t1.order_id', $arr['id']);
+      // echo $kPrint;
+      // if ($kPrint) {
+      //   $pjOrderItemObject->where('print','=', '0');
+      // }
+      $_oi_arr = $pjOrderItemObject->orderBy("item_order ASC")->findAll()->getData();
+
+      if ($kPrint) {
+        foreach ($_oi_arr as $key=>$item) {
+          if ($item['print'] != 0) {
+            unset ($_oi_arr[$key]);
+          }
+        }
+      }
+      if (empty($_oi_arr)) {
+        pjUtil::redirect(PJ_INSTALL_URL . "index.php?controller=pjAdminPosOrders&action=pjActionIndex&err=AR08");
+      }
       $product_ids = array_column($_oi_arr, 'foreign_id');
 
       $product_arr = pjProductModel::factory()->join('pjMultiLang', sprintf("t2.foreign_id = t1.id AND t2.model = 'pjProduct' AND t2.locale = '%u' AND t2.field = 'name'", $this->getLocaleId()) , 'left')
@@ -3294,7 +3310,7 @@ class pjAdminPosOrders extends pjAdmin {
       foreach ($extra_arr as $extra) {
         $extras[$extra['id']] = $extra;
       }
-
+      //$this->pr($_oi_arr);
       foreach ($_oi_arr as $item) {
         if ($item['type'] == 'product') {
           $item['price_arr'] = $pjProductPriceModel->reset()

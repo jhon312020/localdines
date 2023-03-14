@@ -786,7 +786,9 @@ td .btn-secondary:hover {
 }
 
 .extra_item {
-  font-size: 28px;
+  /*font-size: 28px;*/
+  font-size: 14px;
+  font-weight: bold;
 }
 .cus-input-err {
   border: 2px solid red !important;
