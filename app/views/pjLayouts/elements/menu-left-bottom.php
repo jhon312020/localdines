@@ -5,8 +5,10 @@ $action_name = $controller->_get->toString('action');
 $isScriptPreview = $controller_name == 'pjAdminOptions' && $action_name == 'pjActionPreview';
 $isScriptInstall = $controller_name == 'pjAdminOptions' && $action_name == 'pjActionInstall';
 
-$hasAccessScriptPreview = pjAuth::factory('pjAdminOptions', 'pjActionPreview')->hasAccess();
-$hasAccessScriptInstall = pjAuth::factory('pjAdminOptions', 'pjActionInstall')->hasAccess();
+//$hasAccessScriptPreview = pjAuth::factory('pjAdminOptions', 'pjActionPreview')->hasAccess();
+$hasAccessScriptPreview = false;
+//$hasAccessScriptInstall = pjAuth::factory('pjAdminOptions', 'pjActionInstall')->hasAccess();
+$hasAccessScriptInstall = false;
 ?>
 <?php if ($hasAccessScriptPreview): ?>
     <li<?php echo $isScriptPreview ? ' class="active"' : NULL; ?>>

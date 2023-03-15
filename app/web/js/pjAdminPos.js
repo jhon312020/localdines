@@ -2604,33 +2604,17 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           $("#cus-extra_"+index).removeClass("btn-extras-add");
           var veiwElement = $("#load_data_"+index+"_"+qty_no);
 
-          // <div class="form-group">
-          //   <div class="input-group">
-          //     <div class="input-group-addon font-28"><?php echo $selected_value['extra_name']; ?></div>
-          //     <input type="text" class="form-control cus-extra" value="<?php echo " X ".$selected_value['extra_count']; ?>" disabled placeholder="qty">
-          //     <div class="input-group-addon btn btn-xs btn-danger btn-outline pj-remove-extra" data-id="<?php echo $selected_value['id']; ?>" data-index="<?php echo $index; ?>"><i class="fa fa-times"></i></div>
-          //   </div>
-          // </div>
-
-          // <div class="form-group col-sm-4">
-          //   <div class="input-group">
-          //     <div class="input-group-addon font-20"><?php echo $selected_value['extra_name']; ?></div>
-          //     <input type="text" class="form-control cus-extra" value="<?php echo " X ".$selected_value['extra_count']; ?>" disabled placeholder="qty">
-          //     <div class="input-group-addon btn btn-xs btn-danger btn-outline pj-remove-extra" data-id="<?php echo $selected_value['id']; ?>" data-index="<?php echo $index; ?>"><i class="fa fa-times fa-3x"></i></div>
-          //   </div>
-          // </div>
-
           veiwElement.empty();
           var filtered = hidden_arr.filter((temp) => {
             return temp.qty_no == qty_no;
           });
           for (let i=0;i < filtered.length; i++) {
-            var child1 = $("<div>").addClass("input-group-addon font-20 cus-w-50 cus-text").text(filtered[i].extra_name);
-            var child2 = $("<input>").addClass("form-control cus-extra").attr({ type: "text", disabled: true }).val(" X "+filtered[i].extra_count);
-            var icon = $("<i>").addClass("fa fa-times fa-3x");
-            var child3 = $("<div>").addClass("input-group-addon btn btn-xs btn-danger btn-outline pj-remove-extra").attr("data-qty", filtered[i].qty_no).attr("data-id",filtered[i].id).attr("data-index", hidden_arr[i].extra_index).append(icon);
+            var child1 = $("<span>").addClass("input-group-addon cus-extra").text(filtered[i].extra_count + " X " );
+            var child2 = $("<input>").addClass("form-control cus-extra").attr({ type: "text", disabled: "disabled" }).val(filtered[i].extra_name);
+            var icon = $("<i>").addClass("fa fa-times");
+            var child3 = $("<span>").addClass("input-group-addon btn btn-xs btn-danger btn-outline pj-remove-extra").attr("data-qty", filtered[i].qty_no).attr("data-id",filtered[i].id).attr("data-index", hidden_arr[i].extra_index).append(icon);
             var div2 = $("<div>").addClass("input-group").append(child1).append(child2).append(child3);
-            var div1 = $("<div>").addClass("form-group col-sm-5").append(div2);
+            var div1 = $("<div>").addClass("col-sm-4").append(div2);
             
             // var td = $("<td>").append(div1);
             // var tr = $("<tr>").append(td);
@@ -3840,6 +3824,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             $(this).html('<i class="fa fa-times" aria-hidden="true"></i>');
           } else {
             $("#product_input").addClass("d-none");
+            $("#product_input").val("");
             $(this).html('<i class="fa fa-search" aria-hidden="true"></i>');
           }
 

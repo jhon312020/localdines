@@ -314,7 +314,7 @@ td .btn-secondary:hover {
   }
 .category-container .content h4 {
     font-size: 18px; 
-    font-weight: 600;
+    font-weight: 100;
 }
 #js-categories .selected {
   background:linear-gradient(to bottom, #337ab7 5%, #337ab7 100%);
@@ -729,13 +729,13 @@ td .btn-secondary:hover {
 
 /******* New Layout Orders *******/
 
-.cus-pt-2 {
-  padding-top: 1.5rem;
+.cus-pt-2, .cus-pb-2  {
+  padding-top: 0.5rem;
 }
 
-.cus-pb-2 {
+/*.cus-pb-2 {
   padding-bottom: 1.5rem;
-}
+}*/
 
 .cus-w-150 {
   width: 150px;
@@ -771,11 +771,9 @@ td .btn-secondary:hover {
   width: 3.5em;
 }
 
-.cus-extra {
-  font-size: 28px;
+#extrasTable .cus-extra {
+  font-size: 18px;
   /*width: 100px !important;*/
-  font-weight: 800;
-  height: 60px;
 }
 
 .font-28 {

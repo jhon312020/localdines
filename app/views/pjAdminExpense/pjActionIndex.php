@@ -1,18 +1,11 @@
 <div class="row wrapper border-bottom white-bg page-heading">
-    <div class="col-sm-12">
-        <div class="row">
-        	<div class="col-lg-9 col-md-8 col-sm-6">
-                <h2>List of Expense<?php //__('infoExtrasTitle');?></h2>
-            </div>
-            <div class="col-lg-3 col-md-4 col-sm-6 btn-group-languages">
-                <?php if ($tpl['is_flag_ready']) : ?>
-				<div class="multilang"></div>
-				<?php endif; ?>
-        	</div>
-        </div><!-- /.row -->
- 
-        <!-- <p class="m-b-none"><i class="fa fa-info-circle"></i> <?php //__('infoExtrasDesc', false, true);?></p> -->
-    </div><!-- /.col-md-12 -->
+  <div class="col-sm-12">
+    <div class="row">
+    	<div class="col-lg-12 col-md-12 col-sm-12">
+        <h2>List of Expense<?php //__('infoExtrasTitle');?></h2>
+      </div>
+    </div><!-- /.row -->
+  </div><!-- /.col-md-12 -->
 </div>
 
 <div class="row wrapper wrapper-content animated fadeInRight">
@@ -77,7 +70,7 @@
     pjGrid.queryString = "";
 var myLabel = myLabel || {};
 myLabel.date = "Date";
-myLabel.company = "Company";
+myLabel.company = "Supplier";
 myLabel.product_name = "Product Name";
 myLabel.amount = "Amount";
 myLabel.delete_selected = <?php x__encode('delete_selected'); ?>;
@@ -85,11 +78,3 @@ myLabel.delete_confirmation = <?php x__encode('delete_confirmation'); ?>;
 myLabel.localeId = "<?php echo $controller->getLocaleId(); ?>";
 myLabel.trigger_create = <?php echo $controller->_get->toInt('create'); ?>;
 </script>
-<?php if ($tpl['is_flag_ready']) : ?>
-<script type="text/javascript">
-var myLabel = myLabel || {};
-var pjCmsLocale = pjCmsLocale || {};
-pjCmsLocale.langs = <?php echo $tpl['locale_str']; ?>;
-pjCmsLocale.flagPath = "<?php echo PJ_FRAMEWORK_LIBS_PATH; ?>pj/img/flags/";
-</script>
-<?php endif; ?>

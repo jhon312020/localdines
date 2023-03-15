@@ -19,7 +19,7 @@ if ($tpl['extra_val'] == 1) {
   // echo $tpl['qty'];
 }
  ?>
-<table class="table table-bordered">
+<table class="table table-bordered" id='extrasTable'>
   <thead>
     <tr>
       <th style="width: 40px;">#</th>
@@ -33,13 +33,11 @@ if ($tpl['extra_val'] == 1) {
         <td id="load_data_<?php echo $index; ?>_<?php echo "qty_".$i; ?>" class="load_data row">
           <?php foreach($selected_arr as $selected_value) { ?>
             <?php if ($selected_value['qty_no'] == "qty_".$i) { ?>
-            <div class="form-group col-sm-5">
+            <div class="col-sm-4">
               <div class="input-group">
-                <div class="input-group-addon font-20 <?php echo $tpl['edit'] ? "cus-w-70" : "cus-w-50" ?> cus-text-left"><?php echo $selected_value['extra_name']; ?></div>
-                <input type="text" class="form-control cus-extra" value="<?php echo " X ".$selected_value['extra_count']; ?>" disabled placeholder="qty">
-                <?php if (!$tpl['edit']) { ?>
-                <div class="input-group-addon btn btn-xs btn-danger btn-outline pj-remove-extra" data-qty="<?php echo "qty_".$i; ?>" data-id="<?php echo $selected_value['id']; ?>" data-index="<?php echo $index; ?>"><i class="fa fa-times fa-3x"></i></div>
-                <?php } ?>
+                <span class="input-group-addon cus-extra"><?php echo $selected_value['extra_count']. " X "; ?></span>
+                <input type="text" class="form-control cus-extra" aria-label="Extra name" value="<?php echo $selected_value['extra_name']; ?>" disabled>
+                <span class="input-group-addon btn btn-xs btn-danger btn-outline pj-remove-extra" data-qty="<?php echo "qty_".$i; ?>" data-id="<?php echo $selected_value['id']; ?>" data-index="<?php echo $index; ?>"><i class="fa fa-times"></i></span>
               </div>
             </div>
             <?php } ?>

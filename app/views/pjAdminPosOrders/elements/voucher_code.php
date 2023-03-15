@@ -6,7 +6,7 @@
       <div class="col-sm-2">
         <?php
           $voucher_code = isset($tpl['arr']['voucher_code'])?stripslashes($tpl['arr']['voucher_code']):''; ?>
-        <input type="text" name="voucher_code" class="jsVK-numpad form-control voucher" value="<?php echo $voucher_code;?>">
+        <input type="text" name="voucher_code" class="jsVK-normal form-control voucher" value="<?php echo $voucher_code;?>">
       </div>
     </div>
   </div><!-- /.col-md-3 -->

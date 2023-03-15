@@ -50,7 +50,7 @@ class pjAdminExpense extends pjAdmin {
             $pjExpenseModel = $pjExpenseModel
             ->select("t1.*,date_format(t1.created_date, '%m-%d-%Y') as date,t1.expense_name as product_name, t2.name as c_name")
             ->where("(t1.created_date >= '$from' AND t1.created_date <= '$to')")
-            ->join('pjCompany', 't2.id=t1.company_id', 'left outer');
+            ->join('pjSupplier', 't2.id=t1.supplier_id', 'left outer');
 
             if ($q = $this->_get->toString('q'))
             {
@@ -111,8 +111,8 @@ class pjAdminExpense extends pjAdmin {
             $data = array();
             $post = $this->_post->raw();
 
-            if ($post['company'] && $post['category'] && $post['amount']) {
-                $data['company_id'] = $post['company'];
+            if ($post['supplier'] && $post['category'] && $post['amount']) {
+                $data['supplier_id'] = $post['supplier'];
                 $data['category_id'] = $post['category'];
                 $data['sub_category'] = $post['sub_category'];
                 $data['expense_name'] = $post['expense_name'];
@@ -132,7 +132,7 @@ class pjAdminExpense extends pjAdmin {
         if (self::isGet()) {
             $this->setLocalesData();
 
-            $this->set('company_arr', pjCompanyModel::factory()
+            $this->set('suppliers', pjSupplierModel::factory()
                 ->select('t1.*')
                 ->where('t1.is_active', '1')
                 ->orderBy('`name` ASC')
@@ -204,8 +204,8 @@ class pjAdminExpense extends pjAdmin {
             $post = $this->_post->raw();
             $id = $this->_post->toInt('Expense_id');
 
-            if ($post['company'] && $post['category'] && $post['amount']) {
-                $data['company_id'] = $post['company'];
+            if ($post['supplier'] && $post['category'] && $post['amount']) {
+                $data['supplier_id'] = $post['supplier'];
                 $data['category_id'] = $post['category'];
                 $data['sub_category'] = $post['sub_category'];
                 $data['expense_name'] = $post['expense_name'];
@@ -233,7 +233,7 @@ class pjAdminExpense extends pjAdmin {
 
             $this->setLocalesData();
 
-            $this->set('company_arr', pjCompanyModel::factory()
+            $this->set('suppliers', pjSupplierModel::factory()
                 ->select('t1.*')
                 ->where('t1.is_active', '1')
                 ->orderBy('`name` ASC')

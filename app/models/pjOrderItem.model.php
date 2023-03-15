@@ -22,7 +22,7 @@ class pjOrderItemModel extends pjAppModel
 		array('name' => 'cnt', 'type' => 'int', 'default' => ':NULL'),
 		array('name' => 'special_instruction', 'type' => 'varchar', 'default' => ':NULL'),
 		array('name' => 'custom_special_instruction', 'type' => 'text', 'default' => ':NULL'),
-		array('name' => 'print', 'type' => 'text', 'default' => ':NULL')
+		array('name' => 'print', 'type' => 'int', 'default' => '0')
 	);
 	
 	public static function factory($attr=array())

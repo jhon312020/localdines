@@ -20,7 +20,7 @@
   <div class="col-sm-12" style="margin-bottom: 20px;">
     <div class="row">
       <div class="col-sm-1 col-lg-1"style="margin-top: 20px;">
-        <a style="margin-left: 16px;" href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdmin&amp;action=pjActionIndex" class="btn btn-default"><i class="fa fa-home" aria-hidden="true"></i></a>
+        <a style="margin-left: 16px;" href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdmin&amp;action=pjActionIndex" class="btn btn-primary"><i class="fa fa-home fa-3x" aria-hidden="true"></i></a>
          
       </div>
       <div class="col-sm-5 col-lg-7">

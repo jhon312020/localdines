@@ -46,7 +46,7 @@
 
 				          		if (array_key_exists($oi['hash'], $tpl['oi_extras']) && isset($tpl['oi_extras'][$oi['hash']][$counter])) { 
 				          			$extra = $tpl['oi_extras'][$oi['hash']][$counter]; //echo 'came here';
-				          			echo '<br/><span style="margin-left: 20px">'.$extra->extra_name ." x ".$extra->extra_count.'</span>';
+				          			echo '<br/><span style="margin-left: 20px">'.$extra->extra_name ." x ".$extra->extra_count.'</span><br/>';
 				          		}
 
 
@@ -119,7 +119,7 @@
 	      // !MEGAMIND
 	    });
   	}
-  	updateKitchenPrint();
+  	//updateKitchenPrint();
   	printDiv('kPrintContainer');
 	});
 </script>

@@ -116,12 +116,12 @@ $hasAccessScriptLocations            = pjAuth::factory('pjAdminLocations')->hasA
 $hasAccessScriptLocationsIndex       = pjAuth::factory('pjAdminLocations', 'pjActionIndex')->hasAccess();
 
 // Permissions - Reports
-if ($_SESSION[$controller->defaultUser]['role_id'] == 1) {
-    $hasAccessScriptReportsIndex       = pjAuth::factory('pjAdminReports', 'pjActionIndex')->hasAccess();// Permissions - Reports 
-} else {
-    $hasAccessScriptReportsIndex       = false;
-}   
-
+// if ($_SESSION[$controller->defaultUser]['role_id'] == 1) {
+//     $hasAccessScriptReportsIndex       = pjAuth::factory('pjAdminReports', 'pjActionIndex')->hasAccess();// Permissions - Reports 
+// } else {
+//     $hasAccessScriptReportsIndex       = false;
+// }   
+$hasAccessScriptReportsIndex = false;
 
 $hasAccessScriptPOSReportsIndex       = pjAuth::factory('pjAdminReports', 'pjActionIndex')->hasAccess();
 
