@@ -56,9 +56,7 @@
 
     <div class="form-group">
       <label class="control-label">Description</label>
-      <textarea class="form-control form-control-lg" name="description">
-        <?php echo array_key_exists('arr', $tpl) && $tpl['arr']['description'] ? $tpl['arr']['description'] : '' ?>
-      </textarea>
+      <textarea class="form-control form-control-lg" name="description"><?php echo array_key_exists('arr', $tpl) && $tpl['arr']['description'] ? $tpl['arr']['description'] : '' ?></textarea>
     </div><!-- /.form-group -->
 
   </div>

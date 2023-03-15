@@ -18,8 +18,7 @@
 
     <div class="form-group">
       <label class="control-label">Address</label>
-        <textarea class="form-control form-control-lg required" name="address"><?php echo array_key_exists('arr', $tpl) && $tpl['arr']['address'] ? $tpl['arr']['address'] : '' ?>
-      </textarea>
+        <textarea class="form-control form-control-lg required" name="address"><?php echo array_key_exists('arr', $tpl) && $tpl['arr']['address'] ? $tpl['arr']['address'] : '' ?></textarea>
     </div><!-- /.form-group -->
 
     <div class="form-group">
