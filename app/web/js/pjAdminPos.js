@@ -3824,7 +3824,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             $(this).html('<i class="fa fa-times" aria-hidden="true"></i>');
           } else {
             $("#product_input").addClass("d-none");
-            $("#product_input").val("");
+            $("#inputSearch").val("");
             $(this).html('<i class="fa fa-search" aria-hidden="true"></i>');
           }
 
@@ -4094,6 +4094,16 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
                     if (extras) {
                       extras = JSON.parse(extras);
                       var extras_count = extras.length;
+                      
+                      if (product_qty < extras_count) {
+                        console.log(extras);
+                        extras.pop();
+                        console.log('after deleting',extras);
+                        extras_count = extras.length;
+                        $(extraID).val(JSON.stringify(extras));
+                      }
+                      
+                      
                       for (var count = 0; count < extras_count; count++) {
                          total += parseFloat(extras[count].extra_price) * parseInt(extras[count].extra_count);
                       }

@@ -1,6 +1,6 @@
 <div class="col-sm-12 mt-5">
   <div class="row">
-    <div class="col-lg-6 col-sm-6 text-right">
+    <div class="col-lg-7 col-sm-6 text-right">
       <form class="form-inline" style="" onkeydown="return event.key != 'Enter';">
         <div id="product_input" class="input-group d-none">
           <input id="inputSearch" type="text" class="jsVK-normal form-control" type="search" placeholder="Search Products..." aria-label="Search">
@@ -17,7 +17,7 @@
         <?php } ?>
       </form>
     </div>
-    <div class="col-lg-6 col-sm-6 text-right">
+    <div class="col-lg-5 col-sm-6 text-right">
       <a href="#" class="btn btn-primary" id="showPostalCodes">
         <i class="fa fa-map-marker" aria-hidden="true"></i>
       </a>

@@ -118,7 +118,7 @@
           <input type="hidden" id="fdCustomSpecialInstruction_<?php echo $oi['hash']; ?>" name="custom_special_instruction[<?php echo $oi['hash']; ?>]" class="form-control custom-special-instruction" value='<?php echo $oi['custom_special_instruction']; ?>' />
         </td>
         <td>
-          <div class="text-right" id="productDelete_<?php echo $oi['hash']; ?>">
+          <div class="" id="productDelete_<?php echo $oi['hash']; ?>">
             <a href="#" class="btn btn-danger btn-outline btn-sm btn-delete pj-remove-product"><i class="fa fa-trash"></i></a>
           </div>
         </td>

@@ -24,7 +24,7 @@
   <body>
     <div id="wrapper">
       <?php //require dirname(__FILE__) . '/elements/menu-left.php'; ?>
-      <div id="page-wrapper" class="gray-bg dashbard-1">
+      <div id="page-wrapper" class="gray-bg dashbard-1" style="padding-bottom:0px;">
           <?php
           // require dirname(__FILE__) . '/elements/menu-top.php'; 
           

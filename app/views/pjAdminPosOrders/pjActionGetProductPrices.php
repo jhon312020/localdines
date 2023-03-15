@@ -110,7 +110,7 @@ $index = "new_" . mt_rand(0, 999999);
     </td>
     <td>
         <input type="hidden" id="jsIndex" value="<?php echo $index;?>">
-        <div class="text-right d-inline" id="productDelete_rowOne<?php //echo $index;?>">
+        <div class="d-inline" id="productDelete_rowOne<?php //echo $index;?>">
             <a href="#" class="btn btn-danger btn-outline btn-sm btn-delete pj-remove-product"><i class="fa fa-trash"></i></a>
         </div>
     </td>
