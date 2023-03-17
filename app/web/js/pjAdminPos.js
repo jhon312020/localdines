@@ -39,6 +39,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
       tabs = $.fn.tabs !== undefined,
       autocomplete = $.fn.autocomplete !== undefined,
       datetimeOptions = null,
+      quantity_reduced = false,
       $tabs = $("#tabs"),
       tOpt = {
         select: function (event, ui) {
@@ -2603,7 +2604,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           $("#cus-extra_"+index).addClass("btn-has-extra");
           $("#cus-extra_"+index).removeClass("btn-extras-add");
           var veiwElement = $("#load_data_"+index+"_"+qty_no);
-
+          console.log('hidden_arr', hidden_arr);
           veiwElement.empty();
           var filtered = hidden_arr.filter((temp) => {
             return temp.qty_no == qty_no;
@@ -3010,18 +3011,22 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             $("#email_receipt_no").parent().removeClass("has-error");
             $("#email_receipt_no").parent().siblings("label").css("color", "#676A6C");
           }
+        }).on("click", ".bootstrap-touchspin-down", function(event) {
+          quantity_reduced = true;
+          console.log('down:', quantity_reduced);
+          calPrice(0);
         })
         ;
       $cols = $("table");//.on("click", function(){
-  
-      // $('[class*="bootstrap-touchspin-"]').click(function(event) {
-      //   var $this = $(this);
-  
-      //   if ($this.hasClass('bootstrap-touchspin-down')) {
-      //     alert('down');
-      //   } else if ($this.hasClass('bootstrap-touchspin-up')) {
-      //     alert('up');
-      //   }
+      // $(document).on("click", ".bootstrap-touchspin-down", function(event) {
+      // //$('.bootstrap-touchspin-down').click(function(event) {
+      //   quantity_reduced = true;
+      //   //var $this = $(this);
+      //   // if ($this.hasClass('bootstrap-touchspin-down')) {
+      //   //   quantity_reduced = true;
+      //   // } else {
+      //   //   quantity_reduced = false;
+      //   // }
       // });
       
       $('#catModal').on('show.bs.modal', function (event) {
@@ -4061,6 +4066,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             // FOR EPOS PAYMENT BUTTON 
             //$("#btn-payment").attr("data-cart", data.total+".00");
           }
+
           function calPrice(get_total) {
             var prices = {};
             $("#fdOrderList_1")
@@ -4092,20 +4098,29 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
                   if($(extraID).length) {
                     var extras = $(extraID).val();
                     if (extras) {
+                      let new_extras = [];
                       extras = JSON.parse(extras);
                       var extras_count = extras.length;
-                      
-                      if (product_qty < extras_count) {
-                        console.log(extras);
-                        extras.pop();
-                        console.log('after deleting',extras);
+                      //if (product_qty < extras_count) {
+                      if (quantity_reduced) {
+                        //console.log('Before deleteing',extras);
+                        //console.log('product_qty', product_qty)
+                        let product_qty_no = '';
+                        for (let qty = 1; qty<=product_qty; qty++ ) {
+                          product_qty_no = 'qty_'+qty;
+                          for (var count = 0; count < extras_count; count++) {
+                            if (extras[count].qty_no == product_qty_no ) {
+                              new_extras.push(extras[count]);
+                            }
+                          }
+                        }
+                        //console.log('after deleting',new_extras);
+                        extras = new_extras;
                         extras_count = extras.length;
                         $(extraID).val(JSON.stringify(extras));
                       }
-                      
-                      
                       for (var count = 0; count < extras_count; count++) {
-                         total += parseFloat(extras[count].extra_price) * parseInt(extras[count].extra_count);
+                        total += parseFloat(extras[count].extra_price) * parseInt(extras[count].extra_count);
                       }
                     }
                   }
@@ -4154,6 +4169,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
                 }
               }
             });
+            quantity_reduced = false;
           }
           function getAddresses($this) { 
             var Client = IdealPostcodes.Client;
