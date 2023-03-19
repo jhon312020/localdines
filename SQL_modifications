@@ -191,3 +191,64 @@ ALTER TABLE `food_delivery_postalcodes`
 --
 ALTER TABLE `food_delivery_postalcodes`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+ALTER TABLE `food_delivery_products` ADD `preparation_time` VARCHAR(10) NOT NULL AFTER `order`;
+
+ALTER TABLE `food_delivery_products`  ADD `no_of_ratings` INT NOT NULL DEFAULT '0'  AFTER `status`;
+
+
+CREATE TABLE IF NOT EXISTS `food_delivery_products_review` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `product_id` int(11) DEFAULT NULL,
+  `rating` int(11) DEFAULT NULL,
+  `review` varchar(255) DEFAULT NULL,
+  `table_number` int(11) DEFAULT NULL,
+  `type` varchar(255) NOT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT '0',
+  `review_title` varchar(255) DEFAULT NULL,
+  `user_type` varchar(255) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `guest_ip` varchar(255) DEFAULT NULL,
+  `guest_email` varchar(255) DEFAULT NULL,
+  `guest_un` varchar(255) DEFAULT NULL,
+  `is_accept_terms` tinyint(1) NOT NULL DEFAULT '1',
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1
+
+
+CREATE TABLE IF NOT EXISTS `food_delivery_expenses` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `supplier_id` int(11) DEFAULT NULL,
+  `category_id` int(11) DEFAULT NULL,
+  `sub_category` varchar(255) DEFAULT NULL,
+  `expense_name` varchar(255) DEFAULT NULL,
+  `description` text,
+  `amount` float DEFAULT NULL,
+  `created_date` datetime DEFAULT NULL,
+  `updated_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+COMMIT;
+
+
+CREATE TABLE IF NOT EXISTS `food_delivery_expenses_categories` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  `sub_category_ids` int(11) DEFAULT NULL,
+  `is_active` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `food_delivery_expenses_categories`
+--
+
+INSERT INTO `food_delivery_expenses_categories` (`id`, `name`, `sub_category_ids`, `is_active`) VALUES
+(1, 'Alcohol', NULL, 1),
+(2, 'Vegetables', NULL, 1),
+(3, 'Wages', NULL, 1),
+(4, 'Meat', NULL, 1),
+(5, 'Plumber', NULL, 1);
+COMMIT;

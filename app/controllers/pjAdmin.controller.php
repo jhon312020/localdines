@@ -129,6 +129,15 @@ class pjAdmin extends pjAppController {
 			//Expense
 			'pjAdminExpense::pjActionIndex' => 'pjAdminPosOrders::pjActionIndex',
 			'pjAdminExpense::pjActionGetExpense' => 'pjAdminPosOrders::pjActionIndex',
+			'pjAdminExpense::pjActionCreate' => 'pjAdminPosOrders::pjActionIndex',
+			'pjAdminExpense::pjActionUpdate' => 'pjAdminPosOrders::pjActionIndex',
+			//Suppliers
+			'pjAdminSuppliers::pjActionIndex' => 'pjAdminPosOrders::pjActionIndex',
+			'pjAdminSuppliers::pjActionCreate' => 'pjAdminPosOrders::pjActionIndex',
+			'pjAdminSuppliers::pjActionGetSupplierList' => 'pjAdminPosOrders::pjActionIndex',
+			'pjAdminSuppliers::pjActionDeleteSupplier' => 'pjAdminPosOrders::pjActionIndex',
+			'pjAdminSuppliers::pjActionUpdate' => 'pjAdminPosOrders::pjActionIndex',
+			//
 		);
 		
 		if ($_REQUEST['controller'] == 'pjAdminOptions' && isset($_REQUEST['next_action'])) {
