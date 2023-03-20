@@ -313,8 +313,8 @@ td .btn-secondary:hover {
     border-radius:8px;
   }
 .category-container .content h4 {
-    font-size: 1vw; 
-    font-weight: bold;
+  font-size: 1vw; 
+  font-weight: 100;
 }
 #js-categories .selected {
   background:linear-gradient(to bottom, #337ab7 5%, #337ab7 100%);
@@ -888,9 +888,10 @@ td .btn-secondary:hover {
 }
 #jsHotItems button {
   font-size: 14px;
-  height: 30px;
+  height: 40px;
   width: 15%;
   padding: 0px;
+  margin-left: 5px;
 }
 #order_welcome_header {
   height: 25px; 

@@ -95,9 +95,11 @@ var myLabel = myLabel || {};
 myLabel.image = <?php x__encode('lblImage'); ?>;
 myLabel.name = <?php x__encode('lblName'); ?>;
 myLabel.price = <?php x__encode('lblPrice'); ?>;
-myLabel.is_featured = <?php x__encode('lblFeaturedProduct'); ?>;
+myLabel.is_featured = "Hot Keys";
+//myLabel.is_featured = <?php echo "Hot Keys"; ?>;
 myLabel.yes = <?php x__encode('_yesno_ARRAY_T'); ?>;
 myLabel.no = <?php x__encode('_yesno_ARRAY_F'); ?>;
 myLabel.delete_selected = <?php x__encode('delete_selected'); ?>;
 myLabel.delete_confirmation = <?php x__encode('delete_confirmation'); ?>;
+console.log("mylabel", myLabel)
 </script>

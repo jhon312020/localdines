@@ -17,7 +17,7 @@ $index = "new_" . mt_rand(0, 999999);
         </div> -->
     </td>
     <td>
-        <div class="business-<?php echo $index;?>">
+        <div class="business-<?php echo $index;?>" data-parent-index="<?php echo $index;?>">
             <input type="text" id="fdProductQty_<?php echo $index;?>" name="cnt[<?php echo $index;?>]" class="form-control pj-field-count" value="1" style="width: 50px;" readonly />
         </div>
     </td>

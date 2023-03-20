@@ -154,7 +154,7 @@ $hasAccessScriptOptionsPrintOrder       = pjAuth::factory('pjAdminOptions', 'pjA
     <li<?php echo $isScriptPosIndex ? ' class="active"' : NULL; ?>>
         <a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminPosOrders&amp;action=pjActionIndex">
             <i class="fa fa-calculator" aria-hidden="true"></i>
-            <span class="nav-label"><?php echo "POS";?></span>
+            <span class="nav-label"><?php echo "Orders List";?></span>
         </a>
     </li>
 <?php endif; ?>

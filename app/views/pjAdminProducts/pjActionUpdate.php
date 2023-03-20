@@ -122,7 +122,7 @@
 
                                 <div class="col-lg-4 col-md-5">
                                     <div class="form-group">
-                                        <label class="control-label"><?php __('lblFeaturedProduct'); ?></label>
+                                        <label class="control-label">Hot Key<?php //__('lblFeaturedProduct'); ?></label>
 
                                         <div class="switch">
                                             <div class="onoffswitch onoffswitch-data">

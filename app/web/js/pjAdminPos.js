@@ -39,7 +39,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
       tabs = $.fn.tabs !== undefined,
       autocomplete = $.fn.autocomplete !== undefined,
       datetimeOptions = null,
-      quantity_reduced = false,
+      reducedQtyID = null,
       $tabs = $("#tabs"),
       tOpt = {
         select: function (event, ui) {
@@ -3012,9 +3012,69 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             $("#email_receipt_no").parent().siblings("label").css("color", "#676A6C");
           }
         }).on("click", ".bootstrap-touchspin-down", function(event) {
-          quantity_reduced = true;
-          console.log('down:', quantity_reduced);
-          calPrice(0);
+          //reducedQtyID = true;
+          reducedQtyID = $(this).parent().parent().parent().attr("data-parent-index");
+          console.log('down:', reducedQtyID);
+          let product_qty = parseInt($("#fdProductQty_" + reducedQtyID).val(), 10);
+          let extraID = '#extra-'+reducedQtyID;
+          let specialID = '#fdSpecialInstruction_'+reducedQtyID;
+          let extraButtonID = '#cus-extra_'+reducedQtyID;
+          let splInsButtonID = '#cus-si_'+reducedQtyID;
+          let new_extras = [];
+          let new_specialIns = [];
+          let extras = '';
+          let extras_count = 0;
+          let spl_count = 0;
+          var specialIns = $(specialID).val();
+          if($(extraID).length) {
+            extras = $(extraID).val();
+            if (extras) {
+              extras = JSON.parse(extras);
+              extras_count = extras.length;
+            }
+          }
+          if (specialIns) {
+            specialIns = JSON.parse(specialIns);
+            spl_count = specialIns.length;
+          }
+          if (extras_count || spl_count) {
+            //console.log('Before deleteing',extras);
+            //console.log('product_qty', product_qty)
+            let product_qty_no = '';
+            for (let qty = 1; qty<=product_qty; qty++ ) {
+              product_qty_no = 'qty_'+qty;
+              for (let count = 0; count < extras_count; count++) {
+                if (extras[count].qty_no == product_qty_no ) {
+                  new_extras.push(extras[count]);
+                }
+              }
+              for (let count = 0; count < spl_count; count++) {
+                if (specialIns && specialIns[count].qid == product_qty_no) {
+                  new_specialIns.push(specialIns[count]);
+                }
+              }
+            }
+            extras = new_extras;
+            if (!extras.length) {
+              $(extraButtonID).addClass("btn-extras-add");
+              $(extraButtonID).removeClass("btn-has-extra");
+            } else {
+              $(extraButtonID).addClass("btn-has-extra");
+              $(extraButtonID).removeClass("btn-extras-add");
+            }
+            //console.log('Special Length', new_specialIns.length);
+            if (new_specialIns.length) {
+              $(splInsButtonID).addClass("btn-has-si");
+            } else {
+              $(splInsButtonID).removeClass("btn-has-si");
+            }
+            $(extraID).val(JSON.stringify(extras));
+            $(specialID).val(JSON.stringify(new_specialIns));
+            reducedQtyID = null;
+          }
+          if (extras_count)  {
+            calPrice(0);
+          } 
         })
         ;
       $cols = $("table");//.on("click", function(){
@@ -4066,7 +4126,6 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             // FOR EPOS PAYMENT BUTTON 
             //$("#btn-payment").attr("data-cart", data.total+".00");
           }
-
           function calPrice(get_total) {
             var prices = {};
             $("#fdOrderList_1")
@@ -4095,30 +4154,15 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
                 if (price > 0 && product_qty > 0) {
                   total += parseFloat(price) * product_qty;
                   var extraID = '#extra-'+index;
+                  //console.log('row index:', index);
                   if($(extraID).length) {
                     var extras = $(extraID).val();
                     if (extras) {
                       let new_extras = [];
+                      let new_specialIns = [];
                       extras = JSON.parse(extras);
                       var extras_count = extras.length;
                       //if (product_qty < extras_count) {
-                      if (quantity_reduced) {
-                        //console.log('Before deleteing',extras);
-                        //console.log('product_qty', product_qty)
-                        let product_qty_no = '';
-                        for (let qty = 1; qty<=product_qty; qty++ ) {
-                          product_qty_no = 'qty_'+qty;
-                          for (var count = 0; count < extras_count; count++) {
-                            if (extras[count].qty_no == product_qty_no ) {
-                              new_extras.push(extras[count]);
-                            }
-                          }
-                        }
-                        //console.log('after deleting',new_extras);
-                        extras = new_extras;
-                        extras_count = extras.length;
-                        $(extraID).val(JSON.stringify(extras));
-                      }
                       for (var count = 0; count < extras_count; count++) {
                         total += parseFloat(extras[count].extra_price) * parseInt(extras[count].extra_count);
                       }
@@ -4169,7 +4213,6 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
                 }
               }
             });
-            quantity_reduced = false;
           }
           function getAddresses($this) { 
             var Client = IdealPostcodes.Client;
