@@ -600,7 +600,7 @@ td .btn-secondary:hover {
     margin-left: 3px;
     margin-right: 3px;
     margin-bottom: 3px;
-    width: auto;
+    width: 25%;
     height: 43px;
     font-size: 18px;
     font-weight: bold;
@@ -908,4 +908,9 @@ td .btn-secondary:hover {
 }
 #tableModal #confirm-table-error-msg {
   font-size: 20px;
+}
+#no_of_persons {
+  font-size: 28px;
+  border: none;
+  text-align: center;
 }
