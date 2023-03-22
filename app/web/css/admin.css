@@ -600,7 +600,7 @@ td .btn-secondary:hover {
     margin-left: 3px;
     margin-right: 3px;
     margin-bottom: 3px;
-    width: 25%;
+    width: 18%;
     height: 43px;
     font-size: 18px;
     font-weight: bold;
@@ -913,4 +913,10 @@ td .btn-secondary:hover {
   font-size: 28px;
   border: none;
   text-align: center;
+}
+#tableModal .modal-dialog {
+  width: 50%;
+}
+#tableModal .form-group {
+  margin-top: 15px;
 }

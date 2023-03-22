@@ -1726,7 +1726,7 @@ class pjAdminPosOrders extends pjAdmin {
       $this->set('categories', $category_arr);
       $printBrowser = true;
       $printMessage = 'failed';
-      $data = $this->getOrderItems($id, $printBrowser);
+      $data = $this->getOrderItems($id, $printBrowser, true);
 
       $client_arr = pjClientModel::factory()->select("t1.*, t2.email as c_email, t2.name as c_name, t2.phone as c_phone")
         ->join("pjAuthUser", "t2.id=t1.foreign_id", 'left outer')
@@ -1787,15 +1787,16 @@ class pjAdminPosOrders extends pjAdmin {
         $printer->restoreDefaultLineSpacing();
         $printer->setAlignment(SunmiCloudPrinter::ALIGN_LEFT);
         $this->kitchenPrintFormat($printer, $data, $special_instructions, true);
+        $printer->lineFeed();
         //Already Printed line order
-        $printer->lineFeed();
-        $printer->setAlignment(SunmiCloudPrinter::ALIGN_CENTER);
-        $printer->appendText(str_repeat("-", 55));
-        $printer->lineFeed();
-        $printer->setAlignment(SunmiCloudPrinter::ALIGN_LEFT);
-        $printer->restoreDefaultLineSpacing();
-        $printer->setPrintModes(false, false, false);
-        $this->kitchenPrintFormat($printer, $data, $special_instructions, false);
+        // $printer->lineFeed();
+        // $printer->setAlignment(SunmiCloudPrinter::ALIGN_CENTER);
+        // $printer->appendText(str_repeat("-", 55));
+        // $printer->lineFeed();
+        // $printer->setAlignment(SunmiCloudPrinter::ALIGN_LEFT);
+        // $printer->restoreDefaultLineSpacing();
+        // $printer->setPrintModes(false, false, false);
+        // $this->kitchenPrintFormat($printer, $data, $special_instructions, false);
         if ($data['arr']['d_notes'] != '') { 
           $printer->lineFeed(2);
           $printer->appendText(str_repeat("-", 55));
@@ -1824,6 +1825,7 @@ class pjAdminPosOrders extends pjAdmin {
         } else {
           $printMessage = "Failed";
         }
+        //$this->updateKitchenPrint($id);
         //$closePath = $_SERVER['PHP_SELF'].'?controller=pjAdminPosOrders&amp;action='.$this->getActionName($source);
         //echo "<a href='$closePath' class='btn btn-primary nextbutton'><i class='fa fa-plus'></i>Close</a>";
         $this->set('printMessage', $printMessage);
@@ -1833,46 +1835,82 @@ class pjAdminPosOrders extends pjAdmin {
 
   }
 
+  // public function kitchenPrintFormat($printer, $data, $special_instructions, $newItem = false) {
+  //   foreach ($data['product_arr'] as $product) {
+  //     foreach ($data['oi_arr'] as $k => $oi) {
+  //       $lineItem = '';
+  //       if ((($newItem && ($oi['cnt'] != $oi['print'])) || (!$newItem && ($oi['print']))) && $oi['foreign_id'] == $product['id']) {
+  //         if ($newItem) {
+  //           $lineItem = ($oi['cnt'] - $oi['print']);
+  //         } else {
+  //           $lineItem = $oi['print'];
+  //         }
+  //         $lineItem .= " x ".strtoupper($product['name'])." ".$oi['size'];
+  //         $printer->appendText("$lineItem");
+  //         if ($oi['special_instruction'] != '') {
+  //           $printer->lineFeed();
+  //           $spcl_ins = $oi['special_instruction'];
+  //           $spcl_ins_arr = explode(",", $spcl_ins);
+  //             foreach ($spcl_ins_arr as $ins) {
+  //               foreach ($special_instructions as $instruction) {
+  //                 if ($ins == $instruction['id']) {
+  //                   $printer->appendImage($instruction['image'], 0);
+  //                 }
+  //               }
+  //             }
+  //           } 
+  //           if (array_key_exists($oi['hash'], $data['oi_extras'])) { 
+  //             $proExtra = $data['oi_extras'][$oi['hash']]; 
+  //             foreach($proExtra as $extra) {
+  //               $printer->appendText(" - ".$extra['extra_name'] ." x ".$extra['cnt'] ."\n");
+  //             } 
+  //           }
+  //           if ($oi['custom_special_instruction'] != '')
+  //           {
+  //             $printer->appendText(" - \n");
+  //             $printer->appendText(str_repeat(" ", 4).$oi['custom_special_instruction']."\n");
+  //           } else {
+  //             $printer->appendText("\n");
+  //           }
+  //       }
+  //     }
+  //   }
+  // } 
   public function kitchenPrintFormat($printer, $data, $special_instructions, $newItem = false) {
-    foreach ($data['product_arr'] as $product) {
-      foreach ($data['oi_arr'] as $k => $oi) {
+    //$this->pr($data);
+    foreach ($data['oi_arr'] as $k => $oi) {
+      for ($i = 0, $counter = 0; $i < $oi['cnt'] ; $i++, $counter++) {
         $lineItem = '';
-        if ((($newItem && ($oi['cnt'] != $oi['print'])) || (!$newItem && ($oi['print']))) && $oi['foreign_id'] == $product['id']) {
-          if ($newItem) {
-            $lineItem = ($oi['cnt'] - $oi['print']);
-          } else {
-            $lineItem = $oi['print'];
-          }
-          $lineItem .= " x ".strtoupper($product['name'])." ".$oi['size'];
-          $printer->appendText("$lineItem");
-          if ($oi['special_instruction'] != '') {
-            $printer->lineFeed();
-            $spcl_ins = $oi['special_instruction'];
-            $spcl_ins_arr = explode(",", $spcl_ins);
-              foreach ($spcl_ins_arr as $ins) {
+        $lineItem = "1 x ".strtoupper($oi['product_name'])." ".$oi['size'];
+        $printer->appendText("$lineItem");
+        if (array_key_exists($oi['hash'], $data['oi_extras']) && isset($data['oi_extras'][$oi['hash']][$counter])) { 
+          $extra = $data['oi_extras'][$oi['hash']][$counter];
+          $printer->lineFeed();
+          $printer->appendText(" - ".$extra->extra_name ." x ".$extra->extra_count);
+        }
+        if ($oi['special_instruction']) {
+          $obj = json_decode($oi['special_instruction'], true);
+          if (isset($obj[$counter])) {
+            if ($obj[$counter]['ids']) {
+              $printer->lineFeed();
+              $selected_ins_arr = explode(',', $obj[$counter]['ids']);
+              foreach ($selected_ins_arr as $ins) {
                 foreach ($special_instructions as $instruction) {
                   if ($ins == $instruction['id']) {
                     $printer->appendImage($instruction['image'], 0);
                   }
                 }
               }
+            }
+            if ($obj[$counter]['cus_ins']) {
+              $printer->lineFeed();
+              $printer->appendText(str_repeat(" ", 4).$obj[$counter]['cus_ins']."\n");
             } 
-            if (array_key_exists($oi['hash'], $data['oi_extras'])) { 
-              $proExtra = $data['oi_extras'][$oi['hash']]; 
-              foreach($proExtra as $extra) {
-                $printer->appendText(" - ".$extra['extra_name'] ." x ".$extra['cnt'] ."\n");
-              } 
-            }
-            if ($oi['custom_special_instruction'] != '')
-            {
-              $printer->appendText(" - \n");
-              $printer->appendText(str_repeat(" ", 4).$oi['custom_special_instruction']."\n");
-            } else {
-              $printer->appendText("\n");
-            }
+          }
         }
+        $printer->lineFeed();
       }
-    }
+    } 
   }
 
   public function pjActionReminderEmail() {
@@ -2940,13 +2978,15 @@ class pjAdminPosOrders extends pjAdmin {
       }
       if ($post['is_paused']) {
         //pjUtil::redirect(PJ_INSTALL_URL . "index.php?controller=pjAdminPosOrders&action=pjActionIndex");
-        pjUtil::redirect(PJ_INSTALL_URL . "index.php?controller=pjAdminPosOrders&action=pjActionInitialKPrint&source=index&origin=Pos&id=$id");
+        //pjActionPrintOrder&id=15&source=index
+        pjUtil::redirect(PJ_INSTALL_URL . "index.php?controller=pjAdminPosOrders&action=pjActionPrintOrder&source=index&origin=Pos&id=$id");
       } else {
         //pjUtil::redirect(PJ_INSTALL_URL . "index.php?controller=pjAdminPosOrders&action=pjActionSalePrint&id=$id");
         if ($data['payment_method'] == 'cash') {
           $this->pjActionCashDrawer();
         }
         pjUtil::redirect(PJ_INSTALL_URL . "index.php?controller=pjAdminPosOrders&action=pjActionInitialPrint&id=$id");
+        //pjUtil::redirect(PJ_INSTALL_URL . "index.php?controller=pjAdminPosOrders&action=pjActionPrintOrder&source=index&origin=Pos&id=$id");
       }
     }
     $this->appendJs('jquery.datagrid.js', PJ_FRAMEWORK_LIBS_PATH . 'pj/js/');
@@ -2979,7 +3019,7 @@ class pjAdminPosOrders extends pjAdmin {
       $arr = $pjOrderModel->find($id)->getData();
       // echo '<pre>'; print_r($post); echo '</pre>';
       // exit;
-      //$this->pr($post);
+      //$this->pr_die($post);
       if (empty($arr)) {
         pjUtil::redirect($_SERVER['PHP_SELF'] . "?controller=pjAdminPosOrders&action=pjActionIndex&err=AR08");
       }
@@ -3033,7 +3073,8 @@ class pjAdminPosOrders extends pjAdmin {
       $err = 'AR01';
       if ($post['is_paused']) {
         //pjUtil::redirect(PJ_INSTALL_URL . "index.php?controller=pjAdminPosOrders&action=pjActionIndex&err=$err");
-        pjUtil::redirect(PJ_INSTALL_URL . "index.php?controller=pjAdminPosOrders&action=pjActionInitialKPrint&source=index&origin=Pos&id=$id");
+        // pjUtil::redirect(PJ_INSTALL_URL . "index.php?controller=pjAdminPosOrders&action=pjActionInitialKPrint&source=index&origin=Pos&id=$id");
+        pjUtil::redirect(PJ_INSTALL_URL . "index.php?controller=pjAdminPosOrders&action=pjActionPrintOrder&source=index&origin=Pos&id=$id");
       } else {
         //pjUtil::redirect(PJ_INSTALL_URL . "index.php?controller=pjAdminPosOrders&action=pjActionSalePrint&id=$id");
         if ($data['payment_method'] == 'cash') {
@@ -3279,7 +3320,7 @@ class pjAdminPosOrders extends pjAdmin {
         }
       }
       if (empty($_oi_arr)) {
-        pjUtil::redirect(PJ_INSTALL_URL . "index.php?controller=pjAdminPosOrders&action=pjActionIndex&err=AR08");
+        pjUtil::redirect(PJ_INSTALL_URL . "index.php?controller=pjAdminPosOrders&action=pjActionIndex");
       }
       $product_ids = array_column($_oi_arr, 'foreign_id');
 
@@ -3340,6 +3381,7 @@ class pjAdminPosOrders extends pjAdmin {
           $oi_arr[] = $item;
         }
       }
+      //$this->pr($_oi_arr);
       if ($isForPrinting) {
         return compact('arr', 'product_arr', 'oi_arr', 'oi_extras');
       } else {

@@ -119,7 +119,7 @@
 	      // !MEGAMIND
 	    });
   	}
-  	//updateKitchenPrint();
+  	updateKitchenPrint();
   	printDiv('kPrintContainer');
 	});
 </script>

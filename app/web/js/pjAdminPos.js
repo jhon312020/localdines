@@ -1320,6 +1320,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             },
             {
               type: "edit",
+              text: " Edit",
               url: "index.php?controller=pjAdminPosOrders&action=pjActionUpdate&id={:id}",
             },
             {
@@ -1435,6 +1436,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             },
             {
               type: "edit",
+              text: " Edit",
               url: "index.php?controller=pjAdminPosOrders&action=pjActionUpdate&id={:id}",
             },
             {

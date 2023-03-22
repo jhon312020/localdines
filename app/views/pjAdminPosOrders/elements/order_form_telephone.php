@@ -181,7 +181,7 @@
         <div class="tab-pane fade" id="orderType" role="tabpanel" aria-labelledby="orderType-tab">
           <div class="row" style="margin-top: 10px;">
           </div>
-          <fieldset class="order-delivery">
+          <fieldset class="order-delivery" style="display:none">
             <legend>Address Details 
               <span class="pull-right postcode-legend" id="jsOverridePc">
                 <label class="legend-input">Override Postcode?</label>
