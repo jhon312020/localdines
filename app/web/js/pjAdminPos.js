@@ -1309,6 +1309,11 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
         var $grid_epos = $("#grid-epos").datagrid({
           buttons: [
             {
+              type: "edit",
+              text: " Edit",
+              url: "index.php?controller=pjAdminPosOrders&action=pjActionUpdate&id={:id}",
+            },
+            {
               type: "print",
               text: " Kprint",
               url: "index.php?controller=pjAdminPosOrders&action=pjActionPrintOrder&id={:id}&source=index",
@@ -1318,11 +1323,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
               text: " Rprint",
               url: "index.php?controller=pjAdminPosOrders&action=pjActionSalePrint&id={:id}&source=index",
             },
-            {
-              type: "edit",
-              text: " Edit",
-              url: "index.php?controller=pjAdminPosOrders&action=pjActionUpdate&id={:id}",
-            },
+            
             {
               type: "cancel",
               url: "index.php?controller=pjAdminPosOrders&action=pjActionCancelOrder&id={:id}",
@@ -1425,6 +1426,11 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
               url: "#",
             },
             {
+              type: "edit",
+              text: " Edit",
+              url: "index.php?controller=pjAdminPosOrders&action=pjActionUpdate&id={:id}",
+            },
+            {
               type: "print",
               text: " Kprint",
               url: "index.php?controller=pjAdminPosOrders&action=pjActionPrintOrder&id={:id}&source=index",
@@ -1433,11 +1439,6 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
               type: "print",
               //text: " Rprint",
               url: "index.php?controller=pjAdminPosOrders&action=pjActionSalePrint&id={:id}&source=index",
-            },
-            {
-              type: "edit",
-              text: " Edit",
-              url: "index.php?controller=pjAdminPosOrders&action=pjActionUpdate&id={:id}",
             },
             {
               type: "cancel",

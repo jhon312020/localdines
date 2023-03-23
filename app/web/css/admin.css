@@ -597,11 +597,11 @@ td .btn-secondary:hover {
 .confirm_table_name .btn, .confirm_payment_method .btn, #sizeModal .radio-buttons {
     background-color: #ffab23;
     color: #fff;
-    margin-left: 3px;
-    margin-right: 3px;
-    margin-bottom: 3px;
-    width: 18%;
-    height: 43px;
+    margin-left: 15px;
+    margin-right: 15px;
+    margin-bottom: 25px;
+    width: 15%;
+    height: 45px;
     font-size: 18px;
     font-weight: bold;
 }
@@ -910,9 +910,11 @@ td .btn-secondary:hover {
   font-size: 20px;
 }
 #no_of_persons {
-  font-size: 28px;
-  border: none;
+  font-size: 35px;
   text-align: center;
+  height: 50px;
+  width: 50%;
+  margin: auto;
 }
 #tableModal .modal-dialog {
   width: 50%;
