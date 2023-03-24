@@ -1880,7 +1880,7 @@ class pjAdminPosOrders extends pjAdmin {
     //$this->pr($data);
     foreach ($data['oi_arr'] as $k => $oi) {
       $lineItem = '';
-      if ($oi['special_instruction'] || array_key_exists($oi['hash'], $tpl['oi_extras'])) {
+      if ($oi['special_instruction'] || array_key_exists($oi['hash'], $data['oi_extras'])) {
         for ($i = 0, $counter = 0; $i < $oi['cnt'] ; $i++, $counter++) {
           $lineItem = '';
           $lineItem = "1 x ".strtoupper($oi['product_name'])." ".$oi['size'];
@@ -2796,13 +2796,8 @@ class pjAdminPosOrders extends pjAdmin {
         // ->limit($rowCount, $offset)
         ->findAll()
         ->getData();
-        // $order = pjOrderModel::factory()
-        //       ->select('t1.*')
-        // 	  ->where("t1.id", $id)
-        // 	  ->findAll()
-        // 	  ->getData();
+        $this->getOrderItems($id, false);
         $role_id = $this->getRoleId();
-        //print_r($order);
         foreach ($order as $k => $v) {
           if ($v["surname"] == '' || is_null($v["surname"]) || $v["surname"] === 0) {
             $v["surname"] = $order[$k]["surname"] = $v["first_name"];
@@ -2825,14 +2820,12 @@ class pjAdminPosOrders extends pjAdmin {
             $order[$k]['c_type'] = "guest";
           }
         }
-        self::jsonResponse(array(
-          'status' => 'Ok',
-          'data' => $order
-        ));
+        // self::jsonResponse(array(
+        //   'status' => 'Ok',
+        //   'data' => $order
+        // ));
       }
     }
-    exit;
-
   }
 
   public function pjActionGetProductSizes() {
