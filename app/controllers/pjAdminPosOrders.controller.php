@@ -308,8 +308,7 @@ class pjAdminPosOrders extends pjAdmin {
       } else {
         $err = 'AR04';
       }
-
-      pjUtil::redirect(PJ_INSTALL_URL . "index.php?controller=pjAdminPosOrders&action=pjActionPrintOrder&source=index&origin=Pos&id=$id");
+      pjUtil::redirect(PJ_INSTALL_URL . "index.php?controller=pjAdminPosOrders&action=pjActionPrintOrder&source=index&origin=Tel&id=$id");
       //pjUtil::redirect(PJ_INSTALL_URL . "index.php?controller=pjAdminPosOrders&action=pjActionIndex");
     }
     $this->getInculdeData();
@@ -2826,12 +2825,12 @@ class pjAdminPosOrders extends pjAdmin {
             $order["phone_no"] = substr($order["phone_no"], 0, 2).str_repeat("*", (strLen($order['phone_no']) - 2));
           }
         }
-        $order['sms_sent_time'] == NULL ?  "-" : $order['sms_sent_time'];
-        $order['delivered_time'] == NULL ? "-" : $order['delivered_time'];
+        $order['sms_sent_time'] = $order['sms_sent_time'] == ''  ?  "-" : date("d-M-Y H:m:s", strtotime($order['sms_sent_time']));
+        $order['delivered_time'] = $order['delivered_time'] == ''  ? "-" : date("d-M-Y H:m:s", strtotime($order['delivered_time']));
         if ($order['client_id'] == NULL && $order['origin'] == "web") {
           $order['c_type'] = "guest";
         }
-
+        //$this->pr_die($order);
         // foreach ($order as $k => $v) {
         //   if ($v["surname"] == '' || is_null($v["surname"]) || $v["surname"] === 0) {
         //     $v["surname"] = $order[$k]["surname"] = $v["first_name"];

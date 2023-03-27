@@ -27,8 +27,8 @@
 				<td><?php echo $order_details['delivered_time']; ?></td>
 			</tr>
 			<tr>
-				<th>Pickup Time:</th>
-				<td><?php //echo $order_details['']; ?></td>
+				<th><?php echo $order_details["type"] == 'delivery'?"Delivered ":"Pickup "?> Time:</th>
+				<td><?php echo $order_details['delivered_time']; ?></td>
 				<th>Status</th>
 				<td><?php echo $order_details['status']; ?></td>
 			</tr>
@@ -53,6 +53,10 @@
 				<td><?php echo pjCurrency::formatPrice($oi['cnt'] * $oi['price']); ?></td>
 			</tr>
 			<?php } ?>
+			<tr>
+				<th colspan="3" style="text-align: right;"><?php echo "Total: " ?></th>
+				<td><?php echo pjCurrency::formatPrice($order_details["total"]); ?></td>
+			</tr>
 		</tbody>
 	</table>
 </fieldset>
