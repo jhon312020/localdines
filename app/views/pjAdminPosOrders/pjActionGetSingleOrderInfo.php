@@ -1,33 +1,36 @@
 <?php /*echo '<pre>'; print_r($tpl['product_arr']); echo '</pre>';
 			  echo '<pre>'; print_r($tpl['oi_arr']); echo '</pre>';
 			  echo '<pre>'; print_r($tpl['oi_extras']); echo '</pre>';
-			  echo "<pre>"; print_r($tpl['special_instructions']); echo "</pre>";*/ ?>
+			  echo "<pre>"; print_r($tpl['special_instructions']); echo "</pre>";*/ 
+			  //echo "<pre>"; print_r($tpl['order_details']); echo "</pre>";
+			  $order_details = $tpl['order_details'];
+			  ?>
 <div>
 	<table style='width: 100%;'>
 		<tbody>
 			<tr>
 				<th>Name:</th>
-				<td></td>
+				<td><?php echo $order_details['surname']; ?></td>
 				<th>Customer Type:</th>
-				<td></td>
+				<td><?php echo $order_details['c_type']; ?></td>
 			</tr>
 			<tr>
 				<th>SMS/Email:</th>
-				<td></td>
+				<td><?php echo $order_details['sms_email']; ?></td>
 				<th>Phone No:</th>
-				<td></td>
+				<td><?php echo $order_details['phone_no']; ?></td>
 			</tr>
 			<tr>
 				<th>SMS Sent Time:</th>
-				<td></td>
+				<td><?php echo $order_details['sms_sent_time']; ?></td>
 				<th>Estimated Delivery:</th>
-				<td></td>
+				<td><?php echo $order_details['delivered_time']; ?></td>
 			</tr>
 			<tr>
 				<th>Pickup Time:</th>
-				<td></td>
+				<td><?php //echo $order_details['']; ?></td>
 				<th>Status</th>
-				<td></td>
+				<td><?php echo $order_details['status']; ?></td>
 			</tr>
 		</tbody>
 	</table>

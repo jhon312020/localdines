@@ -168,6 +168,7 @@ class pjAdminPosOrders extends pjAdmin {
     if (self::isPost() && $this->_post->toInt('order_create')) {
       $post_total = $this->getTotal();
       $post = $this->_post->raw();
+      //$this->pr_die($post);
       $data = array();
       $data['uuid'] = time();
       $data['ip'] = pjUtil::getClientIp();
@@ -307,7 +308,9 @@ class pjAdminPosOrders extends pjAdmin {
       } else {
         $err = 'AR04';
       }
-      pjUtil::redirect(PJ_INSTALL_URL . "index.php?controller=pjAdminPosOrders&action=pjActionIndex");
+
+      pjUtil::redirect(PJ_INSTALL_URL . "index.php?controller=pjAdminPosOrders&action=pjActionPrintOrder&source=index&origin=Pos&id=$id");
+      //pjUtil::redirect(PJ_INSTALL_URL . "index.php?controller=pjAdminPosOrders&action=pjActionIndex");
     }
     $this->getInculdeData();
     $arr['table_name'] = 'Take Away';
@@ -478,7 +481,15 @@ class pjAdminPosOrders extends pjAdmin {
 
       $err = 'AR01';
       $origin = ucfirst($post["origin"]);
-      pjUtil::redirect(PJ_INSTALL_URL . "index.php?controller=pjAdminPosOrders&action=pjActionInitialPrint&id=$id");
+      if ($data['is_paid']) {
+        if ($data['payment_method'] == 'cash') {
+          $this->pjActionCashDrawer();
+        }
+        pjUtil::redirect(PJ_INSTALL_URL . "index.php?controller=pjAdminPosOrders&action=pjActionInitialPrint&id=$id");
+      } else {
+        pjUtil::redirect(PJ_INSTALL_URL . "index.php?controller=pjAdminPosOrders&action=pjActionPrintOrder&source=index&origin=Pos&id=$id");
+      }
+      
     }
     $id = $this->_get->toInt('id');
     $arr = pjOrderModel::factory()->join('pjClient', "t2.id=t1.client_id", 'left outer')
@@ -2791,35 +2802,59 @@ class pjAdminPosOrders extends pjAdmin {
 							AES_DECRYPT(t1.cc_num, '" . PJ_SALT . "') AS `cc_num`,
 							AES_DECRYPT(t1.cc_exp, '" . PJ_SALT . "') AS `cc_exp`,
 							AES_DECRYPT(t1.cc_code, '" . PJ_SALT . "') AS `cc_code`")
-          ->where("t1.id", $id)
+          //->where("t1.id", $id)
         // ->orderBy("$col $dir")
         // ->limit($rowCount, $offset)
-        ->findAll()
+        ->find($id)
         ->getData();
+        //$this->pr_die($order);
         $this->getOrderItems($id, false);
         $role_id = $this->getRoleId();
-        foreach ($order as $k => $v) {
-          if ($v["surname"] == '' || is_null($v["surname"]) || $v["surname"] === 0) {
-            $v["surname"] = $order[$k]["surname"] = $v["first_name"];
+
+        if ($order["surname"] == '' || is_null($order["surname"]) || $order["surname"] === 0) {
+          $order["surname"] = $order["surname"] = $order["first_name"];
+        }
+        if ($role_id != ADMIN_R0LE_ID && $order['status'] == 'delivered') {  
+          //$order["surname"] = substr($order["surname"], 0, 2).str_repeat("*", strLen($order['surname']) - 2); 
+          if ($order["surname"]) {
+            $order["surname"] = substr($order["surname"], 0, 2).str_repeat("*", 10); 
           }
-          if ($role_id != ADMIN_R0LE_ID && $v['status'] == 'delivered') {  
-            //$order[$k]["surname"] = substr($v["surname"], 0, 2).str_repeat("*", strLen($v['surname']) - 2); 
-            if ($v["surname"]) {
-              $order[$k]["surname"] = substr($v["surname"], 0, 2).str_repeat("*", 10); 
-            }
-            if ($v["sms_email"]) {
-              $order[$k]["sms_email"] = substr($v["sms_email"], 0, 2).str_repeat("*", (strLen($v['sms_email']) - 2));
-            }
-            if ($v["phone_no"]) {
-              $order[$k]["phone_no"] = substr($v["phone_no"], 0, 2).str_repeat("*", (strLen($v['phone_no']) - 2));
-            }
+          if ($order["sms_email"]) {
+            $order["sms_email"] = substr($order["sms_email"], 0, 2).str_repeat("*", (strLen($order['sms_email']) - 2));
           }
-          $v['sms_sent_time'] == NULL ? $order[$k]['sms_sent_time'] = "-" : $order[$k]['sms_sent_time'] = $v['sms_sent_time'];
-          $v['delivered_time'] == NULL ? $order[$k]['delivered_time'] = "-" : $order[$k]['delivered_time'] = $v['delivered_time'];
-          if ($order[$k]['client_id'] == NULL && $order[$k]['origin'] == "web") {
-            $order[$k]['c_type'] = "guest";
+          if ($order["phone_no"]) {
+            $order["phone_no"] = substr($order["phone_no"], 0, 2).str_repeat("*", (strLen($order['phone_no']) - 2));
           }
         }
+        $order['sms_sent_time'] == NULL ?  "-" : $order['sms_sent_time'];
+        $order['delivered_time'] == NULL ? "-" : $order['delivered_time'];
+        if ($order['client_id'] == NULL && $order['origin'] == "web") {
+          $order['c_type'] = "guest";
+        }
+
+        // foreach ($order as $k => $v) {
+        //   if ($v["surname"] == '' || is_null($v["surname"]) || $v["surname"] === 0) {
+        //     $v["surname"] = $order[$k]["surname"] = $v["first_name"];
+        //   }
+        //   if ($role_id != ADMIN_R0LE_ID && $v['status'] == 'delivered') {  
+        //     //$order[$k]["surname"] = substr($v["surname"], 0, 2).str_repeat("*", strLen($v['surname']) - 2); 
+        //     if ($v["surname"]) {
+        //       $order[$k]["surname"] = substr($v["surname"], 0, 2).str_repeat("*", 10); 
+        //     }
+        //     if ($v["sms_email"]) {
+        //       $order[$k]["sms_email"] = substr($v["sms_email"], 0, 2).str_repeat("*", (strLen($v['sms_email']) - 2));
+        //     }
+        //     if ($v["phone_no"]) {
+        //       $order[$k]["phone_no"] = substr($v["phone_no"], 0, 2).str_repeat("*", (strLen($v['phone_no']) - 2));
+        //     }
+        //   }
+        //   $v['sms_sent_time'] == NULL ? $order[$k]['sms_sent_time'] = "-" : $order[$k]['sms_sent_time'] = $v['sms_sent_time'];
+        //   $v['delivered_time'] == NULL ? $order[$k]['delivered_time'] = "-" : $order[$k]['delivered_time'] = $v['delivered_time'];
+        //   if ($order[$k]['client_id'] == NULL && $order[$k]['origin'] == "web") {
+        //     $order[$k]['c_type'] = "guest";
+        //   }
+        // }
+        $this->set('order_details', $order);
         // self::jsonResponse(array(
         //   'status' => 'Ok',
         //   'data' => $order

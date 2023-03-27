@@ -207,7 +207,7 @@
                   <div class="form-group">
                     <label class="control-label"><?php echo 'Postcode'; ?></label>
                     <div class="input-group" id="post_code">
-                      <input type="text" class="jsVK-normal form-control fdRequired required" placeholder="Type your postCode" name="post_code" id="inputPostCode">
+                      <input type="text" class="jsVK-normal form-control" placeholder="Type your postCode" name="post_code" id="inputPostCode">
                       <span class="input-group-btn">
                           <button class="btn btn-default" type="button" id="btnFindPostCode"><i class="glyphicon glyphicon-ok"></i></button>
                       </span>
@@ -241,7 +241,7 @@
               <div class="col-md-4 col-sm-6">
                 <div class="form-group">
                   <label class="control-label"><?php __('lblAddress1'); ?></label>
-                  <input type="text" name="d_address_1" id="d_address_1" class="jsVK-normal form-control<?php echo $tpl['option_arr']['o_df_include_address_1'] == 3 ? ' fdRequired required' : NULL; ?>" data-msg-required="<?php __('fd_field_required', false, true);?>"/>
+                  <input type="text" name="d_address_1" id="d_address_1" class="jsVK-normal form-control" data-msg-required="<?php __('fd_field_required', false, true);?>"/>
                 </div>
               </div>
               <div class="col-md-4 col-sm-6">
@@ -253,7 +253,7 @@
               <div class="col-md-4 col-sm-6">
                 <div class="form-group">
                   <label class="control-label"><?php __('lblCity'); ?></label>
-                  <input type="text" name="d_city" id="d_city" class="jsVK-normal form-control<?php echo $tpl['option_arr']['o_df_include_city'] == 3 ? ' fdRequired required' : NULL; ?>" data-msg-required="<?php __('fd_field_required', false, true);?>"/>
+                  <input type="text" name="d_city" id="d_city" class="jsVK-normal form-control" data-msg-required="<?php __('fd_field_required', false, true);?>"/>
                 </div>
               </div>
               <?php
@@ -458,7 +458,7 @@
           <div class="clearfix">
             <a class="btn btn-white btn-lg pull-left" href="<?php echo PJ_INSTALL_URL; ?>index.php?controller=pjAdminPosOrders&action=pjActionIndex"><?php __('btnCancel'); ?></a>
             <button type="submit" id="submitJs" class="ladda-button btn btn-primary btn-lg btn-phpjabbers-loader pull-right" data-style="zoom-in" name="submitTel">
-              <span class="ladda-label"><?php __('btnSave'); ?></span>
+              <span class="ladda-label"><?php //__('btnSave'); ?>Hold</span>
               <?php include $controller->getConstant('pjBase', 'PLUGIN_VIEWS_PATH') . 'pjLayouts/elements/button-animation.php'; ?>
             </button>
           </div><!-- /.clearfix -->
