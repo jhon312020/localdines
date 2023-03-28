@@ -15,6 +15,10 @@ ALTER TABLE `food_delivery_orders_items` CHANGE `print` `print` INT NULL DEFAULT
 
 ALTER TABLE `food_delivery_expenses` CHANGE `company_id` `supplier_id` INT(11) NULL DEFAULT NULL;
 
+March-28-2023
+
+ALTER TABLE `food_delivery_postalcodes` ADD `name` VARCHAR(50) NULL AFTER `id`;
+
 //New Setup Database Changes
 
 ALTER TABLE `food_delivery_plugin_auth_users`  ADD `u_surname` VARCHAR(15) NULL  AFTER `ip`;

@@ -2825,11 +2825,17 @@ class pjAdminPosOrders extends pjAdmin {
             $order["phone_no"] = substr($order["phone_no"], 0, 2).str_repeat("*", (strLen($order['phone_no']) - 2));
           }
         }
+        if($order["d_address_2"]) {
+          $address = $order["d_address_1"].",<br/>".$order["d_address_2"].",<br/>".$order["d_city"];
+        } else { 
+          $address = $order["d_address_1"].",<br/>".$order["d_city"];
+        }
         $order['sms_sent_time'] = $order['sms_sent_time'] == ''  ?  "-" : date("d-M-Y H:m:s", strtotime($order['sms_sent_time']));
         $order['delivered_time'] = $order['delivered_time'] == ''  ? "-" : date("d-M-Y H:m:s", strtotime($order['delivered_time']));
         if ($order['client_id'] == NULL && $order['origin'] == "web") {
           $order['c_type'] = "guest";
         }
+        $order['address'] = $address;
         //$this->pr_die($order);
         // foreach ($order as $k => $v) {
         //   if ($v["surname"] == '' || is_null($v["surname"]) || $v["surname"] === 0) {

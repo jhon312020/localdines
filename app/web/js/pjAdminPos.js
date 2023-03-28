@@ -4223,7 +4223,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           function getAddresses($this) { 
             var Client = IdealPostcodes.Client;
             var lookupPostcode = IdealPostcodes.lookupPostcode;
-            var client = new Client({ api_key: "iddqd" });
+            var client = new Client({ api_key: ideal_api_key });
             postcode = $this.val();
             if (postcode != '') {
               var addressList = $(

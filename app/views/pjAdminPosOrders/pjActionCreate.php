@@ -85,5 +85,7 @@
   categoryList =  JSON.parse(categoryList);  
   var client_info = '<?php echo json_encode($tpl['client_info']); ?>';
   client_info = JSON.parse(client_info);
+  var ideal_api_key = "<?php echo IDEAL_API_KEY;?>";
+  console.log(ideal_api_key);
 </script>
 

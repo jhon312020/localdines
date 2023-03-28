@@ -12,6 +12,7 @@ class pjPostalcodeModel extends pjAppModel
 	
 	protected $schema = array(
 		array('name' => 'id', 'type' => 'int', 'default' => ':NULL'),
+		array('name' => 'name', 'type' => 'varchar', 'default' => ':NULL'),
 		array('name' => 'postal_code', 'type' => 'varchar', 'default' => ':NULL')
 		);
 	

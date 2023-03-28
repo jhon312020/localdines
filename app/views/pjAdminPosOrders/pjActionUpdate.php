@@ -107,5 +107,6 @@ myLabel.voucher_err = '<?php echo 'Voucher code is invalid'; ?>';
 myLabel.delivery_fee_err = '<?php echo 'This field only accepts integer and float values'; ?>';
 myLabel.mobileDelivery_err = '<?php echo 'Please select any one of the delivery info'; ?>'; 
 myLabel.emailReceipt_err = '<?php echo 'Please select any one of the delivery info'; ?>'; 
+var ideal_api_key = "<?php echo IDEAL_API_KEY;?>";
 </script>
 
