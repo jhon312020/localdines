@@ -73,8 +73,9 @@ myLabel.mobileDelivery_err = '<?php echo 'Please select any one of the delivery 
 myLabel.emailReceipt_err = '<?php echo 'Please select any one of the delivery info'; ?>'; 
 var categoryList = '<?php echo json_encode($tpl['category_list']); ?>';  
 categoryList =  JSON.parse(categoryList);  
-var client_info = '<?php echo json_encode($tpl['client_info']); ?>';
-client_info = JSON.parse(client_info);
+//var client_info = "<?php echo json_encode($tpl['client_info']); ?>";
+//client_info = JSON.parse(client_info);
 var ideal_api_key = "<?php echo IDEAL_API_KEY;?>";
+console.log(myLabel);
 </script>
 

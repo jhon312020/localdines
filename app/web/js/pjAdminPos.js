@@ -362,7 +362,6 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           }
         });
         $.validator.addMethod("mobileDelivery", function (value, element) {
-          
           if ($(element).attr("data-wt") == "valid") {
             return true;
           } else {

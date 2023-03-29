@@ -221,7 +221,7 @@ class pjAdminPosOrders extends pjAdmin {
       } else {
         $c_data['c_title'] = $this->_post->toString('c_title');
         $c_data['c_name'] = $this->_post->toString('c_name');
-        $c_data['surname'] = $this->_post->toString('surname');
+        $c_data['u_surname'] = $this->_post->toString('surname');
         $c_data['c_email'] = $this->_post->toString('sms_email');
         $c_data['c_type'] = "New";
         $c_data['c_address_1'] = $this->_post->toString('d_address_1');
@@ -356,7 +356,7 @@ class pjAdminPosOrders extends pjAdmin {
         $c_data['c_phone'] = $this->_post->toInt('phone_no');
         $c_data['c_title'] = $this->_post->toString('c_title');
         $c_data['c_name'] = $this->_post->toString('c_name');
-        $c_data['surname'] = $this->_post->toString('surname');
+        $c_data['u_surname'] = $this->_post->toString('surname');
         $c_data['c_email'] = $this->_post->toString('sms_email');
         $c_data['c_address_1'] = $this->_post->toString('d_address_1');
         $c_data['c_address_2'] = $this->_post->toString('d_address_2');
