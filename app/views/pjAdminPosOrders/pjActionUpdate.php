@@ -89,6 +89,9 @@
   
   include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/payment_modal.php';
   include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/pause_modal.php'; 
+  include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/custom_product_modal.php';
+  include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/cancel_return_product_modal.php';
+  include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/cancel_return_product_modal.php';
   //include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/no_print.php'; 
 ?>
 <!-- End of Payment Modal -->

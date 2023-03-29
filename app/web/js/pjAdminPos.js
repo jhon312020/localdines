@@ -3080,6 +3080,14 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           if (extras_count)  {
             calPrice(0);
           } 
+        }).on("click", ".jsAddCustomProduct", function (e) {
+          var productName = $(this).data('product-name');
+          console.log(productName);
+          $("#ProductName").val(productName);
+          $("#customProductModal").modal("show");
+        })
+        .on("click", ".jsBtnCancelReturn", function (e) {
+          $("#cancelReturnModal").modal("show");
         })
         ;
       $cols = $("table");//.on("click", function(){

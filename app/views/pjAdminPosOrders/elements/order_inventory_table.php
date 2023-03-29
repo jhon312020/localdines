@@ -29,7 +29,7 @@
           $has_extra = false;
           $oi_extras = '';
     ?>
-      <tr class="fdLine jsKprintDone" data-index="<?php echo $oi['hash']; ?>" data-preptime = "<?php echo $product['preparation_time']; ?>">
+      <tr class="fdLine jsKprintDone" data-index="<?php echo $oi['hash']; ?>" data-preptime = "<?php echo $product['preparation_time']; ?>" >
         <td class="tdProductName">
           <?php
             if ($product['cnt_extras'] > 0) {
@@ -38,8 +38,10 @@
             if ($product['status'] == 1) {
           ?>
           <input type="hidden" data-index="<?php echo $oi['hash']; ?>" data-extra="<?php echo $product['cnt_extras']; ?>" id="fdProduct_<?php echo $oi['hash']; ?>" name="product_id[<?php echo $oi['hash']; ?>]" value="<?php echo $product['id']; ?>">
-          <?php echo stripslashes($product['name']); ?>
-          <i class="fa fa-info-circle" aria-hidden="true"></i>
+          <a href="#" data-product-name="<?php echo stripslashes($product['name']); ?>" class="jsAddCustomProduct">
+            <?php echo stripslashes($product['name']); ?>
+            <i class="fa fa-info-circle" aria-hidden="true"></i>
+          </a>
           <?php } ?>
         </td>                       
         <td>
@@ -119,14 +121,13 @@
         </td>
         <td>
           <div>
-            <span class="" id="productDelete_<?php echo $oi['hash']; ?>">
+            <!-- <span class="" id="productDelete_<?php //echo $oi['hash']; ?>">
               <a href="#" class="btn btn-danger btn-outline btn-sm btn-delete pj-remove-product"><i class="fa fa-trash"></i></a>
-            </span>
+            </span> -->
             <span class="" id="productReturn_<?php echo $oi['hash']; ?>">
-              <a href="#" class="btn btn-danger btn-outline btn-sm btn-delete pj-return-product"> <i class="fa fa-strikethrough"></i></i></a>
+              <a href="#" class="btn btn-danger btn-outline btn-sm jsBtnCancelReturn pj-return-product"> <i class="fa fa-strikethrough"></i></i></a>
             </span>
           </div>
-         
         </td>
       </tr>
         <?php

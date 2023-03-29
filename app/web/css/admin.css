@@ -594,7 +594,8 @@ td .btn-secondary:hover {
     font-size: 20px;
 }
 
-.confirm_table_name .btn, .confirm_payment_method .btn, #sizeModal .radio-buttons {
+.confirm_table_name .btn, .confirm_payment_method .btn, #sizeModal .radio-buttons, 
+.btn_container .btn {
     background-color: #ffab23;
     color: #fff;
     margin-left: 15px;
@@ -922,3 +923,11 @@ td .btn-secondary:hover {
 #tableModal .form-group {
   margin-top: 15px;
 }
+.strikethrough {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIW2NkYGCQBAAAIwAbDJgTxgAAAABJRU5ErkJggg==');
+    background-repeat: repeat-x;
+    background-position: 50% 50%;
+}
+/*.strikethrough {
+  text-decoration: line-through;
+}*/

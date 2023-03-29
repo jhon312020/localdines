@@ -73,6 +73,8 @@
   include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/payment_modal.php'; 
   include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/pause_modal.php'; 
   //include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/no_print.php'; 
+  include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/custom_product_modal.php';
+  include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/cancel_return_product_modal.php';
 ?>
 <script src="https://cdn.jsdelivr.net/npm/@ideal-postcodes/core-browser-bundled/dist/core-browser.umd.min.js"></script>
 
