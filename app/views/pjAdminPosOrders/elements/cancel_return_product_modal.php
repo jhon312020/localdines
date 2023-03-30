@@ -3,7 +3,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h2 class="modal-title" id="modalTitle">Add Custom Product <i class="fa fa-info-circle" aria-hidden="true"></i></h2>
+        <h2 class="modal-title" id="modalTitle">Cancel/Return Product <i class="fa fa-info-circle" aria-hidden="true"></i></h2>
       </div>
       <div class="modal-body" id="modalBody">
         <form name="custom_product_form" id="CustomProductForm">

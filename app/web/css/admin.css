@@ -618,7 +618,9 @@ td .btn-secondary:hover {
 #pauseModal .con-table-selection {
     padding-top: 50px;
 }
-.confirm_table_name .btn.selected, .confirm_payment_method .btn.selected, #sizeModal .radio-buttons.selected {
+.confirm_table_name .btn.selected, .confirm_payment_method .btn.selected,
+.btn_container .btn.selected,
+#sizeModal .radio-buttons.selected {
     background-color: #337ab7;
 }
 #pos-grid-header .pos-list-button.selected{

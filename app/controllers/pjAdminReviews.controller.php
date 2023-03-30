@@ -276,7 +276,7 @@ class pjAdminReviews extends pjAdmin {
         [
       	//'to' => '44'.$data['phone_no'],
           'to' => '447792995419',
-          'from' => "LOCALDINES",
+          'from' => DOMAIN,
           'msg' => $msg,
           'schedule' => "now",
           //'external_reference' => "Testing VoodooSMS",
