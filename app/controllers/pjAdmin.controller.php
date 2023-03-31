@@ -398,6 +398,7 @@ class pjAdmin extends pjAppController {
       ->getTable()))->find($productID)->getData();
 	}
 	public function saveOrderItems($post, $order_id) {
+		//$this->pr($post);
 		if (isset($post['product_id']) && count($post['product_id']) > 0) {
       $pjOrderItemModel = pjOrderItemModel::factory();
       $pjProductPriceModel = pjProductPriceModel::factory();
@@ -406,13 +407,18 @@ class pjAdmin extends pjAppController {
       $category_arr = $this->getCategoryList();
       $category_order = array_column($category_arr, 'order', 'id');
       foreach ($post['product_id'] as $k => $pid) {
+      	$type = "product";
         $product = $this->getProduct($pid);
         $item_order = $category_order[$product['category_id']];
         //$this->pr_die($product);
         if (strpos($k, 'new_') === 0) {
           $price = 0;
           $price_id = ":NULL";
-          if ($product['set_different_sizes'] == 'T') {
+          if (array_key_exists('product_type', $post) && array_key_exists($k, $post['product_type']) && $post['product_type']["$k"] == "custom") {
+              $price = $post['price_id'][$k];
+              $type = "custom";
+            }
+         else if ($product['set_different_sizes'] == 'T') {
             $price_id = $post['price_id'][$k];
             $price_arr = $pjProductPriceModel->reset()->find($price_id)->getData();
             if ($price_arr) {
@@ -422,11 +428,12 @@ class pjAdmin extends pjAppController {
             $price = $product['price'];
           }
           $hash = md5(uniqid(rand() , true));
+          echo $type;
           $oid = $pjOrderItemModel->reset()
             ->setAttributes(array(
             'order_id' => $order_id,
             'foreign_id' => $pid,
-            'type' => 'product',
+            'type' => $type,
             'hash' => $hash,
             'item_order'=> $item_order,
             'price_id' => $price_id,
@@ -459,6 +466,7 @@ class pjAdmin extends pjAppController {
         }
       }
     }
+    //exit;
 	}
 //public function pjActionCheckNewOrder() {
 	// 	$this->setAjax(true);

@@ -19,6 +19,12 @@ March-28-2023
 
 ALTER TABLE `food_delivery_postalcodes` ADD `name` VARCHAR(50) NULL AFTER `id`;
 
+March-31-2023
+
+ALTER TABLE `food_delivery_orders_items` CHANGE `type` `type` ENUM('product','extra','custom') CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;
+
+ALTER TABLE `food_delivery_orders_items` ADD `status` ENUM('cancel','return') NULL DEFAULT NULL AFTER `price`;
+
 //New Setup Database Changes
 
 ALTER TABLE `food_delivery_plugin_auth_users`  ADD `u_surname` VARCHAR(15) NULL  AFTER `ip`;

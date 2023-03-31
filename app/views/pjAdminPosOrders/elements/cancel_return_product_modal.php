@@ -18,7 +18,7 @@
             <label for="message-text" class="control-label">Reason:</label>
             <textarea class="form-control" id="message-text" name="description"></textarea>
           </div>
-          <button type="button" class="btn btn-primary btn-w-m-75 btn-h-m-40">Save</button>
+          <button type="button" class="btn btn-primary btn-w-m-75 btn-h-m-40" id="jsBtnCancelOrReturnProduct">Save</button>
           <button type="button" class="btn btn-primary btn-w-m-75 btn-h-m-40" data-dismiss="modal">Close</button>
         </form>
       </div>

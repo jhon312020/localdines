@@ -3081,10 +3081,23 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             calPrice(0);
           } 
         }).on("click", ".jsAddCustomProduct", function (e) {
-          var productName = $(this).data('product-name');
-          console.log(productName);
+          let productName = $(this).data('product-name');
+          let productIndex = $(this).data('index');
+          let prodcutId = $('#fdProduct_'+productIndex).val()
           $("#ProductName").val(productName);
+          $("#ProductID").val(prodcutId);
           $("#customProductModal").modal("show");
+        }).on("click", "#jsBtnAddCusProduct", function() {
+          //$("#products-sec").parent().addClass("ibox-content");
+          //$("#products-sec").parent().addClass("sk-loading");
+          let formData = $("#CustomProductForm").serialize();
+          $.post("index.php?controller=pjAdminPosOrders&action=pjActionAddCustomProduct", formData, 
+          ).done(function (data) { 
+            $("tbody.main-body").append(data);
+            $("#customProductModal").modal("hide");
+            calPrice(1);
+            //bindTouchSpin();
+          })
         })
         .on("click", ".jsBtnCancelReturn", function (e) {
           $("#cancelReturnModal").modal("show");
@@ -3895,7 +3908,8 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           $('#tableModal').modal({backdrop: 'static', keyboard: false}, 'show');
         }).on("click", "#table_select", function() {
           $('#tableModal').modal();
-        });
+        })
+        ;
         $("#productSearchHide").click(function() {
           if($("#product_input").hasClass("d-none")) {
             $("#product_input").removeClass("d-none");

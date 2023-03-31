@@ -321,18 +321,18 @@ $action = $controller->_get->toString('action');
 								<div class="col-xs-12 d-flex justify-content-between">
 									<label><h5>PICKUP</h5></label>
 									<div class="checkBox">
-									    <input type="radio" id="radiopickup" class="radio d-none" value="pickup" name="type" />
+								    <input type="radio" id="radiopickup" class="radio d-none" value="pickup" name="type" />
 										<label for="radiopickup"></label>
-				                    </div>
+                  </div>
 								</div>
-								<!-- <div class="col-xs-12 d-flex justify-content-between">
+								<div class="col-xs-12 d-flex justify-content-between">
 									<label><h5>DELIVERY</h5></label>
 									<div class="checkBox">
 									    <input type="radio" id="radiodelivery" class="radio d-none" value="delivery" name="type"/>
 										<label for="radiodelivery"></label>
 									</div>
 									
-								</div> -->
+								</div>
 							</div>
 						</div>
 						<div class="row" id="postCodeSec">
@@ -439,8 +439,8 @@ $action = $controller->_get->toString('action');
 			}
 		}
 		var $type =$("#orderTypeCounter").val();
-		//if ($type == 'delivery') {
-		if (0) {
+		if ($type == 'delivery') {
+		//if (0) {
 			if (parseFloat(cartPrice) < parseFloat(minPrice)) {
         $("#minPriceErr").css('display', 'block');
 				$("#btn-checkout").removeClass("fdButtonCheckout");

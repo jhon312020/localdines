@@ -22,6 +22,7 @@
   </thead>
   <tbody class="main-body">
     <?php
+    //echo '<pre>';print_r($tpl['product_arr']); echo '</pre>';
     if (array_key_exists('oi_arr', $tpl) && count($tpl['oi_arr']) > 0) {
       foreach ($tpl['product_arr'] as $product) {
         foreach ($tpl['oi_arr'] as $k => $oi) {
@@ -38,7 +39,7 @@
             if ($product['status'] == 1) {
           ?>
           <input type="hidden" data-index="<?php echo $oi['hash']; ?>" data-extra="<?php echo $product['cnt_extras']; ?>" id="fdProduct_<?php echo $oi['hash']; ?>" name="product_id[<?php echo $oi['hash']; ?>]" value="<?php echo $product['id']; ?>">
-          <a href="#" data-product-name="<?php echo stripslashes($product['name']); ?>" class="jsAddCustomProduct">
+          <a href="#" data-product-name="<?php echo stripslashes($product['name']); ?>" class="jsAddCustomProduct" data-index="<?php echo $oi['hash']; ?>">
             <?php echo stripslashes($product['name']); ?>
             <i class="fa fa-info-circle" aria-hidden="true"></i>
           </a>

@@ -180,13 +180,13 @@ $jqDateFormat = pjUtil::jqDateFormat($tpl['option_arr']['o_date_format']);
 										<?php __('front_pickup');?>
 									</a>
 								</li>
-								<!-- <li role="presentation" class="fdTabOuter<?php //echo $isDelivery ? ' active' : NULL; ?>">
+								<li role="presentation" class="fdTabOuter<?php echo $isDelivery ? ' active' : NULL; ?>">
 									<a href="#" class="text-uppercase fdTypeTab fdTabDelivery" aria-controls="delivery" role="tab">
 										<i class="fa fa-taxi"></i>
 										&nbsp;
-										<?php //__('front_delivery');?>
+										<?php __('front_delivery');?>
 									</a>
-								</li> -->
+								</li>
 							</ul>
 							<span style="overflow: hidden; height: 0; display: none;">
 								<input type="radio" name="type" id="fdTypePickup_<?php echo $index; ?>" value="pickup"<?php echo $isPickup ? ' checked="checked"' : NULL; ?> />
@@ -727,6 +727,7 @@ $jqDateFormat = pjUtil::jqDateFormat($tpl['option_arr']['o_date_format']);
 </div>
 <script src="https://cdn.jsdelivr.net/npm/@ideal-postcodes/core-browser-bundled/dist/core-browser.umd.min.js"></script>
 <script>
+	const IDEAL_API_KEY = "<?php echo IDEAL_API_KEY; ?>";
 	$("#btnFindPostCode").on("click", function (e) {
         var postcode_input = $("#inputPostCode");
         getAddresses(postcode_input);
@@ -746,7 +747,9 @@ $jqDateFormat = pjUtil::jqDateFormat($tpl['option_arr']['o_date_format']);
 	function getAddresses($this) { 
       var Client = IdealPostcodes.Client;
       var lookupPostcode = IdealPostcodes.lookupPostcode;
-      var client = new Client({ api_key: "iddqd" });
+      //var client = new Client({ api_key: "iddqd" });
+      var client = new Client({ api_key:  IDEAL_API_KEY});
+      console.log('Api', IDEAL_API_KEY);
       postcode = $this.val();
       if (postcode) {
         var addressList = $(

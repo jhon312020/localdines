@@ -3221,9 +3221,11 @@
 	};
 
 	function validatePostcode($this, islogged, session, type, submit, hasPostcode) { 
+		//const IDEAL_API_KEY = "ak_lfs7kie3EdohQbgpRUiiqgLUBIkyQ";
+		const IDEAL_API_KEY = "iddqd";
 		var Client = IdealPostcodes.Client;
 		var lookupPostcode = IdealPostcodes.lookupPostcode;
-		var client = new Client({ api_key: "iddqd" });
+		var client = new Client({ api_key: IDEAL_API_KEY});
 		var postcode = $this.val();
 		if ($("#post_code").hasClass("has-error")) {
 			$("#post_code").removeClass("has-error");
