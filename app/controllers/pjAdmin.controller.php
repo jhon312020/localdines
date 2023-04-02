@@ -408,17 +408,21 @@ class pjAdmin extends pjAppController {
       $category_order = array_column($category_arr, 'order', 'id');
       foreach ($post['product_id'] as $k => $pid) {
       	$type = "product";
-        $product = $this->getProduct($pid);
-        $item_order = $category_order[$product['category_id']];
+      	$product = array();
+      	$custom_name = ":NULL";
+      	if ($pid) {
+      		$product = $this->getProduct($pid);
+        	$item_order = $category_order[$product['category_id']];
+      	} 
         //$this->pr_die($product);
         if (strpos($k, 'new_') === 0) {
           $price = 0;
           $price_id = ":NULL";
-          if (array_key_exists('product_type', $post) && array_key_exists($k, $post['product_type']) && $post['product_type']["$k"] == "custom") {
-              $price = $post['price_id'][$k];
-              $type = "custom";
-            }
-         else if ($product['set_different_sizes'] == 'T') {
+          if ($pid == 0) {	
+            $price = $post['price_id'][$k];
+            $type = "custom";
+            echo $custom_name = $post['product_description'][$k];
+          } else if ($product['set_different_sizes'] == 'T') {
             $price_id = $post['price_id'][$k];
             $price_arr = $pjProductPriceModel->reset()->find($price_id)->getData();
             if ($price_arr) {
@@ -428,13 +432,15 @@ class pjAdmin extends pjAppController {
             $price = $product['price'];
           }
           $hash = md5(uniqid(rand() , true));
-          echo $type;
+          //echo $type;
+          //exit;
           $oid = $pjOrderItemModel->reset()
             ->setAttributes(array(
             'order_id' => $order_id,
             'foreign_id' => $pid,
             'type' => $type,
             'hash' => $hash,
+            'custom_name'=>$custom_name,
             'item_order'=> $item_order,
             'price_id' => $price_id,
             'price' => $price,

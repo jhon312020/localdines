@@ -521,6 +521,7 @@ class pjAdminPosOrders extends pjAdmin {
       }
       $oi_arr[] = $item;
     }
+    //$this->pr($oi_arr);
     $this->set('oi_extras', $oi_extras);
     $product_ids = array_column($oi_arr, 'foreign_id');
     $product_arr = pjProductModel::factory()->select('t1.id, t2.content AS name, t1.set_different_sizes, t1.price, t1.status, t1.preparation_time, t1.image, (SELECT COUNT(*) FROM `' . pjProductExtraModel::factory()
@@ -529,6 +530,8 @@ class pjAdminPosOrders extends pjAdmin {
           ->whereIn("t1.id", $product_ids)->groupBy('t1.id, t1.set_different_sizes, t1.price')
           ->findAll()
           ->getData();
+    $product_arr = array_combine(array_column($product_arr, 'id'),$product_arr);
+    //$this->pr($product_arr);
     $category = pjProductCategoryModel::factory()->select('t1.*')
       ->findAll()
       ->getData();
@@ -757,6 +760,8 @@ class pjAdminPosOrders extends pjAdmin {
     foreach ($product_id_arr as $v) {
       if ((int)$v > 0) {
         $is_null = false;
+      } else if ($v == 0) {
+        $is_null = false;
       }
     }
     if ($is_null == false) {
@@ -787,17 +792,24 @@ class pjAdminPosOrders extends pjAdmin {
         ->findAll()
         ->getData();
       $extra_arr = $pjExtraModel->findAll()->getData();
+      $cnt_arr = $this->_post->toArray('cnt');
       //$this->pr($product_id_arr);
       //$this->pr($post);
       foreach ($product_id_arr as $hash => $product_id) {
+        $_price = 0;
+          $extra_price = 0;
+        if ($product_id == 0) {
+          $_price = $post['price_id'][$hash];
+          $price += $_price * $cnt_arr[$hash];
+        }
         foreach ($product_arr as $product) {
+          $_price = 0;
+          $extra_price = 0;
           if ($product['id'] == $product_id) {
-            $_price = 0;
-            $extra_price = 0;
-            if (array_key_exists('product_type', $post) && array_key_exists($hash, $post['product_type']) &&$post['product_type']["$hash"] == "custom") {
-              $_price = $post['price_id'][$hash];
-            }
-            else if ($product['set_different_sizes'] == 'T') {
+            // if (array_key_exists('product_type', $post) && array_key_exists($hash, $post['product_type']) &&$post['product_type']["$hash"] == "custom") {
+            //   $_price = $post['price_id'][$hash];
+            // }
+            if ($product['set_different_sizes'] == 'T') {
               $price_id_arr = $this->_post->toArray('price_id');
               $price_arr = $pjProductPriceModel->reset()->find($price_id_arr[$hash])->getData();
               if ($price_arr) {
@@ -808,7 +820,6 @@ class pjAdminPosOrders extends pjAdmin {
             }
             $extra_id_arr = $this->_post->toArray('extras');
             //$this->pr($extra_id_arr);
-            $cnt_arr = $this->_post->toArray('cnt');
             $product_price = $_price * $cnt_arr[$hash];
             $price_packing += $product['packing_fee'] * $cnt_arr[$hash];
             if (array_key_exists($hash, $extra_id_arr) && isset($extra_id_arr[$hash])) {
@@ -1915,7 +1926,7 @@ class pjAdminPosOrders extends pjAdmin {
                 foreach ($selected_ins_arr as $ins) {
                   foreach ($special_instructions as $instruction) {
                     if ($ins == $instruction['id']) {
-                      $printer->appendImage($instruction['image'], 0);
+                      $printer->appendImage($instruction['image'], 0, 30);
                     }
                   }
                 }
@@ -3311,38 +3322,14 @@ class pjAdminPosOrders extends pjAdmin {
   public function pjActionAddCustomProduct() {
     $this->setAjax(true);
     if ($this->isXHR()) {
-      $product_id = $this->_post->toInt('product_id');
+      $product_id = $this->_post->toString('product_id');
       $post = $this->_post->raw();
-      //$this->pr($post);
+      //s$this->pr($post);
       if ($product_id) {
-        $arr = pjProductModel::factory()->find($product_id)->getData();
-        if (!empty($arr)) {
-          //MEGAMIND
-          $product_category = pjProductCategoryModel::factory()->where("product_id", $product_id)->findAll()
-            ->getData();
-          if ($product_category) {
-            $arr['category_id'] = $product_category[0]['category_id'];
-          }
-          //MEGAMIND
-        }
-        //Added by JR to get product description
-        $pjMultiLangModel = pjMultiLangModel::factory();
-        $prodarr['i18n'] = $pjMultiLangModel->getMultiLang($product_id, 'pjProduct');
-        $arr['description'] = $prodarr['i18n'][$this->getLocaleId() ]['description'];
-        //End of it;
-
-        $this->set('arr', $arr);
-
-        $product_arr = pjProductModel::factory()->select('t1.id, t2.content AS name, t1.set_different_sizes, t1.price, t1.status, t1.image, (SELECT COUNT(*) FROM `' . pjProductExtraModel::factory()
-          ->getTable() . '` AS TPE WHERE TPE.product_id=t1.id) as cnt_extras')
-          ->join('pjMultiLang', "t2.foreign_id = t1.id AND t2.model = 'pjProduct' AND t2.locale = '" . $this->getLocaleId() . "' AND t2.field = 'name'", 'left')
-          ->groupBy('t1.id, t1.set_different_sizes, t1.price')
-          ->find($product_id)
-          ->getData();
         $product_arr['price'] = $post['price'];
         $product_arr['qty'] = $post['quantity'];
         $product_arr['total'] =  $post['price'] * $post['quantity'];
-        $product_arr['description'] =  $post['description'];
+        $product_arr['description'] =  'Custom - '.$post['description'];
         //$this->pr($product_arr);
         $this->set('product_arr', $product_arr);
       }

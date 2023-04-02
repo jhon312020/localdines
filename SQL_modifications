@@ -25,6 +25,11 @@ ALTER TABLE `food_delivery_orders_items` CHANGE `type` `type` ENUM('product','ex
 
 ALTER TABLE `food_delivery_orders_items` ADD `status` ENUM('cancel','return') NULL DEFAULT NULL AFTER `price`;
 
+ALTER TABLE `food_delivery_orders_items` ADD `custom_name` VARCHAR(100) NULL DEFAULT NULL AFTER `hash`;
+
+if (!defined("PRODUCT_TYPES")) define("PRODUCT_TYPES", array('custom', 'product'));
+
+
 //New Setup Database Changes
 
 ALTER TABLE `food_delivery_plugin_auth_users`  ADD `u_surname` VARCHAR(15) NULL  AFTER `ip`;

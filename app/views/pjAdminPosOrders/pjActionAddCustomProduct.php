@@ -3,10 +3,10 @@ $index = "new_" . mt_rand(0, 999999);
 ?>   
 <tr class="fdLine new" data-index="<?php echo $index;?>" data-prepTime="0">
   <td class="tdProductName">
-    <input type="hidden" id="fdProduct_<?php echo $index; ?>" name="product_id[<?php echo $index; ?>]" value="<?php echo $tpl['product_arr']['id']; ?>">
+    <input type="hidden" id="fdProduct_<?php echo $index; ?>" name="product_id[<?php echo $index; ?>]" value=0>
     <input type="hidden" id="fdProduct_<?php echo $index; ?>" name="product_description[<?php echo $index; ?>]" value="<?php echo $tpl['product_arr']['description']; ?>">
     <input type="hidden" id="fdProduct_<?php echo $index; ?>" name="product_type[<?php echo $index; ?>]" value="custom">
-    <?php echo $tpl['product_arr']['name'].' - '.$tpl['product_arr']['description']; ?>
+    <?php echo $tpl['product_arr']['description']; ?>
   </td>
   <td>
     <div class="business-<?php echo $index;?>" data-parent-index="<?php echo $index;?>">

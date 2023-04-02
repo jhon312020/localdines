@@ -18,6 +18,9 @@
       </form>
     </div>
     <div class="col-lg-5 col-sm-6 text-right">
+      <a href="#" class="btn btn-primary jsAddCustomProduct" id="showCustomProduct">
+        <i class="fa fa-plus" aria-hidden="true"></i>
+      </a>
       <a href="#" class="btn btn-primary" id="showPostalCodes">
         <i class="fa fa-map-marker" aria-hidden="true"></i>
       </a>

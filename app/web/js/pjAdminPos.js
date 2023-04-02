@@ -3081,11 +3081,11 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             calPrice(0);
           } 
         }).on("click", ".jsAddCustomProduct", function (e) {
-          let productName = $(this).data('product-name');
-          let productIndex = $(this).data('index');
-          let prodcutId = $('#fdProduct_'+productIndex).val()
-          $("#ProductName").val(productName);
-          $("#ProductID").val(prodcutId);
+          //let productName = $(this).data('product-name');
+          //let productIndex = $(this).data('index');
+          //let prodcutId = $('#fdProduct_'+productIndex).val()
+          $("#ProductName").val("custom");
+          $("#ProductID").val("custom");
           $("#customProductModal").modal("show");
         }).on("click", "#jsBtnAddCusProduct", function() {
           //$("#products-sec").parent().addClass("ibox-content");

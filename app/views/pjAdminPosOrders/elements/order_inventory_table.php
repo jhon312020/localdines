@@ -22,13 +22,30 @@
   </thead>
   <tbody class="main-body">
     <?php
-    //echo '<pre>';print_r($tpl['product_arr']); echo '</pre>';
+    //echo '<pre>';print_r($tpl['oi_arr']); echo '</pre>';
     if (array_key_exists('oi_arr', $tpl) && count($tpl['oi_arr']) > 0) {
-      foreach ($tpl['product_arr'] as $product) {
+      //foreach ($tpl['product_arr'] as $product) {
+      //echo 'test';
+      //exit;
         foreach ($tpl['oi_arr'] as $k => $oi) {
-          if ($oi['type'] == 'product' && $oi['foreign_id'] == $product['id'])  {
+          //echo '<pre>';print_r($oi); echo '</pre>';
+          //if ($oi['type'] == 'product' && $oi['foreign_id'] == $product['id'])  {
+          if (in_array($oi['type'], PRODUCT_TYPES))  {
           $has_extra = false;
           $oi_extras = '';
+          if (array_key_exists($oi['foreign_id'], $tpl['product_arr'])) {
+            $product = $tpl['product_arr'][$oi['foreign_id']];
+          } else {
+            $product = array(
+              'id'=>0,
+              'preparation_time'=>0,
+              'name'=>$oi['custom_name'],
+              'cnt_extras'=>0,
+              'price'=>$oi['price'],
+              'status'=>1,
+            );
+          }
+         //print_r($product);
     ?>
       <tr class="fdLine jsKprintDone" data-index="<?php echo $oi['hash']; ?>" data-preptime = "<?php echo $product['preparation_time']; ?>" >
         <td class="tdProductName">
@@ -39,7 +56,7 @@
             if ($product['status'] == 1) {
           ?>
           <input type="hidden" data-index="<?php echo $oi['hash']; ?>" data-extra="<?php echo $product['cnt_extras']; ?>" id="fdProduct_<?php echo $oi['hash']; ?>" name="product_id[<?php echo $oi['hash']; ?>]" value="<?php echo $product['id']; ?>">
-          <a href="#" data-product-name="<?php echo stripslashes($product['name']); ?>" class="jsAddCustomProduct" data-index="<?php echo $oi['hash']; ?>">
+          <a href="#" data-product-name="<?php echo stripslashes($product['name']); ?>" class="" data-index="<?php echo $oi['hash']; ?>">
             <?php echo stripslashes($product['name']); ?>
             <i class="fa fa-info-circle" aria-hidden="true"></i>
           </a>
@@ -134,7 +151,7 @@
         <?php
           }
         }
-      }
+      //}
     }
     ?>
   </tbody>

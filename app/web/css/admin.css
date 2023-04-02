@@ -589,7 +589,7 @@ td .btn-secondary:hover {
 #showPostalCodes,
 #showCart,
 #update-btn-pause,
-#btn-noprint {
+#btn-noprint, #showCustomProduct {
     padding: 12px 24px;
     font-size: 20px;
 }
