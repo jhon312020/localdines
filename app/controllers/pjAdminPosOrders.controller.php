@@ -1904,7 +1904,7 @@ class pjAdminPosOrders extends pjAdmin {
   //   }
   // } 
   public function kitchenPrintFormat($printer, $data, $special_instructions, $newItem = false) {
-    //$this->pr($data);
+    //$this->pr_die($data);
     foreach ($data['oi_arr'] as $k => $oi) {
       $lineItem = '';
       if ($oi['special_instruction'] || array_key_exists($oi['hash'], $data['oi_extras'])) {
@@ -1940,7 +1940,11 @@ class pjAdminPosOrders extends pjAdmin {
           $printer->lineFeed();
         }
       } else {
-        $lineItem = $oi['cnt']." x ".strtoupper($oi['product_name'])." ".$oi['size'];
+        if ($oi['type'] == 'custom') {
+          $lineItem = $oi['cnt']." x ".strtoupper($oi['custom_name']);
+        } else {
+          $lineItem = $oi['cnt']." x ".strtoupper($oi['product_name'])." ".$oi['size'];
+        }
         $printer->appendText("$lineItem");
         $printer->lineFeed();
       }

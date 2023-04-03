@@ -1,4 +1,4 @@
-<?php $paperWidth = "290px"; ?>
+<?php $paperWidth = "290px"; echo "<pre>"; print_r($tpl['arr']); echo "</pre>"; ?>
 <div id="receiptContainer">
 <div class="ticket" style="margin: 5px 10px;width: <?php echo $paperWidth;?>;">
 	<div style="margin: auto; width: <?php echo $paperWidth;?>; text-align: center;">
@@ -39,7 +39,7 @@
         <td><strong>Total</strong></td>
         <td style="padding: 2px 15px; float: right;"><strong><?php echo pjCurrency::formatPrice($tpl['arr']['total']); ?><strong></td>
       </tr>
-      <?php if ($tpl['arr']['payment_method'] != 'bank') { ?>
+      <?php if ($tpl['arr']['is_paid'] == 1 && $tpl['arr']['payment_method'] != 'bank') { ?>
       <tr>
         <td><strong>Cash Tendered</strong></td>
         <td style="padding: 2px 15px; float: right;"><strong>
