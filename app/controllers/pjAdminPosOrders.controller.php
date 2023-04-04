@@ -1478,6 +1478,7 @@ class pjAdminPosOrders extends pjAdmin {
         } else {
           $data[$k]['payment_method'] = '';
         }
+        $data[$k]['order_date'] = date("d-m-Y", strtotime($v['created']));
       }
       //echo "<pre>";print_r($data); echo "</pre>";
       pjAppController::jsonResponse(compact('data', 'total', 'pages', 'page', 'rowCount', 'column', 'direction'));
@@ -1904,13 +1905,18 @@ class pjAdminPosOrders extends pjAdmin {
   //   }
   // } 
   public function kitchenPrintFormat($printer, $data, $special_instructions, $newItem = false) {
-    //$this->pr_die($data);
+    //$this->pr($data);
     foreach ($data['oi_arr'] as $k => $oi) {
       $lineItem = '';
       if ($oi['special_instruction'] || array_key_exists($oi['hash'], $data['oi_extras'])) {
         for ($i = 0, $counter = 0; $i < $oi['cnt'] ; $i++, $counter++) {
           $lineItem = '';
-          $lineItem = "1 x ".strtoupper($oi['product_name'])." ".$oi['size'];
+          if ($oi['type'] == 'custom') {
+            $lineItem = "1 x ".strtoupper($oi['custom_name']);
+          } else {
+            $lineItem = "1 x ".strtoupper($oi['product_name'])." ".$oi['size'];
+          }
+          
           $printer->appendText("$lineItem");
           if (array_key_exists($oi['hash'], $data['oi_extras']) && isset($data['oi_extras'][$oi['hash']][$counter])) { 
             $extra = $data['oi_extras'][$oi['hash']][$counter];

@@ -871,7 +871,7 @@ class SunmiCloudPrinter
         $i = 0;
         for ($y = 0; $y < $h; $y++) {
             for ($x = 0; $x < $w; $x++) {
-                $rgb = imagecolorat($image, $x, $y);
+                $rgb = @imagecolorat($image, $x, $y);
                 $r = ($rgb >> 16) & 0xff;
                 $g = ($rgb >> 8 ) & 0xff;
                 $b = ($rgb      ) & 0xff;

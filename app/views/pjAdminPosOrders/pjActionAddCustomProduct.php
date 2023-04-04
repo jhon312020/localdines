@@ -31,7 +31,7 @@
   </td>
               
   <td>
-    <a href="#" id="cus-si_<?php echo $index;?>" data-pdname="<?php echo $tpl['product_arr']['name']; ?>" aria-hidden="true" data-index = "<?php echo $index;?>" class="btn btn-spl-ins-add spcl_ins"><i class="fa fa-comment-o"></i></a>
+    <a href="#" id="cus-si_<?php echo $index;?>" data-pdname="<?php echo $tpl['product_arr']['description']; ?>" aria-hidden="true" data-index = "<?php echo $index;?>" class="btn btn-spl-ins-add spcl_ins"><i class="fa fa-comment-o"></i></a>
     <input type="hidden" id="fdSpecialInstruction_<?php echo $index;?>" name="special_instruction[<?php echo $index;?>]" class="form-control special-instruction" value="" />
     <input type="hidden" id="fdCustomSpecialInstruction_<?php echo $index;?>" name="custom_special_instruction[<?php echo $index;?>]" class="form-control custom-special-instruction" value="" />  
   </td>

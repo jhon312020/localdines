@@ -17,9 +17,11 @@ if(isset($tpl['arr']) && !empty($tpl['arr']))
 		if ($product['status'] == 1) {
 			
 		// $image_path = 'https://placehold.it/220x200';
-		if(!empty($product['image']))
-		{
+
+		if(!empty($product['image'])) {
 			$image_path = PJ_INSTALL_URL . $product['image'];
+		} else {
+			$image_path = PJ_INSTALL_URL.'app/web/img/backend/no_image.png';
 		}
 		
 		?>

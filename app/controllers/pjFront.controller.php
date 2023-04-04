@@ -163,5 +163,11 @@ class pjFront extends pjAppController
         }
         return $this;
     }
+    public function pr($data) {
+      echo '<pre>'; print_r($data); echo '</pre>';
+    }
+    public function pr_die($data) {
+      echo '<pre>'; print_r($data); echo '</pre>'; die;
+    }
 }
 ?>

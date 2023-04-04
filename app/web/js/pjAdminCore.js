@@ -7,7 +7,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
 		
 		var audio = new Audio(app_url+'app/web/img/backend/notify.mp3');
 		$(window).on('load', function() {
-			getClientMessage();
+			//getClientMessage();
 			//$(document).off("ajaxStart.dg");
 			// $(document).bind("ajaxStart.dg", function(e) {
 			// 	$target.closest(wrapper).addClass("sk-loading");
@@ -35,7 +35,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
 			});
 			//getClientMessage();
 		})
-		setInterval(function(){
+		setInterval(function() {
 			//alert("new order");
 			//$(document).off("ajaxStart.dg");
 			// $(document).off('ajaxStart.dg');
@@ -73,6 +73,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
 			  });
 			
 		  }, 20000);
+		setInterval(getClientMessage(), 10000);
 		function GetNewOrder() {
 			$.post(
 				"index.php?controller=pjFrontPublic&action=pjActionGetNewOrder",

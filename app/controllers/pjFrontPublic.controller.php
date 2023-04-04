@@ -653,7 +653,7 @@ class pjFrontPublic extends pjFront {
 			->orderBy('t1.order ASC')
 			->findAll()
 			->getData();
-			//print_r($options);
+			//$this->pr($arr);
 			$this->set('front_option', $options);
 	    $this->set('arr', $arr);
 			$this->set('page_type', $page);

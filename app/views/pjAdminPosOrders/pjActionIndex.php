@@ -164,7 +164,8 @@
   myLabel.delivered_time = '<?php echo 'Delivered Time'; ?>';
   myLabel.is_paid = '<?php echo 'Is Paid?'; ?>';
   myLabel.review = '<?php echo 'R'; ?>';
-  //myLabel.date_time = <?php x__encode('lblDateTime'); ?>;
+  // myLabel.date_time = <?php x__encode('lblDateTime'); ?>;
+  myLabel.order_date = '<?php echo 'Date'; ?>';
   myLabel.total = <?php x__encode('lblTotal'); ?>;
   myLabel.type = <?php x__encode('lblType'); ?>;
   myLabel.pickup = <?php x__encode('lblPickup'); ?>;

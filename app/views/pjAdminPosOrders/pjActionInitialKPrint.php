@@ -25,7 +25,7 @@
 			<?php
 			  $i = 0;
 			  //echo '<pre>'; print_r($tpl['product_arr']); echo '</pre>';
-			  // echo '<pre>'; print_r($tpl['oi_arr']); echo '</pre>';
+			  //echo '<pre>'; print_r($tpl['oi_arr']); echo '</pre>';
 			  // echo '<pre>'; print_r($tpl['oi_extras']); echo '</pre>';
 			  // echo "<pre>"; print_r($tpl['special_instructions']); echo "</pre>";
 			  //foreach ($tpl['product_arr'] as $product) {
@@ -42,12 +42,17 @@
 				          	<?php
 				          	if ($oi['special_instruction'] || array_key_exists($oi['hash'], $tpl['oi_extras'])) {
 					          	for ($i = 0, $counter = 0; $i < $oi['cnt'] ; $i++, $counter++) {
-					          		echo 1 . " x ";
-					          		echo strtoupper($oi['product_name'])." ".$oi['size']." ";
 
+					          		if ($oi['type'] == 'custom') {
+					          			echo 1 . " x ";
+					          			echo strtoupper($oi['custom_name']);
+					          		} else {
+					          			echo 1 . " x ";
+						          		echo strtoupper($oi['product_name'])." ".$oi['size']." ";
+					          		}
 					          		if (array_key_exists($oi['hash'], $tpl['oi_extras']) && isset($tpl['oi_extras'][$oi['hash']][$counter])) { 
 					          			$extra = $tpl['oi_extras'][$oi['hash']][$counter]; //echo 'came here';
-					          			echo '<br/><span style="margin-left: 20px">'.$extra->extra_name ." x ".$extra->extra_count.'</span><br/>';
+					          			echo '<br/><span style="margin-left: 20px">'.$extra->extra_name ." x ".$extra->extra_count.'</span>';
 					          		}
 					          		if ($oi['special_instruction']) {
 					          			$obj = json_decode($oi['special_instruction'], true);
@@ -62,22 +67,28 @@
 							          					}
 							          				}
 							          			}
-						          				echo "</span><br>";
+						          				echo "</span>";
 					          				}
 					          				
 						          			if ($obj[$counter]['cus_ins']) {
-							          			echo "<span style='margin-left: 20px'># " . $obj[$counter]['cus_ins']. '</span><br/>';
+							          			echo "<br/><span style='margin-left: 20px'># " . $obj[$counter]['cus_ins']. '</span>';
 						          			}
 					          			}
 					          			//echo "<br>";
-					          			//echo "<br>";
+					          			echo "<br/>";
 					          		}
 					          		//echo $counter;
 					          		//echo $oi['hash'];
 					          	}
 				          	} else {
-				          		echo $oi['cnt'] . " x ";
-				          		echo strtoupper($oi['product_name'])." ".$oi['size']." ";
+
+				          		if ($oi['type'] == 'custom') {
+				          			echo $oi['cnt'] . " x ";
+				          			echo strtoupper($oi['custom_name']);
+				          		} else {
+				          			echo $oi['cnt'] . " x ";
+				          			echo strtoupper($oi['product_name'])." ".$oi['size']." ";
+				          		}
 				          		echo "<br>";
 				          	}
 				          	?>

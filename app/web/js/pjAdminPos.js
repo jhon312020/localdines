@@ -1324,6 +1324,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             },
             {
               type: "info",
+              text: " info",
               url: "#",
             },
             {
@@ -1358,6 +1359,12 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
               editable: false,
             },
             {
+              text: myLabel.order_date,
+              type: "text",
+              sortable: false,
+              editable: false,
+            },
+            {
               text: myLabel.paymentType,
               type: "text",
               sortable: false,
@@ -1380,7 +1387,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           ],
           dataUrl: "index.php?controller=pjAdminPosOrders&action=pjActionGetPosOrder" + queryString,
           dataType: "json",
-          fields: ["order_id", "total", "table_name", "payment_method", "status"],
+          fields: ["order_id", "total", "table_name", "order_date", "payment_method", "status"],
           paginator: {
             actions: [
               {

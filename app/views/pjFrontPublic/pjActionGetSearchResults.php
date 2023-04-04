@@ -11,6 +11,8 @@ if(isset($tpl['arr']) && !empty($tpl['arr']))
 		if(!empty($product['image']))
 		{
 			$image_path = PJ_INSTALL_URL . $product['image'];
+		} else {
+			$image_path = PJ_INSTALL_URL.'app/web/img/backend/no_image.png';
 		}
 		
 		?>
