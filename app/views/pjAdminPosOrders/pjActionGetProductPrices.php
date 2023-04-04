@@ -6,8 +6,10 @@ $index = "new_" . mt_rand(0, 999999);
     <!-- <?php //print_r($tpl['arr']); ?>  -->
     <td class="tdProductName">
         <input type="hidden" id="fdProduct_<?php echo $index; ?>" name="product_id[<?php echo $index; ?>]" value="<?php echo $tpl['product_arr'][0]['id']; ?>">
-        <?php echo $tpl['product_arr'][0]['name']; ?>
-        <i class="fa fa-info-circle product_desc" aria-hidden="true"></i>
+        <a href="#" class="product_desc" >
+          <?php echo $tpl['product_arr'][0]['name']; ?>
+          <i class="fa fa-info-circle" aria-hidden="true"></i>
+        </a>
         <div id="fdSpecialInstructionImgs_<?php echo $index;?>" data-name="<?php echo $tpl['product_arr'][0]['name']; ?>" class="special_instruction_imgs">
             <input type="hidden" data-imgs="" >
         </div>  

@@ -115,6 +115,7 @@ class pjAdmin extends pjAppController {
       'pjAdminPosOrders::pjActionViewSpecialInstructionTypes' => 'pjAdminPosOrders::pjActionCreate',
       'pjAdminPosOrders::pjActionCreateEatin' => 'pjAdminPosOrders::pjActionCreate',
       'pjAdminPosOrders::pjActionCreateTelephone' => 'pjAdminPosOrders::pjActionCreate',
+      'pjAdminPosOrders::pjActionAddCustomProduct' => 'pjAdminPosOrders::pjActionCreate',
       
 			// Default allowed actions for special instructions
 			'pjAdminSpecialInstructions::pjActionGetSpecialInstruction'  => 'pjAdminSpecialInstructions::pjActionIndex',

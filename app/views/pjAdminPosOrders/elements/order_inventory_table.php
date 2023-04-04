@@ -56,11 +56,15 @@
             if ($product['status'] == 1) {
           ?>
           <input type="hidden" data-index="<?php echo $oi['hash']; ?>" data-extra="<?php echo $product['cnt_extras']; ?>" id="fdProduct_<?php echo $oi['hash']; ?>" name="product_id[<?php echo $oi['hash']; ?>]" value="<?php echo $product['id']; ?>">
-          <a href="#" data-product-name="<?php echo stripslashes($product['name']); ?>" class="" data-index="<?php echo $oi['hash']; ?>">
-            <?php echo stripslashes($product['name']); ?>
-            <i class="fa fa-info-circle" aria-hidden="true"></i>
-          </a>
-          <?php } ?>
+          <?php if ($oi['type'] == 'product') { ?>
+            <a href="#" data-product-name="<?php echo stripslashes($product['name']); ?>" class="product_desc" data-index="<?php echo $oi['hash']; ?>">
+              <?php echo stripslashes($product['name']); ?>
+              <i class="fa fa-info-circle" aria-hidden="true"></i>
+            </a>
+          <?php } else { 
+              echo stripslashes($product['name']);
+            }
+          } ?>
         </td>                       
         <td>
           <div class="business-<?php echo $oi['hash']; ?>">

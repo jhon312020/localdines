@@ -48,7 +48,9 @@
   </div>
 </div>
 <div class="row cus-pb-2 cus-pt-2" style="background-color: white; border: 2px solid #337ab7; text-align: center;">
-  <div class="col-sm-5"></div>
+  <div class="col-sm-5">
+    <?php include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/payment_bottom_left_element.php'; ?>
+  </div>
   <div class="col-sm-7">
     <?php include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/payment_bottom_element.php'; ?>
   </div>

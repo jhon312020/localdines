@@ -9,19 +9,19 @@
         <form name="custom_product_form" id="CustomProductForm">
           <div class="form-group">
             <input type="hidden" class="form-control" name="product_id" value="" id="ProductID" readonly />
-            <label for="recipient-name" class="control-label">Name:</label>
-            <input type="text" class="form-control" name="name" value="" id="ProductName" readonly />
+            <label for="name" class="control-label">Name:</label>
+            <input type="text" class="form-control" name="name" value="" id="ProductName" />
           </div>
-          <div class="form-group">
+          <!-- <div class="form-group">
             <label for="message-text" class="control-label">Description:</label>
             <textarea class="form-control" id="message-text" name="description" required></textarea>
-          </div>
+          </div> -->
           <div class="form-group">
-            <label for="recipient-name" class="control-label">Quantity:</label>
+            <label for="quantity" class="control-label">Quantity:</label>
             <input type="number" class="form-control" name="quantity" value="" required/>
           </div>
           <div class="form-group">
-            <label for="recipient-name" class="control-label">Price:</label>
+            <label for="price" class="control-label">Price:</label>
             <div class="input-group">
               <input type="number" class="form-control" name="price" required value="">
               <span class="input-group-addon">£</span>

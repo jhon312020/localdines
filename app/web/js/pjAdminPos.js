@@ -3088,23 +3088,45 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             calPrice(0);
           } 
         }).on("click", ".jsAddCustomProduct", function (e) {
-          //let productName = $(this).data('product-name');
-          //let productIndex = $(this).data('index');
-          //let prodcutId = $('#fdProduct_'+productIndex).val()
-          $("#ProductName").val("custom");
+          //$("#CustomProductForm").trigger('reset');
+          //$("#ProductName").val("custom");
           $("#ProductID").val("custom");
           $("#customProductModal").modal("show");
         }).on("click", "#jsBtnAddCusProduct", function() {
-          //$("#products-sec").parent().addClass("ibox-content");
-          //$("#products-sec").parent().addClass("sk-loading");
-          let formData = $("#CustomProductForm").serialize();
-          $.post("index.php?controller=pjAdminPosOrders&action=pjActionAddCustomProduct", formData, 
-          ).done(function (data) { 
-            $("tbody.main-body").append(data);
-            $("#customProductModal").modal("hide");
-            calPrice(1);
-            //bindTouchSpin();
-          })
+          let addProductValidator = $("#CustomProductForm").validate({
+            rules: {
+             name: {
+               required: true,
+             },
+             quantity: {
+               required: true,
+             },
+             price: {
+              required: true,
+             }
+            },
+            messages: {
+              name: {
+                required: "This field is requried",
+              },
+              quantity: {
+                required: "This field is requried"
+              },
+              price: {
+                required: "This field is requried",
+             }
+            }
+          });
+          //addProductValidator.validate();
+          if ($("#CustomProductForm").valid()) {
+            let formData = $("#CustomProductForm").serialize();
+            $.post("index.php?controller=pjAdminPosOrders&action=pjActionAddCustomProduct", formData, 
+            ).done(function (data) { 
+              $("tbody.main-body").append(data);
+              $("#customProductModal").modal("hide");
+              calPrice(1);
+            })
+          } 
         })
         .on("click", ".jsBtnCancelReturn", function (e) {
           $("#cancelReturnModal").modal("show");
@@ -3121,7 +3143,12 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
       //   //   quantity_reduced = false;
       //   // }
       // });
-      
+      $("#customProductModal").on('hidden.bs.modal', function () {
+        //Removing the error elements from the from-group
+        $("#CustomProductForm").trigger('reset');
+        $("#CustomProductForm").validate().resetForm();
+        $('.form-group').removeClass('has-error');
+      });
       $('#catModal').on('show.bs.modal', function (event) {
           // Fix Animate.css
           $('#orderContainer').removeClass('animated fadeInRight');

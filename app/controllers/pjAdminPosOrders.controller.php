@@ -3339,7 +3339,7 @@ class pjAdminPosOrders extends pjAdmin {
         $product_arr['price'] = $post['price'];
         $product_arr['qty'] = $post['quantity'];
         $product_arr['total'] =  $post['price'] * $post['quantity'];
-        $product_arr['description'] =  'Custom - '.$post['description'];
+        $product_arr['description'] =  'Custom - '.$post['name'];
         //$this->pr($product_arr);
         $this->set('product_arr', $product_arr);
       }
