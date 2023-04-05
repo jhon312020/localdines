@@ -10,7 +10,7 @@
           <div class="form-group">
             <input type="hidden" class="form-control" name="product_id" value="" id="ProductID" readonly />
             <label for="name" class="control-label">Name:</label>
-            <input type="text" class="form-control" name="name" value="" id="ProductName" />
+            <input type="text" class="jsVK-normal form-control" name="name" id="ProductName" />
           </div>
           <!-- <div class="form-group">
             <label for="message-text" class="control-label">Description:</label>
@@ -18,12 +18,12 @@
           </div> -->
           <div class="form-group">
             <label for="quantity" class="control-label">Quantity:</label>
-            <input type="number" class="form-control" name="quantity" value="" required/>
+            <input type="text" class="jsVK-price form-control" name="quantity" value="" required/>
           </div>
           <div class="form-group">
             <label for="price" class="control-label">Price:</label>
             <div class="input-group">
-              <input type="number" class="form-control" name="price" required value="">
+              <input type="text" class="jsVK-price form-control" name="price" required value="">
               <span class="input-group-addon">£</span>
             </div>
           </div>

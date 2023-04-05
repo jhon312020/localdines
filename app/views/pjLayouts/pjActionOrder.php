@@ -14,7 +14,8 @@
       $cnt = count($controller->getCss());
       foreach ($controller->getCss() as $i => $css)
       {
-        echo '<link rel="stylesheet" href="'.(isset($css['remote']) && $css['remote'] ? NULL : PJ_INSTALL_URL).$css['path'].$css['file'].'">';
+        $version =  mt_rand(0, 999999);
+        echo '<link rel="stylesheet" href="'.(isset($css['remote']) && $css['remote'] ? NULL : PJ_INSTALL_URL).$css['path'].$css['file'].'?version='.$version.'">';
         echo "\n";
         if ($i < $cnt - 1)
         {
@@ -90,13 +91,14 @@
       $cnt = count($controller->getJs());
       foreach ($controller->getJs() as $i => $js)
       {
-        echo '<script src="'.(isset($js['remote']) && $js['remote'] ? NULL : PJ_INSTALL_URL).$js['path'].$js['file'].'"></script>';
+        $version =  mt_rand(0, 999999); 
+        echo '<script src="'.(isset($js['remote']) && $js['remote'] ? NULL : PJ_INSTALL_URL).$js['path'].$js['file'].'?version='.$version.'"></script>';
         echo "\n";
         if ($i < $cnt - 1)
         {
           echo "\t";
         }
       }
-      ?>
+    ?>
   </body>
 </html>

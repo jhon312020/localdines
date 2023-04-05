@@ -56,17 +56,19 @@
     <?php } ?>
   </div>
 </div>
-<div class="row cus-pb-2 cus-pt-2" style="background-color: white; border: 2px solid #46b8da"> 
-  <div class="col-sm-5"></div>
+<div class="row cus-pb-2 cus-pt-2 bottom_row"> 
+  <div class="col-sm-5">
+    <?php include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/payment_bottom_left_element.php'; ?>
+  </div>
   <div class="col-sm-7">
     <?php
-  if (strtolower($tpl['arr']['origin']) == "telephone" || (strtolower($tpl['arr']['origin']) == "web" )) {  
-    if ($tpl['arr']['status'] == PENDING_STATUS) { 
+    if (strtolower($tpl['arr']['origin']) == "telephone" || (strtolower($tpl['arr']['origin']) == "web" )) {  
+      if ($tpl['arr']['status'] == PENDING_STATUS) { 
+        include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/payment_bottom_element.php';
+      }
+    } elseif ($tpl['arr']['origin'] == "Pos") {
       include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/payment_bottom_element.php';
-    }
-  } elseif ($tpl['arr']['origin'] == "Pos") {
-    include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/payment_bottom_element.php';
-  } ?>
+    } ?>
   </div>
 </div>
 

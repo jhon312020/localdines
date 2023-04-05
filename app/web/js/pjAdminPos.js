@@ -3095,7 +3095,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
         }).on("click", "#jsBtnAddCusProduct", function() {
           let addProductValidator = $("#CustomProductForm").validate({
             rules: {
-             name: {
+             description: {
                required: true,
              },
              quantity: {
@@ -3143,7 +3143,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
       //   //   quantity_reduced = false;
       //   // }
       // });
-      $("#customProductModal").on('hidden.bs.modal', function () {
+      $("#customProductModal").on('show.bs.modal', function () {
         //Removing the error elements from the from-group
         $("#CustomProductForm").trigger('reset');
         $("#CustomProductForm").validate().resetForm();
