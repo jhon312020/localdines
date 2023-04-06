@@ -144,7 +144,7 @@ class pjAdminPosOrders extends pjAdmin {
     $this->appendJs('VirtualKeyboard/jquery.keyboard.js');
     $this->appendCss('VirtualKeyboard/keyboard.css');
     $this->appendCss('VirtualKeyboard/custom_ui/jquery-ui.min.css');
-    $this->appendJs('VirtualKeyboard/custom_ui/jquery-ui-custom.min.js');;
+    $this->appendJs('VirtualKeyboard/custom_ui/jquery-ui-custom.min.js');
   }
 
   public function pjActionCreateTelephone() {

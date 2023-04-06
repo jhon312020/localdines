@@ -10,7 +10,7 @@
           <div class="form-group">
             <input type="hidden" class="form-control" name="product_id" value="" id="ProductID" readonly />
             <label for="name" class="control-label">Name:</label>
-            <input type="text" class="jsVK-normal form-control" name="name" id="ProductName" />
+            <input type="text" class="jsVK-normal form-control" name="name" id="ProductName" required />
           </div>
           <!-- <div class="form-group">
             <label for="message-text" class="control-label">Description:</label>

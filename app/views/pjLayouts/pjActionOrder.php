@@ -89,13 +89,16 @@
     </div>
     <?php 
       $cnt = count($controller->getJs());
-      foreach ($controller->getJs() as $i => $js)
-      {
-        $version =  mt_rand(0, 999999); 
-        echo '<script src="'.(isset($js['remote']) && $js['remote'] ? NULL : PJ_INSTALL_URL).$js['path'].$js['file'].'?version='.$version.'"></script>';
+      foreach ($controller->getJs() as $i => $js) {
+        //echo '<pre>';print_r($js); echo '</pre>';
+        if ($js['remote']) {
+          echo '<script src="'.(isset($js['remote']) && $js['remote'] ? NULL : PJ_INSTALL_URL).$js['path'].$js['file'].'"></script>';
+        } else {
+          $version =  mt_rand(0, 999999); 
+          echo '<script src="'.(isset($js['remote']) && $js['remote'] ? NULL : PJ_INSTALL_URL).$js['path'].$js['file'].'?version='.$version.'"></script>';
+        }
         echo "\n";
-        if ($i < $cnt - 1)
-        {
+        if ($i < $cnt - 1) {
           echo "\t";
         }
       }

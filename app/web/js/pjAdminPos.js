@@ -3095,9 +3095,12 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
         }).on("click", "#jsBtnAddCusProduct", function() {
           let addProductValidator = $("#CustomProductForm").validate({
             rules: {
-             description: {
+             name: {
                required: true,
-             },
+             }, 
+             product_name: {
+               required: true,
+             }, 
              quantity: {
                required: true,
              },
@@ -3109,6 +3112,10 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
               name: {
                 required: "This field is requried",
               },
+              product_name: {
+                required: "This field is requried",
+              },
+
               quantity: {
                 required: "This field is requried"
               },
@@ -3130,6 +3137,36 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
         })
         .on("click", ".jsBtnCancelReturn", function (e) {
           $("#cancelReturnModal").modal("show");
+        }).on("click", "#jsBtnCancelOrReturnProduct", function() {
+          let cancelReturnProductValidator = $("#ProductCancelReturnForm").validate({
+            rules: {
+             reason: {
+              required: true,
+             }
+            },
+            messages: {
+              reason: {
+                required: "This field is requried",
+             }
+            }
+          });
+          //addProductValidator.validate();
+          if ($("#ProductCancelReturnForm").valid()) {
+            let formData = $("#ProductCancelReturnForm").serialize();
+            console.log(formData);
+            return;
+            $.post("index.php?controller=pjAdminPosOrders&action=pjActionAddCustomProduct", formData, 
+            ).done(function (data) { 
+              $("tbody.main-body").append(data);
+              $("#customProductModal").modal("hide");
+              calPrice(1);
+            })
+          } 
+        })
+        .on("click", ".jsProductMethodBtn", function (e) {
+          $('.jsProductMethodBtn').removeClass('selected');
+          $(this).addClass('selected');
+          $('#Return').val($(this).text());
         })
         ;
       $cols = $("table");//.on("click", function(){
