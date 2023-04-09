@@ -146,8 +146,10 @@
             <!-- <span class="" id="productDelete_<?php //echo $oi['hash']; ?>">
               <a href="#" class="btn btn-danger btn-outline btn-sm btn-delete pj-remove-product"><i class="fa fa-trash"></i></a>
             </span> -->
+            <input type="hidden" data-index="<?php echo $oi['hash']; ?>"  id="fdProdRetOrCancel_<?php echo $oi['hash']; ?>" name="return_or_cancel[<?php echo $oi['hash']; ?>]" value="">
+            <input type="hidden" data-index="<?php echo $oi['hash']; ?>"  id="fdProdRetOrCancelReason_<?php echo $oi['hash']; ?>" name="return_or_cancel[<?php echo $oi['hash']; ?>]" value="">
             <span class="" id="productReturn_<?php echo $oi['hash']; ?>">
-              <a href="#" class="btn btn-danger btn-outline btn-sm jsBtnCancelReturn pj-return-product"> <i class="fa fa-strikethrough"></i></i></a>
+              <a href="#" class="btn btn-danger btn-outline btn-sm jsBtnCancelReturn pj-return-product" data-index="<?php echo $oi['hash']; ?>"> <i class="fa fa-strikethrough"></i></a>
             </span>
           </div>
         </td>

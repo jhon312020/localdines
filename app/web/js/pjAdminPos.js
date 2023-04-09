@@ -3136,6 +3136,8 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           } 
         })
         .on("click", ".jsBtnCancelReturn", function (e) {
+          var rowID = $(this).attr("data-index");
+          $("#CancelReturnID").val(rowID);
           $("#cancelReturnModal").modal("show");
         }).on("click", "#jsBtnCancelOrReturnProduct", function() {
           let cancelReturnProductValidator = $("#ProductCancelReturnForm").validate({
@@ -3151,22 +3153,25 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             }
           });
           //addProductValidator.validate();
+
           if ($("#ProductCancelReturnForm").valid()) {
             let formData = $("#ProductCancelReturnForm").serialize();
-            console.log(formData);
+            var rowID = $("#CancelReturnID").val();
+            var cancelID = "#fdProdRetOrCancel_"+rowID;
+            var cancelReturnReason = "#fdProdRetOrCancelReason_"+rowID;
+            var strikeThroughRow = '#productReturn_'+rowID;
+            $(cancelID).val($('#CancelOrReturn').val());
+            $(cancelReturnReason).val($('#CancelOrReturnReason').val());
+            $(strikeThroughRow).parent().parent().parent().addClass('strikethrough');
+            $("#cancelReturnModal").modal("hide");
             return;
-            $.post("index.php?controller=pjAdminPosOrders&action=pjActionAddCustomProduct", formData, 
-            ).done(function (data) { 
-              $("tbody.main-body").append(data);
-              $("#customProductModal").modal("hide");
-              calPrice(1);
-            })
+           
           } 
         })
         .on("click", ".jsProductMethodBtn", function (e) {
           $('.jsProductMethodBtn').removeClass('selected');
           $(this).addClass('selected');
-          $('#Return').val($(this).text());
+          $('#CancelOrReturn').val($(this).text());
         })
         ;
       $cols = $("table");//.on("click", function(){

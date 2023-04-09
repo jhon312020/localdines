@@ -7,7 +7,8 @@
       </div>
       <div class="modal-body" id="modalBody">
         <form name="ProductCancelReturnForm" id="ProductCancelReturnForm">
-          <input type="hidden" class="form-control" name="return" value="Cancel" id="Return" readonly required />
+          <input type="hidden" class="form-control" name="return" value="Cancel" id="CancelOrReturn" readonly required />
+          <input type="hidden" class="form-control" name="row_id" value="" id="CancelReturnID" readonly  />
           <div class="form-group">
             <label for="product" class="control-label">Type:</label>
             <span class="btn_container">
@@ -17,7 +18,7 @@
           </div>
           <div class="form-group">
             <label for="reason" class="control-label">Reason:</label>
-            <textarea class="form-control" id="message-text" name="reason" required></textarea>
+            <textarea class="form-control" id="CancelOrReturnReason" name="reason" required></textarea>
           </div>
         </form>
       </div>

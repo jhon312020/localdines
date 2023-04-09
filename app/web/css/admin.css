@@ -927,11 +927,11 @@ td .btn-secondary:hover {
 #tableModal .form-group {
   margin-top: 15px;
 }
-.strikethrough {
+/*.strikethrough {
     background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIW2NkYGCQBAAAIwAbDJgTxgAAAABJRU5ErkJggg==');
     background-repeat: repeat-x;
     background-position: 50% 50%;
-}
+}*/
 .bottom_row {
   background-color: white; 
   border: 2px solid #46b8da;
@@ -940,3 +940,13 @@ td .btn-secondary:hover {
 /*.strikethrough {
   text-decoration: line-through;
 }*/
+.strikethrough {
+  background: repeating-linear-gradient(
+    180deg,
+    red 0%,
+    red 100%
+  );
+  background-size: 100% 2px;
+  background-position: center;
+  background-repeat: no-repeat;
+}
