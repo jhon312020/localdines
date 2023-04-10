@@ -3168,23 +3168,73 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             var curValue = parseInt($('#cancelReturnQty').val());
             var maxValue = parseInt($('#cancelReturnQty').attr('max'));
             if (curValue < maxValue) {
-              var newRowObj = $(strikeThroughRow).parent().parent().parent().clone();
+              var curRowObj = $(strikeThroughRow).parent().parent().parent();
+              var productPriceID = '#fdPrice_'+rowID;
+              var productCurPriceObj = curRowObj.find(productPriceID);
+              var pricePerQty = parseFloat(productCurPriceObj.val());
+
+              var productQtyID = '#fdProductQty_'+rowID;
+              var productCurQtyObj = curRowObj.find(productQtyID);
+              var curPrdQty = (maxValue - curValue);
+              productCurQtyObj.val(curPrdQty);
+              productCurQtyObj.next("span").text(curPrdQty);
+
+              var productPriceID = '#fdTotalPrice_'+rowID;
+              var productCurPriceObj = curRowObj.find(productPriceID);
+              var totalPrice = pricePerQty * curPrdQty;
+              productCurPriceObj.text(totalPrice);
+              
+
+              
+
+              //var newRowObj = $(strikeThroughRow).parent().parent().parent().clone();
+              var newRowObj = curRowObj.clone();
               // $(newRowObj).find('td').each(function(column, td) {
                 
               // }); 
+              newRowObj.addClass('strikethrough');
+              var concatName = 'CanOrReturn_';
               var productID = '#fdProduct_'+rowID;
               var productObj = newRowObj.find(productID);
               console.log(productObj.attr('name'));
-              var productName = 'CanOrReturn_'+productObj.attr('name');
-              console.log(productName);
-              newRowObj.find(productID).attr('name', productName);
+              var productName = concatName+productObj.attr('name');
+              //newRowObj.find(productID).attr('name', productName);
+              productObj.attr('name', productName);
+              //var productQtyID = '#fdProductQty_'+rowID;
+              var productQtyObj = newRowObj.find(productQtyID);
+              var productQtyName = concatName+productQtyObj.attr('name');
+              productQtyObj.attr('name', productQtyName);
+              productQtyObj.val(curValue);
+              productQtyObj.next("span").text(curValue);
+
+
+              var productInfoID = '#prdInfo_'+rowID;
+              var productInfoObj = newRowObj.find(productInfoID);
+              var productInfoName = concatName+productInfoObj.attr('name');
+              productInfoObj.attr('name', productInfoName);
+              var productInfoNewID = concatName+productInfoObj.attr('id');
+              productQtyObj.attr('id', productInfoNewID);
+
+              //var productPriceID = '#fdPrice_'+rowID;
+              var productPriceObj = newRowObj.find(productPriceID);
+              var productPriceName = concatName+productPriceObj.attr('name');
+              productPriceObj.attr('name', productPriceName);
+              var productPriceNewID = concatName+productPriceObj.attr('id');
+              productQtyObj.attr('id', productPriceNewID);
+              //var pricePerQty = parseFloat(productQtyObj.val());
+              //var productPriceID = '#fdTotalPrice_'+rowID;
+              var productPriceObj = newRowObj.find(productPriceID);
+              var productPriceNewID = concatName+productPriceObj.attr('id');
+              productQtyObj.attr('id', productPriceNewID);
+              var totalPrice = pricePerQty * curValue;
+              productPriceObj.text(totalPrice);
               console.log('id');
-              $('#fdOrderList_1').find('tr:last').prev().after(newRowObj);
+              $('#fdOrderList_1').find('tr:last').after(newRowObj);
               console.log(newRowObj);
             } else {
               $(strikeThroughRow).parent().parent().parent().addClass('strikethrough');
             }
-            //calPrice(1);
+            calPrice(1);
             
             $("#cancelReturnModal").modal("hide");
             return;
