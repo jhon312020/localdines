@@ -30,16 +30,25 @@
 			  // echo "<pre>"; print_r($tpl['special_instructions']); echo "</pre>";
 			  //foreach ($tpl['product_arr'] as $product) {
 			    foreach ($tpl['oi_arr'] as $k => $oi) {
+			    	$strikeThroughStart = '';
+			  		$strikeThroughEnd = '';
 			        $i = $i + 1;
 			        if ($i == 1) {
 			?>
 				        <tr class="rowHead">
 				      		<td><hr/></td>
 					      </tr>
-				      	<?php } ?>
+					      <?php }
+					      	if (in_array($oi['status'], RETURN_TYPES))  { 
+					      		$strikeThroughStart = '<s>';
+					      		$strikeThroughEnd = '</s>';
+				         	}
+				         ?>
+			
 				       	<tr>
 				          <td class="kitchen" style="font-size: 18pt;">
 				          	<?php
+				          	echo $strikeThroughStart;
 				          	if ($oi['special_instruction'] || array_key_exists($oi['hash'], $tpl['oi_extras'])) {
 					          	for ($i = 0, $counter = 0; $i < $oi['cnt'] ; $i++, $counter++) {
 
@@ -91,6 +100,7 @@
 				          		}
 				          		echo "<br>";
 				          	}
+				          	echo $strikeThroughEnd;
 				          	?>
 				          </td>
 				        </tr>

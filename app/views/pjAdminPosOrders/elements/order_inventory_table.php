@@ -46,8 +46,14 @@
             );
           }
          //print_r($product);
+          $rowClass = "fdLine jsKprintDone ";
+          if (in_array($oi['status'], RETURN_TYPES))  { 
+            $rowClass .= "strikethrough";
+          }
+
     ?>
-      <tr class="fdLine jsKprintDone" data-index="<?php echo $oi['hash']; ?>" data-preptime = "<?php echo $product['preparation_time']; ?>" >
+
+      <tr class="<?php echo $rowClass; ?>" data-index="<?php echo $oi['hash']; ?>" data-preptime = "<?php echo $product['preparation_time']; ?>" >
         <td class="tdProductName">
           <?php
             if ($product['cnt_extras'] > 0) {
@@ -142,16 +148,21 @@
           <input type="hidden" id="fdCustomSpecialInstruction_<?php echo $oi['hash']; ?>" name="custom_special_instruction[<?php echo $oi['hash']; ?>]" class="form-control custom-special-instruction" value='<?php echo $oi['custom_special_instruction']; ?>' />
         </td>
         <td>
+           <?php if (!in_array($oi['status'], RETURN_TYPES))  { ?>
           <div>
             <!-- <span class="" id="productDelete_<?php //echo $oi['hash']; ?>">
               <a href="#" class="btn btn-danger btn-outline btn-sm btn-delete pj-remove-product"><i class="fa fa-trash"></i></a>
             </span> -->
+
             <input type="hidden" data-index="<?php echo $oi['hash']; ?>"  id="fdProdRetOrCancel_<?php echo $oi['hash']; ?>" name="return_or_cancel[<?php echo $oi['hash']; ?>]" value="">
-            <input type="hidden" data-index="<?php echo $oi['hash']; ?>"  id="fdProdRetOrCancelReason_<?php echo $oi['hash']; ?>" name="return_or_cancel[<?php echo $oi['hash']; ?>]" value="">
+            <input type="hidden" data-index="<?php echo $oi['hash']; ?>"  id="fdProdRetOrCancelReason_<?php echo $oi['hash']; ?>" name="return_or_cancel_reason[<?php echo $oi['hash']; ?>]" value="">
             <span class="" id="productReturn_<?php echo $oi['hash']; ?>">
               <a href="#" class="btn btn-danger btn-outline btn-sm jsBtnCancelReturn pj-return-product" data-index="<?php echo $oi['hash']; ?>"> <i class="fa fa-strikethrough"></i></a>
             </span>
           </div>
+        <?php } else { ?>
+          <input type="hidden" data-index="<?php echo $oi['hash']; ?>"  id="fdProdRetOrCancel_<?php echo $oi['hash']; ?>" name="return_or_cancel[<?php echo $oi['hash']; ?>]" value="<?php echo $oi['status']; ?>">
+        <?php } ?>
         </td>
       </tr>
         <?php

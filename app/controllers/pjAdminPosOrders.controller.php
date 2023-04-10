@@ -793,14 +793,23 @@ class pjAdminPosOrders extends pjAdmin {
         ->getData();
       $extra_arr = $pjExtraModel->findAll()->getData();
       $cnt_arr = $this->_post->toArray('cnt');
-      //$this->pr($product_id_arr);
-      //$this->pr($post);
+      // $this->pr($product_id_arr);
+      // $this->pr($post);
+      $returnOrCancelProducts = array();
+      if (array_key_exists('return_or_cancel', $post)) {
+        $returnOrCancelProducts = array_filter($post['return_or_cancel']);
+      }
+      
+      // $this->pr($returnOrCancelProducts);
       foreach ($product_id_arr as $hash => $product_id) {
         $_price = 0;
           $extra_price = 0;
         if ($product_id == 0) {
           $_price = $post['price_id'][$hash];
           $price += $_price * $cnt_arr[$hash];
+        }
+        if (is_array($returnOrCancelProducts) && array_key_exists($hash, $returnOrCancelProducts)) {
+          continue;
         }
         foreach ($product_arr as $product) {
           $_price = 0;
@@ -3086,7 +3095,7 @@ class pjAdminPosOrders extends pjAdmin {
       $arr = $pjOrderModel->find($id)->getData();
       // echo '<pre>'; print_r($post); echo '</pre>';
       // exit;
-      //$this->pr_die($post);
+      // $this->pr_die($post);
       if (empty($arr)) {
         pjUtil::redirect($_SERVER['PHP_SELF'] . "?controller=pjAdminPosOrders&action=pjActionIndex&err=AR08");
       }

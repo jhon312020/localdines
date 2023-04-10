@@ -3138,6 +3138,10 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
         .on("click", ".jsBtnCancelReturn", function (e) {
           var rowID = $(this).attr("data-index");
           $("#CancelReturnID").val(rowID);
+          var curQtyID ='#fdProductQty_'+rowID;
+          var curQty = $(curQtyID).val()
+          $("#cancelReturnQty").val(curQty);
+          $("#cancelReturnQty").attr('max',curQty);
           $("#cancelReturnModal").modal("show");
         }).on("click", "#jsBtnCancelOrReturnProduct", function() {
           let cancelReturnProductValidator = $("#ProductCancelReturnForm").validate({
@@ -3155,23 +3159,63 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           //addProductValidator.validate();
 
           if ($("#ProductCancelReturnForm").valid()) {
-            let formData = $("#ProductCancelReturnForm").serialize();
             var rowID = $("#CancelReturnID").val();
             var cancelID = "#fdProdRetOrCancel_"+rowID;
             var cancelReturnReason = "#fdProdRetOrCancelReason_"+rowID;
             var strikeThroughRow = '#productReturn_'+rowID;
             $(cancelID).val($('#CancelOrReturn').val());
             $(cancelReturnReason).val($('#CancelOrReturnReason').val());
-            $(strikeThroughRow).parent().parent().parent().addClass('strikethrough');
+            var curValue = parseInt($('#cancelReturnQty').val());
+            var maxValue = parseInt($('#cancelReturnQty').attr('max'));
+            if (curValue < maxValue) {
+              var newRowObj = $(strikeThroughRow).parent().parent().parent().clone();
+              // $(newRowObj).find('td').each(function(column, td) {
+                
+              // }); 
+              var productID = '#fdProduct_'+rowID;
+              var productObj = newRowObj.find(productID);
+              console.log(productObj.attr('name'));
+              var productName = 'CanOrReturn_'+productObj.attr('name');
+              console.log(productName);
+              newRowObj.find(productID).attr('name', productName);
+              console.log('id');
+              $('#fdOrderList_1').find('tr:last').prev().after(newRowObj);
+              console.log(newRowObj);
+            } else {
+              $(strikeThroughRow).parent().parent().parent().addClass('strikethrough');
+            }
+            //calPrice(1);
+            
             $("#cancelReturnModal").modal("hide");
             return;
            
           } 
         })
+        .on("click", ".jsIncreaseCanRetQty", function (e) {
+          var curValue = parseInt($('#cancelReturnQty').val());
+          var maxValue = parseInt($('#cancelReturnQty').attr('max'));
+          var newValue = curValue + 1;
+          if (newValue <= maxValue) {
+            $('#cancelReturnQty').val(newValue);
+          }
+        }).on("click", ".jsDecreaseCanRetQty", function (e) {
+          var curValue = parseInt($('#cancelReturnQty').val());
+          var minValue = 1;
+          var newValue = curValue - 1;
+          if (newValue >= minValue) {
+            $('#cancelReturnQty').val(newValue);
+          }
+        })
         .on("click", ".jsProductMethodBtn", function (e) {
           $('.jsProductMethodBtn').removeClass('selected');
           $(this).addClass('selected');
-          $('#CancelOrReturn').val($(this).text());
+          var cancelOrReturnVal = $(this).text();
+          $('#CancelOrReturn').val(cancelOrReturnVal);
+          if (cancelOrReturnVal == 'Return') {
+            $('#CancelOrReturnReason').val('Return');
+          } else {
+            $('#CancelOrReturnReason').val('Cancel');
+          }
         })
         ;
       $cols = $("table");//.on("click", function(){

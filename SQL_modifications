@@ -27,6 +27,8 @@ ALTER TABLE `food_delivery_orders_items` ADD `status` ENUM('cancel','return') NU
 
 ALTER TABLE `food_delivery_orders_items` ADD `custom_name` VARCHAR(100) NULL DEFAULT NULL AFTER `hash`;
 
+ALTER TABLE `food_delivery_orders_items` ADD `cancel_or_return_reason` TEXT NULL DEFAULT NULL AFTER `status`;
+
 if (!defined("PRODUCT_TYPES")) define("PRODUCT_TYPES", array('custom', 'product'));
 
 

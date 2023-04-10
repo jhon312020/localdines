@@ -17,8 +17,16 @@
             </span>
           </div>
           <div class="form-group">
+            <label for="return_qty" class="control-label">Quantity:</label>
+            <div class="input-group">
+              <div class="input-group-addon jsIncreaseCanRetQty" style="width:15%"><i class="fa fa-plus fa-2x" aria-hidden="true"></i></div>
+              <input min=1 type="text" class="form-control input-lg" name="return_qty" value="" id="cancelReturnQty" readonly  />
+              <div class="input-group-addon jsDecreaseCanRetQty" style="width:15%"><i class="fa fa-minus fa-2x" aria-hidden="true"></i></div>
+            </div>
+          </div>
+          <div class="form-group">
             <label for="reason" class="control-label">Reason:</label>
-            <textarea class="form-control" id="CancelOrReturnReason" name="reason" required></textarea>
+            <textarea class="form-control" id="CancelOrReturnReason" name="reason" required>Cancel</textarea>
           </div>
         </form>
       </div>

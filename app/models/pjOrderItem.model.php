@@ -21,6 +21,7 @@ class pjOrderItemModel extends pjAppModel
 		array('name' => 'price_id', 'type' => 'int', 'default' => ':NULL'),
 		array('name' => 'price', 'type' => 'decimal', 'default' => ':NULL'),
 		array('name' => 'status', 'type' => 'enum', 'default' => ':NULL'),
+		array('name' => 'cancel_or_return_reason', 'type' => 'text', 'default' => ':NULL'),
 		array('name' => 'cnt', 'type' => 'int', 'default' => ':NULL'),
 		array('name' => 'special_instruction', 'type' => 'varchar', 'default' => ':NULL'),
 		array('name' => 'custom_special_instruction', 'type' => 'text', 'default' => ':NULL'),

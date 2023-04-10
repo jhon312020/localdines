@@ -407,6 +407,9 @@ class pjAdmin extends pjAppController {
       $pjExtraModel = pjExtraModel::factory();
       $category_arr = $this->getCategoryList();
       $category_order = array_column($category_arr, 'order', 'id');
+      $returnOrCancelProducts = array_filter($post['return_or_cancel']);
+      $returnOrCancelReasons = array_filter($post['return_or_cancel_reason']);
+      //$this->pr_die($returnOrCancelProducts);
       foreach ($post['product_id'] as $k => $pid) {
       	$type = "product";
       	$product = array();
@@ -471,6 +474,17 @@ class pjAdmin extends pjAppController {
             }
           }
         }
+      }
+      if (count($returnOrCancelReasons)) {
+      	foreach ($returnOrCancelReasons as $key => $reason) {
+      		$pjOrder = pjOrderItemModel::factory();
+      		$cancelOrReturnReason = $reason;
+      		$productStatus = strtolower($post['return_or_cancel'][$key]);
+      		$rows = $pjOrder->where('hash', $key)->where('order_id', $order_id)->modifyAll(array('status' => $productStatus, 'cancel_or_return_reason'=>$cancelOrReturnReason))->getAffectedRows();
+      		if ($rows) {
+      			$pjOrder->where('order_id', $order_id)->modifyAll(array('print' => 0))->getAffectedRows();
+      		}
+      	}
       }
     }
     //exit;

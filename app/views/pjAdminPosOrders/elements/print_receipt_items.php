@@ -2,15 +2,24 @@
   $i = 0;
   foreach ($tpl['oi_arr'] as $k => $oi) {
     //if ($oi['type'] == 'product') {
+    $strikeThroughStart = '';
+            $strikeThroughEnd = '';
+    if (in_array($oi['status'], RETURN_TYPES))  { 
+      $strikeThroughStart = '<s>';
+      $strikeThroughEnd = '</s>';
+    }
     if (in_array($oi['type'], PRODUCT_TYPES))  {
       $has_extra = false;
       $i = $i + 1; 
       $counter = 0;
       $product_count = $oi['cnt'];
 ?>
+
   <tr>
-    <td class="kitchen"><strong>
+    <td class="kitchen">
+
     <?php
+    echo $strikeThroughStart;
       if ($oi['type'] == 'custom') {
         echo '<strong>'.$oi['cnt']. ' x '; ?> <?php echo $oi['custom_name'].'</strong>'; 
       } else {
@@ -27,10 +36,13 @@
           $counter++;
         }
       }
+      echo $strikeThroughEnd;
     ?>
+
    </td>
    <td class="nani" style="padding: 5px 5px; float: right; margin-right: 10px">
     <?php 
+      echo $strikeThroughStart;
       echo pjCurrency::formatPrice($oi['cnt'] * $oi['price']); 
       if (array_key_exists($oi['hash'], $tpl['oi_extras']) ) { 
         $counter =0;
@@ -40,6 +52,7 @@
           $counter++;
         }
       }
+      echo $strikeThroughEnd;
    ?>
    </td>
   </tr>
