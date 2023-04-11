@@ -20,7 +20,7 @@
             <label for="return_qty" class="control-label">Quantity:</label>
             <div class="input-group">
               <div class="input-group-addon jsIncreaseCanRetQty" style="width:15%"><i class="fa fa-plus fa-2x" aria-hidden="true"></i></div>
-              <input min=1 type="text" class="form-control input-lg" name="return_qty" value="" id="cancelReturnQty" readonly  />
+              <input min=1 type="text" class="form-control input-lg" name="return_qty" value="" id="cancelReturnQty" readonly />
               <div class="input-group-addon jsDecreaseCanRetQty" style="width:15%"><i class="fa fa-minus fa-2x" aria-hidden="true"></i></div>
             </div>
           </div>

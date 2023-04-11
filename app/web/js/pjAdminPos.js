@@ -3138,10 +3138,19 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
         .on("click", ".jsBtnCancelReturn", function (e) {
           var rowID = $(this).attr("data-index");
           $("#CancelReturnID").val(rowID);
-          var curQtyID ='#fdProductQty_'+rowID;
+          var curQtyID = '#fdProductQty_'+rowID;
+          var curExtraID = '#extra-'+rowID;
           var curQty = $(curQtyID).val()
           $("#cancelReturnQty").val(curQty);
           $("#cancelReturnQty").attr('max',curQty);
+          var hasExtra = $(curExtraID).length;
+          if (hasExtra) {
+            $('.jsIncreaseCanRetQty').hide();
+            $('.jsDecreaseCanRetQty').hide();
+          } else {
+            $('.jsIncreaseCanRetQty').show();
+            $('.jsDecreaseCanRetQty').show();
+          }
           $("#cancelReturnModal").modal("show");
         }).on("click", "#jsBtnCancelOrReturnProduct", function() {
           let cancelReturnProductValidator = $("#ProductCancelReturnForm").validate({
@@ -3160,15 +3169,18 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
 
           if ($("#ProductCancelReturnForm").valid()) {
             var rowID = $("#CancelReturnID").val();
+            var newRowID = rowID + '_RC';
             var cancelID = "#fdProdRetOrCancel_"+rowID;
-            var cancelReturnReason = "#fdProdRetOrCancelReason_"+rowID;
+            var cancelReturnReasonID = "#fdProdRetOrCancelReason_"+rowID;
             var strikeThroughRow = '#productReturn_'+rowID;
-            $(cancelID).val($('#CancelOrReturn').val());
-            $(cancelReturnReason).val($('#CancelOrReturnReason').val());
+            //$(cancelID).val($('#CancelOrReturn').val());
+            //$(cancelReturnReasonID).val($('#CancelOrReturnReason').val());
             var curValue = parseInt($('#cancelReturnQty').val());
             var maxValue = parseInt($('#cancelReturnQty').attr('max'));
+            var curRowObj = $(strikeThroughRow).parent().parent().parent();
+            var productReturnID = '#productReturn_'+rowID;
+            var btnCanOrRetObj = curRowObj.find(productReturnID).children('a');
             if (curValue < maxValue) {
-              var curRowObj = $(strikeThroughRow).parent().parent().parent();
               var productPriceID = '#fdPrice_'+rowID;
               var productCurPriceObj = curRowObj.find(productPriceID);
               var pricePerQty = parseFloat(productCurPriceObj.val());
@@ -3179,67 +3191,123 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
               productCurQtyObj.val(curPrdQty);
               productCurQtyObj.next("span").text(curPrdQty);
 
-              var productPriceID = '#fdTotalPrice_'+rowID;
+              var productTotalPriceID = '#fdTotalPrice_'+rowID;
               var productCurPriceObj = curRowObj.find(productPriceID);
               var totalPrice = pricePerQty * curPrdQty;
               productCurPriceObj.text(totalPrice);
-              
-
-              
 
               //var newRowObj = $(strikeThroughRow).parent().parent().parent().clone();
               var newRowObj = curRowObj.clone();
+              btnCanOrRetObj.attr('disabled', true);
+              btnCanOrRetObj.removeClass('jsBtnCancelReturn btn-outline');
               // $(newRowObj).find('td').each(function(column, td) {
                 
               // }); 
               newRowObj.addClass('strikethrough');
+              newRowObj.attr('data-index', newRowID);
               var concatName = 'CanOrReturn_';
               var productID = '#fdProduct_'+rowID;
-              var productObj = newRowObj.find(productID);
-              console.log(productObj.attr('name'));
-              var productName = concatName+productObj.attr('name');
+              var productNewObj = newRowObj.find(productID);
+              console.log(productNewObj.attr('name'));
+
+              var productNewName = 'product_id['+newRowID+']'; ;
               //newRowObj.find(productID).attr('name', productName);
-              productObj.attr('name', productName);
-              //var productQtyID = '#fdProductQty_'+rowID;
-              var productQtyObj = newRowObj.find(productQtyID);
-              var productQtyName = concatName+productQtyObj.attr('name');
-              productQtyObj.attr('name', productQtyName);
-              productQtyObj.val(curValue);
-              productQtyObj.next("span").text(curValue);
+              productNewObj.attr('name', productNewName);
+              productNewObj.attr('id', 'fdProduct_'+newRowID);
+              productNewObj.attr('data-index', newRowID);
+
+
+              var productNewQtyID = 'fdProductQty_'+newRowID;
+              var productNewQtyObj = newRowObj.find(productQtyID);
+              var productNewQtyName = 'cnt['+newRowID+']';
+              productNewQtyObj.attr('name', productNewQtyName);
+              productNewQtyObj.attr('id', productNewQtyID);
+              productNewQtyObj.attr('data-index', newRowID);
+              productNewQtyObj.val(curValue);
+              productNewQtyObj.next("span").text(curValue);
 
 
               var productInfoID = '#prdInfo_'+rowID;
-              var productInfoObj = newRowObj.find(productInfoID);
-              var productInfoName = concatName+productInfoObj.attr('name');
-              productInfoObj.attr('name', productInfoName);
-              var productInfoNewID = concatName+productInfoObj.attr('id');
-              productQtyObj.attr('id', productInfoNewID);
+              var productNewInfoObj = newRowObj.find(productInfoID);
+              var productNewInfoName = 'prdInfo_['+newRowID+']';
+              productNewInfoObj.attr('name', productNewInfoName);
+              productNewInfoObj.attr('id', 'prdInfo_'+newRowID);
+              productNewInfoObj.attr('data-index', newRowID);
+       
 
-              //var productPriceID = '#fdPrice_'+rowID;
-              var productPriceObj = newRowObj.find(productPriceID);
-              var productPriceName = concatName+productPriceObj.attr('name');
-              productPriceObj.attr('name', productPriceName);
-              var productPriceNewID = concatName+productPriceObj.attr('id');
-              productQtyObj.attr('id', productPriceNewID);
-              //var pricePerQty = parseFloat(productQtyObj.val());
-              //var productPriceID = '#fdTotalPrice_'+rowID;
-              var productPriceObj = newRowObj.find(productPriceID);
-              var productPriceNewID = concatName+productPriceObj.attr('id');
-              productQtyObj.attr('id', productPriceNewID);
+              var productPriceID = '#fdPrice_'+rowID;
+              var productNewPriceObj = newRowObj.find(productPriceID);
+              var productNewPriceName = 'price_id['+newRowID+']';
+              productNewPriceObj.attr('name', productNewPriceName);
+              productNewPriceObj.attr('id', 'fdPrice_'+newRowID);
+             
+              var productNewTotalPriceObj = newRowObj.find(productTotalPriceID);
               var totalPrice = pricePerQty * curValue;
-              productPriceObj.text(totalPrice);
+              productNewTotalPriceObj.text(totalPrice);
+              productNewTotalPriceObj.attr('id', 'fdTotalPrice_'+newRowID);
+
+              var productNewCancelObj = newRowObj.find(cancelID);
+              productNewCancelObj.val($('#CancelOrReturn').val());
+              productNewCancelObj.attr('id', 'fdProdRetOrCancel_'+newRowID);
+              productNewCancelObj.attr('name', 'return_or_cancel['+newRowID+']');
+              productNewCancelObj.attr('data-index', newRowID);
+
+              var productNewCancelResObj = newRowObj.find(cancelReturnReasonID);
+              productNewCancelResObj.val($('#CancelOrReturnReason').val());
+              productNewCancelResObj.attr('id', 'fdProdRetOrCancelReason_'+newRowID);
+              productNewCancelResObj.attr('name', 'return_or_cancel_reason['+newRowID+']');
+              productNewCancelResObj.attr('data-index', newRowID);
+              
+              // var productReturnID = '#productReturn_'+rowID;
+              // var productReturnObj = newRowObj.find(productReturnID);
+              // productReturnObj.attr('id', 'productReturn_'+newRowID);
+              // productReturnObj.children("a").removeClass('jsBtnCancelReturn pj-return-product').addClass('jsBtnUndoCancelReturn');
+              // productReturnObj.children("a").attr('data-index', newRowID);
+              // productReturnObj.children("a").children('i').removeClass('fa-strikethrough').addClass('fa-undo');
+              updateCanRetButtonToRedo(newRowObj, rowID, newRowID );
               console.log('id');
               $('#fdOrderList_1').find('tr:last').after(newRowObj);
-              console.log(newRowObj);
             } else {
               $(strikeThroughRow).parent().parent().parent().addClass('strikethrough');
+              $(cancelID).val($('#CancelOrReturn').val());
+              $(cancelReturnReasonID).val($('#CancelOrReturnReason').val());
+              updateCanRetButtonToRedo(curRowObj, rowID, null );
             }
             calPrice(1);
-            
             $("#cancelReturnModal").modal("hide");
-            return;
-           
+            return; 
           } 
+        }).on("click", ".jsPageReload", function (e) {
+          location.reload(true);
+        }).on("click", ".jsBtnUndoCancelReturn", function (e) {
+          var rowID = $(this).attr('data-index');
+          var rowObj = $(this).parent().parent().parent().parent();
+          if (rowID.includes("_RC")) {
+            var productQtyID = '#fdProductQty_'+rowID;
+            var oldRowID = rowID.replace("_RC", "");
+            var productCanOrRetQtyObj = rowObj.find(productQtyID);
+            var canOrRetQty = parseInt(productCanOrRetQtyObj.val());
+            var productOldQtyID = '#fdProductQty_'+oldRowID;
+            var productOldQty = parseInt($(productOldQtyID).val());
+            var productReturnID = '#productReturn_'+oldRowID;
+            var btnCanOrRetObj = $(productReturnID).children('a');
+            btnCanOrRetObj.attr('disabled', false);
+            btnCanOrRetObj.addClass('jsBtnCancelReturn btn-outline');
+            var newQty = canOrRetQty + productOldQty;
+            $(productOldQtyID).val(newQty)
+            $(productOldQtyID).next('span').text(newQty);
+            rowObj.remove();
+          } else {
+            var cancelID = "#fdProdRetOrCancel_"+rowID;
+            var cancelReturnReasonID = "#fdProdRetOrCancelReason_"+rowID;
+            
+            console.log(rowObj);
+            rowObj.removeClass('strikethrough');
+            $(cancelID).val('');
+            $(cancelReturnReasonID).val('');
+            updateRedoButtonToCanRet(rowObj, rowID);
+          }
+          calPrice(1);
         })
         .on("click", ".jsIncreaseCanRetQty", function (e) {
           var curValue = parseInt($('#cancelReturnQty').val());
@@ -3423,7 +3491,25 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
         
       // });
       // $(document).ready()
+      function updateCanRetButtonToRedo(rowObj, rowID, newRowID) {
+        var productReturnID = '#productReturn_'+rowID;
+        var productReturnObj = rowObj.find(productReturnID);
+        if (newRowID) {
+          productReturnObj.attr('id', 'productReturn_'+newRowID);
+          productReturnObj.children("a").attr('data-index', newRowID); 
+        }
+        productReturnObj.children("a").removeClass('jsBtnCancelReturn pj-return-product').addClass('jsBtnUndoCancelReturn');
+        productReturnObj.children("a").children('i').removeClass('fa-strikethrough').addClass('fa-undo');
+        //return rowObj;
+      }
 
+      function updateRedoButtonToCanRet(rowObj, rowID) {
+        var productReturnID = '#productReturn_'+rowID;
+        var productReturnObj = rowObj.find(productReturnID);
+        productReturnObj.children("a").removeClass('jsBtnUndoCancelReturn').addClass('jsBtnCancelReturn pj-return-product');
+        productReturnObj.children("a").children('i').removeClass('fa-undo').addClass('fa-strikethrough');
+        //return rowObj;
+      }
       function keyboard_price(cls, length) {
         $(cls).keyboard({
           layout: 'custom',

@@ -409,7 +409,7 @@ class pjAdmin extends pjAppController {
       $category_order = array_column($category_arr, 'order', 'id');
       $returnOrCancelProducts = array_filter($post['return_or_cancel']);
       $returnOrCancelReasons = array_filter($post['return_or_cancel_reason']);
-      //$this->pr_die($returnOrCancelProducts);
+      $this->pr($post);
       foreach ($post['product_id'] as $k => $pid) {
       	$type = "product";
       	$product = array();
@@ -425,7 +425,7 @@ class pjAdmin extends pjAppController {
           if ($pid == 0) {	
             $price = $post['price_id'][$k];
             $type = "custom";
-            echo $custom_name = $post['product_description'][$k];
+            $custom_name = $post['product_description'][$k];
           } else if ($product['set_different_sizes'] == 'T') {
             $price_id = $post['price_id'][$k];
             $price_arr = $pjProductPriceModel->reset()->find($price_id)->getData();
@@ -452,7 +452,7 @@ class pjAdmin extends pjAppController {
             'special_instruction' => $post['special_instruction'][$k],
             'custom_special_instruction' => $post['custom_special_instruction'][$k]
           ))->insert()
-            ->getInsertId();
+            
             //$this->pr($post);
             //$this->pr_die($post['extras'][$k]);
           if ($product['cnt_extras'] && $oid !== false && (int)$oid > 0) {
@@ -473,17 +473,41 @@ class pjAdmin extends pjAppController {
                 ))->insert();
             }
           }
+        } else if (strpos($k, '_RC') !== false) { 
+        	// echo 'came in';
+        	// echo $pid;
+        	// $price_id = $post['price_id'][$k];
+          // $price_arr = $pjProductPriceModel->reset()->find($price_id)->getData();
+          // if ($price_arr) {
+          //   $price = $price_arr['price'];
+          // }
+        	// $hash = md5(uniqid(rand() , true));
+        	// $oid = $pjOrderItemModel->reset()
+          //   ->setAttributes(array(
+          //   'order_id' => $order_id,
+          //   'foreign_id' => $pid,
+          //   'type' => $type,
+          //   'hash' => $hash,
+          //   'custom_name'=>$custom_name,
+          //   'item_order'=> $item_order,
+          //   'price_id' => $post['cnt'][$k] $price_id,
+          //   'price' => $price,
+          //   'cnt' => $post['cnt'][$k],
+          //   'special_instruction' => $post['special_instruction'][$k],
+          //   'custom_special_instruction' => $post['custom_special_instruction'][$k]
+          // ))->insert()
         }
       }
+      exit;
       if (count($returnOrCancelReasons)) {
       	foreach ($returnOrCancelReasons as $key => $reason) {
       		$pjOrder = pjOrderItemModel::factory();
       		$cancelOrReturnReason = $reason;
       		$productStatus = strtolower($post['return_or_cancel'][$key]);
-      		$rows = $pjOrder->where('hash', $key)->where('order_id', $order_id)->modifyAll(array('status' => $productStatus, 'cancel_or_return_reason'=>$cancelOrReturnReason))->getAffectedRows();
-      		if ($rows) {
-      			$pjOrder->where('order_id', $order_id)->modifyAll(array('print' => 0))->getAffectedRows();
-      		}
+      		$rows = $pjOrder->where('hash', $key)->where('order_id', $order_id)->modifyAll(array('status' => $productStatus, 'cancel_or_return_reason'=>$cancelOrReturnReason, 'print' => 0))->getAffectedRows();
+      		// if ($rows) {
+      		// 	$pjOrder->where('order_id', $order_id)->modifyAll(array('print' => 0))->getAffectedRows();
+      		// }
       	}
       }
     }

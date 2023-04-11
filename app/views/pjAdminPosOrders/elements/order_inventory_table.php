@@ -85,7 +85,7 @@
                 $oi_extra = $tpl['oi_extras'][$oi['hash']]['special_instruction'];
             ?>
               <a href="#" class="btn btn-primary btn-xs btn-outline pj-veiw-extra btn-has-extra" data-index="<?php echo $oi['hash']?>"><i class="fa fa-plus"></i> <?php //__('btnAddExtra');?></a>
-               <input type='hidden' id="extra-<?php echo $oi['hash']; ?>" name="extras[<?php echo $oi['hash']; ?>]" data-index="<?php echo $oi['hash']; ?>_<?php echo $oi_sub['id']; ?>" class="fdExtra fdExtra_<?php echo $oi['hash']; ?> form-control" value='<?php echo $oi_extra; ?>'/>
+               <input type='hidden' id="extra-<?php echo $oi['hash']; ?>" name="extras[<?php echo $oi['hash']; ?>]" data-index="<?php echo $oi['hash']; ?>_<?php echo $oi['id']; ?>" class="fdExtra fdExtra_<?php echo $oi['hash']; ?> form-control" value='<?php echo $oi_extra; ?>'/>
             <?php } else { ?>
               <a class="btn btn-danger btn-xs" disabled><i class="fa fa-times"></i></a>
             <?php } ?>
