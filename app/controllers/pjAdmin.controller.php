@@ -409,33 +409,33 @@ class pjAdmin extends pjAppController {
       $category_order = array_column($category_arr, 'order', 'id');
       $returnOrCancelProducts = array_filter($post['return_or_cancel']);
       $returnOrCancelReasons = array_filter($post['return_or_cancel_reason']);
-      $this->pr($post);
+      //$this->pr($post);
       foreach ($post['product_id'] as $k => $pid) {
-      	$type = "product";
       	$product = array();
-      	$custom_name = ":NULL";
+      	$item_order = ":NULL";
+      	$hash = md5(uniqid(rand() , true));
       	if ($pid) {
       		$product = $this->getProduct($pid);
         	$item_order = $category_order[$product['category_id']];
       	} 
         //$this->pr_die($product);
         if (strpos($k, 'new_') === 0) {
-          $price = 0;
-          $price_id = ":NULL";
-          if ($pid == 0) {	
-            $price = $post['price_id'][$k];
-            $type = "custom";
-            $custom_name = $post['product_description'][$k];
-          } else if ($product['set_different_sizes'] == 'T') {
-            $price_id = $post['price_id'][$k];
-            $price_arr = $pjProductPriceModel->reset()->find($price_id)->getData();
-            if ($price_arr) {
-              $price = $price_arr['price'];
-            }
-          } else {
-            $price = $product['price'];
-          }
-          $hash = md5(uniqid(rand() , true));
+          // $price = 0;
+          // $price_id = ":NULL";
+          // if ($pid == 0) {	
+          //   $price = $post['price_id'][$k];
+          //   $type = "custom";
+          //   $custom_name = $post['product_description'][$k];
+          // } else if ($product['set_different_sizes'] == 'T') {
+          //   $price_id = $post['price_id'][$k];
+          //   $price_arr = $pjProductPriceModel->reset()->find($price_id)->getData();
+          //   if ($price_arr) {
+          //     $price = $price_arr['price'];
+          //   }
+          // } else {
+          //   $price = $product['price'];
+          // }
+          list($type, $custom_name, $price_id, $price) = $this->getPriceDetails($pid, $k, $post, $product);
           //echo $type;
           //exit;
           $oid = $pjOrderItemModel->reset()
@@ -452,7 +452,7 @@ class pjAdmin extends pjAppController {
             'special_instruction' => $post['special_instruction'][$k],
             'custom_special_instruction' => $post['custom_special_instruction'][$k]
           ))->insert()
-            
+            ->getInsertId();
             //$this->pr($post);
             //$this->pr_die($post['extras'][$k]);
           if ($product['cnt_extras'] && $oid !== false && (int)$oid > 0) {
@@ -473,32 +473,43 @@ class pjAdmin extends pjAppController {
                 ))->insert();
             }
           }
-        } else if (strpos($k, '_RC') !== false) { 
-        	// echo 'came in';
-        	// echo $pid;
-        	// $price_id = $post['price_id'][$k];
-          // $price_arr = $pjProductPriceModel->reset()->find($price_id)->getData();
-          // if ($price_arr) {
-          //   $price = $price_arr['price'];
-          // }
-        	// $hash = md5(uniqid(rand() , true));
-        	// $oid = $pjOrderItemModel->reset()
-          //   ->setAttributes(array(
-          //   'order_id' => $order_id,
-          //   'foreign_id' => $pid,
-          //   'type' => $type,
-          //   'hash' => $hash,
-          //   'custom_name'=>$custom_name,
-          //   'item_order'=> $item_order,
-          //   'price_id' => $post['cnt'][$k] $price_id,
-          //   'price' => $price,
-          //   'cnt' => $post['cnt'][$k],
-          //   'special_instruction' => $post['special_instruction'][$k],
-          //   'custom_special_instruction' => $post['custom_special_instruction'][$k]
-          // ))->insert()
+        } 
+
+        else if (strpos($k, '_RC') !== false) { 
+        	list($type, $custom_name, $price_id, $price) = $this->getPriceDetails($pid, $k, $post, $product);
+        	$parentKey = str_replace("_RC","",$k);
+        	$pjParentOrder = pjOrderItemModel::factory();
+          $parentRow = $pjParentOrder->where('hash', $parentKey)->where('order_id', $order_id)->findAll()->getData();
+        	$cancelOrReturnReason = $post['return_or_cancel_reason'][$k];
+      		$productStatus = strtolower($post['return_or_cancel'][$k]);
+      		
+        	$oid = $pjOrderItemModel->reset()
+            ->setAttributes(array(
+            'order_id' => $order_id,
+            'foreign_id' => $pid,
+            'type' => $type,
+            'hash' => $hash,
+            'custom_name'=>$parentRow[0]['custom_name'],
+            'item_order'=> $item_order,
+            'price_id' => $price_id,
+            'price' => $price,
+            'cnt' => $post['cnt'][$k],
+            'special_instruction' => $post['special_instruction'][$k],
+            'custom_special_instruction' => $post['custom_special_instruction'][$k],
+            'status'=>$productStatus,
+            'cancel_or_return_reason'=>$cancelOrReturnReason,
+            'parent_hash'=>$k
+          ))->insert()
+          ->getInsertId();
+          if ((int)$oid > 0) {
+          	
+          	$pjOrder = pjOrderItemModel::factory();
+          	$rows = $pjOrder->where('hash', $parentKey)->where('order_id', $order_id)->modifyAll(array('cnt' => $post['cnt'][$parentKey]))->getAffectedRows();
+
+          }
         }
       }
-      exit;
+      //exit;
       if (count($returnOrCancelReasons)) {
       	foreach ($returnOrCancelReasons as $key => $reason) {
       		$pjOrder = pjOrderItemModel::factory();
@@ -512,6 +523,27 @@ class pjAdmin extends pjAppController {
       }
     }
     //exit;
+	}
+
+	public function getPriceDetails($pid, $prdHash, $post, $product) {
+		$type = "product";
+		$price = 0;
+    $custom_name = $price_id = ":NULL";
+		$pjProductPriceModel = pjProductPriceModel::factory();
+		if ($pid == 0) {	
+      $price = $post['price_id'][$prdHash];
+      $type = "custom";
+      $custom_name = $post['product_description'][$prdHash];
+    } else if ($product['set_different_sizes'] == 'T') {
+      $price_id = $post['price_id'][$prdHash];
+      $price_arr = $pjProductPriceModel->reset()->find($price_id)->getData();
+      if ($price_arr) {
+        $price = $price_arr['price'];
+      }
+    } else {
+      $price = $product['price'];
+    }
+    return array($type, $custom_name, $price_id, $price);
 	}
 //public function pjActionCheckNewOrder() {
 	// 	$this->setAjax(true);

@@ -17,6 +17,7 @@ class pjOrderItemModel extends pjAppModel
 		array('name' => 'type', 'type' => 'enum', 'default' => ':NULL'),
 		array('name' => 'custom_name', 'type' => 'varchar', 'default' => ':NULL'),
 		array('name' => 'hash', 'type' => 'varchar', 'default' => ':NULL'),
+		array('name' => 'parent_hash', 'type' => 'varchar', 'default' => ':NULL'),
 		array('name' => 'item_order', 'type' => 'int', 'default' => ':NULL'),
 		array('name' => 'price_id', 'type' => 'int', 'default' => ':NULL'),
 		array('name' => 'price', 'type' => 'decimal', 'default' => ':NULL'),
