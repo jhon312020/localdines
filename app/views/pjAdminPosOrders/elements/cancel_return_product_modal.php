@@ -26,13 +26,13 @@
           </div>
           <div class="form-group">
             <label for="reason" class="control-label">Reason:</label>
-            <textarea class="form-control" id="CancelOrReturnReason" name="reason" required>Cancel</textarea>
+            <textarea class="form-control jsVK-normal" id="CancelOrReturnReason" name="reason" required>Cancel</textarea>
           </div>
         </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-primary btn-w-m-75 btn-h-m-40" id="jsBtnCancelOrReturnProduct">Save</button>
-        <button type="button" class="btn btn-primary btn-w-m-75 btn-h-m-40" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-default btn-w-m-75 btn-h-m-40" data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>

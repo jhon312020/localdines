@@ -1,7 +1,7 @@
 <?php 
-/*echo '<pre>'; print_r($tpl['product_arr']); echo '</pre>';
-  echo '<pre>'; print_r($tpl['oi_arr']); echo '</pre>';
-  echo '<pre>'; print_r($tpl['oi_extras']); echo '</pre>';
+//echo '<pre>'; print_r($tpl['product_arr']); echo '</pre>';
+  // echo '<pre>'; print_r($tpl['oi_arr']); echo '</pre>';
+  /* echo '<pre>'; print_r($tpl['oi_extras']); echo '</pre>';
   echo "<pre>"; print_r($tpl['special_instructions']); echo "</pre>";*/ 
   //echo "<pre>"; print_r($tpl['order_details']); echo "</pre>";
   $order_details = $tpl['order_details'];
@@ -14,7 +14,7 @@
     margin: 10px 0px;
 	}
 	legend {
-		background-color: gray;
+		background-color: grey;
     color: white;
     padding-left: 10px
 	}
@@ -76,9 +76,16 @@
 					<th style="text-align: center;">Quantity</th>
 					<th style="text-align: center;">Amount</th>
 				</tr>
-				<?php foreach($tpl['oi_arr'] as $k => $oi) { ?>
-				<tr>
-					<td><?php echo $oi['product_name']; ?></td>
+				<?php foreach($tpl['oi_arr'] as $k => $oi) { 
+					if (in_array($oi['status'], RETURN_TYPES))  { 
+            $rowClass = "strikethrough";
+          } else {
+          	$rowClass = "";
+          }
+          $productName = $oi['type'] == 'custom' ? $oi['custom_name']:$oi['product_name'];
+				?>
+				<tr class="<?php echo $rowClass; ?>" >
+					<td><?php echo $productName; ?></td>
 					<td>X</td>
 					<td><?php echo $oi['cnt'] ?></td>
 					<td style="text-align: right; padding-right:20px"><?php echo pjCurrency::formatPrice($oi['cnt'] * $oi['price']); ?></td>

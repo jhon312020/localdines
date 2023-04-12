@@ -782,7 +782,6 @@ class pjAdminPosOrders extends pjAdmin {
       $total_format = "";
       $extras_format = "";
       
-      
       $pjProductPriceModel = pjProductPriceModel::factory();
       $pjExtraModel = pjExtraModel::factory();
       $product_arr = pjProductModel::factory()->select('t1.id, t1.set_different_sizes, t1.price, MIN(t3.packing_fee) AS `packing_fee`')
@@ -794,22 +793,21 @@ class pjAdminPosOrders extends pjAdmin {
       $extra_arr = $pjExtraModel->findAll()->getData();
       $cnt_arr = $this->_post->toArray('cnt');
       // $this->pr($product_id_arr);
-      // $this->pr($post);
+      // $this->pr($cnt_arr);
       $returnOrCancelProducts = array();
       if (array_key_exists('return_or_cancel', $post)) {
         $returnOrCancelProducts = array_filter($post['return_or_cancel']);
       }
-      
       // $this->pr($returnOrCancelProducts);
       foreach ($product_id_arr as $hash => $product_id) {
         $_price = 0;
-          $extra_price = 0;
+        $extra_price = 0;
+        if (is_array($returnOrCancelProducts) && array_key_exists($hash, $returnOrCancelProducts)) {
+          continue;
+        } 
         if ($product_id == 0) {
           $_price = $post['price_id'][$hash];
           $price += $_price * $cnt_arr[$hash];
-        }
-        if (is_array($returnOrCancelProducts) && array_key_exists($hash, $returnOrCancelProducts)) {
-          continue;
         }
         foreach ($product_arr as $product) {
           $_price = 0;

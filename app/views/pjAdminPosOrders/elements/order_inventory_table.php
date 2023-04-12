@@ -125,25 +125,21 @@
           <strong><span id="fdTotalPrice_<?php echo $oi['hash']; ?>"></span></strong>
         </td>                                                
         <td>
-          <?php if ($oi['special_instruction']) { ?>
-            <?php $selected_ins = json_decode($oi['special_instruction']); ?>
-            <?php 
-            $selected_ins = json_decode($oi['special_instruction']);
-            for ($i =0; $i < count($selected_ins); $i ++) {
-              if ($selected_ins[$i]->ids != "" || $selected_ins[$i]->cus_ins != "") {
-                $name = stripslashes($product['name']);
-                $hash = $oi['hash'];
-                $element = "<a href='#' class='btn product_spcl_ins btn-has-si' data-name='$name' data-index = '$hash'><i class='fa fa-comment-o'></i></a>";
-                break;
-              } else {
-                $element = "<a href='#'' class='btn btn-primary' disabled><i class='fa fa-comment-o'></i></a>";
-              }
-            } 
-            echo $element;
-            ?>
-          <?php } else { ?>
-            <a href="#" class="btn btn-primary" disabled><i class="fa fa-comment-o"></i></a>
-          <?php } ?>
+          <?php 
+            $commentDisabled = '<a href="#" class="btn btn-primary" disabled><i class="fa fa-comment-o"></i></a>';
+            if ($oi['special_instruction']) { 
+              $selected_ins = json_decode($oi['special_instruction']); 
+              for ($i = 0; $i < count($selected_ins); $i ++) {
+                if ($selected_ins[$i]->ids != "" || $selected_ins[$i]->cus_ins != "") {
+                  $name = stripslashes($product['name']);
+                  $hash = $oi['hash'];
+                  $commentDisabled = "<a href='#' class='btn product_spcl_ins btn-has-si' data-name='$name' data-index = '$hash'><i class='fa fa-comment-o'></i></a>";
+                  break;
+                } 
+              } 
+           } 
+           echo $commentDisabled; 
+          ?>
           <input type="hidden" id="fdSpecialInstruction_<?php echo $oi['hash']; ?>" name="special_instruction[<?php echo $oi['hash']; ?>]" class="form-control special-instruction" value='<?php echo $oi['special_instruction']; ?>' />
           <input type="hidden" id="fdCustomSpecialInstruction_<?php echo $oi['hash']; ?>" name="custom_special_instruction[<?php echo $oi['hash']; ?>]" class="form-control custom-special-instruction" value='<?php echo $oi['custom_special_instruction']; ?>' />
         </td>

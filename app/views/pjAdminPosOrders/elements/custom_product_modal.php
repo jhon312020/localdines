@@ -31,7 +31,7 @@
       </div>
        <div class="modal-footer">
         <button type="button" class="btn btn-primary btn-w-m-75 btn-h-m-40" id="jsBtnAddCusProduct">Add</button>
-        <button type="button" class="btn btn-primary btn-w-m-75 btn-h-m-40" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-default btn-w-m-75 btn-h-m-40" data-dismiss="modal">Cancel</button>
       </div>
     </div>
   </div>

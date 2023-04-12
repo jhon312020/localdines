@@ -1432,6 +1432,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             },
             {
               type: "info",
+              text: " info",
               url: "#",
             },
             {
@@ -1854,6 +1855,9 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             } else if ($("#frmUpdateOrder_epos").length == 1) {
               $('#frmUpdateOrder_epos').find('#customer_paid').val(0);
               $("#frmUpdateOrder_epos").submit();
+            } else if ($("#frmUpdateOrder_pos").length == 1) {
+              $('#frmUpdateOrder_pos').find('#customer_paid').val(0);
+              $("#frmUpdateOrder_pos").submit();
             }
           } else {
             cartEmptyPopup();
@@ -1965,7 +1969,6 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             }
           } 
         })
-        
         .on("click", ".confirm-table-btn", function() {
           $(".confirm-table-btn").removeClass("selected");
           $(this).addClass('selected');
