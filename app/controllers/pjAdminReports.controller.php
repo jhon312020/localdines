@@ -396,5 +396,176 @@ class pjAdminReports extends pjAdmin {
     }
     return compact('total_amount', 'num_of_direct_sales', 'total_direct_sales', 'num_of_table_sales', 'total_table_sales', 'num_of_sales', 'num_of_card_sales', 'num_of_cash_sales', 'card_sales', 'cash_sales', 'report_order_ids', 'num_of_pos_sales', 'num_of_web_sales', 'num_of_telephone_sales');
 	}
+
+
+  public function pjActionCancelReturnReport() {
+    $this->checkLogin();
+    if (!pjAuth::factory()->hasAccess()) {
+      $this->sendForbidden();
+      return;
+    }
+    $this->appendJs('jquery.datagrid.js', PJ_FRAMEWORK_LIBS_PATH . 'pj/js/');
+    $this->appendCss('datepicker3.css', PJ_THIRD_PARTY_PATH . 'bootstrap_datepicker/');
+    $this->appendJs('bootstrap-datepicker.js', PJ_THIRD_PARTY_PATH . 'bootstrap_datepicker/');
+    $this->appendJs('pjAdminReports.js');
+  }
+
+   public function pjActionGetCancelReturnOrders() {
+    $this->setAjax(true);
+    
+    if ($this->isXHR()) {
+      $pjOrderModel = pjOrderModel::factory();
+      //$pjOrderItemModel = pjOrderItemModel::factory();
+      $today = date('Y-m-d');
+      $from = $today . " " . "00:00:00";
+      $to = $today . " " . "23:59:59";
+      if ($this->_get->toString('date_from') && $this->_get->toString('date_to')) {
+          $date_from = DateTime::createFromFormat('d.m.Y', $this->_get->toString('date_from'));
+          $from = $date_from->format('Y-m-d'). " " . "00:00:00";
+          $date_to = DateTime::createFromFormat('d.m.Y', $this->_get->toString('date_to'));
+          $to = $date_to->format('Y-m-d'). " " . "23:59:59";
+      }
+      $return_types = implode("','", RETURN_TYPES);
+      //$to = ''
+      $pjOrderModel = $pjOrderModel
+      ->select("t1.*")
+      ->where("((t1.p_dt >= '$from' AND t1.p_dt <= '$to') OR (t1.d_dt >= '$from' AND t1.d_dt <= '$to'))")
+      ->where('t1.deleted_order', 0)
+      ->where("t1.id IN (SELECT ORDITEM.order_id FROM `" . pjOrderItemModel::factory()
+      ->getTable() . "` AS ORDITEM WHERE ORDITEM.STATUS IN ('".$return_types."'))")->orderBy("name ASC")
+      ->where('status', 'delivered');
+      // if ($q = $this->_get->toString('q'))
+      // {
+      //     // echo "hello "; exit;
+      //     //$pjOrderModel = $pjOrderModel->where("(t1.expense_name LIKE '%$q%' OR t2.name LIKE '%$q%')");
+      // }
+        
+      $column = 'id';
+      $direction = 'desc';
+      if ($this->_get->toString('column') && in_array(strtoupper($this->_get->toString('direction')), array('ASC', 'DESC'))) {
+        $column = $this->_get->toString('column');
+        $direction = strtoupper($this->_get->toString('direction'));
+      }
+
+      $total = $pjOrderModel->findCount()->getData();
+      $rowCount = $this->_get->toInt('rowCount') ?: 10;
+      $pages = ceil($total / $rowCount);
+      if ($this->_get->toInt('page')) {
+        $page = $this->_get->toInt('page') ?: 1;
+      } else {
+        $page = 1;
+      }
+        
+      $offset = ((int) $page - 1) * $rowCount;
+      if ($page > $pages) {
+        $page = $pages;
+      }
+
+      $data = $pjOrderModel
+      ->orderBy("$column $direction")
+      ->limit($rowCount, $offset)
+      ->findAll()
+      ->getData();
+      $table_list = $this->getRestaurantTables();
+      foreach ($data as $k => $v) {
+        // MEGAMIND
+        $v['sms_sent_time'] == "" ? $data[$k]['sms_sent_time'] = '-' : $data[$k]['sms_sent_time'] = explode(" ", $v['sms_sent_time']) [1];
+        if (explode(" ", $v['p_dt']) [0] == explode(" ", $today) [0] || explode(" ", $v['d_dt']) [0] == explode(" ", $today) [0]) {
+          $v['d_dt'] == "" ? $data[$k]['expected_delivery'] = explode(" ", $v['p_dt']) [1] : $data[$k]['expected_delivery'] = explode(" ", $v['d_dt']) [1];
+        } else {
+          $v['d_dt'] == "" ? $data[$k]['expected_delivery'] = $this->getDateFormatted($v['p_dt']) : $data[$k]['expected_delivery'] = $this->getDateFormatted($v['d_dt']);
+        }
+        if ($v['delivered_time'] == null) {
+          $data[$k]['deliver_t'] = $data[$k]['expected_delivery'];
+          $data[$k]['deliver_sts'] = "none";
+        }
+        else {
+          if (explode(" ", $v['delivered_time']) [1] > explode(" ", $v['delivery_dt']) [1]) {
+            $data[$k]['deliver_sts'] = "failure";
+          } else {
+            $data[$k]['deliver_sts'] = "success";
+          }
+          $data[$k]['deliver_t'] = $v['delivered_time'];
+        }
+        $v['delivered_time'] == "" ? $data[$k]['delivered_time'] = '-' : $data[$k]['delivered_time'] = explode(" ", $v['delivered_time']) [1];
+        $data[$k]['total'] = "<strong class='list-pos-type'>".pjCurrency::formatPrice($v['total'])."</strong>";
+        if (array_key_exists($v['table_name'], $table_list)) {
+          $data[$k]['table_name'] = $table_list[$v['table_name']];
+        }
+        $data[$k]['table_name'] = "<strong class='list-pos-type'>".$data[$k]['table_name']."</strong>";
+        // !MEGAMIND 
+        if ($data[$k]['is_paid'] == 1) {
+          if (strtolower($data[$k]['payment_method']) == 'bank') {
+            $data[$k]['payment_method'] = 'Card';
+          } else {
+            $data[$k]['payment_method'] = 'Cash';
+          }
+        } else {
+          $data[$k]['payment_method'] = '';
+        }
+        $data[$k]['order_date'] = date("d-m-Y", strtotime($v['created']));
+      }
+      pjAppController::jsonResponse(compact('data', 'total', 'pages', 'page', 'rowCount', 'column', 'direction'));
+    }
+    exit;
+  }
+
+  public function pjActionGetCancelOrderInfo() {
+    $this->setAjax(true);
+    if ($this->isXHR()) {
+      if ($this->_get->toInt('id') <= 0) {
+        echo "invalid parameter";
+        exit;
+      } else {
+        $id = $this->_get->toInt('id');
+        $pjOrderModel = pjOrderModel::factory()->where('t1.deleted_order', 0)
+          ->join('pjClient', "t2.id=t1.client_id", 'left outer')
+          ->join('pjAuthUser', "t3.id=t2.foreign_id", 'left outer');
+        $order = $pjOrderModel->select("t1.*, t3.name as client_name, t2.c_type, 
+              AES_DECRYPT(t1.cc_type, '" . PJ_SALT . "') AS `cc_type`,  
+              AES_DECRYPT(t1.cc_num, '" . PJ_SALT . "') AS `cc_num`,
+              AES_DECRYPT(t1.cc_exp, '" . PJ_SALT . "') AS `cc_exp`,
+              AES_DECRYPT(t1.cc_code, '" . PJ_SALT . "') AS `cc_code`")
+          //->where("t1.id", $id)
+        // ->orderBy("$col $dir")
+        // ->limit($rowCount, $offset)
+        ->find($id)
+        ->getData();
+        //$this->pr_die($order);
+        $this->getOrderItems($id, false);
+        $role_id = $this->getRoleId();
+
+        if ($order["surname"] == '' || is_null($order["surname"]) || $order["surname"] === 0) {
+          $order["surname"] = $order["surname"] = $order["first_name"];
+        }
+        if ($role_id != ADMIN_R0LE_ID && $order['status'] == 'delivered') {  
+          //$order["surname"] = substr($order["surname"], 0, 2).str_repeat("*", strLen($order['surname']) - 2); 
+          if ($order["surname"]) {
+            $order["surname"] = substr($order["surname"], 0, 2).str_repeat("*", 10); 
+          }
+          if ($order["sms_email"]) {
+            $order["sms_email"] = substr($order["sms_email"], 0, 2).str_repeat("*", (strLen($order['sms_email']) - 2));
+          }
+          if ($order["phone_no"]) {
+            $order["phone_no"] = substr($order["phone_no"], 0, 2).str_repeat("*", (strLen($order['phone_no']) - 2));
+          }
+        }
+        if($order["d_address_2"]) {
+          $address = $order["d_address_1"].",<br/>".$order["d_address_2"].",<br/>".$order["d_city"];
+        } else { 
+          $address = $order["d_address_1"].",<br/>".$order["d_city"];
+        }
+        $order['sms_sent_time'] = $order['sms_sent_time'] == ''  ?  "-" : date("d-M-Y H:m:s", strtotime($order['sms_sent_time']));
+        $order['delivered_time'] = $order['delivered_time'] == ''  ? "-" : date("d-M-Y H:m:s", strtotime($order['delivered_time']));
+        if ($order['client_id'] == NULL && $order['origin'] == "web") {
+          $order['c_type'] = "guest";
+        }
+        $order['address'] = $address;
+        $this->set('order_details', $order);
+       
+      }
+    }
+  }
+
 }
 ?>

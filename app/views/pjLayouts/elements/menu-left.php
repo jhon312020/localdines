@@ -62,6 +62,7 @@ $isScriptReportsIndex = $isScriptReportsController && in_array($action_name, arr
 
 $isScriptPOSXReportsIndex = $isScriptReportsController && in_array($action_name, array('pjActionPOSXIndex'));
 $isScriptPOSZReportsIndex = $isScriptReportsController && in_array($action_name, array('pjActionPOSZIndex'));
+$isScriptCancelReturnReportsIndex = $isScriptReportsController && in_array($action_name, array('pjActionCancelReturnReport'));
 
 // Qr Code
 $isScriptQrCodeController = in_array($controller_name, array('pjAdminQrCode'));
@@ -236,12 +237,13 @@ $hasAccessScriptOptionsPrintOrder       = pjAuth::factory('pjAdminOptions', 'pjA
     </li>
 <?php endif; ?>
 
-<?php if ($hasAccessScriptPOSReportsIndex): ?>
-  <li<?php echo $isScriptPOSXReportsIndex || $isScriptPOSZReportsIndex ? ' class="active"' : NULL; ?>>
-        <a href="#"><i class="fa fa-files-o"></i> <span class="nav-label"><?php __('menuPOSReports');?></span><span class="fa arrow"></span></a>
+<?php if ($hasAccessScriptPOSReportsIndex):  //menuPOSReports ?>
+  <li<?php echo $isScriptPOSXReportsIndex || $isScriptPOSZReportsIndex || $isScriptCancelReturnReportsIndex ? ' class="active"' : NULL; ?>>
+        <a href="#"><i class="fa fa-files-o"></i> <span class="nav-label"><?php __('menuReports');?></span><span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse">
             <li<?php echo $isScriptPOSXReportsIndex ? ' class="active"' : NULL; ?>><a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminReports&amp;action=pjActionPOSXIndex"><?php __('menuXReport');?></a></li>
             <li<?php echo $isScriptPOSZReportsIndex ? ' class="active"' : NULL; ?>><a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminReports&amp;action=pjActionPOSZIndex"><?php __('menuZReport');?></a></li>
+            <li<?php echo $isScriptCancelReturnReportsIndex ? ' class="active"' : NULL; ?>><a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminReports&amp;action=pjActionCancelReturnReport"><?php echo "Cancel/Return Report"; //__('menuZReport');?></a></li>
         </ul>
     </li>
 <?php endif; ?>
