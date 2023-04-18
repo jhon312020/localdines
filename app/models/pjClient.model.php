@@ -12,7 +12,7 @@ class pjClientModel extends pjAppModel
 	
 	protected $schema = array(
 		array('name' => 'id', 'type' => 'int', 'default' => ':NULL'),
-	    array('name' => 'foreign_id', 'type' => 'int', 'default' => ':NULL'),
+    array('name' => 'foreign_id', 'type' => 'int', 'default' => ':NULL'),
 		array('name' => 'c_title', 'type' => 'varchar', 'default' => ':NULL'),
 		array('name' => 'c_company', 'type' => 'varchar', 'default' => ':NULL'),
 		array('name' => 'c_address_1', 'type' => 'varchar', 'default' => ':NULL'),
@@ -25,9 +25,9 @@ class pjClientModel extends pjAppModel
 		array('name' => 'c_type', 'type' => 'varchar', 'default' => ':NULL'),
 		array('name' => 'c_postcode', 'type' => 'varchar', 'default' => ':NULL'),
 		array('name' => 'mobile_delivery_info', 'type' => 'tinyint', 'default' => 0),
-	    array('name' => 'mobile_offer', 'type' => 'tinyint', 'default' => 0),
-	    array('name' => 'email_receipt', 'type' => 'tinyint', 'default' => 0),
-	    array('name' => 'email_offer', 'type' => 'tinyint', 'default' => 0),
+    array('name' => 'mobile_offer', 'type' => 'tinyint', 'default' => 0),
+    array('name' => 'email_receipt', 'type' => 'tinyint', 'default' => 0),
+    array('name' => 'email_offer', 'type' => 'tinyint', 'default' => 0),
 		array('name' => 'register_type', 'type' => 'enum', 'default' => 'T')
 	);
 	

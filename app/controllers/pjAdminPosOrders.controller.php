@@ -2784,13 +2784,6 @@ class pjAdminPosOrders extends pjAdmin {
     exit;
   }
 
-  function getDateFormatted($date) {
-    $dt = explode(" ", $date);
-    $dtArr = explode("-", $dt[0]);
-    $dt = $dtArr[2] . "-" . $dtArr[1] . "-" . $dtArr[0] . " " . $dt[1];
-    return $dt;
-  }
-
   function sendMessage($phone, $msg) {
     $pjSmsApi = new tlSmsApi();
    // $response = 1;

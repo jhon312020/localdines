@@ -17,7 +17,7 @@
           <div class="col-md-4">
             <form action="" method="get" class="form-horizontal frm-filter">
               <div class="input-group m-b-md">
-                <input type="text" name="q" placeholder="<?php __('plugin_base_btn_search', false, true); ?>" class="form-control">
+                <input type="text" id="query" name="q" placeholder="<?php __('plugin_base_btn_search', false, true); ?>" class="form-control">
                 <div class="input-group-btn">
                   <button class="btn btn-primary" type="submit">
                     <i class="fa fa-search"></i>
@@ -28,7 +28,7 @@
           </div><!-- /.col-lg-6 -->
           <div class="col-md-4">
             <?php if ( $_SESSION['admin_user']['role_id'] == ADMIN_R0LE_ID) { ?>
-            <form id="frmFindDate">
+            <form id="frmFromAndToDate">
               <?php
                 $months = __('months', true);
                 if ($months) {
@@ -86,6 +86,7 @@
   myLabel.review = '<?php echo 'R'; ?>';
   // myLabel.date_time = <?php x__encode('lblDateTime'); ?>;
   myLabel.order_date = '<?php echo 'Date'; ?>';
+  myLabel.cancel_amount = '<?php echo 'Cancel Amount'; ?>';
   myLabel.total = <?php x__encode('lblTotal'); ?>;
   myLabel.type = <?php x__encode('lblType'); ?>;
   myLabel.pickup = <?php x__encode('lblPickup'); ?>;

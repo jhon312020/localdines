@@ -635,7 +635,7 @@ class pjAdmin extends pjAppController {
       foreach ($extra_arr as $extra) {
         $extras[$extra['id']] = $extra;
       }
-      //$this->pr($_oi_arr);
+      //\\$this->pr($_oi_arr);
       foreach ($_oi_arr as $item) {
         if ($item['type'] == 'product') {
           $item['price_arr'] = $pjProductPriceModel->reset()
@@ -676,6 +676,14 @@ class pjAdmin extends pjAppController {
       }
     }
   }
+
+  function getDateFormatted($date) {
+    $dt = explode(" ", $date);
+    $dtArr = explode("-", $dt[0]);
+    $dt = $dtArr[2] . "-" . $dtArr[1] . "-" . $dtArr[0] . " " . $dt[1];
+    return $dt;
+  }
+
 //public function pjActionCheckNewOrder() {
 	// 	$this->setAjax(true);
   //     if ($this->isXHR())

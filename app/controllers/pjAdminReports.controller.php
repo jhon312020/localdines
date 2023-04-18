@@ -410,7 +410,7 @@ class pjAdminReports extends pjAdmin {
     $this->appendJs('pjAdminReports.js');
   }
 
-   public function pjActionGetCancelReturnOrders() {
+  public function pjActionGetCancelReturnOrders() {
     $this->setAjax(true);
     
     if ($this->isXHR()) {
@@ -419,6 +419,15 @@ class pjAdminReports extends pjAdmin {
       $today = date('Y-m-d');
       $from = $today . " " . "00:00:00";
       $to = $today . " " . "23:59:59";
+      if ($q = $this->_get->toString('q')) {
+        // MEGAMIND
+     //    $pjOrderModel->where("(t1.id ='$q' OR t1.uuid = '$q' OR t1.surname LIKE '%$q%' 
+          // OR t3.email LIKE '%$q%' OR t3.phone = '$q' OR t1.post_code = '$q')");
+        //$table_name = $q;
+        //$q = preg_replace("/[^0-9]/", "", $q );
+        $pjOrderModel->where("(t1.order_id LIKE '%$q%' OR t1.uuid LIKE '%$q%' OR t1.table_name LIKE '%$q%')");
+        // !MEGAMIND
+      }
       if ($this->_get->toString('date_from') && $this->_get->toString('date_to')) {
           $date_from = DateTime::createFromFormat('d.m.Y', $this->_get->toString('date_from'));
           $from = $date_from->format('Y-m-d'). " " . "00:00:00";
@@ -427,6 +436,8 @@ class pjAdminReports extends pjAdmin {
       }
       $return_types = implode("','", RETURN_TYPES);
       //$to = ''
+      //echo $from;
+      //echo $to;
       $pjOrderModel = $pjOrderModel
       ->select("t1.*")
       ->where("((t1.p_dt >= '$from' AND t1.p_dt <= '$to') OR (t1.d_dt >= '$from' AND t1.d_dt <= '$to'))")
@@ -443,9 +454,10 @@ class pjAdminReports extends pjAdmin {
       $column = 'id';
       $direction = 'desc';
       if ($this->_get->toString('column') && in_array(strtoupper($this->_get->toString('direction')), array('ASC', 'DESC'))) {
-        $column = $this->_get->toString('column');
-        $direction = strtoupper($this->_get->toString('direction'));
+        //$column = $this->_get->toString('column');
+        //$direction = strtoupper($this->_get->toString('direction'));
       }
+      
 
       $total = $pjOrderModel->findCount()->getData();
       $rowCount = $this->_get->toInt('rowCount') ?: 10;
@@ -466,6 +478,27 @@ class pjAdminReports extends pjAdmin {
       ->limit($rowCount, $offset)
       ->findAll()
       ->getData();
+
+      $order_ids = array_column($data, 'id');
+      //$this->pr($order_ids);
+      $pjOrderItems = pjOrderItemModel::factory();
+      $pjOrderData = $pjOrderItems->whereIn('order_id', $order_ids)
+      ->whereIn('status', RETURN_TYPES)
+      ->findAll()
+      ->getData();
+      //$this->pr($pjOrderData);
+      $groupedOrderItems = array();
+      if ($pjOrderData) {
+        $groupedOrderItems = array_reduce($pjOrderData, function($carry, $item) { 
+            if(!isset($carry[$item['order_id']])){ 
+                $carry[$item['order_id']] = ['order_id'=>$item['order_id'],'cancel_amount'=>$item['price'] * $item['cnt']]; 
+            } else { 
+                $carry[$item['order_id']]['cancel_amount'] += $item['price'] * $item['cnt']; 
+            } 
+            return $carry; 
+        });
+      }
+      //$this->pr($groupedOrderItems);
       $table_list = $this->getRestaurantTables();
       foreach ($data as $k => $v) {
         // MEGAMIND
@@ -504,6 +537,7 @@ class pjAdminReports extends pjAdmin {
           $data[$k]['payment_method'] = '';
         }
         $data[$k]['order_date'] = date("d-m-Y", strtotime($v['created']));
+        $data[$k]['cancel_amount'] = "<strong class='list-pos-type'>".pjCurrency::formatPrice($groupedOrderItems[$v['id']]['cancel_amount'])."</strong>";
       }
       pjAppController::jsonResponse(compact('data', 'total', 'pages', 'page', 'rowCount', 'column', 'direction'));
     }
@@ -518,6 +552,7 @@ class pjAdminReports extends pjAdmin {
         exit;
       } else {
         $id = $this->_get->toInt('id');
+        $order_type = strtolower($this->_get->toString('type'));
         $pjOrderModel = pjOrderModel::factory()->where('t1.deleted_order', 0)
           ->join('pjClient', "t2.id=t1.client_id", 'left outer')
           ->join('pjAuthUser', "t3.id=t2.foreign_id", 'left outer');
@@ -562,6 +597,7 @@ class pjAdminReports extends pjAdmin {
         }
         $order['address'] = $address;
         $this->set('order_details', $order);
+        $this->set('order_type', $order_type);
        
       }
     }
