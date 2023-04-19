@@ -440,7 +440,7 @@ class pjAdmin extends pjAppController {
           // } else {
           //   $price = $product['price'];
           // }
-          list($type, $custom_name, $price_id, $price) = $this->getPriceDetails($pid, $k, $post, $product);
+          list($type, $custom_name, $price_id, $price, $print) = $this->getPriceDetails($pid, $k, $post, $product);
           //echo $type;
           //exit;
           $oid = $pjOrderItemModel->reset()
@@ -454,6 +454,7 @@ class pjAdmin extends pjAppController {
             'price_id' => $price_id,
             'price' => $price,
             'cnt' => $post['cnt'][$k],
+            'print' => $print,
             'special_instruction' => $post['special_instruction'][$k],
             'custom_special_instruction' => $post['custom_special_instruction'][$k]
           ))->insert()
@@ -481,7 +482,7 @@ class pjAdmin extends pjAppController {
         } 
 
         else if (strpos($k, '_RC') !== false) { 
-        	list($type, $custom_name, $price_id, $price) = $this->getPriceDetails($pid, $k, $post, $product);
+        	list($type, $custom_name, $price_id, $price, $print) = $this->getPriceDetails($pid, $k, $post, $product);
         	$parentKey = str_replace("_RC","",$k);
         	$pjParentOrder = pjOrderItemModel::factory();
           $parentRow = $pjParentOrder->where('hash', $parentKey)->where('order_id', $order_id)->findAll()->getData();
@@ -499,6 +500,7 @@ class pjAdmin extends pjAppController {
             'price_id' => $price_id,
             'price' => $price,
             'cnt' => $post['cnt'][$k],
+            'print' => $print,
             'special_instruction' => $post['special_instruction'][$k],
             'custom_special_instruction' => $post['custom_special_instruction'][$k],
             'status'=>$productStatus,
@@ -533,22 +535,27 @@ class pjAdmin extends pjAppController {
 	public function getPriceDetails($pid, $prdHash, $post, $product) {
 		$type = "product";
 		$price = 0;
-    $custom_name = $price_id = ":NULL";
+    $print = $custom_name = $price_id = ":NULL";
 		$pjProductPriceModel = pjProductPriceModel::factory();
 		if ($pid == 0) {	
       $price = $post['price_id'][$prdHash];
       $type = "custom";
       $custom_name = $post['product_description'][$prdHash];
-    } else if ($product['set_different_sizes'] == 'T') {
-      $price_id = $post['price_id'][$prdHash];
-      $price_arr = $pjProductPriceModel->reset()->find($price_id)->getData();
-      if ($price_arr) {
-        $price = $price_arr['price'];
+    } else  {
+    	if ($product['set_different_sizes'] == 'T') {
+	      $price_id = $post['price_id'][$prdHash];
+	      $price_arr = $pjProductPriceModel->reset()->find($price_id)->getData();
+	      if ($price_arr) {
+	        $price = $price_arr['price'];
+	      }
+    	} else {
+      	$price = $product['price']; 
+    	}
+    	if (!$product['is_kitchen']) {
+      	$print = $post['cnt'][$prdHash];
       }
-    } else {
-      $price = $product['price'];
-    }
-    return array($type, $custom_name, $price_id, $price);
+    } 
+    return array($type, $custom_name, $price_id, $price, $print);
 	}
 	//Megamind
   public function getRestaurantTables() {
@@ -620,7 +627,8 @@ class pjAdmin extends pjAppController {
         ->findAll()
         ->toArray('allowed_extras', '~:~')
         ->getData();
-      $product_names = array_column($product_arr, 'name', 'id');
+      //$product_names = array_column($product_arr, 'name', 'id');
+      $product_arr = array_combine(array_column($product_arr, 'id'),$product_arr);
       //$this->pr($product_arr);
       //$this->pr($product_names);
       $extra_arr = pjExtraModel::factory()->join('pjMultiLang', "t2.foreign_id = t1.id AND t2.model = 'pjExtra' AND t2.locale = '" . $this->getLocaleId() . "' AND t2.field = 'name'", 'left')
@@ -637,6 +645,9 @@ class pjAdmin extends pjAppController {
       }
       //\\$this->pr($_oi_arr);
       foreach ($_oi_arr as $item) {
+      	$item['is_kitchen'] = 1;
+        $item['is_eatin'] = 1;
+        $item['is_veg'] = 1;
         if ($item['type'] == 'product') {
           $item['price_arr'] = $pjProductPriceModel->reset()
             ->join('pjMultiLang', sprintf("t2.foreign_id = t1.id AND t2.model = 'pjProductPrice' AND t2.locale = '%u' AND t2.field = 'price_name'", $this->getLocaleId()) , 'left')
@@ -653,7 +664,10 @@ class pjAdmin extends pjAppController {
             } else {
               $item['size'] = '';
             }
-            $item['product_name'] = $product_names[$item['foreign_id']];
+            $item['product_name'] = $product_arr[$item['foreign_id']]['name'];
+            $item['is_kitchen'] = $product_arr[$item['foreign_id']]['is_kitchen'];
+            $item['is_eatin'] = $product_arr[$item['foreign_id']]['is_eatin'];
+            $item['is_veg'] = $product_arr[$item['foreign_id']]['is_veg'];
         }
         if ($item['type'] == 'extra') {
           //$item['extra_name'] = $extras[$item['foreign_id']]['name'];

@@ -1912,56 +1912,58 @@ class pjAdminPosOrders extends pjAdmin {
   //   }
   // } 
   public function kitchenPrintFormat($printer, $data, $special_instructions, $newItem = false) {
-    //$this->pr($data);
+    //$this->pr_die($data);
     foreach ($data['oi_arr'] as $k => $oi) {
-      $lineItem = '';
-      if ($oi['special_instruction'] || array_key_exists($oi['hash'], $data['oi_extras'])) {
-        for ($i = 0, $counter = 0; $i < $oi['cnt'] ; $i++, $counter++) {
-          $lineItem = '';
-          if ($oi['type'] == 'custom') {
-            $lineItem = "1 x ".strtoupper($oi['custom_name']);
-          } else {
-            $lineItem = "1 x ".strtoupper($oi['product_name'])." ".$oi['size'];
-          }
-          
-          $printer->appendText("$lineItem");
-          if (array_key_exists($oi['hash'], $data['oi_extras']) && isset($data['oi_extras'][$oi['hash']][$counter])) { 
-            $extra = $data['oi_extras'][$oi['hash']][$counter];
-            $printer->lineFeed();
-            $printer->appendText(" - ".$extra->extra_name ." x ".$extra->extra_count);
-          }
-          if ($oi['special_instruction']) {
-            $obj = json_decode($oi['special_instruction'], true);
-            if (isset($obj[$counter])) {
-              if ($obj[$counter]['ids']) {
-                $printer->lineFeed();
-                $selected_ins_arr = explode(',', $obj[$counter]['ids']);
-                foreach ($selected_ins_arr as $ins) {
-                  foreach ($special_instructions as $instruction) {
-                    if ($ins == $instruction['id']) {
-                      $printer->appendImage($instruction['image'], 0, 30);
+      if ($oi['is_kitchen']) {
+        $lineItem = '';
+        if ($oi['special_instruction'] || array_key_exists($oi['hash'], $data['oi_extras'])) {
+          for ($i = 0, $counter = 0; $i < $oi['cnt'] ; $i++, $counter++) {
+            $lineItem = '';
+            if ($oi['type'] == 'custom') {
+              $lineItem = "1 x ".strtoupper($oi['custom_name']);
+            } else {
+              $lineItem = "1 x ".strtoupper($oi['product_name'])." ".$oi['size'];
+            }
+            
+            $printer->appendText("$lineItem");
+            if (array_key_exists($oi['hash'], $data['oi_extras']) && isset($data['oi_extras'][$oi['hash']][$counter])) { 
+              $extra = $data['oi_extras'][$oi['hash']][$counter];
+              $printer->lineFeed();
+              $printer->appendText(" - ".$extra->extra_name ." x ".$extra->extra_count);
+            }
+            if ($oi['special_instruction']) {
+              $obj = json_decode($oi['special_instruction'], true);
+              if (isset($obj[$counter])) {
+                if ($obj[$counter]['ids']) {
+                  $printer->lineFeed();
+                  $selected_ins_arr = explode(',', $obj[$counter]['ids']);
+                  foreach ($selected_ins_arr as $ins) {
+                    foreach ($special_instructions as $instruction) {
+                      if ($ins == $instruction['id']) {
+                        $printer->appendImage($instruction['image'], 0, 30);
+                      }
                     }
                   }
                 }
+                if ($obj[$counter]['cus_ins']) {
+                  $printer->lineFeed();
+                  $printer->appendText(str_repeat(" ", 4).$obj[$counter]['cus_ins']."\n");
+                } 
               }
-              if ($obj[$counter]['cus_ins']) {
-                $printer->lineFeed();
-                $printer->appendText(str_repeat(" ", 4).$obj[$counter]['cus_ins']."\n");
-              } 
             }
+            $printer->lineFeed();
           }
+        } else {
+          if ($oi['type'] == 'custom') {
+            $lineItem = $oi['cnt']." x ".strtoupper($oi['custom_name']);
+          } else {
+            $lineItem = $oi['cnt']." x ".strtoupper($oi['product_name'])." ".$oi['size'];
+          }
+          $printer->appendText("$lineItem");
           $printer->lineFeed();
         }
-      } else {
-        if ($oi['type'] == 'custom') {
-          $lineItem = $oi['cnt']." x ".strtoupper($oi['custom_name']);
-        } else {
-          $lineItem = $oi['cnt']." x ".strtoupper($oi['product_name'])." ".$oi['size'];
-        }
-        $printer->appendText("$lineItem");
-        $printer->lineFeed();
-      }
-    } 
+      } 
+    }
   }
 
   public function pjActionReminderEmail() {

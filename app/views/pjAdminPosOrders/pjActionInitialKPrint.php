@@ -30,6 +30,9 @@
 			  // echo "<pre>"; print_r($tpl['special_instructions']); echo "</pre>";
 			  //foreach ($tpl['product_arr'] as $product) {
 			    foreach ($tpl['oi_arr'] as $k => $oi) {
+			    	if (!$oi['is_kitchen']) {
+			    		continue;
+			    	}
 			    	$strikeThroughStart = '';
 			  		$strikeThroughEnd = '';
 			        $i = $i + 1;

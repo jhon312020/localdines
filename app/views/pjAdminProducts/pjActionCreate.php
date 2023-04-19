@@ -169,6 +169,70 @@
                         </div><!-- /.col-sm-6 -->
                     </div><!-- /.row -->
 
+                    <!-- Added by JR -->
+                    <div class="hr-line-dashed"></div>
+                    <div class="row">
+                      <div class="col-lg-2 col-md-2 col-xs-3">
+                        <div class="form-group">
+                          <label class="control-label"><?php echo "Kitchen Item"  ?></label>
+                          <div class="switch">
+                            <div class="onoffswitch onoffswitch-data">
+                              <input type="checkbox" class="onoffswitch-checkbox" name="is_kitchen" id="is_kitchen" checked>
+                                <label class="onoffswitch-label" for="is_kitchen">
+                                  <span class="onoffswitch-inner" data-on="<?php __('_yesno_ARRAY_T', false, true)?>" data-off="<?php __('_yesno_ARRAY_F', false, true)?>"></span>
+                                  <span class="onoffswitch-switch"></span>
+                                </label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-2 col-md-2 col-xs-3">
+                        <div class="form-group">
+                          <label class="control-label"><?php echo "Web Order"  ?></label>
+                          <div class="switch">
+                            <div class="onoffswitch onoffswitch-data">
+                              <input type="checkbox" class="onoffswitch-checkbox" name="is_web_orderable" id="is_web_orderable" checked>
+                                <label class="onoffswitch-label" for="is_web_orderable">
+                                  <span class="onoffswitch-inner" data-on="<?php __('_yesno_ARRAY_T', false, true)?>" data-off="<?php __('_yesno_ARRAY_F', false, true)?>"></span>
+                                  <span class="onoffswitch-switch"></span>
+                                </label>
+                            </div>
+                            
+                            <span>It can't ordered via web </span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-2 col-md-2 col-xs-3">
+                        <div class="form-group">
+                          <label class="control-label"><?php echo "Veg Item"  ?></label>
+                          <div class="switch">
+                            <div class="onoffswitch onoffswitch-data">
+                              <input type="checkbox" class="onoffswitch-checkbox" name="is_veg" id="is_veg" checked>
+                                <label class="onoffswitch-label" for="is_veg">
+                                  <span class="onoffswitch-inner" data-on="<?php __('_yesno_ARRAY_T', false, true)?>" data-off="<?php __('_yesno_ARRAY_F', false, true)?>"></span>
+                                  <span class="onoffswitch-switch"></span>
+                                </label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-2 col-md-2 col-xs-3">
+                        <div class="form-group">
+                          <label class="control-label"><?php echo "VAT"  ?></label>
+                          <div class="switch">
+                            <div class="onoffswitch onoffswitch-data">
+                              <input type="checkbox" class="onoffswitch-checkbox" name="is_vat" id="is_vat" checked>
+                                <label class="onoffswitch-label" for="is_vat">
+                                  <span class="onoffswitch-inner" data-on="<?php __('_yesno_ARRAY_T', false, true)?>" data-off="<?php __('_yesno_ARRAY_F', false, true)?>"></span>
+                                  <span class="onoffswitch-switch"></span>
+                                </label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Added by JR End -->
+
                     <div class="hr-line-dashed"></div>
 
                     <h2><?php __('lblPrice'); ?></h2>

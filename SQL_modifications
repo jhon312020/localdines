@@ -33,6 +33,10 @@ ALTER TABLE `food_delivery_orders_items`  ADD `parent_hash` VARCHAR(50) NULL DEF
 
 if (!defined("PRODUCT_TYPES")) define("PRODUCT_TYPES", array('custom', 'product'));
 
+ALTER TABLE `food_delivery_products` ADD `is_kitchen` BOOLEAN NOT NULL DEFAULT TRUE AFTER `is_featured`, ADD `is_web_orderable` BOOLEAN NOT NULL DEFAULT TRUE AFTER `is_kitchen`, ADD `is_veg` BOOLEAN NOT NULL DEFAULT TRUE AFTER `is_web_orderable`;
+
+ALTER TABLE `food_delivery_products` ADD `is_vat` BOOLEAN NOT NULL DEFAULT TRUE AFTER `is_veg`;
+
 
 //New Setup Database Changes
 
