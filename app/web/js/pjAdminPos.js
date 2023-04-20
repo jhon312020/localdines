@@ -1328,6 +1328,11 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
               url: "#",
             },
             {
+              type: "return",
+              text: " Return",
+              url: "index.php?controller=pjAdminPosOrders&action=pjActionReturnOrderItem&id={:id}",
+            },
+            {
               type: "cancel",
               url: "index.php?controller=pjAdminPosOrders&action=pjActionCancelOrder&id={:id}",
             },
@@ -1449,6 +1454,11 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
               type: "print",
               //text: " Rprint",
               url: "index.php?controller=pjAdminPosOrders&action=pjActionSalePrint&id={:id}&source=index",
+            },
+            {
+              type: "return",
+              text: " Return",
+              url: "index.php?controller=pjAdminPosOrders&action=pjActionReturnOrderItem&id={:id}",
             },
             {
               type: "cancel",

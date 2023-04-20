@@ -15,7 +15,7 @@ if(isset($tpl['arr']) && !empty($tpl['arr']))
 	foreach($tpl['arr'] as $product)
 	{
 		if ($product['status'] == 1) {
-			
+		
 		// $image_path = 'https://placehold.it/220x200';
 
 		if(!empty($product['image'])) {
@@ -35,24 +35,28 @@ if(isset($tpl['arr']) && !empty($tpl['arr']))
 							<div class="row prdRow">
 								<div class="col-md-8 col-sm-8 col-xs-7 text-capitalize pjFdProductName" style="display: flex;flex-direction: column;justify-content: center;">
 									<p class="product-fullname" style="margin-left: 5px;margin-bottom: 0px;">
-									<?php echo pjSanitize::clean($product['name']);?>
-									<span class="upDown">
-										<i class="fa fa-chevron-down" style="margin-left: 7px;"></i>
-										<i class="fa fa-chevron-up" style="margin-left: 7px;"></i>
-	                                </span>
-								    </p>    
+										<?php echo pjSanitize::clean($product['name']);?> 
+										<span class="upDown">
+											<i class="fa fa-chevron-down" style="margin-left: 7px;"></i>
+											<i class="fa fa-chevron-up" style="margin-left: 7px;"></i>
+		                </span>
+		                <?php if ($product['is_veg']) { ?>
+		                <span style="color:green">
+		                	<i class="fa fa-leaf" style="margin-left: 7px;"></i>
+		                </span>
+		                <?php } ?>
+								  </p>    
 									<p class="product-shortname" data-container="body" data-toggle="popover" data-placement="top" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus.">
-									   <?php
-									    $prd_name =  pjSanitize::clean($product['name']);
+								   <?php
+								    $prd_name =  pjSanitize::clean($product['name']);
 										if (strlen($prd_name) > 6) {
-										$show_name = substr($prd_name, 0, 6);
-										 		echo $prd_name;
+											$show_name = substr($prd_name, 0, 6);
+									 		echo $prd_name;
 										} else {
-											   echo $prd_name;
-										   }
-                                           
-									   ?>
-								    </p>
+									   	echo $prd_name;
+								   	}             
+								   ?>
+								  </p>
 									
 								</div><!-- /.col-md-10 col-sm-10 col-xs-10 -->
 								
@@ -60,7 +64,7 @@ if(isset($tpl['arr']) && !empty($tpl['arr']))
 								<div class="col-md-2 col-sm-2 col-xs-3 text-right pjFdProductPrice" style="display: flex;flex-direction: column;justify-content: center;">
 								<p style="margin-bottom: 0px;">
 								<?php
-								if($product['set_different_sizes'] == 'F' || count($product['price_arr']) == 0)
+								if ($product['set_different_sizes'] == 'F' || count($product['price_arr']) == 0)
 								{
 								    echo pjCurrency::formatPrice($product['price']);
 								} 
@@ -70,7 +74,7 @@ if(isset($tpl['arr']) && !empty($tpl['arr']))
 								<!-- <div class="col-md-2 col-sm-2 col-xs-2">
 								
 								</div> -->
-								
+								<?php if ($product['is_web_orderable']) { ?>
 								<div class="col-md-2 col-sm-2 col-xs-2 pjFdProductAdd" style="display: flex;align-items: center;flex-direction: row;justify-content: space-around;">
 									<!-- <div class="row">
 										<div class="col-xs-6"> -->
@@ -89,6 +93,7 @@ if(isset($tpl['arr']) && !empty($tpl['arr']))
 									
 							    	
 							    </div>
+							  <?php } ?>
 								<!-- /.col-md-2 col-sm-2 col-xs-2 -->
 							</div>
 						</a>
@@ -139,7 +144,7 @@ if(isset($tpl['arr']) && !empty($tpl['arr']))
 
 						<br />
 						<?php
-						if(!empty($product['extra_arr']) && $tpl['page_type'] == 'Main')
+						if ($product['is_web_orderable'] && !empty($product['extra_arr']) && $tpl['page_type'] == 'Main')
 						{ 
 							?>
 							<div class="row" style="margin-bottom: 10px;">

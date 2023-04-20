@@ -3333,6 +3333,116 @@ class pjAdminPosOrders extends pjAdmin {
       }
     }
   }
+
+
+  public function pjActionReturnOrderItem() {
+    $this->checkLogin();
+    $this->setLayout('pjActionOrder');
+    if (!pjAuth::factory()->hasAccess()) {
+      $this->sendForbidden();
+      return;
+    }
+    $id = $this->_get->toInt('id');
+    $arr = pjOrderModel::factory()->join('pjClient', "t2.id=t1.client_id", 'left outer')
+      ->join('pjAuthUser', "t3.id=t2.foreign_id", 'left outer')
+      ->select("t1.*,t3.name as client_name, t2.c_title, t3.email as c_email, t3.phone AS c_phone, t2.c_company, t2.c_address_1, t2.c_address_2, t2.c_country, t2.c_state, t2.c_city, t2.c_zip,t2.c_notes,t2.mobile_delivery_info AS c_mobileDeliveryInfo,t2.mobile_offer AS c_mobileOffer,t2.email_receipt AS c_emailReceipt,t2.email_offer AS c_emailOffer,
+            AES_DECRYPT(t1.cc_type, '" . PJ_SALT . "') AS `cc_type`,
+            AES_DECRYPT(t1.cc_num, '" . PJ_SALT . "') AS `cc_num`,
+            AES_DECRYPT(t1.cc_exp, '" . PJ_SALT . "') AS `cc_exp`,
+            AES_DECRYPT(t1.cc_code, '" . PJ_SALT . "') AS `cc_code`,
+            AES_DECRYPT(t3.password, '" . PJ_SALT . "') AS `c_password`")
+      ->find($id)->getData();
+      if (count($arr) <= 0) {
+        pjUtil::redirect(PJ_INSTALL_URL . "index.php?controller=pjAdminPosOrders&action=pjActionIndex&err=AR08&type=Telephone");
+      }
+    $this->set('arr', $arr);
+    $this->getInculdeData();
+    $pjProductPriceModel = pjProductPriceModel::factory();
+    $oi_arr = array();
+    $oi_extras = array();
+    $_oi_arr = pjOrderItemModel::factory()->where('t1.order_id', $arr['id'])->findAll()->getData();
+    foreach ($_oi_arr as $item) {
+      if ($item['type'] == 'product') {
+        $item['price_arr'] = $pjProductPriceModel->reset()
+          ->join('pjMultiLang', sprintf("t2.foreign_id = t1.id AND t2.model = 'pjProductPrice' AND t2.locale = '%u' AND t2.field = 'price_name'", $this->getLocaleId()) , 'left')
+          ->select("t1.*, t2.content AS price_name")
+          ->where('product_id', $item['foreign_id'])->findAll()
+          ->getData();
+      } else if ($item['type'] == 'extra') {
+        $oi_extras[$item['hash']] = $item;
+      }
+      $oi_arr[] = $item;
+    }
+    //$this->pr($oi_arr);
+    $this->set('oi_extras', $oi_extras);
+    $product_ids = array_column($oi_arr, 'foreign_id');
+    $product_arr = pjProductModel::factory()->select('t1.id, t2.content AS name, t1.set_different_sizes, t1.price, t1.status, t1.preparation_time, t1.image, (SELECT COUNT(*) FROM `' . pjProductExtraModel::factory()
+          ->getTable() . '` AS TPE WHERE TPE.product_id=t1.id) as cnt_extras')
+          ->join('pjMultiLang', "t2.foreign_id = t1.id AND t2.model = 'pjProduct' AND t2.locale = '" . $this->getLocaleId() . "' AND t2.field = 'name'", 'left')
+          ->whereIn("t1.id", $product_ids)->groupBy('t1.id, t1.set_different_sizes, t1.price')
+          ->findAll()
+          ->getData();
+    $product_arr = array_combine(array_column($product_arr, 'id'),$product_arr);
+    //$this->pr($product_arr);
+    $category = pjProductCategoryModel::factory()->select('t1.*')
+      ->findAll()
+      ->getData();
+    $this->set('product_arr', $product_arr);
+    foreach ($oi_arr as $oi => $o) {
+      foreach ($category as $k => $v) {
+        if ($o['foreign_id'] == $v['product_id']) {
+          $oi_arr[$oi]['category'] = $v['category_id'];
+        }
+      }
+    }
+    $this->set('oi_arr', $oi_arr);
+    $spcl_ins = pjOrderItemModel::factory()->where('t1.order_id', $id)->findAll()->getData();
+    $this->set('spcl_ins', $spcl_ins);
+    $client_arr = pjClientModel::factory()->select("t1.*, t2.email as c_email, t2.name as c_name, t2.phone as c_phone")
+      ->join("pjAuthUser", "t2.id=t1.foreign_id", 'left outer')
+      ->orderBy('t2.name ASC')
+      ->findAll()
+      ->getData();
+    $this->set('client_arr', $client_arr);
+
+    if (pjObject::getPlugin('pjPayments') !== NULL) {
+      $this->set('payment_option_arr', pjPaymentOptionModel::factory()
+        ->getOptions($this->getForeignId()));
+      $this->set('payment_titles', pjPayments::getPaymentTitles($this->getForeignId() , $this->getLocaleId()));
+    } else {
+      $this->set('payment_titles', __('payment_methods', true));
+    }
+
+    $extra_arr = pjExtraModel::factory()->join('pjMultiLang', sprintf("t2.foreign_id = t1.id AND t2.model = 'pjExtra' AND t2.locale = '%u' AND t2.field = 'name'", $this->getLocaleId()) , 'left')
+        ->select("t1.*, t2.content AS name")
+        ->orderBy("name ASC")
+        ->findAll()
+        ->getData();
+    $this->set('extra_arr', $extra_arr);
+
+    $special_instructions = pjSpecialInstructionModel::factory()->join('pjMultiLang', "t2.foreign_id = t1.id AND t2.model = 'pjSpecialInstruction' AND t2.locale = '" . $this->getLocaleId() . "' AND t2.field = 'name'", 'left')
+      ->select("t1.*, t2.content AS instruction")
+      ->findAll()
+      ->getData();
+    $this->set('special_instructions', $special_instructions);
+    $selTableName = '';
+    $table_list = $this->getRestaurantTables();
+    if ($arr['origin'] == 'Pos') {
+      if (array_key_exists($arr['table_name'], $table_list)) {
+        $total_persons = $arr['total_persons'];
+        $order_title = 'Eat In';
+        $selTableName = $table_list[$arr['table_name']].' Count '.$total_persons;
+      } else {
+        $order_title = 'Take Away';
+      }
+    } else if ($arr['origin'] == 'Telephone') {
+      $order_title = 'Telephone';
+    } else {
+      $order_title = 'Web';
+    }
+    $this->set('order_title', $order_title);
+    $this->set('selTableName', $selTableName);
+  }
   private function pendingOrderCount($queryOrigin) {
     $today = date('Y-m-d', time());
     $toDay = $today . " " . "00:00:00";

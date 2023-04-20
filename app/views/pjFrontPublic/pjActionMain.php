@@ -91,13 +91,11 @@
 							</div><hr>
 						</div>
 		                <div class="tab-content">
-		                    <?php 
-		                        foreach($tpl['main']['category_arr'] as $k => $v) {
-		                        ?>
-		                        
-		                        <div role="tabpanel" class="tab-pane <?php echo $k==0? 'active': ''; ?>" id="tab<?php echo $v['id']; ?>"></div>
-		                       
-		                        <?php
+	                    <?php 
+                        foreach($tpl['main']['category_arr'] as $k => $v) {
+                      ?>
+                        	<div role="tabpanel" class="tab-pane <?php echo $k==0? 'active': ''; ?>" id="tab<?php echo $v['id']; ?>"></div>
+	                        <?php
 		                    } ?>
 		                </div>
 		            </div>

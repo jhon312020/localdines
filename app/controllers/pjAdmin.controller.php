@@ -646,7 +646,7 @@ class pjAdmin extends pjAppController {
       //\\$this->pr($_oi_arr);
       foreach ($_oi_arr as $item) {
       	$item['is_kitchen'] = 1;
-        $item['is_eatin'] = 1;
+        $item['is_web_orderable'] = 1;
         $item['is_veg'] = 1;
         if ($item['type'] == 'product') {
           $item['price_arr'] = $pjProductPriceModel->reset()
@@ -666,7 +666,7 @@ class pjAdmin extends pjAppController {
             }
             $item['product_name'] = $product_arr[$item['foreign_id']]['name'];
             $item['is_kitchen'] = $product_arr[$item['foreign_id']]['is_kitchen'];
-            $item['is_eatin'] = $product_arr[$item['foreign_id']]['is_eatin'];
+            $item['is_web_orderable'] = $product_arr[$item['foreign_id']]['is_web_orderable'];
             $item['is_veg'] = $product_arr[$item['foreign_id']]['is_veg'];
         }
         if ($item['type'] == 'extra') {
