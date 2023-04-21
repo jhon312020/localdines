@@ -63,6 +63,7 @@ $isScriptReportsIndex = $isScriptReportsController && in_array($action_name, arr
 $isScriptPOSXReportsIndex = $isScriptReportsController && in_array($action_name, array('pjActionPOSXIndex'));
 $isScriptPOSZReportsIndex = $isScriptReportsController && in_array($action_name, array('pjActionPOSZIndex'));
 $isScriptCancelReturnReportsIndex = $isScriptReportsController && in_array($action_name, array('pjActionCancelReturnReport'));
+$isScriptTopProductsReportIndex = $isScriptReportsController && in_array($action_name, array('pjActionTopProductsReport'));
 
 // Qr Code
 $isScriptQrCodeController = in_array($controller_name, array('pjAdminQrCode'));
@@ -238,12 +239,12 @@ $hasAccessScriptOptionsPrintOrder       = pjAuth::factory('pjAdminOptions', 'pjA
 <?php endif; ?>
 
 <?php if ($hasAccessScriptPOSReportsIndex):  //menuPOSReports ?>
-  <li<?php echo $isScriptPOSXReportsIndex || $isScriptPOSZReportsIndex || $isScriptCancelReturnReportsIndex ? ' class="active"' : NULL; ?>>
+  <li<?php echo $isScriptPOSXReportsIndex || $isScriptPOSZReportsIndex || $isScriptCancelReturnReportsIndex || $isScriptTopProductsReportIndex ? ' class="active"' : NULL; ?>>
         <a href="#"><i class="fa fa-files-o"></i> <span class="nav-label"><?php __('menuReports');?></span><span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse">
             <li<?php echo $isScriptPOSXReportsIndex ? ' class="active"' : NULL; ?>><a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminReports&amp;action=pjActionPOSXIndex"><?php __('menuXReport');?></a></li>
             <li<?php echo $isScriptPOSZReportsIndex ? ' class="active"' : NULL; ?>><a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminReports&amp;action=pjActionPOSZIndex"><?php __('menuZReport');?></a></li>
-            <li<?php echo $isScriptCancelReturnReportsIndex ? ' class="active"' : NULL; ?>><a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminReports&amp;action=pjActionCancelReturnReport"><?php echo "Cancel/Return Report"; //__('menuZReport');?></a></li>
+            <li<?php echo $isScriptTopProductsReportIndex || $isScriptCancelReturnReportsIndex ? ' class="active"' : NULL; ?>><a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminReports&amp;action=pjActionTopProductsReport&amp;loadData=pjActionGetTopProductsReport"><?php echo "Other Reports"; //__('menuZReport');?></a></li>
         </ul>
     </li>
 <?php endif; ?>

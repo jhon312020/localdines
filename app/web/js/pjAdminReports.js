@@ -54,6 +54,28 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 			});
 		}
 
+    if ($("#id").length > 0) {
+      $.ajax({
+        type: "POST",
+        async: false,
+        global: false,
+        url: "index.php?controller=pjAdminReports&action=pjActionCheckOrderTime",
+        success: function (data) {
+       
+          if(data.status == 'true') {
+            var order_id =data.orders;
+            swal({
+              title: "Your order is more than one hour old",
+              type: "warning",
+              text: "Order ID: "+ order_id.join("\n"),
+              confirmButtonColor: "#DD6B55",
+              confirmButtonText: "OK",
+              closeOnConfirm: false,                
+            });
+          }
+        },
+      });
+    } 
 		
 		
 		if ($("#grid").length > 0 && datagrid) {
@@ -131,6 +153,45 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 			});
 		}
 
+    function formatImage(val, obj) {
+      var src = val ? val : 'app/web/img/backend/no_image.png';
+      return ['<img src="', src, '" style="width: 84px" />'].join("");
+    }
+    if ($("#grid_products").length > 0 && datagrid) {
+      if(loadData == "pjActionGetTopProductsReport") {
+        $("#heading-Product-list").html("Top Selling Products");
+      } else if(loadData == "pjActionGetNonProductsReport") {
+        $("#heading-Product-list").html("Non Selling Products");
+      }
+      var $grid = $("#grid_products").datagrid({
+        buttons: [],
+        columns: [{text: myLabel.image, type: "text", sortable: false, editable: false, renderer: formatImage},
+                  {text: myLabel.name, type: "text", sortable: false, editable: true},
+                  {text: myLabel.count, type: "text", sortable: false, editable: true, 
+                    editableRenderer: function () {
+                      return 0;
+                    },
+                    saveUrl: "index.php?controller=pjAdminProducts&action=pjActionSaveFeatured&id={:id}",
+                    positiveLabel: myLabel.yes, positiveValue: "1", negativeLabel: myLabel.no, negativeValue: "0", 
+                    cellClass: "text-center"}],
+        dataUrl: "index.php?controller=pjAdminReports&action="+loadData + pjGrid.queryString,
+        dataType: "json",
+        fields: ['image', 'name', 'count'],
+        paginator: {
+          gotoPage: true,
+          paginate: true,
+          total: true,
+          rowCount: true
+        },
+        saveUrl: "index.php?controller=pjAdminProducts&action=pjActionSaveProduct&id={:id}",
+        select: {
+          field: "id",
+          name: "record[]",
+          cellClass: 'cell-width-2'
+        }
+      });
+    }
+
 		function formatStatus(val, obj) {
       if (val == "pending") {
         return (
@@ -178,6 +239,27 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 			$('.ibox-content').removeClass('sk-loading');
 		}
 
+    function viewProductList(action) {
+      $('.ibox-content').addClass('sk-loading');
+      var from = $('#date_from').val();
+      var to = $('#date_to').val();
+      var q = $('#query').val();
+      var category = $('#filter_category').val();
+      var content = $grid.datagrid("option", "content"),
+      cache = $grid.datagrid("option", "cache");
+      $.extend(cache, {
+        date_to: to,
+        date_from: from,
+        q: q,
+        category_id: category,
+        page: page
+      });
+      $grid.datagrid("option", "cache", cache);
+      $grid.datagrid("load", "index.php?controller=pjAdminReports&action="+action, "count", "DESC", content.page, content.rowCount);
+      return false;
+      $('.ibox-content').removeClass('sk-loading');
+    }
+
 		$(document).ready(function() {
 			if (updated_category != '' && page > 0) {
 				// var updated_category = $("#updated_product_category");
@@ -223,8 +305,71 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
             e.preventDefault();
           }
           generateList.call(null);
+        }).on("submit", ".frm-filter-TopProduct", function (e) {
+          if (e && e.preventDefault) {
+            e.preventDefault();
+          }
+          // viewTopProductList.call(null);
+          viewProductList(loadData);
+        }).on("change", '#filter_category', function(e){
+          var q = $('#query').val();
+          var $this = $(this),
+            content = $grid.datagrid("option", "content"),
+            cache = $grid.datagrid("option", "cache");
+          $.extend(cache, {
+            q: q,
+            category_id: $this.val(),
+          });
+          $grid.datagrid("option", "cache", cache);
+          $grid.datagrid("load", "index.php?controller=pjAdminReports&action="+loadData, "count", "DESC", content.page, content.rowCount);
+          return false;
+          
         })
-		});
+        .on("change", '#filter_reports', function(e){
+          var q = $('#query').val();
+          var $this = $(this);
+          console.log($this.val());
+          switch ($this.val()) { 
+            case 'top-selling': 
+              loadData = "pjActionGetTopProductsReport";
+              $("#heading-Product-list").html("Top Selling Products");
+              viewProductList('pjActionGetTopProductsReport');
+              break;
+            case 'non-selling': 
+              loadData = "pjActionGetNonProductsReport"
+              $("#heading-Product-list").html("Non Selling Products");
+              viewProductList('pjActionGetNonProductsReport');
+              break;
+            case 'cancel-return-Report': 
+              window.location.replace(app_url+"index.php?controller=pjAdminReports&action=pjActionCancelReturnReport");
+              break;
+            default:
+              viewProductList.call('pjActionGetTopProductsReport');
+          }
+          console.log(loadData);
+          
+        })
+        .on("change", '#filter_reports2', function(e){
+          var q = $('#query').val();
+          var $this = $(this);
+          console.log($this.val());
+          switch ($this.val()) { 
+            case 'top-selling': 
+              window.location.replace(app_url+"index.php?controller=pjAdminReports&action=pjActionTopProductsReport&loadData=pjActionGetTopProductsReport");
+              break;
+            case 'non-selling': 
+              window.location.replace(app_url+"index.php?controller=pjAdminReports&action=pjActionTopProductsReport&loadData=pjActionGetNonProductsReport");
+              break;
+            case 'cancel-return-Report': 
+              window.location.replace(app_url+"index.php?controller=pjAdminReports&action=pjActionCancelReturnReport");
+              break;
+            default:
+              viewProductList.call('pjActionGetTopProductsReport');
+          }
+          
+        })
+	  });
+
 
 		$(document).on("change", "#location_id", function (e) {
 			generateReport.call(null);

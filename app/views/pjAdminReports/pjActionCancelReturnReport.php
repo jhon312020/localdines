@@ -2,7 +2,7 @@
   <div class="col-sm-12">
     <div class="row">
       <div class="col-lg-12 col-md-12 col-sm-12">
-        <h2>Cancel/Return Orders<?php //__('infoExtrasTitle');?></h2>
+        <h2>Cancel/Return Orders<?php //echo $tpl['loadData'];//__('infoExtrasTitle');?></h2>
       </div>
     </div><!-- /.row -->
   </div><!-- /.col-md-12 -->
@@ -13,7 +13,13 @@
     <div class="ibox float-e-margins">
       <div class="ibox-content">
         <div class="row">
-          <div class="col-md-4"></div><!-- /.col-md-6 -->
+          <div class="col-md-4">
+            <select name="type" id="filter_reports2" class="form-control">
+              <option value="top-selling">Top Selling Products</option>
+              <option value="non-selling">Non Selling Products</option>
+              <option <?php if($tpl['loadData'] == "CancelRetrun") { echo "selected"; } ?> value="cancel-return-Report">Cancel and Return Reports</option>
+            </select>
+          </div><!-- /.col-md-6 -->
           <div class="col-md-4">
             <form action="" method="get" class="form-horizontal frm-filter">
               <div class="input-group m-b-md">
@@ -102,4 +108,5 @@
   myLabel.delivered = '<?php echo "Delivered"; ?>';
   myLabel.posType = '<?php echo "Pos Type"; ?>';
   myLabel.paymentType = '<?php echo "Payment"; ?>';
+  var app_url = "<?php echo APP_URL;?>";
 </script>

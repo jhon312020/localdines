@@ -404,15 +404,155 @@ class pjAdminReports extends pjAdmin {
       $this->sendForbidden();
       return;
     }
+    $this->set('loadData', "CancelRetrun");
     $this->appendJs('jquery.datagrid.js', PJ_FRAMEWORK_LIBS_PATH . 'pj/js/');
     $this->appendCss('datepicker3.css', PJ_THIRD_PARTY_PATH . 'bootstrap_datepicker/');
     $this->appendJs('bootstrap-datepicker.js', PJ_THIRD_PARTY_PATH . 'bootstrap_datepicker/');
     $this->appendJs('pjAdminReports.js');
   }
 
+  public function pjActionTopProductsReport() {
+    $this->checkLogin();
+    if (!pjAuth::factory()->hasAccess()) {
+      $this->sendForbidden();
+      return;
+    }
+    $loadData = $this->_get->toString('loadData');
+
+    $categories = pjCategoryModel::factory()
+    ->join('pjMultiLang', sprintf("t2.foreign_id = t1.id AND t2.model = 'pjCategory' AND t2.locale = '%u' AND t2.field = 'name'", $this->getLocaleId()), 'left')
+    ->where('t1.status', 'T')
+    ->select(sprintf("t1.*, t2.content AS name, (SELECT COUNT(TPC.product_id) FROM `%s` AS TPC WHERE TPC.category_id=t1.id) AS cnt_products", pjProductCategoryModel::factory()->getTable()))
+    ->findAll()
+    ->getData();
+    $this->set('categories', $categories);
+    $this->set('loadData', $loadData);
+
+
+    $this->appendJs('jquery.datagrid.js', PJ_FRAMEWORK_LIBS_PATH . 'pj/js/');
+    $this->appendCss('datepicker3.css', PJ_THIRD_PARTY_PATH . 'bootstrap_datepicker/');
+    $this->appendJs('bootstrap-datepicker.js', PJ_THIRD_PARTY_PATH . 'bootstrap_datepicker/');
+    $this->appendJs('pjAdminReports.js');
+  }
+
+  public function pjActionGetTopProductsReport() {
+    $this->setAjax(true);
+  
+    if ($this->isXHR())
+    {
+      $date_from = date('Y-m-d 00:00:00', strtotime('-3 month'));
+      
+      $pjOrderItemModel = pjOrderItemModel::factory()
+        ->where("(t1.order_id IN (SELECT TPC.id FROM `".pjOrderModel::factory()->getTable()."` AS TPC WHERE TPC.status = 'delivered'  AND TPC.created >='".$date_from."'))")
+        ->where('t1.status', null)
+        ->where('t1.type', 'product')
+        ->join('pjProduct', "t2.id = t1.foreign_id", 'left')
+        ->join('pjMultiLang', "t3.foreign_id = t1.foreign_id AND t3.model = 'pjProduct' AND t3.locale = '".$this->getLocaleId()."' AND t3.field = 'name'", 'left')
+        ->groupBy('t1.foreign_id')
+        ->orderBy('count DESC');
+      
+      if ($this->_get->toString('q')) {
+        $q = $this->_get->toString('q');
+        $pjOrderItemModel->where("(t3.content LIKE '%$q%')");
+      }
+      if ($category_id = $this->_get->toInt('category_id'))
+      {
+          $pjOrderItemModel->where("(t2.id IN (SELECT TPC.product_id FROM `".pjProductCategoryModel::factory()->getTable()."` AS TPC WHERE TPC.category_id='".$category_id."'))");
+      }
+
+      $column = 'count';
+      $direction = 'DESC';
+      if ($this->_get->toString('column') && in_array(strtoupper($this->_get->toString('direction')), array('ASC', 'DESC')))
+      {
+          $column = $this->_get->toString('column');
+          $direction = strtoupper($this->_get->toString('direction'));
+      }
+
+      $total = $pjOrderItemModel->findCount()->getData();
+      $rowCount = $this->_get->toInt('rowCount') ?: 10;
+      $pages = ceil($total / $rowCount);
+      $page = $this->_get->toInt('page') ?: 1;
+      //$page = 3;
+      $offset = ((int) $page - 1) * $rowCount;
+      if ($page > $pages)
+      {
+        $page = $pages;
+      }
+      
+      $data = $pjOrderItemModel
+        ->select('t1.foreign_id, t3.content as name, t2.image, COUNT(*) as count')
+        ->orderBy("$column $direction")
+        ->limit($rowCount, $offset)
+        ->findAll()
+        ->getData(); 
+      pjAppController::jsonResponse(compact('data', 'total', 'pages', 'page', 'rowCount', 'column', 'direction'));
+    }
+    exit;
+  }
+
+  public function pjActionGetNonProductsReport() {
+    $this->setAjax(true);
+  
+    if ($this->isXHR())
+    {
+      $date_from = date('Y-m-d 00:00:00', strtotime('-3 month'));
+
+      $pjOrderItemModel = pjOrderItemModel::factory()
+        ->where("(t1.order_id IN (SELECT TPC.id FROM `".pjOrderModel::factory()->getTable()."` AS TPC WHERE TPC.status = 'delivered'  AND TPC.created >='".$date_from."'))")
+        ->where('t1.status', null)
+        ->where('t1.type', 'product')
+        ->select('t1.foreign_id')
+        ->groupBy('t1.foreign_id')
+        ->findAll()
+        ->getData(); 
+      $order_ids = implode(", ",array_column($pjOrderItemModel, 'foreign_id'));
+      $pjProductModel = pjProductModel::factory()
+        ->where("(t1.id NOT IN ($order_ids))")
+        ->join('pjMultiLang', "t2.foreign_id = t1.id AND t2.model = 'pjProduct' AND t2.locale = '".$this->getLocaleId()."' AND t2.field = 'name'", 'left')
+        ->groupBy('t1.id');
+      
+      if ($this->_get->toString('q')) {
+        $q = $this->_get->toString('q');
+        $pjProductModel->where("(t2.content LIKE '%$q%')");
+      }
+      if ($category_id = $this->_get->toInt('category_id'))
+      {
+          $pjProductModel->where("(t1.id IN (SELECT TPC.product_id FROM `".pjProductCategoryModel::factory()->getTable()."` AS TPC WHERE TPC.category_id='".$category_id."'))");
+      }
+
+      $column = 'count';
+      $direction = 'DESC';
+      if ($this->_get->toString('column') && in_array(strtoupper($this->_get->toString('direction')), array('ASC', 'DESC')))
+      {
+          $column = $this->_get->toString('column');
+          $direction = strtoupper($this->_get->toString('direction'));
+      }
+
+      $total = $pjProductModel->findCount()->getData();
+      $rowCount = $this->_get->toInt('rowCount') ?: 10;
+      $pages = ceil($total / $rowCount);
+      $page = $this->_get->toInt('page') ?: 1;
+      //$page = 3;
+      $offset = ((int) $page - 1) * $rowCount;
+      if ($page > $pages)
+      {
+        $page = $pages;
+      }
+      
+      $data = $pjProductModel
+        ->select('t1.id as foreign_id, t2.content as name, t1.image, 0 as count')
+        ->orderBy("$column $direction")
+        ->limit($rowCount, $offset)
+        ->findAll()
+        ->getData(); 
+      pjAppController::jsonResponse(compact('data', 'total', 'pages', 'page', 'rowCount', 'column', 'direction'));
+    }
+    exit;
+  }
+
   public function pjActionGetCancelReturnOrders() {
     $this->setAjax(true);
-    
+   
     if ($this->isXHR()) {
       $pjOrderModel = pjOrderModel::factory();
       //$pjOrderItemModel = pjOrderItemModel::factory();
@@ -421,7 +561,7 @@ class pjAdminReports extends pjAdmin {
       $to = $today . " " . "23:59:59";
       if ($q = $this->_get->toString('q')) {
         // MEGAMIND
-     //    $pjOrderModel->where("(t1.id ='$q' OR t1.uuid = '$q' OR t1.surname LIKE '%$q%' 
+     //    $pjOrderModel->where("(t1.id ='$q' OR t1.uuid = '$q' OR t1.surname LIKE '%$q%'
           // OR t3.email LIKE '%$q%' OR t3.phone = '$q' OR t1.post_code = '$q')");
         //$table_name = $q;
         //$q = preg_replace("/[^0-9]/", "", $q );
@@ -450,14 +590,14 @@ class pjAdminReports extends pjAdmin {
       //     // echo "hello "; exit;
       //     //$pjOrderModel = $pjOrderModel->where("(t1.expense_name LIKE '%$q%' OR t2.name LIKE '%$q%')");
       // }
-        
+       
       $column = 'id';
       $direction = 'desc';
       if ($this->_get->toString('column') && in_array(strtoupper($this->_get->toString('direction')), array('ASC', 'DESC'))) {
         //$column = $this->_get->toString('column');
         //$direction = strtoupper($this->_get->toString('direction'));
       }
-      
+     
 
       $total = $pjOrderModel->findCount()->getData();
       $rowCount = $this->_get->toInt('rowCount') ?: 10;
@@ -467,7 +607,7 @@ class pjAdminReports extends pjAdmin {
       } else {
         $page = 1;
       }
-        
+       
       $offset = ((int) $page - 1) * $rowCount;
       if ($page > $pages) {
         $page = $pages;
@@ -489,13 +629,13 @@ class pjAdminReports extends pjAdmin {
       //$this->pr($pjOrderData);
       $groupedOrderItems = array();
       if ($pjOrderData) {
-        $groupedOrderItems = array_reduce($pjOrderData, function($carry, $item) { 
-            if(!isset($carry[$item['order_id']])){ 
-                $carry[$item['order_id']] = ['order_id'=>$item['order_id'],'cancel_amount'=>$item['price'] * $item['cnt']]; 
-            } else { 
-                $carry[$item['order_id']]['cancel_amount'] += $item['price'] * $item['cnt']; 
-            } 
-            return $carry; 
+        $groupedOrderItems = array_reduce($pjOrderData, function($carry, $item) {
+            if(!isset($carry[$item['order_id']])){
+                $carry[$item['order_id']] = ['order_id'=>$item['order_id'],'cancel_amount'=>$item['price'] * $item['cnt']];
+            } else {
+                $carry[$item['order_id']]['cancel_amount'] += $item['price'] * $item['cnt'];
+            }
+            return $carry;
         });
       }
       //$this->pr($groupedOrderItems);
@@ -526,7 +666,7 @@ class pjAdminReports extends pjAdmin {
           $data[$k]['table_name'] = $table_list[$v['table_name']];
         }
         $data[$k]['table_name'] = "<strong class='list-pos-type'>".$data[$k]['table_name']."</strong>";
-        // !MEGAMIND 
+        // !MEGAMIND
         if ($data[$k]['is_paid'] == 1) {
           if (strtolower($data[$k]['payment_method']) == 'bank') {
             $data[$k]['payment_method'] = 'Card';
@@ -602,6 +742,36 @@ class pjAdminReports extends pjAdmin {
       }
     }
   }
+
+  public function pjActionCheckOrderTime() {
+    $this->setAjax(true);
+    if ($this->isXHR()) {
+      $today = date( 'y-m-d', time ());
+      $today = $today." "."00:00:00";
+      $create = pjOrderModel::factory()
+        ->select('t1.created , t1.order_id')
+        ->where('t1.status', 'pending')
+        ->where('t1.deleted_order', '0')
+        ->where("(t1.created >= '$today')")
+        ->findAll()
+        ->getData();
+      $ids = [];
+      foreach ($create as $k => $created) {
+        $new = strtotime($created['created']);
+        $current_time = time();
+        $time_difference = $current_time - $new;
+        if($time_difference > 3600) {
+          array_push($ids, $created['order_id']);
+        }
+      }
+      if(count($ids)) {
+        return self::jsonResponse(array('status' => 'true', 'orders' => $ids));
+      } else {
+        return self::jsonResponse(array('status' => 'false', 'orders' => 'no pending orders'));
+      }
+    }
+  }
+
 
 }
 ?>

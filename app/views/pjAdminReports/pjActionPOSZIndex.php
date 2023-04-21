@@ -55,3 +55,7 @@
     </div>
   </div>
 </div>
+<div id="id"></div>
+<script type="text/javascript">
+  var zReport = true;
+</script>
