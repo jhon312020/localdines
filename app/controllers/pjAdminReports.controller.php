@@ -439,11 +439,14 @@ class pjAdminReports extends pjAdmin {
   }
 
   public function pjActionTopProductsReport() {
+
     $this->checkLogin();
     if (!pjAuth::factory()->hasAccess()) {
       $this->sendForbidden();
       return;
     }
+    $date_to = date('Y-m-d');
+    $date_from = date('Y-m-d', strtotime('-3 month'));
     $loadData = $this->_get->toString('loadData');
 
     $categories = pjCategoryModel::factory()
@@ -452,6 +455,8 @@ class pjAdminReports extends pjAdmin {
     ->select(sprintf("t1.*, t2.content AS name, (SELECT COUNT(TPC.product_id) FROM `%s` AS TPC WHERE TPC.category_id=t1.id) AS cnt_products", pjProductCategoryModel::factory()->getTable()))
     ->findAll()
     ->getData();
+    $this->set('date_from', $date_from);
+    $this->set('date_to', $date_to);  
     $this->set('categories', $categories);
     $this->set('loadData', $loadData);
 
@@ -468,9 +473,15 @@ class pjAdminReports extends pjAdmin {
     if ($this->isXHR())
     {
       $date_from = date('Y-m-d 00:00:00', strtotime('-3 month'));
+      $date_to = date('Y-m-d 23:59:59');
+      if ($this->_get->toString('date_from') && $this->_get->toString('date_to')) {
+        $date_from = date('Y-m-d 00:00:00', strtotime($this->_get->toString('date_from')));
+        $date_to = date('Y-m-d 23:59:59', strtotime($this->_get->toString('date_to')));
+        // echo $date_from; echo "<br>"; echo $date_to; echo "<br>"; echo date('Y-m-d 23:59:59'); die;
+      }
       
       $pjOrderItemModel = pjOrderItemModel::factory()
-        ->where("(t1.order_id IN (SELECT TPC.id FROM `".pjOrderModel::factory()->getTable()."` AS TPC WHERE TPC.status = 'delivered'  AND TPC.created >='".$date_from."'))")
+        ->where("(t1.order_id IN (SELECT TPC.id FROM `".pjOrderModel::factory()->getTable()."` AS TPC WHERE TPC.status = 'delivered'  AND TPC.created >='".$date_from."' AND TPC.created <='".$date_to."'))")
         ->where('t1.status', null)
         ->where('t1.type', 'product')
         ->join('pjProduct', "t2.id = t1.foreign_id", 'left')
@@ -787,9 +798,10 @@ class pjAdminReports extends pjAdmin {
         $new = strtotime($created['created']);
         $current_time = time();
         $time_difference = $current_time - $new;
-        if($time_difference > 3600) {
-          array_push($ids, $created['order_id']);
-        }
+        array_push($ids, $created['order_id']);
+        // if($time_difference > 3600) {
+        //   array_push($ids, $created['order_id']);
+        // }
       }
       if(count($ids)) {
         return self::jsonResponse(array('status' => 'true', 'orders' => $ids));

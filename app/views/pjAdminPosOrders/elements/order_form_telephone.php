@@ -338,8 +338,8 @@
             <input type="hidden" id="totKorderPrepTimeInput" name="tot_Korder_preparation_time" value="<?php echo $totPrepTime; ?>">
             <input type="hidden" id="prep_time" name="preparation_time"/>
             <div class="row">
-              <div class="col-lg-3 col-md-3 col-sm-6">
-                <label>Choose Chef</label>
+              <div class="col-lg-3 col-md-3 col-sm-6 form-group">
+                <label class="control-label">Choose Chef</label>
                 <select name="select_box_name" id="chef" style="float: right;" class="form-control fdRequired input-small" data-msg-required="<?php __('fd_field_required', false, true);?>">
                   <option value="">Choose Chef</option>
                   <?php foreach ($tpl['chef_arr'] as $chef => $ch) { ?>
