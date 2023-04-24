@@ -4,37 +4,10 @@
     <?php 
       include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/order_inventory_header_buttons.php'; 
     ?> 
-    <?php if (strtolower($tpl['arr']['origin']) == "telephone" || (strtolower($tpl['arr']['origin']) == "web" )) { ?>
-      <div class="col-sm-12" style="min-height: 500px;">
-        <?php include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/order_form_telephone_update.php'; ?>
-      </div>
       <div class="col-sm-12">
-        <?php 
-        // if ($tpl['arr']['status'] == PENDING_STATUS) { 
-        //   include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/payment_element.php';
-        // } ?>
+        <?php include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/order_form_return.php'; ?>
       </div>
-    <?php } elseif ($tpl['arr']['origin'] == "Pos") { ?>
-      <div class="col-sm-12" style="min-height: 500px;">
-        <?php include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/order_form_pos_eatin_update.php'; ?>
-      </div>
-      <div class="col-sm-12">
-        <?php //include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/payment_element.php'; ?>
-      </div> 
-    <?php } ?>
   </div>
-</div>
-<div class="row cus-pb-2 cus-pt-2 bottom_row"> 
-  <div class="col-sm-5">
-    <?php include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/payment_bottom_left_element.php'; ?>
-  </div>
-  <div class="col-sm-7">
-
-  </div>
-</div>
-
-<div class="row wrapper wrapper-content animated fadeInRight">
-
 </div>
 
 <!-- End of Modal -->

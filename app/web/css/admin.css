@@ -907,7 +907,7 @@ td .btn-secondary:hover {
 
 #fdOrderList_1 tbody.main-body {
   display: block; 
-  height: 475px; 
+  height: 400px; 
   overflow-x: hidden; 
   overflow-y: auto;
 }

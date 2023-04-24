@@ -3342,6 +3342,11 @@ class pjAdminPosOrders extends pjAdmin {
       $this->sendForbidden();
       return;
     }
+    if (self::isPost() && $this->_post->toInt('order_update') && $this->_post->toInt('id')) {
+      $post_total = $this->getTotal();
+      $post = $this->_post->raw();
+      $this->pr_die($post);
+    }
     $id = $this->_get->toInt('id');
     $arr = pjOrderModel::factory()->join('pjClient', "t2.id=t1.client_id", 'left outer')
       ->join('pjAuthUser', "t3.id=t2.foreign_id", 'left outer')
