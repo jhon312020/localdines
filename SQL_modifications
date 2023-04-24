@@ -37,6 +37,10 @@ ALTER TABLE `food_delivery_products` ADD `is_kitchen` BOOLEAN NOT NULL DEFAULT T
 
 ALTER TABLE `food_delivery_products` ADD `is_vat` BOOLEAN NOT NULL DEFAULT TRUE AFTER `is_veg`;
 
+24-Apr-2023
+
+ALTER TABLE `food_delivery_expenses` ADD `is_z_viewed` TINYINT NOT NULL AFTER `amount`;
+
 
 //New Setup Database Changes
 

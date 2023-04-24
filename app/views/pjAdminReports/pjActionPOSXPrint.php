@@ -80,6 +80,24 @@
                 <th><?php echo "Total Sales: ";?></th>
                 <td class="currency"><?php echo pjCurrency::formatPrice($tpl['sales_report']['total_amount']); ?></td>
               </tr>
+              <tr>
+                <td colspan="2"><hr/></td>
+              </tr>
+              <tr>
+                <th><?php echo "Total Expenses: ";?></th>
+                <td class="currency"><?php echo pjCurrency::formatPrice($tpl['sales_report']['total_expenses']); ?></td>
+              </tr>
+              <tr>
+                <td colspan="2"><hr/><hr/></td>
+              </tr>
+              <tr>
+                <th><?php echo "Cash in Hand: ";?></th>
+                <td class="currency"><?php 
+                echo pjCurrency::formatPrice($tpl['sales_report']['cash_in_hand']); 
+                ?>
+                
+              </td>
+              </tr>
             </table>       
           </div>
         </div>

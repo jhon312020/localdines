@@ -18,6 +18,7 @@ class pjExpenseModel extends pjAppModel
 		array('name' => 'expense_name', 'type' => 'varchar', 'default' => ':NULL'),
 		array('name' => 'description', 'type' => 'text', 'default' => ':NULL'),
 		array('name' => 'amount', 'type' => 'decimal', 'default' => ':NULL'),
+		array('name' => 'is_z_viewed', 'type' => 'tinyint', 'default' => '0'),
 		array('name' => 'created_date', 'type' => 'datetime', 'default' => ':NULL'),
 		array('name' => 'updated_date', 'type' => 'datetime', 'default' => ':NULL')
 	);

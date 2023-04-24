@@ -77,20 +77,42 @@
   </div>
   <div class="hr-line-dashed"></div>
   <div class="row pos-report-row">
-    <div class="col-xs-4 col-lg-2">
+    <div class="col-xs-3 col-lg-2">
       <label class="control-label">Total Take Away Sales: </label>
     </div>
-    <div class="col-xs-4 col-lg-1">
+    <div class="col-xs-3 col-lg-1">
       <?php echo pjCurrency::formatPrice($tpl['sales_report']['total_direct_sales']); ?>
+    </div>
+    <div class="col-xs-3 col-lg-2">
+      <label class="control-label">Number of Expenses: </label>
+    </div>
+    <div class="col-xs-3 col-lg-1">
+      <?php echo $tpl['sales_report']['num_of_expenses']; ?>
     </div>
   </div>
   <div class="hr-line-dashed"></div>
   <div class="row pos-report-row">
-    <div class="col-xs-4 col-lg-2">
+    <div class="col-xs-3 col-lg-2">
       <label class="control-label">Total Gross Sales: </label>
     </div>
-    <div class="col-xs-4 col-lg-1">
+    <div class="col-xs-3 col-lg-1">
       <?php echo pjCurrency::formatPrice($tpl['sales_report']['total_amount']); ?>
+    </div>
+    <div class="col-xs-3 col-lg-2">
+      <label class="control-label">Total Expenses: </label>
+    </div>
+    <div class="col-xs-3 col-lg-1">
+      <?php echo pjCurrency::formatPrice($tpl['sales_report']['total_expenses']); ?>
+    </div>
+  </div>
+  <div class="hr-line-dashed"></div>
+  <div class="hr-line-dashed"></div>
+  <div class="row pos-report-row">
+    <div class="col-xs-3 col-lg-2">
+      <label class="control-label">Cash in Hand: </label>
+    </div>
+    <div class="col-xs-3 col-lg-1">
+      <?php echo pjCurrency::formatPrice($tpl['sales_report']['cash_in_hand']); ?>
     </div>
   </div>
 </div>

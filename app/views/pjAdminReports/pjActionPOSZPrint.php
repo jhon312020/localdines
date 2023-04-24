@@ -80,6 +80,20 @@
                 <th><?php echo "Total Sales: ";?></th>
                 <td class="currency"><?php echo pjCurrency::formatPrice($tpl['sales_report']['total_amount']); ?></td>
               </tr>
+              <tr>
+                <td colspan="2"><hr/></td>
+              </tr>
+              <tr>
+                <th><?php echo "Total Expenses: ";?></th>
+                <td class="currency"><?php echo pjCurrency::formatPrice($tpl['sales_report']['total_expenses']); ?></td>
+              </tr>
+              <tr>
+                <td colspan="2"><hr/><hr/></td>
+              </tr>
+              <tr>
+                <th><?php echo "Cash in Hand: ";?></th>
+                <td class="currency"><?php echo pjCurrency::formatPrice($tpl['sales_report']['cash_in_hand']); ?></td>
+              </tr>
             </table>       
           </div>
         </div>
@@ -98,12 +112,15 @@
   // your code
     $(document).on("click", "#zReportBtn", function(e) {
       var report_order_ids = "<?php echo $tpl['sales_report']['report_order_ids']; ?>";
+      var expense_ids = "<?php echo $tpl['sales_report']['expense_ids']; ?>";
+      console.log(expense_ids);
       $.ajax({
         type: "POST",
         async: false,
         url: "index.php?controller=pjAdminReports&action=pjActionUpdateZViewReport",
         data: {
-          order_ids: report_order_ids
+          order_ids: report_order_ids,
+          expense_ids: expense_ids
         },
         success: function (data) {
         },
