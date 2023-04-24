@@ -95,7 +95,6 @@
                 <td class="currency"><?php 
                 echo pjCurrency::formatPrice($tpl['sales_report']['cash_in_hand']); 
                 ?>
-                
               </td>
               </tr>
             </table>       

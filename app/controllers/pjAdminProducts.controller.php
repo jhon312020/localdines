@@ -311,7 +311,7 @@ class pjAdminProducts extends pjAdmin {
         }
       }
 
-      if ($q =$this->_get->toString('q')) {
+      if ($q = trim($this->_get->toString('q'))) {
         $pjProductModel->where("(t2.content LIKE '%$q%')");
       }
 
