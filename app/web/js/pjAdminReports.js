@@ -1,6 +1,7 @@
 var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 (function ($, undefined) {
 	$(function () {
+    var $frmProduct = $("#frmProduct");
 		var $frmReport = $("#frmReport"),
 			validate = ($.fn.validate !== undefined),
 			datagrid = ($.fn.datagrid !== undefined);
@@ -27,32 +28,48 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 				$('.ibox-content').removeClass('sk-loading');
 			});
 		}
+
+    function filterProduct() {
+      viewProductList(loadData);
+    }
+
+    if ($('#datePickerOptions').length) {
+      $.fn.datepicker.dates['en'] = {
+        days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+        daysMin: $('#datePickerOptions').data('days').split("_"),
+        daysShort: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+        months: $('#datePickerOptions').data('months').split("_"),
+        monthsShort: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+        format: $('#datePickerOptions').data('format'),
+        weekStart: parseInt($('#datePickerOptions').data('wstart'), 10),
+      };
+    };
 		
 		if ($frmReport.length > 0) {
 			generateReport.call(null);
-			
-			if ($('#datePickerOptions').length) {
-	        	$.fn.datepicker.dates['en'] = {
-	        		days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-	    		    daysMin: $('#datePickerOptions').data('days').split("_"),
-	    		    daysShort: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-	    		    months: $('#datePickerOptions').data('months').split("_"),
-	    		    monthsShort: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-	    		    format: $('#datePickerOptions').data('format'),
-            	weekStart: parseInt($('#datePickerOptions').data('wstart'), 10),
-	    		};
-	        };
-	        $('#date_from').datepicker({
-	            autoclose: true
-	        }).on('changeDate', function (e) {
-	        	generateReport.call(null);
-			});
-	        $('#date_to').datepicker({
-	            autoclose: true
-	        }).on('changeDate', function (e) {
-	        	generateReport.call(null);
-			});
+      $('#date_from').datepicker({
+          autoclose: true
+      }).on('changeDate', function (e) {
+      	generateReport.call(null);
+      });
+      $('#date_to').datepicker({
+          autoclose: true
+      }).on('changeDate', function (e) {
+      	generateReport.call(null);
+	    });
 		}
+    if ($frmProduct.length > 0) {
+      $('#date_from').datepicker({
+          autoclose: true
+      }).on('changeDate', function (e) {
+        filterProduct.call(null);
+      });
+      $('#date_to').datepicker({
+          autoclose: true
+      }).on('changeDate', function (e) {
+        filterProduct.call(null);
+      });
+    }
 
     if ($("#id").length > 0) {
       $.ajax({
@@ -65,7 +82,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           if(data.status == 'true') {
             var order_id =data.orders;
             swal({
-              title: "Your order is more than one hour old",
+              title: "Currently Pending Orders!",
               type: "warning",
               text: "Order ID: "+ order_id.join("\n"),
               confirmButtonColor: "#DD6B55",
@@ -328,7 +345,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
         .on("change", '#filter_reports', function(e){
           var q = $('#query').val();
           var $this = $(this);
-          console.log($this.val());
+          // console.log($this.val());
           switch ($this.val()) { 
             case 'top-selling': 
               loadData = "pjActionGetTopProductsReport";
