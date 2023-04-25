@@ -303,7 +303,7 @@ class pjAdminPosOrders extends pjAdmin {
         'order_id' => $order_id
       ));
       if ($id !== false && (int)$id > 0) {
-        $this->saveOrderItems($post, $id);
+        $this->saveOrderItems($post, $id, false);
         $err = 'AR07';
       } else {
         $err = 'AR04';
@@ -401,7 +401,7 @@ class pjAdminPosOrders extends pjAdmin {
         $keys = array_keys($post['product_id']);
         $pjOrderItemModel->reset()->where('order_id', $id)->whereNotIn('hash', $keys)->eraseAll();
         if ($id !== false && (int)$id > 0) {
-          $this->saveOrderItems($post, $id);
+          $this->saveOrderItems($post, $id, false);
           $err = 'AR07';
         } else {
           $err = 'AR04';
@@ -798,7 +798,7 @@ class pjAdminPosOrders extends pjAdmin {
       if (array_key_exists('return_or_cancel', $post)) {
         $returnOrCancelProducts = array_filter($post['return_or_cancel']);
       }
-      // $this->pr($returnOrCancelProducts);
+      //$this->pr($returnOrCancelProducts);
       foreach ($product_id_arr as $hash => $product_id) {
         $_price = 0;
         $extra_price = 0;
@@ -3040,7 +3040,7 @@ class pjAdminPosOrders extends pjAdmin {
         'order_id' => $order_id
       ));
       if ($id !== false && (int)$id > 0) {
-        $this->saveOrderItems($post, $id);
+        $this->saveOrderItems($post, $id, false);
         $err = 'AR07';
       } else {
         $err = 'AR04';
@@ -3099,7 +3099,7 @@ class pjAdminPosOrders extends pjAdmin {
         $pjOrderItemModel->reset()->where('order_id', $id)->whereNotIn('hash', $keys)->eraseAll();
         //$pjOrderItemModel->reset()->where('order_id', $id)->where('type', 'extra')->whereNotIn('hash', $keys)->eraseAll();
         if ($id !== false && (int)$id > 0) {
-          $this->saveOrderItems($post, $id);
+          $this->saveOrderItems($post, $id, false);
         $err = 'AR07';
         } else {
           $err = 'AR04';
@@ -3345,7 +3345,11 @@ class pjAdminPosOrders extends pjAdmin {
     if (self::isPost() && $this->_post->toInt('order_update') && $this->_post->toInt('id')) {
       $post_total = $this->getTotal();
       $post = $this->_post->raw();
-      $this->pr_die($post);
+      $id = $this->_post->toInt('id');
+      if ($this->saveOrderItems($post, $id, true)) {
+        $rows =  pjOrderModel::factory()->where('id', $id)->modifyAll(array('total' => $post_total['total']))->getAffectedRows();
+      }
+      pjUtil::redirect(PJ_INSTALL_URL . "index.php?controller=pjAdminPosOrders&action=pjActionIndex");
     }
     $id = $this->_get->toInt('id');
     $arr = pjOrderModel::factory()->join('pjClient', "t2.id=t1.client_id", 'left outer')
