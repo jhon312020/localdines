@@ -2,7 +2,7 @@
 <div class="row wrapper wrapper-content animated fadeInRight">
   <div class="col-sm-12 bg-light" id="col-12">
     <?php 
-      include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/order_inventory_header_buttons.php'; 
+      include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/order_return_inventory_header_buttons.php'; 
     ?> 
       <div class="col-sm-12">
         <?php include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/order_form_return.php'; ?>
