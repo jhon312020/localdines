@@ -19,6 +19,8 @@
 <div class="row wrapper wrapper-content animated fadeInRight">
     <div class="col-lg-12">
     	<?php
+      // echo "<pre>"; print_r($tpl['category_id_arr']); echo "</pre>";
+      // echo "<pre>"; print_r($tpl['category_types']); echo "</pre>";
     	$error_code = $controller->_get->toString('err');
     	if (!empty($error_code)) {
   	    $titles = __('error_titles', true);
@@ -253,7 +255,7 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-lg-2 col-md-2 col-xs-3">
+                      <div id="is_veg_div" class="col-lg-2 col-md-2 col-xs-3 <?php echo $tpl['category_types']['status'] && $tpl['arr']['is_veg'] != 1 ? "d-none" : '' ?>">
                         <div class="form-group">
                           <label class="control-label"><?php echo "Veg Item"  ?></label>
                           <div class="switch">

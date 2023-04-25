@@ -202,7 +202,7 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-lg-2 col-md-2 col-xs-3">
+                      <div id="is_veg_div" class="col-lg-2 col-md-2 col-xs-3">
                         <div class="form-group">
                           <label class="control-label"><?php echo "Veg Item"  ?></label>
                           <div class="switch">

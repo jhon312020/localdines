@@ -32,6 +32,28 @@ class pjAdminProducts extends pjAdmin {
     self::jsonResponse(array('status'=> 'OK', 'code'=> 200, 'text'=> ''));
   }
 
+  public function pjActionCheckProductType() {
+    $this->setAjax(true);
+    $post =$this->_post->raw();
+    $categories = pjCategoryModel::factory()
+      ->whereIn('id', $post['cat_array'])
+      ->select('id, product_type')
+      ->groupBy('product_type')
+      ->findAll()->getData();
+    // echo "<pre>";
+    // print_r($categories);
+    // echo "</pre>";
+    $product_types = array_column($categories, 'product_type');
+    if (in_array("none", $product_types) && count($product_types) == 1) {
+      self::jsonResponse(array('status'=> true, 'code'=> 200, 'text'=> 'null'));
+    } elseif (in_array("both", $product_types) || in_array("non-veg", $product_types)) {
+      self::jsonResponse(array('status'=> false, 'code'=> 200, 'text'=> false));
+    } else {
+      self::jsonResponse(array('status'=> false, 'code'=> 200, 'text'=> true));
+    }
+    exit;
+  }
+
   public function pjActionCreate() {
     $post_max_size = pjUtil::getPostMaxSize();
 
@@ -634,11 +656,16 @@ class pjAdminProducts extends pjAdmin {
       }
 
       $arr['i18n']=$pjMultiLangModel->getMultiLang($arr['id'], 'pjProduct');
+      $categories = pjProductCategoryModel::factory()->where("product_id", $id)->findAll()->getDataPair("category_id", "category_id");
+      $category_types = pjCategoryModel::factory()->whereIn("id", $categories)->select('product_type')->groupBy('product_type')->findAll()->getData();
+      $category_types = array_column($category_types, 'product_type');
+      $category_types = $this->getCategoryTypejson($category_types);
       $this->set('arr', $arr);
       $this->setLocalesData();
       $this->set('category_arr', pjCategoryModel::factory()->select('t1.*, t2.content AS name')->join('pjMultiLang', "t2.model='pjCategory' AND t2.foreign_id=t1.id AND t2.field='name' AND t2.locale='" . $this->getLocaleId() . "'", 'left outer')->where('t1.status', 'T')->orderBy('`order` ASC')->findAll()->getData());
       $this->set('extra_arr', pjExtraModel::factory()->select('t1.*, t2.content AS name')->join('pjMultiLang', "t2.model='pjExtra' AND t2.foreign_id=t1.id AND t2.field='name' AND t2.locale='" . $this->getLocaleId() . "'", 'left outer')->orderBy('name ASC')->findAll()->getData());
-      $this->set('category_id_arr', pjProductCategoryModel::factory()->where("product_id", $id)->findAll()->getDataPair("category_id", "category_id"));
+      $this->set('category_id_arr', $categories);
+      $this->set('category_types', $category_types);
       $this->set('extra_id_arr', pjProductExtraModel::factory()->where("product_id", $id)->findAll()->getDataPair("extra_id", "extra_id"));
 
       if ($arr['set_different_sizes']=='T') {
@@ -718,6 +745,21 @@ class pjAdminProducts extends pjAdmin {
     }
 
     exit;
+  }
+
+  protected function getCategoryTypejson($array) {
+    $response = ['status'=> '', 'text'=> ''];
+    if(in_array('none', $array) && count($array) == 1) {
+      $response['status'] = true;
+      $response['text'] = 'null';
+    } elseif (in_array('non-veg', $array) || in_array('both', $array)) {
+      $response['status'] = false;
+      $response['text'] = false;
+    } else {
+      $response['status'] = false;
+      $response['text'] = true;
+    }
+    return $response;
   }
 }
 

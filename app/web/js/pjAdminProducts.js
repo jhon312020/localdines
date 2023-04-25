@@ -377,6 +377,35 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 			});
 		}).on("change", '#category_id', function(e){
 			$(this).valid();
+      // console.log("category changing");
+      let data = $("#category_id").val();
+      console.log(data);
+      $.ajax({
+        type: 'POST',
+        async: true, 
+        url: "index.php?controller=pjAdminProducts&action=pjActionCheckProductType",
+        data: {
+          cat_array : data
+        },
+        success: function(res){
+          let $ele = $('#is_veg_div');
+          let $value = $('#is_veg');
+          if(res.status) {
+            $ele.addClass("d-none");
+            $value.prop("checked", false);
+            console.log("plese hide");
+          } else {
+            $ele.removeClass("d-none");
+            if(res.text) {
+              $value.prop("checked", true);
+              console.log("ennable");
+            } else {
+              $value.prop("checked", false);
+              console.log("dissable");
+            }
+          }
+        }
+      });
 		});
 
 		$(document).ready(function() {

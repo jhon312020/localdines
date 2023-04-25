@@ -82,9 +82,11 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           if(data.status == 'true') {
             var order_id =data.orders;
             swal({
-              title: "Currently Pending Orders!",
+              title: "Please Complete and take reports ",
               type: "warning",
-              text: "Order ID: "+ order_id.join("\n"),
+              html:true,
+              customClass: "swal-width",
+              text: "<h3 style='font-weight: 600; font-size: 22px'>Existing Orders still pending in Order List</h3> <p style='font-size: 22px'>Order ID:<span style='font-weight:bold'><span> "+ order_id.join(", ")+"</p>",
               confirmButtonColor: "#DD6B55",
               confirmButtonText: "OK",
               closeOnConfirm: false,                

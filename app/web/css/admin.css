@@ -950,3 +950,9 @@ td .btn-secondary:hover {
   background-position: center;
   background-repeat: no-repeat;
 }
+
+.swal-width {
+  width: 50%;
+  left: 25%;
+  margin: auto;
+}

@@ -47,20 +47,35 @@ $filter = __('filter', true);
           </div>
         </div>
         
-        <div class="form-group">
-            <label class="control-label"><?php __('lblStatus'); ?></label>
-        
-            <div class="clearfix">
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label class="control-label"><?php echo "Type" //__('lblStatus'); ?></label>
+              <?php $types = ['veg'=> 'Veg', 'non-veg'=> 'Non-Veg', 'both' => 'Both', 'none'=> "None"]; ?>
+              <select name="product_type" id="product_type" class="form-control select2-hidden-accessible required" data-placeholder="-- <?php __('lblChoose'); ?> --" data-msg-required="<?php __('fd_field_required', false, true);?>">
+                <?php foreach($types as $k => $type) { ?>
+                  <option value="<?php echo $k; ?>" <?php echo $tpl['arr']['product_type'] == $k? "selected" : "" ?>><?php echo $type; ?></option>
+                <?php } ?>
+              </select>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label class="control-label"><?php __('lblStatus'); ?></label>
+          
+              <div class="clearfix">
                 <div class="switch onoffswitch-data pull-left">
-                    <div class="onoffswitch">
-                        <input type="checkbox" class="onoffswitch-checkbox" id="status" name="status"<?php echo $tpl['arr']['status']=='T' ? 'checked' : NULL;?>>
-                        <label class="onoffswitch-label" for="status">
-                            <span class="onoffswitch-inner" data-on="<?php echo $filter['active']; ?>" data-off="<?php echo $filter['inactive']; ?>"></span>
-                            <span class="onoffswitch-switch"></span>
-                        </label>
-                    </div>
+                  <div class="onoffswitch">
+                    <input type="checkbox" class="onoffswitch-checkbox" id="status" name="status"<?php echo $tpl['arr']['status']=='T' ? 'checked' : NULL;?>>
+                    <label class="onoffswitch-label" for="status">
+                      <span class="onoffswitch-inner" data-on="<?php echo $filter['active']; ?>" data-off="<?php echo $filter['inactive']; ?>"></span>
+                      <span class="onoffswitch-switch"></span>
+                    </label>
+                  </div>
                 </div>
-            </div><!-- /.clearfix -->
+              </div><!-- /.clearfix -->
+            </div>
+          </div>
         </div>
 
 		<div class="m-t-lg">
