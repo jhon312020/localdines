@@ -41,6 +41,9 @@ ALTER TABLE `food_delivery_products` ADD `is_vat` BOOLEAN NOT NULL DEFAULT TRUE 
 
 ALTER TABLE `food_delivery_expenses` ADD `is_z_viewed` TINYINT NOT NULL AFTER `amount`;
 
+25-Apr-2023
+ALTER TABLE food_delivery_categories ADD product_type ENUM('veg', 'non-veg', 'both', 'none') NOT NULL DEFAULT 'none' AFTER status;
+
 
 //New Setup Database Changes
 

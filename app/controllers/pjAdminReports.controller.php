@@ -530,9 +530,7 @@ class pjAdminReports extends pjAdmin {
 
   public function pjActionGetNonProductsReport() {
     $this->setAjax(true);
-  
-    if ($this->isXHR())
-    {
+    if ($this->isXHR()) {
       $date_from = date('Y-m-d 00:00:00', strtotime('-3 month'));
 
       $pjOrderItemModel = pjOrderItemModel::factory()
@@ -544,24 +542,25 @@ class pjAdminReports extends pjAdmin {
         ->findAll()
         ->getData(); 
       $order_ids = implode(", ",array_column($pjOrderItemModel, 'foreign_id'));
-      $pjProductModel = pjProductModel::factory()
-        ->where("(t1.id NOT IN ($order_ids))")
-        ->join('pjMultiLang', "t2.foreign_id = t1.id AND t2.model = 'pjProduct' AND t2.locale = '".$this->getLocaleId()."' AND t2.field = 'name'", 'left')
-        ->groupBy('t1.id');
+      $pjProductModel = pjProductModel::factory();
+      if ($order_ids) {
+        $pjProductModel->where("(t1.id NOT IN ($order_ids))");
+      }
+        
+      $pjProductModel->join('pjMultiLang', "t2.foreign_id = t1.id AND t2.model = 'pjProduct' AND t2.locale = '".$this->getLocaleId()."' AND t2.field = 'name'", 'left')
+      ->groupBy('t1.id');
       
       if ($this->_get->toString('q')) {
         $q = $this->_get->toString('q');
         $pjProductModel->where("(t2.content LIKE '%$q%')");
       }
-      if ($category_id = $this->_get->toInt('category_id'))
-      {
-          $pjProductModel->where("(t1.id IN (SELECT TPC.product_id FROM `".pjProductCategoryModel::factory()->getTable()."` AS TPC WHERE TPC.category_id='".$category_id."'))");
+      if ($category_id = $this->_get->toInt('category_id')) {
+        $pjProductModel->where("(t1.id IN (SELECT TPC.product_id FROM `".pjProductCategoryModel::factory()->getTable()."` AS TPC WHERE TPC.category_id='".$category_id."'))");
       }
 
       $column = 'count';
       $direction = 'DESC';
-      if ($this->_get->toString('column') && in_array(strtoupper($this->_get->toString('direction')), array('ASC', 'DESC')))
-      {
+      if ($this->_get->toString('column') && in_array(strtoupper($this->_get->toString('direction')), array('ASC', 'DESC'))) {
           $column = $this->_get->toString('column');
           $direction = strtoupper($this->_get->toString('direction'));
       }
@@ -572,8 +571,7 @@ class pjAdminReports extends pjAdmin {
       $page = $this->_get->toInt('page') ?: 1;
       //$page = 3;
       $offset = ((int) $page - 1) * $rowCount;
-      if ($page > $pages)
-      {
+      if ($page > $pages) {
         $page = $pages;
       }
       
@@ -659,11 +657,14 @@ class pjAdminReports extends pjAdmin {
 
       $order_ids = array_column($data, 'id');
       //$this->pr($order_ids);
+      $pjOrderData = "";
       $pjOrderItems = pjOrderItemModel::factory();
-      $pjOrderData = $pjOrderItems->whereIn('order_id', $order_ids)
-      ->whereIn('status', RETURN_TYPES)
-      ->findAll()
-      ->getData();
+      if ($order_ids) {
+        $pjOrderData = $pjOrderItems->whereIn('order_id', $order_ids)
+        ->whereIn('status', RETURN_TYPES)
+        ->findAll()
+        ->getData();
+      }
       //$this->pr($pjOrderData);
       $groupedOrderItems = array();
       if ($pjOrderData) {
