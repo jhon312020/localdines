@@ -766,9 +766,6 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             phone_no: {
               phoneNumber: true,
             },
-            // sms_email: {
-            //   email: true,
-            // },
             voucher_code: {
               required: false,
               voucher: true,
@@ -800,11 +797,8 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             phone_no: {
               phoneNumber: myLabel.phoneNumber_err,
             },
-            // sms_email: {
-            //   email: myLabel.email_err,
-            // },
             voucher_code: {
-              voucher: myLabel.voucher_err,
+              voucher: "voucher code is invalid",
             },
             delivery_fee: {
               delivery_fee: myLabel.delivery_fee_err,
@@ -1109,6 +1103,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           // }
           
           if (data == "true") {
+            console.log(data);
             $("#voucher-container input").attr("data-wt","valid");
             $("#voucher-container input").parent().removeClass("has-error");
             if ($("#voucher-container input-error").length > 0) {
