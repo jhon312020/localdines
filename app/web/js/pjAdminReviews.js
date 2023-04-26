@@ -135,7 +135,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 				q: $this.find("input[name='q']").val()
 			});
 			$grid.datagrid("option", "cache", cache);
-			$grid.datagrid("load", "index.php?controller=pjAdminClients&action=pjActionGetReviews", "id", "ASC", content.page, content.rowCount);
+			$grid.datagrid("load", "index.php?controller=pjAdminReviews&action=pjActionGetReviews", "id", "ASC", content.page, content.rowCount);
 			return false;
 		});
 	});

@@ -13,10 +13,11 @@ class pjAdminReviews extends pjAdmin {
 			// ->find($u_id)
 			// ->getData();
 			// echo $u_phone['phone'];
-		    $pjReviewModel = pjReviewModel::factory()->join('pjProduct', 't2.id=t1.product_id', 'left outer');
+		    $pjReviewModel = pjReviewModel::factory()->join('pjProduct', 't2.id=t1.product_id', 'left outer')
+		    ->join('pjMultiLang', "t3.model='pjProduct' AND t3.foreign_id=t1.product_id AND t3.field='name' AND t3.locale='".$this->getLocaleId()."'", 'left outer');
 			//print_r($pjClientModel);
 			if ($q = $this->_get->toString('q')) {
-				// $pjClientModel->where("(t2.email LIKE '%$q%' OR t2.name LIKE '%$q%' OR t2.u_surname LIKE '%$q%' OR t2.phone='$q' OR t1.c_postcode LIKE '%$q%')");
+				$pjReviewModel->where("(t1.review LIKE '%$q%' OR t3.content like '%$q%' OR t1.type like '%$q%')");
 			}
 			if ($this->_get->toString('status') != '') {
 		    $status = $this->_get->toInt('status');
@@ -38,9 +39,10 @@ class pjAdminReviews extends pjAdmin {
 			if ($page > $pages) {
 				$page = $pages;
 			}
+
 			$pjReviewModel = $pjReviewModel
-			->join('pjMultiLang', "t3.model='pjProduct' AND t3.foreign_id=t1.product_id AND t3.field='name' AND t3.locale='".$this->getLocaleId()."'", 'left outer')
-			->select("t1.*,t2.image,t3.content AS product_name");
+			->join('pjAuthUser', 't4.id=t1.user_id', 'left outer')
+			->select("t1.*,t2.image,t3.content AS product_name, t4.name, t4.phone");
 			if ($this->_get->toString('status') != '') {
 				$pjReviewModel->where('t1.status', $status);
 			}
@@ -50,20 +52,25 @@ class pjAdminReviews extends pjAdmin {
 			->findAll()
 			->getData();
 			//$comments = ['Bad','Poor','Average','Great','Excellent'];
+			//$this->pr($data);
 			foreach($data as $k => $v) {
 				//$data[$k]['rating'] = $comments[$v['rating']-1];
 				$star = $data[$k]['rating'];
 				$data[$k]['rating'] = "<span class='star star_$star'></span>";
 				$data[$k]['created_at'] = date('d-m-Y', strtotime($v['created_at']));
-				if ($v['user_type'] == "client") {
-					$user_info = $this->getUserInfo($v['user_id']);
-					if ($user_info) {
-						$data[$k]['user_type'] = $user_info['name'];
-						$data[$k]['phone'] = $user_info['phone'];
-					} else {
-						$data[$k]['user_type'] = 'Guest';
-						$data[$k]['phone'] = '';
-					}
+				// if ($v['user_type'] == "client") {
+				// 	$user_info = $this->getUserInfo($v['user_id']);
+				// 	if ($user_info) {
+				// 		$data[$k]['user_type'] = $user_info['name'];
+				// 		$data[$k]['phone'] = $user_info['phone'];
+				// 	} else {
+				// 		$data[$k]['user_type'] = 'Guest';
+				// 		$data[$k]['phone'] = '';
+				// 	}
+				// } 
+				if ($v['user_type'] == "client" && $v['name'] != '') {
+					$data[$k]['user_type'] = $v['name'];
+					$data[$k]['phone'] = $v['phone'];
 				} else {
 					$data[$k]['user_type'] = 'Guest';
 					$data[$k]['phone'] = '';

@@ -14,8 +14,7 @@ class pjAdmin extends pjAppController {
 		if (isset($_SESSION[$this->defaultUser]) && $_SESSION[$this->defaultUser]['role_id'] == 3 ) {
 			unset($_SESSION[$this->defaultUser]);
 			pjUtil::redirect(PJ_FRONT_URL);
-          	//header("Location: http://stage.cygnusinfosystems.com.php74-42.lan3-1.websitetestlink.com/localdines/front_localdines/");
-		  	exit;
+	  	exit;
 		}
 		$this->setLayout('pjActionAdmin');
 		if (!is_null($requireLogin) && is_bool($requireLogin)) {
@@ -179,7 +178,7 @@ class pjAdmin extends pjAppController {
 	public function afterFilter() {
 		parent::afterFilter();
 		if ($this->isLoged() && !in_array(@$_REQUEST['action'], array('pjActionLogin'))) {
-		    $this->appendJs('index.php?controller=pjAdmin&action=pjActionMessages', PJ_INSTALL_URL, true);
+	    $this->appendJs('index.php?controller=pjAdmin&action=pjActionMessages', PJ_INSTALL_URL, true);
 		}
   }
 
@@ -277,7 +276,7 @@ class pjAdmin extends pjAppController {
 		// exit;
 		if ($role_id == 4) {
 			$timezone = $this->option_arr['o_timezone']? $this->option_arr['o_timezone']: ADMIN_TIME_ZONE;
-		            date_default_timezone_set($timezone);
+      date_default_timezone_set($timezone);
 			$today = date( 'Y-m-d', time () );	
 			$toDay = $today . " " .  "00:00:00";
 			$latest_delivery = $pjOrderModel
