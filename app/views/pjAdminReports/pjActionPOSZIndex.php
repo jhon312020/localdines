@@ -44,6 +44,7 @@
 					      <label>&nbsp;</label>
   							<div class="form-group m-b-md">
   								<a id="pjFdPrintReport" href="#" data-href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminReports&amp;action=pjActionPOSZPrint" class="btn btn-primary btn-outline"><i class="fa fa-eye"></i> <?php echo 'View';//__('btnPrint');?></a>
+                  <a id="pjPendingOrder" href="index.php?controller=pjAdminPosOrders&action=pjActionIndex" class="btn btn-primary btn-outline"><i class="fa fa-eye"></i> <?php echo 'Order List';//__('btnPrint');?></a>
   							</div>
   						</div>
             </div><!-- /.row -->
@@ -58,4 +59,5 @@
 <div id="id"></div>
 <script type="text/javascript">
   var zReport = true;
+  document.getElementById("pjPendingOrder").style.display = "none";
 </script>

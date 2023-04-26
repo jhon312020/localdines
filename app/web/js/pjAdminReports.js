@@ -91,6 +91,8 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
               confirmButtonText: "OK",
               closeOnConfirm: false,                
             });
+            $('#pjFdPrintReport').hide();
+            $('#pjPendingOrder').show();
           }
         },
       });

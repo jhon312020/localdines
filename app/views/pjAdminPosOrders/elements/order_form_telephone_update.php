@@ -292,8 +292,8 @@
                           <legend>Order Details<span class="pull-right"><span class="spacing">KOrders : <span id="korders"><?php echo count($printedOrders); ?></span> (<?php echo $totPrepTime?> Mins)</span><span class="spacing"><?php echo 'Prep. Time (Mins) : '; ?></span></span></legend>
                           <div class="row">
                         <!-- /.col-md-3 -->
-                        <div class="col-lg-3 col-md-3 col-sm-6">
-                            <label>Choose Chef</label>
+                        <div class="col-lg-3 col-md-3 col-sm-6 form-group">
+                            <label class="control-label">Choose Chef</label>
                             <select name="select_box_name" id="chef" style="float: right;" class="form-control fdRequired input-small" data-msg-required="<?php __('fd_field_required', false, true);?>">
                               <option value="">Choose Chef</option>
                               <?php foreach ($tpl['chef_arr'] as $chef => $ch) { ?>
