@@ -40,6 +40,13 @@ $isScriptSuppliersIndex = $isScriptSuppliersController && in_array($action_name,
 // Permissions Supplier
 $hasAccessScriptSuppliers = 1;
 
+// Returns Controller
+$isScriptOrderReturnsController = in_array($controller_name, array('pjAdminReturns'));
+$isScriptOrderReturnsIndex = $isScriptOrderReturnsController && in_array($action_name, array('pjActionIndex', 'pjActionCreate', 'pjActionUpdate'));
+
+// Permissions Returns
+$hasAccessScriptOrderReturns = 1;
+
 
 // Menu
 $isScriptProductsController       = in_array($controller_name, array('pjAdminProducts'));
@@ -236,6 +243,13 @@ $hasAccessScriptOptionsPrintOrder       = pjAuth::factory('pjAdminOptions', 'pjA
     <li<?php echo $isScriptReportsIndex ? ' class="active"' : NULL; ?>>
         <a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminReports&amp;action=pjActionIndex"><i class="fa fa-files-o"></i> <span class="nav-label"><?php __('menuReports');?></span></a>
     </li>
+<?php endif; ?>
+
+<?php if($hasAccessScriptOrderReturns): ?>
+    <li <?php echo $isScriptOrderReturnsController ? ' class="active"' : NULL; ?>><a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminOrderReturns&amp;action=pjActionIndex">
+        <i class="fa fa-recycle" aria-hidden="true"></i>
+        <span class="nav-label"><?php echo "Retruns";?></span>
+    </a></li>
 <?php endif; ?>
 
 <?php if ($hasAccessScriptPOSReportsIndex):  //menuPOSReports ?>

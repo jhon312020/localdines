@@ -44,6 +44,10 @@ ALTER TABLE `food_delivery_expenses` ADD `is_z_viewed` TINYINT NOT NULL AFTER `a
 25-Apr-2023
 ALTER TABLE food_delivery_categories ADD product_type ENUM('veg', 'non-veg', 'both', 'none') NOT NULL DEFAULT 'none' AFTER status;
 
+26-Apr-23
+
+CREATE TABLE food_delivery_order_returns ( id INT NOT NULL AUTO_INCREMENT, product_name VARCHAR(255), reason TEXT, price DECIMAL(10,2), qty INT, amount DECIMAL(10,2), purchase_date DATETIME, is_z_viewed TINYINT(1) DEFAULT 0, created_date DATETIME, updated_date DATETIME, PRIMARY KEY (id) )
+
 
 //New Setup Database Changes
 
