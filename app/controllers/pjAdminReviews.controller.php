@@ -16,7 +16,7 @@ class pjAdminReviews extends pjAdmin {
 		    $pjReviewModel = pjReviewModel::factory()->join('pjProduct', 't2.id=t1.product_id', 'left outer')
 		    ->join('pjMultiLang', "t3.model='pjProduct' AND t3.foreign_id=t1.product_id AND t3.field='name' AND t3.locale='".$this->getLocaleId()."'", 'left outer');
 			//print_r($pjClientModel);
-			if ($q = $this->_get->toString('q')) {
+			if ($q = trim($this->_get->toString('q'))) {
 				$pjReviewModel->where("(t1.review LIKE '%$q%' OR t3.content like '%$q%' OR t1.type like '%$q%')");
 			}
 			if ($this->_get->toString('status') != '') {
