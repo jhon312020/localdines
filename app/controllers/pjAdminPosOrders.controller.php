@@ -3041,6 +3041,9 @@ class pjAdminPosOrders extends pjAdmin {
       ));
       if ($id !== false && (int)$id > 0) {
         $this->saveOrderItems($post, $id, false);
+        if ($post['response']) {
+          $this->savePaymentResponse($post, $id);
+        }
         $err = 'AR07';
       } else {
         $err = 'AR04';

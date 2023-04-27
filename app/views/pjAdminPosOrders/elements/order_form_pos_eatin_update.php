@@ -22,6 +22,7 @@
   <input type="hidden" id="pos_payment_method" name="pos_payment_method" value="Cash" />
   <input type="hidden" id="is_paid" name="is_paid" value = "0">
   <input type="hidden" id="customer_paid" name="customer_paid" value="0" />
+  <input type="hidden" id="api_payment_response" name="response" value="" />
   <input type="hidden" id="total_persons" name="total_persons" value="<?php echo $tpl['arr']['total_persons'];?>" />
   <div class="row">
     <div class="col-sm-12">

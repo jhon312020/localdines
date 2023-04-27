@@ -1914,9 +1914,15 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
 
               $activeForm = getActiveForm();
               $form = $($activeForm);
-              $form.find('#customer_paid').val($('#payment_modal_pay').val());
+              var saleAmount = $('#payment_modal_pay').val();
+              $form.find('#customer_paid').val(saleAmount);
               $(this).attr("disabled", true);
-              $form.submit();
+              var selPayType = $('#pos_payment_method').val();
+              if (selPayType == "card") {
+                dojoPayment(saleAmount, $form);
+              } else {
+                $form.submit();
+              }
             } else {
               $("#payment_modal_pay").removeClass("cus-input-valid");
 
@@ -2011,6 +2017,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             $('#payment_modal_pay').val(amt);
             showBalance(amt);
           } else {
+            $('#pos_payment_method').val('cash'); 
             $(".money-container .btn").removeClass("d-none");
             $('#payment_modal_pay').val('');
             $('#payment_modal_bal').text('');
@@ -3499,6 +3506,76 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
         
       // });
       // $(document).ready()
+      function dojoPayment(amt, formObj) {
+        console.log(dojo_host);
+        //return;
+        // VCMINVLSIP0 - simulates a successful chip and pin payment
+        // VCMINVLDIP0 - simulates a declined chip and pin payment
+        // VCMINVLSCD0 - simulates a contactless payment with device verification
+        // VCMINVLSIS0 - simulates a signature payment
+        // VCMINVLUIP0 - simulates an unsuccessful payment result
+        // VCMINVLTIP0 - simulates a "TIMED_OUT" payment result
+        let socket = new WebSocket(dojo_host);
+        let terminalID = "VCMINVLUIP0";
+        let saleID = 1;
+        amt = amt.replace(/\./g, "");
+        amt = parseFloat(amt);
+        socket.onopen = function(e) {
+          $("#cover-spin").show(0);
+          var transactionData = { "jsonrpc": "2.0", "method": "sale", "params": { "tid": terminalID, "currency": "GBP", "amount": amt }, "id": saleID };
+          transactionData = JSON.stringify(transactionData);
+          console.log(transactionData);
+          socket.send(transactionData);
+        };
+
+        socket.onmessage = function(event) {
+          //alert(`[message] Data received from server: ${event.data}`);
+          console.log(`${event.data}`);
+          var eventMessage = JSON.parse(event.data);
+          if (eventMessage.hasOwnProperty('result')) {
+            var transactionResult = eventMessage.result.transactionResult;
+            console.log(transactionResult);
+            $("#cover-spin").hide();
+            if (transactionResult == "SUCCESSFUL") {
+              $("#api_payment_response").val(JSON.stringify(eventMessage));
+              //$('#paymentBtn').trigger('click');
+              formObj.submit();
+            } else {
+              socket.close();
+              swal({
+                title: "Transaction Failed",
+                text: transactionResult,
+                // type: "warning",
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "OK",
+                closeOnConfirm: false,
+              },function () {
+                swal.close();
+              });
+            }
+            
+          }
+        };
+
+        socket.onclose = function(event) {
+         console.log('Closed', event.data);
+        };
+
+        socket.onerror = function(error) {
+          console.log('error',error);
+          $("#cover-spin").hide();
+          swal({
+            title: "Transaction Failed",
+            text: error,
+            // type: "warning",
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "OK",
+            closeOnConfirm: false,
+          },function () {
+            swal.close();
+          });
+        }
+      }
       function updateCanRetButtonToRedo(rowObj, rowID, newRowID) {
         var productReturnID = '#productReturn_'+rowID;
         var productReturnObj = rowObj.find(productReturnID);
@@ -3818,7 +3895,6 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
                 }
                
                 if (oldProduct == false) {
-                  console.log('Not old product');
                   $("#products-sec").parent().addClass("ibox-content");
                   $("#products-sec").parent().addClass("sk-loading");
                   $.get("index.php?controller=pjAdminPosOrders&action=pjActionGetProductPrices", {

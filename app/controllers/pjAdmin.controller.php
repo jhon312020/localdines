@@ -704,6 +704,19 @@ class pjAdmin extends pjAppController {
     return $dt;
   }
 
+  public function savePaymentResponse($post, $order_id) {
+  	$pjPaymentResponseModel = pjPaymentResponseModel::factory();
+  	$paymentID = $pjPaymentResponseModel->reset()
+      ->setAttributes(array(
+      'order_id' => $order_id,
+      'method' => "dojo",
+      'response' => $post['response'],
+      'is_active' => 1,
+    ))->insert()
+      ->getInsertId();
+    return $paymentID;
+  }
+
 //public function pjActionCheckNewOrder() {
 	// 	$this->setAjax(true);
   //     if ($this->isXHR())

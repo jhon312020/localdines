@@ -16,6 +16,7 @@
     <input type="hidden" id="total" name="total" value="<?php echo $tpl['arr']['total']; ?>" />
     <input type="hidden" id="origin" name="origin" value="<?php echo $tpl['arr']['origin']; ?>" />
     <input type="hidden" id="customer_paid" name="customer_paid" value="0" />
+    <input type="hidden" id="api_payment_response" name="response" value="" />
     <input type="hidden" id="vouchercode" name="vouchercode" value="<?php echo  stripslashes($tpl['arr']['voucher_code']);?>" />
     <div id="datePickerOptions" style="display:none;" data-wstart="<?php echo (int) $tpl['option_arr']['o_week_start']; ?>" data-format="<?php echo pjUtil::toBootstrapDate($tpl['option_arr']['o_date_format']); ?>" data-months="<?php echo implode("_", $months);?>" data-days="<?php echo implode("_", $short_days);?>"></div>
     <div class="row">
