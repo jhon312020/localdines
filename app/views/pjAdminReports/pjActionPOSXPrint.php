@@ -84,6 +84,14 @@
                 <td colspan="2"><hr/></td>
               </tr>
               <tr>
+                <th><?php echo "Total Return Order Exp: ";?></th>
+                <td class="currency"><?php echo pjCurrency::formatPrice($tpl['sales_report']['total_return_orders']); ?></td>
+              </tr>
+              <tr>
+                <th><?php echo "Total Suppliers Exp: ";?></th>
+                <td class="currency"><?php echo pjCurrency::formatPrice($tpl['sales_report']['total_supplier_exp']); ?></td>
+              </tr>
+              <tr>
                 <th><?php echo "Total Expenses: ";?></th>
                 <td class="currency"><?php echo pjCurrency::formatPrice($tpl['sales_report']['total_expenses']); ?></td>
               </tr>

@@ -12,7 +12,7 @@
   <div class="col-sm-12 col-lg-offset-3 col-lg-6 ">
     <div class="ibox float-e-margins">
       <div class="ibox-content">
-        <form action="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminOrderReturns&amp;action=pjActionCreate" method="post" id="frmCreateSupplier" autocomplete="off">
+        <form action="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminOrderReturns&amp;action=pjActionCreate" method="post" id="frmReturnOrder" autocomplete="off">
           <?php
           include PJ_VIEWS_PATH . 'pjAdminOrderReturns/elements/return_order_form.php';
           ?>

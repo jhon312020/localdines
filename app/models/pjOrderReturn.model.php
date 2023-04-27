@@ -10,7 +10,8 @@ class pjOrderReturnModel extends pjAppModel {
 	protected $table = 'order_returns';
 
 	protected $schema = array(
-		array('name' => 'id', 'type' => 'int', 'default' => ':NULL'),
+    array('name' => 'id', 'type' => 'int', 'default' => ':NULL'),
+		array('name' => 'product_id', 'type' => 'int', 'default' => ':NULL'),
     array('name' => 'product_name', 'type' => 'varchar', 'default' => ':NULL'),
     array('name' => 'reason', 'type' => 'text', 'default' => ':NULL'),
     array('name' => 'price', 'type' => 'decimal', 'default' => ':NULL'),

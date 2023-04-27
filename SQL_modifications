@@ -48,6 +48,10 @@ ALTER TABLE food_delivery_categories ADD product_type ENUM('veg', 'non-veg', 'bo
 
 CREATE TABLE food_delivery_order_returns ( id INT NOT NULL AUTO_INCREMENT, product_name VARCHAR(255), reason TEXT, price DECIMAL(10,2), qty INT, amount DECIMAL(10,2), purchase_date DATETIME, is_z_viewed TINYINT(1) DEFAULT 0, created_date DATETIME, updated_date DATETIME, PRIMARY KEY (id) )
 
+27-Apr-23
+
+ALTER TABLE `food_delivery_order_returns` ADD `product_id` INT NULL DEFAULT NULL AFTER `id`;
+
 
 //New Setup Database Changes
 

@@ -19,7 +19,7 @@
           <div class="col-md-4">
             <form action="" method="get" class="form-horizontal frm-filter">
               <div class="input-group m-b-md">
-                <input type="text" name="q" placeholder="<?php __('plugin_base_btn_search', false, true); ?>" class="form-control">
+                <input type="text" id="query" name="q" placeholder="<?php __('plugin_base_btn_search', false, true); ?>" class="form-control">
                 <div class="input-group-btn">
                   <button class="btn btn-primary" type="submit">
                     <i class="fa fa-search"></i>

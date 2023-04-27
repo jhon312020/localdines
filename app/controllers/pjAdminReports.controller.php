@@ -341,11 +341,15 @@ class pjAdminReports extends pjAdmin {
     $pjExpenseModel = pjExpenseModel::factory();
     $pjExpenseModel->where(sprintf("( (DATE(created_date) BETWEEN '%1\$s' AND '%2\$s') )", $date_from, $date_to));
 
+    $pjOrderReturn = pjOrderReturnModel::factory();
+    $pjOrderReturn->where(sprintf("( (DATE(created_date) BETWEEN '%1\$s' AND '%2\$s') )", $date_from, $date_to));
+
 
     $pjOrderModel->where('t1.deleted_order', 0);
     if ($zReport) {
     	$pjOrderModel->where('t1.is_z_viewed', 0);
       $pjExpenseModel->where('t1.is_z_viewed', 0);
+      $pjOrderReturn->where('t1.is_z_viewed', 0);
     }
     $pjOrderModel->where('t1.status', 'delivered');
     //$num_of_sales = $pjOrderModel->findCount()->getData();
@@ -374,6 +378,8 @@ class pjAdminReports extends pjAdmin {
     $num_of_telephone_sales = 0;
     $num_of_expenses = 0;
     $total_expenses = 0;
+    $total_supplier_exp = 0;
+    $total_return_orders = 0;
     foreach($confirmed_arr as $v) {
       $total_amount += $v['total'];
       //echo '<pre>'; print_r($v); echo '</pre>';
@@ -410,18 +416,32 @@ class pjAdminReports extends pjAdmin {
     }
 
     //Expenses
-    $cash_in_hand = 0;
+    
     $num_of_expenses  = $pjExpenseModel->findCount()->getData();
     $total_expenses_arr = $pjExpenseModel->select("id, amount")->findAll()->getData();
     $expense_ids = array();
     if ($total_expenses_arr) {
       $expense_id_arr = array_column($total_expenses_arr,'id');
       $expense_ids = implode(',', $expense_id_arr);
-      $total_expenses = array_sum(array_column($total_expenses_arr,'amount'));
-      $cash_in_hand = $total_amount - $total_expenses;
+      $total_supplier_exp = array_sum(array_column($total_expenses_arr,'amount'));
+    }
+
+    // Return Order
+    $num_of_return_orders = $pjOrderReturn->findCount()->getData();
+    $total_return_order_arr = $pjOrderReturn->select("id, amount")->findAll()->getData();
+    $return_order_ids = [];
+    if($total_return_order_arr) {
+      $return_order_id_arr = array_column($total_return_order_arr,'id');
+      $return_order_ids = implode(',', $return_order_id_arr);
+      $total_return_orders = array_sum(array_column($total_return_order_arr,'amount'));
     }
     
-    return compact('total_amount', 'num_of_direct_sales', 'total_direct_sales', 'num_of_table_sales', 'total_table_sales', 'num_of_sales', 'num_of_card_sales', 'num_of_cash_sales', 'card_sales', 'cash_sales', 'report_order_ids', 'num_of_pos_sales', 'num_of_web_sales', 'num_of_telephone_sales' , 'num_of_expenses', 'total_expenses', 'expense_ids', 'cash_in_hand');
+    // Cash in hand
+    $cash_in_hand = 0;
+    $total_expenses = $total_supplier_exp + $total_return_orders;
+    $cash_in_hand = $total_amount - $total_expenses;
+
+    return compact('total_amount', 'num_of_direct_sales', 'total_direct_sales', 'num_of_table_sales', 'total_table_sales', 'num_of_sales', 'num_of_card_sales', 'num_of_cash_sales', 'card_sales', 'cash_sales', 'report_order_ids', 'num_of_pos_sales', 'num_of_web_sales', 'num_of_telephone_sales' , 'num_of_expenses', 'total_supplier_exp', 'total_expenses', 'num_of_return_orders', 'total_return_orders', 'expense_ids', 'cash_in_hand');
 	}
 
 

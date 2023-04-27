@@ -56,6 +56,12 @@
     <div class="col-xs-4 col-lg-1">
       <?php echo pjCurrency::formatPrice($tpl['sales_report']['cash_sales']); ?>
     </div>
+    <div class="col-xs-4 col-lg-2">
+      <label class="control-label">Number of Return Orders: </label>
+    </div>
+    <div class="col-xs-4 col-lg-1">
+      <?php echo $tpl['sales_report']['num_of_return_orders']; ?>
+    </div>
   </div>
   <div class="hr-line-dashed"></div>
    <div class="row pos-report-row">
@@ -65,6 +71,12 @@
     <div class="col-xs-4 col-lg-1">
       <?php echo pjCurrency::formatPrice($tpl['sales_report']['card_sales']); ?>
     </div>
+    <div class="col-xs-4 col-lg-2">
+      <label class="control-label">Total Return Orders: </label>
+    </div>
+    <div class="col-xs-4 col-lg-1">
+      <?php echo pjCurrency::formatPrice($tpl['sales_report']['total_return_orders']); ?>
+    </div>
   </div>
   <div class="hr-line-dashed"></div>
   <div class="row pos-report-row">
@@ -73,6 +85,12 @@
     </div>
     <div class="col-xs-4 col-lg-1">
       <?php echo pjCurrency::formatPrice($tpl['sales_report']['total_table_sales']); ?>
+    </div>
+    <div class="col-xs-3 col-lg-2">
+      <label class="control-label">Number of Suppliers Exp: </label>
+    </div>
+    <div class="col-xs-3 col-lg-1">
+      <?php echo $tpl['sales_report']['num_of_expenses']; ?>
     </div>
   </div>
   <div class="hr-line-dashed"></div>
@@ -84,10 +102,10 @@
       <?php echo pjCurrency::formatPrice($tpl['sales_report']['total_direct_sales']); ?>
     </div>
     <div class="col-xs-3 col-lg-2">
-      <label class="control-label">Number of Expenses: </label>
+      <label class="control-label">Total Suppliers Expenses: </label>
     </div>
     <div class="col-xs-3 col-lg-1">
-      <?php echo $tpl['sales_report']['num_of_expenses']; ?>
+      <?php echo pjCurrency::formatPrice($tpl['sales_report']['total_supplier_exp']); ?>
     </div>
   </div>
   <div class="hr-line-dashed"></div>

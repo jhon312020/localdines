@@ -3,15 +3,17 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 	$(function () {
 		"use strict";
     var $frmFindDate = $("#frmFindDate"),
-      $frmCreateSupplier = $("#frmCreateSupplier"),
-      $frmUpdateSupplier = $("#frmUpdateSupplier"),
+      $frmReturnOrder = $("#frmReturnOrder"),
+      $frmUpdateReturnOrder = $("#frmUpdateReturnOrder"),
       $dialogDelete = $("#dialogDeleteImage"),
+      datepicker = ($.fn.datepicker !== undefined),
       dialog = ($.fn.dialog !== undefined),
       chosen = ($.fn.chosen !== undefined),
       multilang = ($.fn.multilang !== undefined),
       validate = ($.fn.validate !== undefined),
       datagrid = ($.fn.datagrid !== undefined),
-      remove_arr = new Array();
+      remove_arr = new Array(),
+      submited = false;
     
 
     var urlParams = new URLSearchParams(window.location.search);
@@ -32,8 +34,8 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 
     if ($("#grid").length > 0 && datagrid) {
       var $grid = $("#grid").datagrid({
-        buttons: [{type: "edit", url: "index.php?controller=pjAdminSuppliers&action=pjActionUpdate&id={:id}"},
-                  {type: "delete", url: "index.php?controller=pjAdminSuppliers&action=pjActionDeleteSupplier&id={:id}"}
+        buttons: [{type: "edit", url: "index.php?controller=pjAdminOrderReturns&action=pjActionUpdate&id={:id}"},
+                  {type: "delete", url: "index.php?controller=pjAdminOrderReturns&action=pjActionDelete&id={:id}"}
                   ],
         columns: [
               {text: myLabel.product_name, type: "text", sortable: false, editable: false},
@@ -61,6 +63,158 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
         }
       });
     }
+
+    if ($('#datePickerOptions').length) {
+      $.fn.datepicker.dates['en'] = {
+        days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+        daysMin: $('#datePickerOptions').data('days').split("_"),
+        daysShort: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+        months: $('#datePickerOptions').data('months').split("_"),
+        monthsShort: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+        format: $('#datePickerOptions').data('format'),
+        weekStart: parseInt($('#datePickerOptions').data('wstart'), 10),
+      };
+    };
+
+    if (chosen) {
+      $("#product_id").chosen();
+    }
+
+    if ($frmReturnOrder.length > 0) {
+      $('#purchase_date').datepicker({
+        autoclose: true
+      });
+      $('#return_date').datepicker({
+        autoclose: true
+      });
+
+      $frmReturnOrder.validate({
+        errorPlacement: function(error, element) {
+          if (element.hasClass('select2-hidden-accessible')) {
+                        error.insertAfter(element.next('.chosen-container'));
+                    } else if (element.parent('.input-group').length) {
+            error.insertAfter(element.parent());
+          } else if (element.parent().parent('.btn-group').length) {
+                        error.insertAfter(element.parent().parent());
+                    } else {
+            error.insertAfter(element);
+          }
+          },
+        ignore: "",
+        invalidHandler: function (event, validator) {
+            $(".pj-multilang-wrap").each(function( index ) {
+            if($(this).attr('data-index') == myLabel.localeId)
+            {
+              $(this).css('display','block');
+            }else{
+              $(this).css('display','none');
+            }
+          });
+          $(".pj-form-langbar-item").each(function( index ) {
+            if($(this).attr('data-index') == myLabel.localeId)
+            {
+              $(this).addClass('btn-primary');
+            }else{
+              $(this).removeClass('btn-primary');
+            }
+          });
+        },
+        submitHandler: function(form){
+          var ladda_buttons = $(form).find('.ladda-button');
+            if(ladda_buttons.length > 0)
+              {
+                var l = ladda_buttons.ladda();
+                l.ladda('start');
+              }
+              form.submit();
+          return false;
+        }
+      });
+    }
+    function viewProductList() {
+      $('.ibox-content').addClass('sk-loading');
+      var q = $('#query').val();
+      var content = $grid.datagrid("option", "content"),
+      cache = $grid.datagrid("option", "cache");
+      $.extend(cache, {
+        q: q,
+        page: page
+      });
+      $grid.datagrid("option", "cache", cache);
+      $grid.datagrid("load", "index.php?controller=pjAdminOrderReturns&action=pjActionGetReturnOrderList", "t1.product_name", "ASC", content.page, content.rowCount);
+      return false;
+      $('.ibox-content').removeClass('sk-loading');
+    }
+
+    function getTotal(qty, price) {
+      let total = qty*price
+      return total.toFixed(3);
+    }
+
+    function changeAmount() {
+      let qty = $('#quantity').val();
+      let price = $('#price').val();
+      $('#amount').val(getTotal(qty, price));
+    }
+
+    function emptyForm() {
+      $('#quantity').val('');
+      $('#price').val('');
+      $('#amount').val('');
+      $('#reason').val('');
+    }
+
+    $(document).on('change', '#product_id', function () {
+      let product_id = $('#product_id').val();
+      if(product_id == "0") {
+        emptyForm.call(null);
+      } else {
+        $.ajax({
+          type: "POST",
+          async: false,
+          url: "index.php?controller=pjAdminOrderReturns&action=pjActionGetProductInformation",
+          data: {
+            product_id : product_id
+          },
+          success: function (data) {
+            if(data.status) {
+              $('#quantity').val(1);
+              $('#price').val(data.res[0].price);
+              $('#amount').val(getTotal(1, data.res[0].price));
+              if(submited) {
+                $frmReturnOrder.submit();
+              }
+            }
+          },
+          // !MEGAMIND
+        });
+      }
+
+    }).on('change', '#quantity', function () {
+      changeAmount.call(null);
+    }).on('change', '#price', function () {
+      changeAmount.call(null);
+    }).on("submit", ".frm-filter", function (e) {
+      if (e && e.preventDefault) {
+        e.preventDefault();
+      }
+      viewProductList.call(null);
+    }).on('click', '#main_form', function () {
+      submited = true;
+    }).on('change', '#custom', function () {
+      if($('#custom').prop('checked')) {
+        emptyForm.call(null);
+        $('#product_id').val('0');
+        $('#product_name').removeClass('d-none');
+        $('#product_name input').addClass('required');
+        $('#product_select').addClass('d-none');
+      } else {
+        $('#product_id').val('');
+        $('#product_name ').addClass('d-none');
+        $('#product_name input').removeClass('required');
+        $('#product_select').removeClass('d-none');
+      }
+    });
 		
 	});
 })(jQuery_1_8_2);
