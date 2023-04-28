@@ -38,14 +38,15 @@
 
     <div class="row">
 
-      <div class="col-sm-4">
+      <div class="col-sm-3">
         <div class="form-group">
           <label class="control-label">Quantity</label>
-          <input type="number" name="quantity" id="quantity" value="<?php echo array_key_exists('arr', $tpl) && $tpl['arr']['qty'] ? $tpl['arr']['qty'] : '' ?>" class="form-control required number" data-msg-required="This field is required."/>
+          <input type="number" name="quantity" id="quantity" value="<?php echo array_key_exists('arr', $tpl) && $tpl['arr']['qty'] ? $tpl['arr']['qty'] : '1' ?>" class="form-control pj-field-count required number" data-msg-required="This field is required." readonly/>
         </div><!-- /.form-group -->
       </div>
+      <div id="js-select" class="col-sm-3"></div>
 
-      <div class="col-sm-4">
+      <div class="col-sm-3">
         <div class="form-group">
           <label class="control-label"><?php __('lblPrice'); ?></label>
       
@@ -57,7 +58,7 @@
         </div>
       </div>
 
-      <div class="col-sm-4">
+      <div class="col-sm-3">
         <div class="form-group">
           <label class="control-label">Total Amount</label>
       

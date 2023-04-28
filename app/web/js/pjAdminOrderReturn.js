@@ -81,6 +81,15 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
     }
 
     if ($frmReturnOrder.length > 0) {
+
+      $(".pj-field-count").TouchSpin({
+        verticalbuttons: false,
+        buttondown_class: "btn btn-white",
+        buttonup_class: "btn btn-white",
+        min: 1,
+        max: 4294967295,
+      });
+
       $('#purchase_date').datepicker({
         autoclose: true
       });
@@ -178,6 +187,16 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           },
           success: function (data) {
             if(data.status) {
+              if(data.res[0].set_different_sizes == 'T') {
+                var div = $('#js-select');
+                var label = $('<label>').addClass('control-label').text('Size').appendTo(div);
+                var sel = $('<select>').attr('id', 'cus-select').addClass('form-control change-size').appendTo(div);
+                $.each(data.res[0].size, function( index, value ) {
+                  sel.append($("<option>").attr('value', value.price).text(value.price_name));
+                });
+              } else {
+                $('#js-select').empty();
+              }
               $('#quantity').val(1);
               $('#price').val(data.res[0].price);
               $('#amount').val(getTotal(1, data.res[0].price));
@@ -199,6 +218,11 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
         e.preventDefault();
       }
       viewProductList.call(null);
+    }).on('change', ".change-size", function () {
+      let price = $('#cus-select').val();
+      // console.log(price);
+      $('#price').val(price);
+      changeAmount.call(null);
     }).on('click', '#main_form', function () {
       submited = true;
     }).on('change', '#custom', function () {

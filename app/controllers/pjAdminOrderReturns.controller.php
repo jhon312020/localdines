@@ -248,8 +248,16 @@ class pjAdminOrderReturns extends pjAdmin {
       ->findAll()->getData();
 
     if (count($product_information)) {
+      if ($product_information[0]['set_different_sizes'] == 'T') {
+        $price_arr = pjProductPriceModel::factory()->join('pjMultiLang', "t2.foreign_id = t1.id AND t2.model = 'pjProductPrice' AND t2.locale = '" . $this->getLocaleId() . "' AND t2.field = 'price_name'", 'left')
+          ->select("t1.*, t2.content AS price_name")
+          ->where("product_id", $post['product_id'])->orderBy("price_name ASC")
+          ->findAll()
+          ->getData();
+        $product_information[0]['size'] = $price_arr;
+      }
       self::jsonResponse(array('status'=> true, 'code'=> 200, 'res'=> $product_information));
-    }else {
+    } else {
       self::jsonResponse(array('status'=> false, 'code'=> 200, 'res'=> "not found"));
     }
     exit;

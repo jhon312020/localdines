@@ -45,7 +45,7 @@ $isScriptOrderReturnsController = in_array($controller_name, array('pjAdminOrder
 $isScriptOrderReturnsIndex = $isScriptOrderReturnsController && in_array($action_name, array('pjActionIndex', 'pjActionCreate', 'pjActionUpdate'));
 
 // Permissions Returns
-$hasAccessScriptOrderReturns = 1;
+$hasAccessScriptOrderReturns = pjAuth::factory('pjVouchers')->hasAccess();
 
 
 // Menu
@@ -246,10 +246,12 @@ $hasAccessScriptOptionsPrintOrder       = pjAuth::factory('pjAdminOptions', 'pjA
 <?php endif; ?>
 
 <?php if($hasAccessScriptOrderReturns): ?>
-    <li <?php echo $isScriptOrderReturnsIndex ? ' class="active"' : NULL; ?>><a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminOrderReturns&amp;action=pjActionIndex">
+    <li <?php echo $isScriptOrderReturnsIndex ? ' class="active"' : NULL; ?>>
+      <a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminOrderReturns&amp;action=pjActionIndex">
         <i class="fa fa-recycle" aria-hidden="true"></i>
-        <span class="nav-label"><?php echo "Retruns";?></span>
-    </a></li>
+        <span class="nav-label"><?php echo "Returns";?></span>
+      </a>
+    </li>
 <?php endif; ?>
 
 <?php if ($hasAccessScriptPOSReportsIndex):  //menuPOSReports ?>
