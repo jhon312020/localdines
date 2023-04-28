@@ -32,16 +32,19 @@ class pjAdminOrderReturns extends pjAdmin {
     $this->setAjax(true);
     if ($this->isXHR()) {
       $pjOrderReturn = pjOrderReturnModel::factory()
-        ->join('pjMultiLang', "t2.model='pjProduct' AND t2.foreign_id=t1.product_id AND t2.field='name' AND t2.locale='" . $this->getLocaleId() . "'", 'left outer');
+        ->join('pjMultiLang', "t2.model='pjProduct' AND t2.foreign_id=t1.product_id AND t2.field='name' AND t2.locale='" . $this->getLocaleId() . "'", 'left outer')
+        ->where('t1.product_id != 0');
 
+      $pjOrderReturnCustom = pjOrderReturnModel::factory()->where('t1.product_id', 0);
 
       if ($q = $this->_get->toString('q')) {
           // echo "hello "; exit;
           $pjOrderReturn = $pjOrderReturn->where("(t2.content LIKE '%$q%')");
+          $pjOrderReturnCustom = $pjOrderReturnCustom->where("(product_name LIKE '%$q%')");
       }
       
-      $column = 't1.product_id';
-      $direction = 'ASC';
+      $column = 'created_date';
+      $direction = 'DESC';
       if ($this->_get->toString('column') && in_array(strtoupper($this->_get->toString('direction')), array('ASC', 'DESC'))) {
         $column = $this->_get->toString('column');
         $direction = strtoupper($this->_get->toString('direction'));
@@ -61,12 +64,23 @@ class pjAdminOrderReturns extends pjAdmin {
         $page = $pages;
       }
 
-      $data = $pjOrderReturn
+      $pjOrderReturnCustom = $pjOrderReturnCustom
+        ->select('t1.*')
+        ->orderBy("$column $direction")
+        ->limit($rowCount, $offset)
+        ->findAll()
+        ->getData();
+
+      $pjOrderReturn = $pjOrderReturn
         ->select('t1.*, t2.content as product_name')
         ->orderBy("$column $direction")
         ->limit($rowCount, $offset)
         ->findAll()
         ->getData();
+
+      $data = array_merge($pjOrderReturnCustom, $pjOrderReturn);
+      // $key_values = array_column($data, 'created_date'); 
+      // array_multisort($key_values, SORT_DESC, $data);
       foreach ($data as $k => $value) {
         $data[$k]['purchase_date'] = date('d-m-Y', strtotime($data[$k]['purchase_date']));
         $data[$k]['created_date'] = date('d-m-Y', strtotime($data[$k]['created_date']));

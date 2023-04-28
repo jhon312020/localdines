@@ -141,7 +141,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
         page: page
       });
       $grid.datagrid("option", "cache", cache);
-      $grid.datagrid("load", "index.php?controller=pjAdminOrderReturns&action=pjActionGetReturnOrderList", "t1.product_name", "ASC", content.page, content.rowCount);
+      $grid.datagrid("load", "index.php?controller=pjAdminOrderReturns&action=pjActionGetReturnOrderList", "created_date", "DESC", content.page, content.rowCount);
       return false;
       $('.ibox-content').removeClass('sk-loading');
     }

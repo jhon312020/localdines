@@ -41,7 +41,7 @@ $isScriptSuppliersIndex = $isScriptSuppliersController && in_array($action_name,
 $hasAccessScriptSuppliers = 1;
 
 // Returns Controller
-$isScriptOrderReturnsController = in_array($controller_name, array('pjAdminReturns'));
+$isScriptOrderReturnsController = in_array($controller_name, array('pjAdminOrderReturns'));
 $isScriptOrderReturnsIndex = $isScriptOrderReturnsController && in_array($action_name, array('pjActionIndex', 'pjActionCreate', 'pjActionUpdate'));
 
 // Permissions Returns
@@ -246,7 +246,7 @@ $hasAccessScriptOptionsPrintOrder       = pjAuth::factory('pjAdminOptions', 'pjA
 <?php endif; ?>
 
 <?php if($hasAccessScriptOrderReturns): ?>
-    <li <?php echo $isScriptOrderReturnsController ? ' class="active"' : NULL; ?>><a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminOrderReturns&amp;action=pjActionIndex">
+    <li <?php echo $isScriptOrderReturnsIndex ? ' class="active"' : NULL; ?>><a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminOrderReturns&amp;action=pjActionIndex">
         <i class="fa fa-recycle" aria-hidden="true"></i>
         <span class="nav-label"><?php echo "Retruns";?></span>
     </a></li>

@@ -106,6 +106,10 @@
  <button class="btn btn-primary printbutton" id="zReportBtn" type="button">Print</button>
  <a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminReports&amp;action=pjActionPOSZIndex" class="btn btn-primary nextbutton"><i class="fa fa-plus"></i> <?php echo "Close" ?></a>
 </div>
+<pre>
+  <?php echo $tpl['sales_report']['expense_ids']; ?>
+  <?php echo $tpl['sales_report']['report_order_ids']; ?>
+</pre>
 
 <script type="text/javascript">
   $(document).ready(function() {
@@ -113,6 +117,7 @@
     $(document).on("click", "#zReportBtn", function(e) {
       var report_order_ids = "<?php echo $tpl['sales_report']['report_order_ids']; ?>";
       var expense_ids = "<?php echo $tpl['sales_report']['expense_ids']; ?>";
+      var return_order_ids = "<?php echo $tpl['sales_report']['return_order_ids']; ?>";
       console.log(expense_ids);
       $.ajax({
         type: "POST",
@@ -120,7 +125,8 @@
         url: "index.php?controller=pjAdminReports&action=pjActionUpdateZViewReport",
         data: {
           order_ids: report_order_ids,
-          expense_ids: expense_ids
+          expense_ids: expense_ids,
+          return_order_ids: return_order_ids
         },
         success: function (data) {
         },

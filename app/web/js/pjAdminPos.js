@@ -1105,15 +1105,17 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           if (data == "true") {
             console.log(data);
             $("#voucher-container input").attr("data-wt","valid");
-            $("#voucher-container input").parent().removeClass("has-error");
-            if ($("#voucher-container input-error").length > 0) {
-              $("#voucher-container input-error").css("display","none");
+            $("#voucher-container input").parent().parent().removeClass("has-error");
+            $("#voucher_code-error").addClass("d-none");
+            if ($("#voucher-container input-error").length > 0 || $("#voucher_code-error").length > 0) {
+              // $("#voucher-container input-error").css("display","none");
+              $("#voucher-container input-error").hide();
             }
             $(active_frm + " #vouchercode").val(code);
             calPrice(1);
           } else {
             $("#voucher-container input").attr("data-wt","invalid");
-            $("#voucher-container input").parent().addClass("has-error");
+            $("#voucher-container input").parent().parent().addClass("has-error");
             $(active_frm + " #vouchercode").val('');
             calPrice(1);
           }
@@ -4695,15 +4697,19 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
               if ($(fieldName).val().length == 11) {
                 reValidate('#phone_no');
               }
-              $("#c_title").val("mr");
+              $("#c_title").val("") && $("#c_title").addClass("required");
               $("#c_email").val("");
               $("#c_email").attr('data-wt','invalid');
-              //$("#c_surname").val("");
+              $("#c_surname").val("") && $("#c_surname").addClass("required");
               $("#inputPostCode").val("");
               $("#d_address_1").val("");
               $("#d_address_2").val("");
               $("#d_city").val("");
-              //$("#c_name").val("");
+              $("#c_name").val("") && $("#c_name").addClass("required");
+              if ($("#c_name").length !=0 || $("#c_surname").length != 0) {
+                $("#c_surname-error").addClass("d-none");
+                $("#c_name-error").addClass("d-none");
+              }
               $("#mobile_delivery_info_yes").prop("checked",true);
               $("#mobile_offer_yes").prop("checked",false);
               $("#email_receipt_yes").prop("checked",true);
@@ -4725,6 +4731,13 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
               if ($("#c_name").length > 0 || $("#c_surname").length > 0 ) {
                 $("#c_name").removeClass("required");
                 $("#c_surname").removeClass("required");
+                $("#c_name-error").hide();
+                $("#c_surname-error").hide();
+                $("#c_name").parent().removeClass("has-error");
+                $("#c_surname").parent().removeClass("has-error");
+                $("#c_title").removeClass("required");
+                $("#c_title-error").hide();
+                $("#c_title").parent().removeClass("has-error");
               }
               if (c_arr.status == 'F') {
                 swal({

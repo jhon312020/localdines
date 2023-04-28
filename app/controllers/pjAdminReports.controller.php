@@ -310,6 +310,7 @@ class pjAdminReports extends pjAdmin {
     }
 		$order_ids = $this->_post->toString('order_ids');
     $expense_ids = $this->_post->toString('expense_ids');
+    $return_order_ids = $this->_post->toString('return_order_ids');
 		if ($order_ids) {
 			$order_ids_arr = explode(',', $order_ids);
 			$pjOrderModel = pjOrderModel::factory();
@@ -324,6 +325,13 @@ class pjAdminReports extends pjAdmin {
       $pjExpenseModel->whereIn('id', $expense_ids);
       $pjExpenseModel->modifyAll(array('is_z_viewed'=>1))->getAffectedRows();
     } 
+    if ($return_order_ids) {
+      $return_order_ids = explode(',', $return_order_ids);
+      $pjOrderReturn = pjOrderReturnModel::factory();
+      $pjOrderReturn->whereIn('id', $return_order_ids);
+      $pjOrderReturn->modifyAll(array('is_z_viewed'=>1))->getAffectedRows();
+    } 
+
    	self::jsonResponse(array(
       'status' => 'OK',
       'code' => 200,
@@ -419,7 +427,7 @@ class pjAdminReports extends pjAdmin {
     
     $num_of_expenses  = $pjExpenseModel->findCount()->getData();
     $total_expenses_arr = $pjExpenseModel->select("id, amount")->findAll()->getData();
-    $expense_ids = array();
+    $expense_ids = "";
     if ($total_expenses_arr) {
       $expense_id_arr = array_column($total_expenses_arr,'id');
       $expense_ids = implode(',', $expense_id_arr);
@@ -429,7 +437,7 @@ class pjAdminReports extends pjAdmin {
     // Return Order
     $num_of_return_orders = $pjOrderReturn->findCount()->getData();
     $total_return_order_arr = $pjOrderReturn->select("id, amount")->findAll()->getData();
-    $return_order_ids = [];
+    $return_order_ids = "";
     if($total_return_order_arr) {
       $return_order_id_arr = array_column($total_return_order_arr,'id');
       $return_order_ids = implode(',', $return_order_id_arr);
@@ -441,7 +449,7 @@ class pjAdminReports extends pjAdmin {
     $total_expenses = $total_supplier_exp + $total_return_orders;
     $cash_in_hand = $total_amount - $total_expenses;
 
-    return compact('total_amount', 'num_of_direct_sales', 'total_direct_sales', 'num_of_table_sales', 'total_table_sales', 'num_of_sales', 'num_of_card_sales', 'num_of_cash_sales', 'card_sales', 'cash_sales', 'report_order_ids', 'num_of_pos_sales', 'num_of_web_sales', 'num_of_telephone_sales' , 'num_of_expenses', 'total_supplier_exp', 'total_expenses', 'num_of_return_orders', 'total_return_orders', 'expense_ids', 'cash_in_hand');
+    return compact('total_amount', 'num_of_direct_sales', 'total_direct_sales', 'num_of_table_sales', 'total_table_sales', 'num_of_sales', 'num_of_card_sales', 'num_of_cash_sales', 'card_sales', 'cash_sales', 'report_order_ids', 'num_of_pos_sales', 'num_of_web_sales', 'num_of_telephone_sales' , 'num_of_expenses', 'total_supplier_exp', 'total_expenses', 'num_of_return_orders', 'total_return_orders', 'expense_ids', 'return_order_ids', 'cash_in_hand');
 	}
 
 
