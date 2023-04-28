@@ -14,7 +14,7 @@
   <input type="hidden" id="call_start" name="call_start" value="<?php echo date('h:i:s A'); ?>" />
   <input type="hidden" id="is_paused" name="is_paused" value = "0">
   <input type="hidden" id="res_table_name" name="res_table_name" value="<?php echo $tpl['arr']['table_name']; ?>" />
-  <input type="hidden" id="pos_payment_method" name="pos_payment_method" value="cash" />
+  <input type="hidden" id="payment_method" name="payment_method" value="cash" />
   <input type="hidden" id="origin" name="origin" value="Pos" />
   <input type="hidden" id="customer_paid" name="customer_paid" value="0" />
   <input type="hidden" id="total_persons" name="total_persons" value="0" />

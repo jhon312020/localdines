@@ -85,6 +85,18 @@ ALTER TABLE `food_delivery_api_payment_responses`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 
+//CONFIG VARIABLES 28-04-2023
+
+//Dojo variables
+if (!defined("DOJO_PAYMENT_ACTIVE")) define("DOJO_PAYMENT_ACTIVE", 1);
+if (!defined("DOJO_PAYMENT_URL")) define("DOJO_PAYMENT_URL", "wss://sd711b330000.test.connect.paymentsense.cloud");
+if (!defined("DOJO_PAY_TYPE_PAC")) define("DOJO_PAY_TYPE_PAC", "pac");
+if (!defined("DOJO_PAY_TYPE_PAT")) define("DOJO_PAY_TYPE_PAT", "pat");
+
+if (!defined("DOJO_TOKEN")) define("DOJO_TOKEN", "0247c27a-3e9d-41a5-bb20-a0c05db55f38");
+if (!defined("DOJO_SOFTWARE_HOUSE_ID")) define("DOJO_SOFTWARE_HOUSE_ID", "SD711B33");
+if (!defined("DOJO_INSTALLER_ID")) define("DOJO_INSTALLER_ID", "SD711B33");
+
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 

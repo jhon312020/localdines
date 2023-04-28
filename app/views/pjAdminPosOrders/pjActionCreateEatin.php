@@ -77,25 +77,8 @@
   //include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/no_print.php'; 
   include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/custom_product_modal.php';
   include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/cancel_return_product_modal.php';
-?>
-<script src="https://cdn.jsdelivr.net/npm/@ideal-postcodes/core-browser-bundled/dist/core-browser.umd.min.js"></script>
 
-<script type="text/javascript">
-//console.log(client_info);
-var myLabel = myLabel || {};
-myLabel.currency = "<?php echo $tpl['option_arr']['o_currency'];?>";
-myLabel.restaurant_closed = <?php x__encode('lblRestaurantClosed');?>;
-myLabel.email_exists = <?php x__encode('email_taken'); ?>;
-myLabel.phoneNumber_err = '<?php echo 'Mobile Number is invalid'; ?>';
-myLabel.email_err = '<?php echo 'Email address is invalid'; ?>';
-myLabel.voucher_err = '<?php echo 'Voucher code is invalid'; ?>';
-myLabel.delivery_fee_err = '<?php echo 'This field only accepts integer and float values'; ?>'; 
-myLabel.mobileDelivery_err = '<?php echo 'Please select any one of the delivery info'; ?>'; 
-myLabel.emailReceipt_err = '<?php echo 'Please select any one of the delivery info'; ?>'; 
-var categoryList = '<?php echo json_encode($tpl['category_list']); ?>';  
-categoryList =  JSON.parse(categoryList);  
-var client_info = '<?php echo json_encode($tpl['client_info']); ?>';
-client_info = JSON.parse(client_info);
-var ideal_api_key = "<?php echo IDEAL_API_KEY;?>";
-</script>
+  //Common Script Variables.
+  include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/order_common_script_variables.php';
+?>
 

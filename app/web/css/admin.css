@@ -607,6 +607,10 @@ td .btn-secondary:hover {
 }
 .confirm_table_name .btn {
   margin-bottom: 25px;
+  width: 17%;
+  margin-left: 10px;
+  margin-right: 10px;
+  font-size: 17px;
 }
 .dis-confirm-table-btn {
     padding: 6px 12px;

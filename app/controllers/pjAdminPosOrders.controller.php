@@ -304,6 +304,9 @@ class pjAdminPosOrders extends pjAdmin {
       ));
       if ($id !== false && (int)$id > 0) {
         $this->saveOrderItems($post, $id, false);
+        // if ($post['response']) {
+        //   $this->savePaymentResponse($post, $id);
+        // }
         $err = 'AR07';
       } else {
         $err = 'AR04';
@@ -402,6 +405,9 @@ class pjAdminPosOrders extends pjAdmin {
         $pjOrderItemModel->reset()->where('order_id', $id)->whereNotIn('hash', $keys)->eraseAll();
         if ($id !== false && (int)$id > 0) {
           $this->saveOrderItems($post, $id, false);
+          if ($post['response']) {
+            $this->savePaymentResponse($post, $id);
+          }
           $err = 'AR07';
         } else {
           $err = 'AR04';
@@ -3021,7 +3027,7 @@ class pjAdminPosOrders extends pjAdmin {
       $data['surname'] = "POS";
       $data['first_name'] = "POS";
       $data['table_name'] = $post['res_table_name'];
-      $data['payment_method'] = (strtolower($post['pos_payment_method'])=='card')?'bank':'cash';
+      $data['payment_method'] = (strtolower($post['payment_method'])=='card')?'bank':'cash';
       $default_chef = pjAuthUserModel::factory()->select("t1.*")
         ->where('role_id', '5')
         ->limit(1)
@@ -3091,7 +3097,7 @@ class pjAdminPosOrders extends pjAdmin {
       $arr = $pjOrderModel->find($id)->getData();
       // echo '<pre>'; print_r($post); echo '</pre>';
       // exit;
-      // $this->pr_die($post);
+      //$this->pr_die($post);
       if (empty($arr)) {
         pjUtil::redirect($_SERVER['PHP_SELF'] . "?controller=pjAdminPosOrders&action=pjActionIndex&err=AR08");
       }
@@ -3103,6 +3109,9 @@ class pjAdminPosOrders extends pjAdmin {
         //$pjOrderItemModel->reset()->where('order_id', $id)->where('type', 'extra')->whereNotIn('hash', $keys)->eraseAll();
         if ($id !== false && (int)$id > 0) {
           $this->saveOrderItems($post, $id, false);
+          if ($post['response']) {
+            $this->savePaymentResponse($post, $id);
+          }
         $err = 'AR07';
         } else {
           $err = 'AR04';
@@ -3113,7 +3122,7 @@ class pjAdminPosOrders extends pjAdmin {
       $data['is_paid'] = $post['is_paid'];
       $data['type'] = $post['origin'] == 'web' ? 'pickup & call' : 'pickup';
       $data['status'] = $post['is_paused'] == 0 ? 'delivered' : 'pending';
-      $data['payment_method'] = (strtolower($post['pos_payment_method'])=='card')?'bank':'cash';
+      $data['payment_method'] = (strtolower($post['payment_method'])=='card')?'bank':'cash';
       if (!empty($post['p_date']) && !empty($post['pickup_time'])) {
         $p_date = $post['p_date'];
         $p_time = $post['pickup_time'];

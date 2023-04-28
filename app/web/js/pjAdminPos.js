@@ -1898,14 +1898,17 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             });
         })
         .on("click", "#paymentBtn", function() {
+          $("#cover-spin").show(0);
+          $(this).attr("disabled", true);
           if($("#fdOrderList_1 .main-body tr").length == 0) {
+            $("#cover-spin").hide();
             cartEmptyPopup();
           } else {
             var $form = null;
             var $activeForm = null;
             var total = $("#payment_modal_tot").text();
             if($(this).attr("data-valid") == "true" && total != "") {
-              if($frmUpdatePosOrder.length > 0) {
+              if($frmUpdatePosOrder.length > 0 || $frmUpdateOrder.length > 0) {
                 $("#is_paused").val(0);
                 $("#is_paid").val(1);
               } 
@@ -1918,18 +1921,18 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
               $form = $($activeForm);
               var saleAmount = $('#payment_modal_pay').val();
               $form.find('#customer_paid').val(saleAmount);
-              $(this).attr("disabled", true);
-              var selPayType = $('#pos_payment_method').val();
-              if (selPayType == "card") {
+              
+              var selPayType = $('#payment_method').val();
+              if (selPayType == "card" && dojo_payment_active == "1") {
                 dojoPayment(saleAmount, $form);
               } else {
                 $form.submit();
               }
             } else {
               $("#payment_modal_pay").removeClass("cus-input-valid");
-
               $("#payment_modal_pay").addClass("cus-input-err");
               $("#error-msg").removeClass("d-none");
+              $("#cover-spin").hide();
             }
           }
            $(this).attr("disabled",false);
@@ -2015,17 +2018,16 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           var amt = $('#payment_modal_tot').text();
           if (paymentType == 'card') {
             $(".money-container .btn").addClass("d-none");
-            $('#pos_payment_method').val(paymentType); 
+            $('#payment_method').val(paymentType); 
             $('#payment_modal_pay').val(amt);
             showBalance(amt);
           } else {
-            $('#pos_payment_method').val('cash'); 
+            $('#payment_method').val('cash'); 
             $(".money-container .btn").removeClass("d-none");
             $('#payment_modal_pay').val('');
             $('#payment_modal_bal').text('');
             $("#paymentBtn").attr("data-valid", "false");
           }
-
         })
         .on("hidden.bs.modal", "#paymentModal, #paymentTelModal", function (e) {
           var modalID = '#'+e.target.id;
@@ -3509,7 +3511,6 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
       // });
       // $(document).ready()
       function dojoPayment(amt, formObj) {
-        console.log(dojo_host);
         //return;
         // VCMINVLSIP0 - simulates a successful chip and pin payment
         // VCMINVLDIP0 - simulates a declined chip and pin payment
@@ -3518,15 +3519,13 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
         // VCMINVLUIP0 - simulates an unsuccessful payment result
         // VCMINVLTIP0 - simulates a "TIMED_OUT" payment result
         let socket = new WebSocket(dojo_host);
-        let terminalID = "VCMINVLUIP0";
+        let terminalID = "VCMINVLSIP0";
         let saleID = 1;
         amt = amt.replace(/\./g, "");
         amt = parseFloat(amt);
         socket.onopen = function(e) {
-          $("#cover-spin").show(0);
           var transactionData = { "jsonrpc": "2.0", "method": "sale", "params": { "tid": terminalID, "currency": "GBP", "amount": amt }, "id": saleID };
           transactionData = JSON.stringify(transactionData);
-          console.log(transactionData);
           socket.send(transactionData);
         };
 
@@ -3536,7 +3535,6 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           var eventMessage = JSON.parse(event.data);
           if (eventMessage.hasOwnProperty('result')) {
             var transactionResult = eventMessage.result.transactionResult;
-            console.log(transactionResult);
             $("#cover-spin").hide();
             if (transactionResult == "SUCCESSFUL") {
               $("#api_payment_response").val(JSON.stringify(eventMessage));
@@ -5034,7 +5032,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             $(getActiveForm()).find('#customer_paid').val(0);
             $(".payment-method-btn").removeClass("selected");
             $(".confirm_payment_method button:first-child").addClass("selected");
-            $('#pos_payment_method').val($(".confirm_payment_method button:first-child").text());
+            $('#payment_method').val($(".confirm_payment_method button:first-child").text());
             $(".confirm-table-btn").removeClass("selected");
             tableID = $('#res_table_name').val();
             $('.confirm-table-btn').each(function(index, obj) {
