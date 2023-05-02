@@ -83,13 +83,13 @@
   include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/table_select_modal.php';
   include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/cart_modal.php'; 
   include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/postal_modal.php';  
-  include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/payment_tel_modal.php'; 
+  //include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/payment_tel_modal.php'; 
   include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/price_modal.php'; 
   include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/special_ins_modal.php';
   include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/special_ins_view_model.php';
   include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/extra_model.php';
   
-  include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/payment_modal.php';
+  //include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/payment_modal.php';
   include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/pause_modal.php'; 
   include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/custom_product_modal.php';
   include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/cancel_return_product_modal.php';

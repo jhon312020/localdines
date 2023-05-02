@@ -117,7 +117,7 @@
                                             <label class="control-label"><?php echo 'Postcode'; ?></label>
                                             <div class="input-group" id="post_code">
                                                 
-                                                <input type="text" class="form-control fdRequired<?php echo $tpl['arr']['type'] == 'delivery' ? ' required' : NULL; ?>" placeholder="Type your postCode" name="post_code" id="inputPostCode" value="<?php  
+                                                <input type="text" class="jsVK-normal form-control fdRequired<?php echo $tpl['arr']['type'] == 'delivery' ? ' required' : NULL; ?>" placeholder="Type your postCode" name="post_code" id="inputPostCode" value="<?php  
                                                 echo pjSanitize::html($postcode); ?>" data-wt="valid">
                                         
                                                 <span class="input-group-btn">
@@ -363,67 +363,8 @@
                               </div><!-- /.form-group -->
                             </div>
                           </div><!-- /.col-md-3 -->
-                            <div class="col-lg-3 col-md-3 col-sm-6">
-                                <div class="form-group">
-                                    <label class="control-label"><?php __('lblPaymentMethod');?></label>
-                                    <?php
-                                    if($tpl['arr']['payment_method'] == 'paypal_express') { $client_paymethod = 'PayPal Express Checkout'; } elseif ($tpl['arr']['payment_method'] == 'authorize') {
-                                    $client_paymethod = 'Authorize.NET';
-                                    }elseif ($tpl['arr']['payment_method'] == '2checkout') {
-                                    $client_paymethod = '2checkout';
-                                    }elseif ($tpl['arr']['payment_method'] == 'paypal') {
-                                    $client_paymethod = 'PayPal';
-                                    }elseif ($tpl['arr']['payment_method'] == 'world_pay') {
-                                    $client_paymethod = 'WorldPay';
-                                    }elseif ($tpl['arr']['payment_method'] == 'bank') {
-                                    $client_paymethod = 'Bank account';
-                                    } else {
-                                    $client_paymethod = ucfirst($tpl['arr']['payment_method']);
-                                    }
-                                    $online_arr = array();
-                                    $offline_arr = array();
-                                    $enabled_payments = $tpl['payment_titles'];
-                                    //resetting name from 'Bank Account' to 'card'
-                                    $enabled_payments['bank'] = 'Card';
-                                    foreach (__('payment_methods', true, false) as $k => $v)
-                                    {
-                                        if($k == 'creditcard') continue;
-                                        if(in_array($k, array('cash', 'bank')))
-                                        {
-                                            $offline_arr[$k] = $v;
-                                        }else{
-                                            $online_arr[$k] = $v;
-                                        }
-                                    }
-                                    ?>
-                                    <select name="payment_method" id="payment_method" class="form-control required" data-msg-required="<?php __('fd_field_required', false, true);?>">
-                                        <option value="">-- <?php __('lblChoose'); ?>--</option>
-                                        <!-- <optgroup label="<?php __('script_online_payment_gateway', false, true); ?>"> -->
-                                        <?php
-                                        // foreach($online_arr as $k => $v)
-                                        // {
-                                        foreach($enabled_payments as $k => $v) {
-                                            ?><option value="<?php echo $k;?>" <?php if ($tpl['arr']['payment_method']==$k) { ?>
-                                                selected = 'selected' <?php
-                                            } ?>><?php echo $v;?></option><?php
-                                        }
-                                        ?>
-                                        <!-- </optgroup> -->
-                                        <!-- <optgroup label="<?php __('script_offline_payment', false, true); ?>"> -->
-                                        <?php
-                                        // foreach($offline_arr as $k => $v)
-                                        // {
-                                            ?>
-                                            <!-- <option value="<?php echo $k;?>"<?php if ($client_paymethod==$v) { ?>
-                                                selected = 'selected' <?php
-                                            } ?>><?php echo $v;?></option> -->
-                                            <?php
-                                        //}
-                                        ?>
-                                        <!-- </optgroup> -->
-                                    </select>
-                                </div>
-                            </div>
+                            <!-- <div class="col-lg-3 col-md-3 col-sm-6">
+                            </div> -->
                             <div class="col-lg-2 col-md-2 col-sm-6">
         
                                 <div class="form-group">

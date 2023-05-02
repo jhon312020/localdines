@@ -60,7 +60,7 @@
   include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/extra_model.php';
   include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/client_phone_modal.php';
 
-  include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/payment_modal.php'; 
+  //include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/payment_modal.php'; 
   include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/pause_modal.php';
   include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/custom_product_modal.php';
   include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/cancel_return_product_modal.php';

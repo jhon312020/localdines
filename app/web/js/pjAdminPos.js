@@ -877,8 +877,6 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
                $("#submitJs").prop('disabled', false);
              }
             }
-             
-           
            
             // var firstRowIndex = $('#fdOrderList_1').find("tbody.main-body > tr:first").attr("data-index");
             // var lastRow = $("#fdOrderList_1 tr:last");
@@ -994,7 +992,6 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
               return $frm.find("input[name='p_date']").val();
             },
             p_time: function () {
-              
               return $("#pickup_time").val();
             }
           },
@@ -1025,16 +1022,13 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
                 : "pickup";
             },
             d_location_id: function () {
-              
               return $frm.find("select[name='d_location_id']").val();
             },
             // MEGAMIND
             d_date: function () {
-              
               return $frm.find("input[name='d_date']").val();
             },
             d_time: function () {
-          
               return $("#delivery_time").val();
             },
           },
@@ -1058,7 +1052,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           $("#phone_no").attr("data-wt","invalid");
         }
       }
-      function validateEmail(email){
+      function validateEmail(email) {
         var id = email;
         id = $.trim(id);
         var filter = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -1075,7 +1069,41 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
         }
       }
   
-      function validateVoucher(voucher){
+      function isValidVoucher(voucher) {
+        var code = voucher;
+        var date;
+        var time;
+        var active_frm = getActiveForm();
+        if(!$(".onoffswitch-order .onoffswitch-checkbox").prop("checked") && $(active_frm+ ' #origin').val().toLowerCase() != 'pos') {
+          date = $(active_frm + " #d_date").val();
+          time = $(active_frm + " #delivery_time").val();
+        } else {
+          date = $(active_frm + " #p_date").val();
+          time = $(active_frm + " #pickup_time").val();
+        }
+        $.ajax({
+          type: "get",
+          async: false,
+          url: "index.php?controller=pjVouchers&action=pjActionCheckVoucherCode",
+          data: { 
+            code: code,
+            date: date,
+            time: time
+          },
+          success: function (data) {
+            if (data == 'true') {
+              $("#voucher-container input").attr("data-wt","valid");
+              orderSubmit();
+            } else {
+              $("#voucher-container input").attr("data-wt","invalid");
+              $("#voucher-container input").parent().parent().addClass("has-error");
+              $("#cover-spin").hide();
+            }
+          },
+        });
+      }
+
+      function validateVoucher(voucher) {
         var code = voucher;
         var date;
         var time;
@@ -1907,27 +1935,24 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             var $form = null;
             var $activeForm = null;
             var total = $("#payment_modal_tot").text();
-            if($(this).attr("data-valid") == "true" && total != "") {
-              if($frmUpdatePosOrder.length > 0 || $frmUpdateOrder.length > 0) {
+            if ($(this).attr("data-valid") == "true" && total != "") {
+              if ($frmUpdatePosOrder.length > 0 || $frmUpdateOrder.length > 0) {
                 $("#is_paused").val(0);
                 $("#is_paid").val(1);
               } 
-
               $("#is_paid").prop("checked", true);
               $("#order_despatched_tel").val(1);
               $("#delivered_customer_tel").val(1);
-
-              $activeForm = getActiveForm();
-              $form = $($activeForm);
-              var saleAmount = $('#payment_modal_pay').val();
-              $form.find('#customer_paid').val(saleAmount);
-              
-              var selPayType = $('#payment_method').val();
-              if (selPayType == "card" && dojo_payment_active == "1") {
-                dojoPayment(saleAmount, $form);
+              var voucherCode = $("#voucher-container input").val();
+              var isCodeValidated = $("#voucher-container input").attr("data-wt");
+              if (voucherCode != ''  && isCodeValidated === undefined) {
+                isValidVoucher(voucherCode);
               } else {
-                $form.submit();
+                orderSubmit();
               }
+              
+              return;
+              
             } else {
               $("#payment_modal_pay").removeClass("cus-input-valid");
               $("#payment_modal_pay").addClass("cus-input-err");
@@ -3510,6 +3535,24 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
         
       // });
       // $(document).ready()
+      function orderSubmit() {
+        console.log('Called me');
+        //return;
+        var $form = null;
+        var $activeForm = null;
+        var total = $("#payment_modal_tot").text();
+        $activeForm = getActiveForm();
+        $form = $($activeForm);
+        var saleAmount = $('#payment_modal_pay').val();
+        $form.find('#customer_paid').val(saleAmount);
+        
+        var selPayType = $('#payment_method').val();
+        if (selPayType == "card" && dojo_payment_active == "1") {
+          dojoPayment(saleAmount, $form);
+        } else {
+          $form.submit();
+        }
+      }
       function dojoPayment(amt, formObj) {
         //return;
         // VCMINVLSIP0 - simulates a successful chip and pin payment
@@ -5032,6 +5075,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             $(getActiveForm()).find('#customer_paid').val(0);
             $(".payment-method-btn").removeClass("selected");
             $(".confirm_payment_method button:first-child").addClass("selected");
+            console.log($(".confirm_payment_method button:first-child").text());
             $('#payment_method').val($(".confirm_payment_method button:first-child").text());
             $(".confirm-table-btn").removeClass("selected");
             tableID = $('#res_table_name').val();
