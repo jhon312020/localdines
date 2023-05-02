@@ -15,6 +15,7 @@ class pjOrderReturnModel extends pjAppModel {
     array('name' => 'product_name', 'type' => 'varchar', 'default' => ':NULL'),
     array('name' => 'reason', 'type' => 'text', 'default' => ':NULL'),
     array('name' => 'price', 'type' => 'decimal', 'default' => ':NULL'),
+    array('name' => 'size', 'type' => 'varchar', 'default' => ':NULL'),
     array('name' => 'qty', 'type' => 'int', 'default' => ':NULL'),
     array('name' => 'amount', 'type' => 'decimal', 'default' => ':NULL'),
     array('name' => 'purchase_date', 'type' => 'datetime', 'default' => ':NULL'),

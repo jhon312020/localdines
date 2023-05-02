@@ -2,6 +2,7 @@
   <div class="col-sm-12 col-lg-12">
 
     <div class="row">
+      <input type="hidden" name="size" id="hidden_size" value="<?php echo array_key_exists('arr', $tpl) && $tpl['arr']['size'] ? $tpl['arr']['size'] : '' ?>">
       <div class="col-sm-6">
         <div id="product_name" class="form-group <?php echo array_key_exists('arr', $tpl) && $tpl['arr']['product_id'] == 0 ? '': 'd-none' ?>">
           <label class="control-label">Product Name</label>
@@ -44,7 +45,18 @@
           <input type="number" name="quantity" id="quantity" value="<?php echo array_key_exists('arr', $tpl) && $tpl['arr']['qty'] ? $tpl['arr']['qty'] : '1' ?>" class="form-control pj-field-count required number" data-msg-required="This field is required." readonly/>
         </div><!-- /.form-group -->
       </div>
-      <div id="js-select" class="col-sm-3"></div>
+
+      <div id="js-select" class="col-sm-3">
+        <?php if (array_key_exists('different_size_product', $tpl) && $tpl['different_size_product']) { ?>
+        <label class="control-label">Size</label>
+        <select id="cus-select" class="form-control change-size" selected="selected">
+          <option value="">-- choose --</option>
+          <?php foreach($tpl['different_size_product'] as $v) { ?>
+            <option value="<?php echo $v['price'] ?>" <?php echo array_key_exists('arr', $tpl) && $tpl['arr']['size'] == $v['id'] ? 'selected' : '1' ?>  data-id="<?php echo $v['id'] ?>"><?php echo $v['price_name'] ?></option>
+          <?php } ?>
+        </select>
+        <?php } ?>
+      </div>
 
       <div class="col-sm-3">
         <div class="form-group">

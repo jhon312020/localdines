@@ -109,6 +109,9 @@ class pjAdminOrderReturns extends pjAdmin {
         $id = $post['product_id'];
         // $name = pjProductModel::factory()->find($id)->getData();
         $name = pjMultiLangModel::factory()->where("(model='pjProduct' AND foreign_id=$id AND field='name' AND locale='" . $this->getLocaleId() . "')")->findAll()->getData();
+        if($post['size']) {
+          $data['size'] = $post['size'];
+        }
         $data['product_id'] = $post['product_id'];
         $data['reason'] = $post['reason'];
         $data['price'] = $post['price'];
@@ -204,6 +207,14 @@ class pjAdminOrderReturns extends pjAdmin {
         if ($post['product_id'] == 0) {
           $data['product_name'] = $post['product_name'];
         }
+        if($post['size']) {
+          $data['size'] = $post['size'];
+        }
+        // echo "<pre>";
+        // print_r($data);
+        // echo "</pre><br><pre>";
+        // print_r($post);
+        // echo "</pre>";die;
         $err = 'AP09';
         $pjOrderReturn->reset()->where('id', $id)->limit(1)->modifyAll($data);
       } else {
@@ -219,10 +230,21 @@ class pjAdminOrderReturns extends pjAdmin {
       if (count($arr) === 0) {
         pjUtil::redirect(PJ_INSTALL_URL. "index.php?controller=pjAdminOrderReturns&action=pjActionIndex&err=AP08");
       } 
+      if($arr['product_id'] != 0) {
+        $product_information = $this->singleProductInformation($arr['product_id']);
+        if($product_information[0]['set_different_sizes'] == 'T') {
+          $this->set('different_size_product', $product_information[0]['size']);
+        }
+        // echo "<pre>";
+        // print_r($product_information);
+        // echo "</pre>";die;
+      }
+      
       $this->set('arr', $arr);
 
 
       $this->set('product_arr', pjProductModel::factory()->select('t1.*, t2.content AS name')->join('pjMultiLang', "t2.model='pjProduct' AND t2.foreign_id=t1.id AND t2.field='name' AND t2.locale='" . $this->getLocaleId() . "'", 'left outer')->where('t1.status', 1)->orderBy('`order` ASC')->findAll()->getData());
+      
 
       $this->set('purchase_date', $arr['purchase_date']);
       $this->set('return_date', $arr['created_date']);
@@ -243,24 +265,34 @@ class pjAdminOrderReturns extends pjAdmin {
   public function pjActionGetProductInformation() {
     $this->setAjax(true);
     $post =$this->_post->raw();
+    $product_information = $this->singleProductInformation($post['product_id']);
+
+    if (count($product_information)) {
+      self::jsonResponse(array('status'=> true, 'code'=> 200, 'res'=> $product_information));
+    } else {
+      self::jsonResponse(array('status'=> false, 'code'=> 200, 'res'=> "not found"));
+    }
+    exit;
+  }
+
+  protected function singleProductInformation($id) {
     $product_information = pjProductModel::factory()
-      ->whereIn('id', $post['product_id'])
+      ->whereIn('id', $id)
       ->findAll()->getData();
 
     if (count($product_information)) {
       if ($product_information[0]['set_different_sizes'] == 'T') {
         $price_arr = pjProductPriceModel::factory()->join('pjMultiLang', "t2.foreign_id = t1.id AND t2.model = 'pjProductPrice' AND t2.locale = '" . $this->getLocaleId() . "' AND t2.field = 'price_name'", 'left')
           ->select("t1.*, t2.content AS price_name")
-          ->where("product_id", $post['product_id'])->orderBy("price_name ASC")
+          ->where("product_id", $id)->orderBy("price_name ASC")
           ->findAll()
           ->getData();
         $product_information[0]['size'] = $price_arr;
       }
-      self::jsonResponse(array('status'=> true, 'code'=> 200, 'res'=> $product_information));
+      return $product_information;
     } else {
-      self::jsonResponse(array('status'=> false, 'code'=> 200, 'res'=> "not found"));
+      return null;
     }
-    exit;
   }
    
 }

@@ -157,7 +157,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 
     function getTotal(qty, price) {
       let total = qty*price
-      return total.toFixed(3);
+      return total.toFixed(2);
     }
 
     function changeAmount() {
@@ -191,6 +191,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
                 var div = $('#js-select');
                 var label = $('<label>').addClass('control-label').text('Size').appendTo(div);
                 var sel = $('<select>').attr('id', 'cus-select').addClass('form-control change-size').appendTo(div);
+                sel.append($("<option>").attr('value', "").text("-- choose --")).attr('selected', true);
                 $.each(data.res[0].size, function( index, value ) {
                   sel.append($("<option>").attr('value', value.price).text(value.price_name));
                 });
@@ -220,6 +221,10 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
       viewProductList.call(null);
     }).on('change', ".change-size", function () {
       let price = $('#cus-select').val();
+      // let text = $('#cus-select option:selected').text();
+      let text = $('#cus-select option:selected').attr('data-id');
+      $('#hidden_size').val(text);
+      // console.log(text);
       // console.log(price);
       $('#price').val(price);
       changeAmount.call(null);
