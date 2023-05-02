@@ -112,6 +112,7 @@ class pjAdminOrderReturns extends pjAdmin {
         if($post['size']) {
           $data['size'] = $post['size'];
         }
+        $data['order_id'] = $post['order_id'];
         $data['product_id'] = $post['product_id'];
         $data['reason'] = $post['reason'];
         $data['price'] = $post['price'];
@@ -198,6 +199,7 @@ class pjAdminOrderReturns extends pjAdmin {
       $id = $this->_post->toInt('id');
       if ($post['quantity'] && $post['price'] && $post['amount'] && $post['reason'] && $post['purchase_date'] && $id) {
         $data['product_id'] = $post['product_id'];
+        $data['order_id'] = $post['order_id'];
         $data['reason'] = $post['reason'];
         $data['price'] = $post['price'];
         $data['qty'] = $post['quantity'];

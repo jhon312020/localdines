@@ -16,12 +16,18 @@
               <?php foreach ($tpl['product_arr'] as $v) { ?>
                 <option <?php echo array_key_exists('arr', $tpl) && $tpl['arr']['product_id'] == $v['id'] ? 'selected' : '' ?> value="<?php echo $v['id']; ?>"><?php echo stripslashes($v['name']); ?></option>
               <?php } ?>
-              <option value="0">Custom Product</option>
+              <option value="0" <?php echo array_key_exists('arr', $tpl) && $tpl['arr']['product_id'] == 0 ? 'selected': '' ?>>Custom Product</option>
             </select>
           </div><!-- /.form-group -->
         <?php } ?>
       </div>
-      <div class="col-sm-6">
+      <div class="col-sm-3">
+        <div class="form-group">
+          <label class="control-label">Order no</label>
+          <input type="text" name="order_id" id="order_id" value="<?php echo array_key_exists('arr', $tpl) && $tpl['arr']['order_id'] ? $tpl['arr']['order_id'] : '' ?>" class="form-control"/>
+        </div><!-- /.form-group -->
+      </div>
+      <div class="col-sm-3">
         <div class="form-group">
           <label class="control-label"><?php echo "Custom Product"  ?></label>
           <div class="switch">

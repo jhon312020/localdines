@@ -619,6 +619,7 @@ class pjAdminReports extends pjAdmin {
    
     if ($this->isXHR()) {
       $pjOrderModel = pjOrderModel::factory();
+      $pjOrderReturn = pjOrderReturnModel::factory();
       //$pjOrderItemModel = pjOrderItemModel::factory();
       $today = date('Y-m-d');
       $from = $today . " " . "00:00:00";
@@ -643,7 +644,7 @@ class pjAdminReports extends pjAdmin {
       //echo $from;
       //echo $to;
       $pjOrderModel = $pjOrderModel
-      ->select("t1.*")
+      ->select("t1.*, 'AR' as type")
       ->where("((t1.p_dt >= '$from' AND t1.p_dt <= '$to') OR (t1.d_dt >= '$from' AND t1.d_dt <= '$to'))")
       ->where('t1.deleted_order', 0)
       ->where("t1.id IN (SELECT ORDITEM.order_id FROM `" . pjOrderItemModel::factory()
@@ -654,6 +655,13 @@ class pjAdminReports extends pjAdmin {
       //     // echo "hello "; exit;
       //     //$pjOrderModel = $pjOrderModel->where("(t1.expense_name LIKE '%$q%' OR t2.name LIKE '%$q%')");
       // }
+
+      $pjOrderReturn = $pjOrderReturn
+        // ->where('created_date', '>=', $from)
+        ->select("order_id, 'Return Order' as table_name, amount as cancel_amount, amount as total, created_date as order_date, 'delivered' as status, '-' as payment_method, 'OR' as type")
+        ->where("created_date >= '$from' OR updated_date >= '$from'")
+        ->findAll()
+        ->getData();
        
       $column = 'id';
       $direction = 'desc';
@@ -677,13 +685,14 @@ class pjAdminReports extends pjAdmin {
         $page = $pages;
       }
 
-      $data = $pjOrderModel
+      $pjOrderModel = $pjOrderModel
       ->orderBy("$column $direction")
       ->limit($rowCount, $offset)
       ->findAll()
       ->getData();
+      $data = array_merge($pjOrderModel, $pjOrderReturn);
 
-      $order_ids = array_column($data, 'id');
+      $order_ids = array_column($pjOrderModel, 'id');
       //$this->pr($order_ids);
       $pjOrderData = "";
       $pjOrderItems = pjOrderItemModel::factory();
@@ -709,43 +718,55 @@ class pjAdminReports extends pjAdmin {
       $table_list = $this->getRestaurantTables();
       foreach ($data as $k => $v) {
         // MEGAMIND
-        $v['sms_sent_time'] == "" ? $data[$k]['sms_sent_time'] = '-' : $data[$k]['sms_sent_time'] = explode(" ", $v['sms_sent_time']) [1];
-        if (explode(" ", $v['p_dt']) [0] == explode(" ", $today) [0] || explode(" ", $v['d_dt']) [0] == explode(" ", $today) [0]) {
-          $v['d_dt'] == "" ? $data[$k]['expected_delivery'] = explode(" ", $v['p_dt']) [1] : $data[$k]['expected_delivery'] = explode(" ", $v['d_dt']) [1];
-        } else {
-          $v['d_dt'] == "" ? $data[$k]['expected_delivery'] = $this->getDateFormatted($v['p_dt']) : $data[$k]['expected_delivery'] = $this->getDateFormatted($v['d_dt']);
-        }
-        if ($v['delivered_time'] == null) {
-          $data[$k]['deliver_t'] = $data[$k]['expected_delivery'];
-          $data[$k]['deliver_sts'] = "none";
-        }
-        else {
-          if (explode(" ", $v['delivered_time']) [1] > explode(" ", $v['delivery_dt']) [1]) {
-            $data[$k]['deliver_sts'] = "failure";
+        if ($v['type'] == "AR") {
+          $v['sms_sent_time'] == "" ? $data[$k]['sms_sent_time'] = '-' : $data[$k]['sms_sent_time'] = explode(" ", $v['sms_sent_time']) [1];
+          if (explode(" ", $v['p_dt']) [0] == explode(" ", $today) [0] || explode(" ", $v['d_dt']) [0] == explode(" ", $today) [0]) {
+            $v['d_dt'] == "" ? $data[$k]['expected_delivery'] = explode(" ", $v['p_dt']) [1] : $data[$k]['expected_delivery'] = explode(" ", $v['d_dt']) [1];
           } else {
-            $data[$k]['deliver_sts'] = "success";
+            $v['d_dt'] == "" ? $data[$k]['expected_delivery'] = $this->getDateFormatted($v['p_dt']) : $data[$k]['expected_delivery'] = $this->getDateFormatted($v['d_dt']);
           }
-          $data[$k]['deliver_t'] = $v['delivered_time'];
-        }
-        $v['delivered_time'] == "" ? $data[$k]['delivered_time'] = '-' : $data[$k]['delivered_time'] = explode(" ", $v['delivered_time']) [1];
-        $data[$k]['total'] = "<strong class='list-pos-type'>".pjCurrency::formatPrice($v['total'])."</strong>";
-        if (array_key_exists($v['table_name'], $table_list)) {
-          $data[$k]['table_name'] = $table_list[$v['table_name']];
-        }
-        $data[$k]['table_name'] = "<strong class='list-pos-type'>".$data[$k]['table_name']."</strong>";
-        // !MEGAMIND
-        if ($data[$k]['is_paid'] == 1) {
-          if (strtolower($data[$k]['payment_method']) == 'bank') {
-            $data[$k]['payment_method'] = 'Card';
+          if ($v['delivered_time'] == null) {
+            $data[$k]['deliver_t'] = $data[$k]['expected_delivery'];
+            $data[$k]['deliver_sts'] = "none";
+          }
+          else {
+            if (explode(" ", $v['delivered_time']) [1] > explode(" ", $v['delivery_dt']) [1]) {
+              $data[$k]['deliver_sts'] = "failure";
+            } else {
+              $data[$k]['deliver_sts'] = "success";
+            }
+            $data[$k]['deliver_t'] = $v['delivered_time'];
+          }
+          $v['delivered_time'] == "" ? $data[$k]['delivered_time'] = '-' : $data[$k]['delivered_time'] = explode(" ", $v['delivered_time']) [1];
+          $data[$k]['total'] = "<strong class='list-pos-type'>".pjCurrency::formatPrice($v['total'])."</strong>";
+          if (array_key_exists($v['table_name'], $table_list)) {
+            $data[$k]['table_name'] = $table_list[$v['table_name']];
+          }
+          $data[$k]['table_name'] = "<strong class='list-pos-type'>".$data[$k]['table_name']."</strong>";
+          // !MEGAMIND
+          if ($data[$k]['is_paid'] == 1) {
+            if (strtolower($data[$k]['payment_method']) == 'bank') {
+              $data[$k]['payment_method'] = 'Card';
+            } else {
+              $data[$k]['payment_method'] = 'Cash';
+            }
           } else {
-            $data[$k]['payment_method'] = 'Cash';
+            $data[$k]['payment_method'] = '';
           }
+          $data[$k]['order_date'] = date("d-m-Y", strtotime($v['created']));
+          $data[$k]['cancel_amount'] = "<strong class='list-pos-type'>".pjCurrency::formatPrice($groupedOrderItems[$v['id']]['cancel_amount'])."</strong>";
         } else {
-          $data[$k]['payment_method'] = '';
+          $data[$k]['table_name'] = "<strong class='list-pos-type'>".$data[$k]['table_name']."</strong>";
+          $data[$k]['order_date'] = date("d-m-Y", strtotime($v['order_date']));
+          $data[$k]['cancel_amount'] = "<strong class='list-pos-type'>".pjCurrency::formatPrice($v['cancel_amount'])."</strong>";
+          $data[$k]['total'] = "<strong class='list-pos-type'>".pjCurrency::formatPrice($v['total'])."</strong>";
         }
-        $data[$k]['order_date'] = date("d-m-Y", strtotime($v['created']));
-        $data[$k]['cancel_amount'] = "<strong class='list-pos-type'>".pjCurrency::formatPrice($groupedOrderItems[$v['id']]['cancel_amount'])."</strong>";
+        
       }
+      // echo "<pre>";
+      // print_r($data);
+      // echo "</pre>";die;
+
       pjAppController::jsonResponse(compact('data', 'total', 'pages', 'page', 'rowCount', 'column', 'direction'));
     }
     exit;

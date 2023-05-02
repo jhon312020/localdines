@@ -11,6 +11,7 @@ class pjOrderReturnModel extends pjAppModel {
 
 	protected $schema = array(
     array('name' => 'id', 'type' => 'int', 'default' => ':NULL'),
+    array('name' => 'order_id', 'type' => 'varchar', 'default' => ':NULL'),
 		array('name' => 'product_id', 'type' => 'int', 'default' => ':NULL'),
     array('name' => 'product_name', 'type' => 'varchar', 'default' => ':NULL'),
     array('name' => 'reason', 'type' => 'text', 'default' => ':NULL'),
