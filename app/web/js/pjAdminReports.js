@@ -153,7 +153,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
               renderer: formatStatus,
             },
           ],
-				dataUrl: "index.php?controller=pjAdminReports&action=pjActionGetCancelReturnOrders" + pjGrid.queryString,
+				dataUrl: "index.php?controller=pjAdminReports&action=pjActionGetCancelReturnOrders&type=OR" + pjGrid.queryString,
 				dataType: "json",
 				fields: ["order_id", "total", "table_name", "order_date", "cancel_amount", "payment_method", "status"],
 				paginator: {
@@ -242,6 +242,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
     }
 		function generateList() {
 			$('.ibox-content').addClass('sk-loading');
+      var type = $('#gridType').val();
 			var from = $('#date_from').val();
 			var to = $('#date_to').val();
 			var q = $('#query').val();
@@ -251,6 +252,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 				date_to: to,
 				date_from: from,
 				q: q,
+        type: type,
 				category_id: updated_category,
 				page: page
 			});
@@ -297,7 +299,6 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 			}
 
 			if ($frmFromAndToDate.length > 0) {
-				//generateList.call(null);
 				if ($('#datePickerOptions').length) {
 	        	$.fn.datepicker.dates['en'] = {
 	        		days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
@@ -388,6 +389,15 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
               viewProductList.call('pjActionGetTopProductsReport');
           }
           
+        })
+        .on('click', '.js-switchGrid', function (e) {
+          $('.js-switchGrid').removeClass('selected');
+          $(this).addClass('selected');
+          let type = $(this).attr('data-type');
+          if($("#gridType").val() != type) {
+            $("#gridType").val(type);
+            generateList.call(null);
+          }
         })
 	  });
 

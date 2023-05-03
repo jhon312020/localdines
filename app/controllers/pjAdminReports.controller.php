@@ -620,45 +620,35 @@ class pjAdminReports extends pjAdmin {
     if ($this->isXHR()) {
       $pjOrderModel = pjOrderModel::factory();
       $pjOrderReturn = pjOrderReturnModel::factory();
-      //$pjOrderItemModel = pjOrderItemModel::factory();
+
+      if ($q = $this->_get->toString('q')) {
+        // MEGAMIND
+        $pjOrderModel->where("(t1.order_id LIKE '%$q%' OR t1.uuid LIKE '%$q%' OR t1.table_name LIKE '%$q%')");
+        $pjOrderReturn->where("(t1.order_id LIKE '%$q%' OR t1.product_name LIKE '%$q%')");
+        // !MEGAMIND
+      }
+
       $today = date('Y-m-d');
       $from = $today . " " . "00:00:00";
       $to = $today . " " . "23:59:59";
-      if ($q = $this->_get->toString('q')) {
-        // MEGAMIND
-     //    $pjOrderModel->where("(t1.id ='$q' OR t1.uuid = '$q' OR t1.surname LIKE '%$q%'
-          // OR t3.email LIKE '%$q%' OR t3.phone = '$q' OR t1.post_code = '$q')");
-        //$table_name = $q;
-        //$q = preg_replace("/[^0-9]/", "", $q );
-        $pjOrderModel->where("(t1.order_id LIKE '%$q%' OR t1.uuid LIKE '%$q%' OR t1.table_name LIKE '%$q%')");
-        // !MEGAMIND
-      }
       if ($this->_get->toString('date_from') && $this->_get->toString('date_to')) {
           $date_from = DateTime::createFromFormat('d.m.Y', $this->_get->toString('date_from'));
           $from = $date_from->format('Y-m-d'). " " . "00:00:00";
           $date_to = DateTime::createFromFormat('d.m.Y', $this->_get->toString('date_to'));
           $to = $date_to->format('Y-m-d'). " " . "23:59:59";
       }
+
       $return_types = implode("','", RETURN_TYPES);
-      //$to = ''
-      //echo $from;
-      //echo $to;
       $pjOrderModel = $pjOrderModel
-      ->select("t1.*, 'AR' as type")
-      ->where("((t1.p_dt >= '$from' AND t1.p_dt <= '$to') OR (t1.d_dt >= '$from' AND t1.d_dt <= '$to'))")
-      ->where('t1.deleted_order', 0)
-      ->where("t1.id IN (SELECT ORDITEM.order_id FROM `" . pjOrderItemModel::factory()
-      ->getTable() . "` AS ORDITEM WHERE ORDITEM.STATUS IN ('".$return_types."'))")->orderBy("name ASC")
-      ->where('status', 'delivered');
-      // if ($q = $this->_get->toString('q'))
-      // {
-      //     // echo "hello "; exit;
-      //     //$pjOrderModel = $pjOrderModel->where("(t1.expense_name LIKE '%$q%' OR t2.name LIKE '%$q%')");
-      // }
+        ->select("t1.*, 'OR' as type")
+        ->where("((t1.p_dt >= '$from' AND t1.p_dt <= '$to') OR (t1.d_dt >= '$from' AND t1.d_dt <= '$to'))")
+        ->where('t1.deleted_order', 0)
+        ->where("t1.id IN (SELECT ORDITEM.order_id FROM `" . pjOrderItemModel::factory()
+        ->getTable() . "` AS ORDITEM WHERE ORDITEM.STATUS IN ('".$return_types."'))")->orderBy("name ASC")
+        ->where('status', 'delivered');
 
       $pjOrderReturn = $pjOrderReturn
-        // ->where('created_date', '>=', $from)
-        ->select("order_id, 'Return Order' as table_name, amount as cancel_amount, amount as total, created_date as order_date, 'delivered' as status, '-' as payment_method, 'OR' as type")
+        ->select("order_id, 'Return Order' as table_name, amount as cancel_amount, amount as total, created_date as order_date, 'delivered' as status, '-' as payment_method, 'AR' as type")
         ->where("created_date >= '$from' OR updated_date >= '$from'")
         ->findAll()
         ->getData();
@@ -690,6 +680,7 @@ class pjAdminReports extends pjAdmin {
       ->limit($rowCount, $offset)
       ->findAll()
       ->getData();
+
       $data = array_merge($pjOrderModel, $pjOrderReturn);
 
       $order_ids = array_column($pjOrderModel, 'id');
@@ -715,10 +706,14 @@ class pjAdminReports extends pjAdmin {
         });
       }
       //$this->pr($groupedOrderItems);
+
+      $dailyReturnOrderTotal = 0;
+      $adminReturnOrderTotal = 0;
+
       $table_list = $this->getRestaurantTables();
       foreach ($data as $k => $v) {
         // MEGAMIND
-        if ($v['type'] == "AR") {
+        if ($v['type'] == "OR") {
           $v['sms_sent_time'] == "" ? $data[$k]['sms_sent_time'] = '-' : $data[$k]['sms_sent_time'] = explode(" ", $v['sms_sent_time']) [1];
           if (explode(" ", $v['p_dt']) [0] == explode(" ", $today) [0] || explode(" ", $v['d_dt']) [0] == explode(" ", $today) [0]) {
             $v['d_dt'] == "" ? $data[$k]['expected_delivery'] = explode(" ", $v['p_dt']) [1] : $data[$k]['expected_delivery'] = explode(" ", $v['d_dt']) [1];
@@ -755,19 +750,32 @@ class pjAdminReports extends pjAdmin {
           }
           $data[$k]['order_date'] = date("d-m-Y", strtotime($v['created']));
           $data[$k]['cancel_amount'] = "<strong class='list-pos-type'>".pjCurrency::formatPrice($groupedOrderItems[$v['id']]['cancel_amount'])."</strong>";
+          $dailyReturnOrderTotal += $groupedOrderItems[$v['id']]['cancel_amount'];
         } else {
           $data[$k]['table_name'] = "<strong class='list-pos-type'>".$data[$k]['table_name']."</strong>";
           $data[$k]['order_date'] = date("d-m-Y", strtotime($v['order_date']));
           $data[$k]['cancel_amount'] = "<strong class='list-pos-type'>".pjCurrency::formatPrice($v['cancel_amount'])."</strong>";
           $data[$k]['total'] = "<strong class='list-pos-type'>".pjCurrency::formatPrice($v['total'])."</strong>";
+          $adminReturnOrderTotal += $v['cancel_amount'];
         }
         
       }
+      $response = array();
+
+      foreach($data as $datum) {
+        if($datum['type'] == $this->_get->toString('type')) {
+          array_push($response, $datum);
+        }
+      }
+      $data = $response;
+      $overAllReturnOrderTotal = "<strong class='list-pos-type'>".pjCurrency::formatPrice($dailyReturnOrderTotal+$adminReturnOrderTotal)."</strong>";
+      $dailyReturnOrderTotal = "<strong class='list-pos-type'>".pjCurrency::formatPrice($dailyReturnOrderTotal)."</strong>";
+      $adminReturnOrderTotal = "<strong class='list-pos-type'>".pjCurrency::formatPrice($adminReturnOrderTotal)."</strong>";
       // echo "<pre>";
       // print_r($data);
       // echo "</pre>";die;
 
-      pjAppController::jsonResponse(compact('data', 'total', 'pages', 'page', 'rowCount', 'column', 'direction'));
+      pjAppController::jsonResponse(compact('data','adminReturnOrderTotal', 'dailyReturnOrderTotal','overAllReturnOrderTotal', 'total', 'pages', 'page', 'rowCount', 'column', 'direction'));
     }
     exit;
   }
