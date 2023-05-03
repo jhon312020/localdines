@@ -1069,7 +1069,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
         }
       }
   
-      function isValidVoucher(voucher) {
+      function isValidVoucher(voucher, formSubmit = true) {
         var code = voucher;
         var date;
         var time;
@@ -1093,7 +1093,10 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           success: function (data) {
             if (data == 'true') {
               $("#voucher-container input").attr("data-wt","valid");
-              orderSubmit();
+              if (formSubmit) {
+                orderSubmit();
+              }
+              return;
             } else {
               $("#voucher-container input").attr("data-wt","invalid");
               $("#voucher-container input").parent().parent().addClass("has-error");
@@ -1946,7 +1949,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
               var voucherCode = $("#voucher-container input").val();
               var isCodeValidated = $("#voucher-container input").attr("data-wt");
               if (voucherCode != ''  && isCodeValidated === undefined) {
-                isValidVoucher(voucherCode);
+                isValidVoucher(voucherCode, true);
               } else {
                 orderSubmit();
               }
@@ -4369,6 +4372,8 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
         // });
 
         function validateOrderTab(total, min_amt, currency) {
+          var voucherCode = $("#voucher-container input").val();
+          var isCodeValidated = $("#voucher-container input").attr("data-wt");
           if($("#fdOrderList_1 .main-body tr").length == 0) {
             cartEmptyPopup();
             return false;
@@ -4385,9 +4390,15 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
                });
               return false;
             } else {
+              if (voucherCode != ''  && isCodeValidated === undefined) {
+                isValidVoucher(voucherCode, false);
+              }
               return true;
             }
           } else {
+            if (voucherCode != ''  && isCodeValidated === undefined) {
+              isValidVoucher(voucherCode, false);
+            } 
             return true;
           }
         }

@@ -336,7 +336,7 @@ class pjAdminPosOrders extends pjAdmin {
 
       $id = $this->_post->toInt('id');
       $post = $this->_post->raw();
-      $this->pr_die($post);
+      //$this->pr_die($post);
       $arr = $pjOrderModel->find($id)->getData();
       if (empty($arr)) {
         pjUtil::redirect($_SERVER['PHP_SELF'] . "?controller=pjAdminPosOrders&action=pjActionIndex&err=AR08&origin=Telephone");
