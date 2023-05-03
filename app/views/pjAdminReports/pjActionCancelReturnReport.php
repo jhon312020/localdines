@@ -58,8 +58,8 @@
 
         <div class="row" id="pos-grid-header">
           <div class="col-md-3">
-            <input id="gridType" type="hidden" name="type" value="OR">
-            <button data-type="OR" class="btn btn-primary pos-list-button selected js-switchGrid">Daily Order Returns <span></span></button>
+            <input id="gridType" type="hidden" name="type" value="RO">
+            <button data-type="RO" class="btn btn-primary pos-list-button selected js-switchGrid">Daily Order Returns <span></span></button>
             <button data-type="AR" class="btn btn-primary pos-list-button js-switchGrid">Admin Order Returns <span></span></button>
           </div>
         </div><!-- /.row -->

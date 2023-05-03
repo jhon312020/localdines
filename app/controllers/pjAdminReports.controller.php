@@ -640,7 +640,7 @@ class pjAdminReports extends pjAdmin {
 
       $return_types = implode("','", RETURN_TYPES);
       $pjOrderModel = $pjOrderModel
-        ->select("t1.*, 'OR' as type")
+        ->select("t1.*, 'RO' as type")
         ->where("((t1.p_dt >= '$from' AND t1.p_dt <= '$to') OR (t1.d_dt >= '$from' AND t1.d_dt <= '$to'))")
         ->where('t1.deleted_order', 0)
         ->where("t1.id IN (SELECT ORDITEM.order_id FROM `" . pjOrderItemModel::factory()
@@ -713,7 +713,7 @@ class pjAdminReports extends pjAdmin {
       $table_list = $this->getRestaurantTables();
       foreach ($data as $k => $v) {
         // MEGAMIND
-        if ($v['type'] == "OR") {
+        if ($v['type'] == "RO") {
           $v['sms_sent_time'] == "" ? $data[$k]['sms_sent_time'] = '-' : $data[$k]['sms_sent_time'] = explode(" ", $v['sms_sent_time']) [1];
           if (explode(" ", $v['p_dt']) [0] == explode(" ", $today) [0] || explode(" ", $v['d_dt']) [0] == explode(" ", $today) [0]) {
             $v['d_dt'] == "" ? $data[$k]['expected_delivery'] = explode(" ", $v['p_dt']) [1] : $data[$k]['expected_delivery'] = explode(" ", $v['d_dt']) [1];

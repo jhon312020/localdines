@@ -153,7 +153,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
               renderer: formatStatus,
             },
           ],
-				dataUrl: "index.php?controller=pjAdminReports&action=pjActionGetCancelReturnOrders&type=OR" + pjGrid.queryString,
+				dataUrl: "index.php?controller=pjAdminReports&action=pjActionGetCancelReturnOrders&type=RO" + pjGrid.queryString,
 				dataType: "json",
 				fields: ["order_id", "total", "table_name", "order_date", "cancel_amount", "payment_method", "status"],
 				paginator: {
