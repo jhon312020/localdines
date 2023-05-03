@@ -459,6 +459,18 @@ class pjAdminReports extends pjAdmin {
       $this->sendForbidden();
       return;
     }
+    $today = date('Y-m-d');
+    $from = $today . " " . "00:00:00";
+    $to = $today . " " . "23:59:59";
+    $res = $this->getReturnOrders($from, $to, "RO", "", 10, 1);
+
+    // echo "<pre>";
+    // print_r($res);
+    // echo "</pre>";die;
+    
+    $this->set('adminReturnOrderTotal', $res['adminReturnOrderTotal']);
+    $this->set('dailyReturnOrderTotal', $res['dailyReturnOrderTotal']);
+    $this->set('overAllReturnOrderTotal', $res['overAllReturnOrderTotal']);
     $this->set('loadData', "CancelRetrun");
     $this->appendJs('jquery.datagrid.js', PJ_FRAMEWORK_LIBS_PATH . 'pj/js/');
     $this->appendCss('datepicker3.css', PJ_THIRD_PARTY_PATH . 'bootstrap_datepicker/');
@@ -618,166 +630,57 @@ class pjAdminReports extends pjAdmin {
     $this->setAjax(true);
    
     if ($this->isXHR()) {
-      $pjOrderModel = pjOrderModel::factory();
-      $pjOrderReturn = pjOrderReturnModel::factory();
-
-      if ($q = $this->_get->toString('q')) {
-        // MEGAMIND
-        $pjOrderModel->where("(t1.order_id LIKE '%$q%' OR t1.uuid LIKE '%$q%' OR t1.table_name LIKE '%$q%')");
-        $pjOrderReturn->where("(t1.order_id LIKE '%$q%' OR t1.product_name LIKE '%$q%')");
-        // !MEGAMIND
-      }
 
       $today = date('Y-m-d');
       $from = $today . " " . "00:00:00";
       $to = $today . " " . "23:59:59";
       if ($this->_get->toString('date_from') && $this->_get->toString('date_to')) {
-          $date_from = DateTime::createFromFormat('d.m.Y', $this->_get->toString('date_from'));
-          $from = $date_from->format('Y-m-d'). " " . "00:00:00";
-          $date_to = DateTime::createFromFormat('d.m.Y', $this->_get->toString('date_to'));
-          $to = $date_to->format('Y-m-d'). " " . "23:59:59";
+        $date_from = DateTime::createFromFormat('d.m.Y', $this->_get->toString('date_from'));
+        $from = $date_from->format('Y-m-d'). " " . "00:00:00";
+        $date_to = DateTime::createFromFormat('d.m.Y', $this->_get->toString('date_to'));
+        $to = $date_to->format('Y-m-d'). " " . "23:59:59";
       }
+      $res = $this->getReturnOrders($from, $to, $this->_get->toString('type'), $q = $this->_get->toString('q'), $this->_get->toInt('rowCount'), $this->_get->toInt('page'));
+      $data = $res['data'];
+      $total = $res['total'];
+      $pages = $res['pages'];
+      $page = $res['page'];
+      $rowCount = $res['rowCount'];
+      $column = $res['column'];
+      $direction = $res['direction'];
 
-      $return_types = implode("','", RETURN_TYPES);
-      $pjOrderModel = $pjOrderModel
-        ->select("t1.*, 'RO' as type")
-        ->where("((t1.p_dt >= '$from' AND t1.p_dt <= '$to') OR (t1.d_dt >= '$from' AND t1.d_dt <= '$to'))")
-        ->where('t1.deleted_order', 0)
-        ->where("t1.id IN (SELECT ORDITEM.order_id FROM `" . pjOrderItemModel::factory()
-        ->getTable() . "` AS ORDITEM WHERE ORDITEM.STATUS IN ('".$return_types."'))")->orderBy("name ASC")
-        ->where('status', 'delivered');
-
-      $pjOrderReturn = $pjOrderReturn
-        ->select("order_id, 'Return Order' as table_name, amount as cancel_amount, amount as total, created_date as order_date, 'delivered' as status, '-' as payment_method, 'AR' as type")
-        ->where("created_date >= '$from' OR updated_date >= '$from'")
-        ->findAll()
-        ->getData();
-       
-      $column = 'id';
-      $direction = 'desc';
-      if ($this->_get->toString('column') && in_array(strtoupper($this->_get->toString('direction')), array('ASC', 'DESC'))) {
-        //$column = $this->_get->toString('column');
-        //$direction = strtoupper($this->_get->toString('direction'));
-      }
-     
-
-      $total = $pjOrderModel->findCount()->getData();
-      $rowCount = $this->_get->toInt('rowCount') ?: 10;
-      $pages = ceil($total / $rowCount);
-      if ($this->_get->toInt('page')) {
-        $page = $this->_get->toInt('page') ?: 1;
-      } else {
-        $page = 1;
-      }
-       
-      $offset = ((int) $page - 1) * $rowCount;
-      if ($page > $pages) {
-        $page = $pages;
-      }
-
-      $pjOrderModel = $pjOrderModel
-      ->orderBy("$column $direction")
-      ->limit($rowCount, $offset)
-      ->findAll()
-      ->getData();
-
-      $data = array_merge($pjOrderModel, $pjOrderReturn);
-
-      $order_ids = array_column($pjOrderModel, 'id');
-      //$this->pr($order_ids);
-      $pjOrderData = "";
-      $pjOrderItems = pjOrderItemModel::factory();
-      if ($order_ids) {
-        $pjOrderData = $pjOrderItems->whereIn('order_id', $order_ids)
-        ->whereIn('status', RETURN_TYPES)
-        ->findAll()
-        ->getData();
-      }
-      //$this->pr($pjOrderData);
-      $groupedOrderItems = array();
-      if ($pjOrderData) {
-        $groupedOrderItems = array_reduce($pjOrderData, function($carry, $item) {
-            if(!isset($carry[$item['order_id']])){
-                $carry[$item['order_id']] = ['order_id'=>$item['order_id'],'cancel_amount'=>$item['price'] * $item['cnt']];
-            } else {
-                $carry[$item['order_id']]['cancel_amount'] += $item['price'] * $item['cnt'];
-            }
-            return $carry;
-        });
-      }
-      //$this->pr($groupedOrderItems);
-
-      $dailyReturnOrderTotal = 0;
-      $adminReturnOrderTotal = 0;
-
-      $table_list = $this->getRestaurantTables();
-      foreach ($data as $k => $v) {
-        // MEGAMIND
-        if ($v['type'] == "RO") {
-          $v['sms_sent_time'] == "" ? $data[$k]['sms_sent_time'] = '-' : $data[$k]['sms_sent_time'] = explode(" ", $v['sms_sent_time']) [1];
-          if (explode(" ", $v['p_dt']) [0] == explode(" ", $today) [0] || explode(" ", $v['d_dt']) [0] == explode(" ", $today) [0]) {
-            $v['d_dt'] == "" ? $data[$k]['expected_delivery'] = explode(" ", $v['p_dt']) [1] : $data[$k]['expected_delivery'] = explode(" ", $v['d_dt']) [1];
-          } else {
-            $v['d_dt'] == "" ? $data[$k]['expected_delivery'] = $this->getDateFormatted($v['p_dt']) : $data[$k]['expected_delivery'] = $this->getDateFormatted($v['d_dt']);
-          }
-          if ($v['delivered_time'] == null) {
-            $data[$k]['deliver_t'] = $data[$k]['expected_delivery'];
-            $data[$k]['deliver_sts'] = "none";
-          }
-          else {
-            if (explode(" ", $v['delivered_time']) [1] > explode(" ", $v['delivery_dt']) [1]) {
-              $data[$k]['deliver_sts'] = "failure";
-            } else {
-              $data[$k]['deliver_sts'] = "success";
-            }
-            $data[$k]['deliver_t'] = $v['delivered_time'];
-          }
-          $v['delivered_time'] == "" ? $data[$k]['delivered_time'] = '-' : $data[$k]['delivered_time'] = explode(" ", $v['delivered_time']) [1];
-          $data[$k]['total'] = "<strong class='list-pos-type'>".pjCurrency::formatPrice($v['total'])."</strong>";
-          if (array_key_exists($v['table_name'], $table_list)) {
-            $data[$k]['table_name'] = $table_list[$v['table_name']];
-          }
-          $data[$k]['table_name'] = "<strong class='list-pos-type'>".$data[$k]['table_name']."</strong>";
-          // !MEGAMIND
-          if ($data[$k]['is_paid'] == 1) {
-            if (strtolower($data[$k]['payment_method']) == 'bank') {
-              $data[$k]['payment_method'] = 'Card';
-            } else {
-              $data[$k]['payment_method'] = 'Cash';
-            }
-          } else {
-            $data[$k]['payment_method'] = '';
-          }
-          $data[$k]['order_date'] = date("d-m-Y", strtotime($v['created']));
-          $data[$k]['cancel_amount'] = "<strong class='list-pos-type'>".pjCurrency::formatPrice($groupedOrderItems[$v['id']]['cancel_amount'])."</strong>";
-          $dailyReturnOrderTotal += $groupedOrderItems[$v['id']]['cancel_amount'];
-        } else {
-          $data[$k]['table_name'] = "<strong class='list-pos-type'>".$data[$k]['table_name']."</strong>";
-          $data[$k]['order_date'] = date("d-m-Y", strtotime($v['order_date']));
-          $data[$k]['cancel_amount'] = "<strong class='list-pos-type'>".pjCurrency::formatPrice($v['cancel_amount'])."</strong>";
-          $data[$k]['total'] = "<strong class='list-pos-type'>".pjCurrency::formatPrice($v['total'])."</strong>";
-          $adminReturnOrderTotal += $v['cancel_amount'];
-        }
-        
-      }
-      $response = array();
-
-      foreach($data as $datum) {
-        if($datum['type'] == $this->_get->toString('type')) {
-          array_push($response, $datum);
-        }
-      }
-      $data = $response;
-      $overAllReturnOrderTotal = "<strong class='list-pos-type'>".pjCurrency::formatPrice($dailyReturnOrderTotal+$adminReturnOrderTotal)."</strong>";
-      $dailyReturnOrderTotal = "<strong class='list-pos-type'>".pjCurrency::formatPrice($dailyReturnOrderTotal)."</strong>";
-      $adminReturnOrderTotal = "<strong class='list-pos-type'>".pjCurrency::formatPrice($adminReturnOrderTotal)."</strong>";
       // echo "<pre>";
-      // print_r($data);
+      // print_r($res);
       // echo "</pre>";die;
 
-      pjAppController::jsonResponse(compact('data','adminReturnOrderTotal', 'dailyReturnOrderTotal','overAllReturnOrderTotal', 'total', 'pages', 'page', 'rowCount', 'column', 'direction'));
+      pjAppController::jsonResponse(compact('data', 'total', 'pages', 'page', 'rowCount', 'column', 'direction'));
     }
     exit;
+  }
+  public function getReturnOrdersCount() {
+    $this->setAjax(true);
+   
+    if ($this->isXHR()) {
+      $today = date('Y-m-d');
+      $from = $today . " " . "00:00:00";
+      $to = $today . " " . "23:59:59";
+      if ($this->_get->toString('date_from') && $this->_get->toString('date_to')) {
+        $date_from = DateTime::createFromFormat('d.m.Y', $this->_get->toString('date_from'));
+        $from = $date_from->format('Y-m-d'). " " . "00:00:00";
+        $date_to = DateTime::createFromFormat('d.m.Y', $this->_get->toString('date_to'));
+        $to = $date_to->format('Y-m-d'). " " . "23:59:59";
+      }
+      $res = $this->getReturnOrders($from, $to, $this->_get->toString('type'), $q = $this->_get->toString('q'), $this->_get->toInt('rowCount'), $this->_get->toInt('page'));
+
+      // echo "<pre>";
+      // print_r($res);
+      // echo "</pre>";die;
+      $adminReturnOrderTotal = $res['adminReturnOrderTotal'];
+      $dailyReturnOrderTotal = $res['dailyReturnOrderTotal'];
+      $overAllReturnOrderTotal = $res['overAllReturnOrderTotal'];
+
+      pjAppController::jsonResponse(compact('adminReturnOrderTotal', 'dailyReturnOrderTotal', 'overAllReturnOrderTotal'));
+    }
   }
 
   public function pjActionGetCancelOrderInfo() {
@@ -867,6 +770,171 @@ class pjAdminReports extends pjAdmin {
         return self::jsonResponse(array('status' => 'false', 'orders' => 'no pending orders'));
       }
     }
+  }
+
+  protected function getReturnOrders($date_from, $date_to, $type, $query, $rowCount, $page) {
+    $pjOrderModel = pjOrderModel::factory();
+    $pjOrderReturn = pjOrderReturnModel::factory();
+
+    if($query) {
+      // MEGAMIND
+      $pjOrderModel->where("(t1.order_id LIKE '%$query%' OR t1.uuid LIKE '%$query%' OR t1.table_name LIKE '%$query%')");
+      $pjOrderReturn->where("(t1.order_id LIKE '%$query%' OR t1.product_name LIKE '%$query%')");
+      // !MEGAMIND
+    }
+
+    $return_types = implode("','", RETURN_TYPES);
+    $pjOrderModel = $pjOrderModel
+      ->select("t1.*, 'RO' as type")
+      ->where("((t1.p_dt >= '$date_from' AND t1.p_dt <= '$date_to') OR (t1.d_dt >= '$date_from' AND t1.d_dt <= '$date_to'))")
+      ->where('t1.deleted_order', 0)
+      ->where("t1.id IN (SELECT ORDITEM.order_id FROM `" . pjOrderItemModel::factory()
+      ->getTable() . "` AS ORDITEM WHERE ORDITEM.STATUS IN ('".$return_types."'))")->orderBy("name ASC")
+      ->where('status', 'delivered');
+
+    $pjOrderReturn = $pjOrderReturn
+      ->select("order_id, 'Return Order' as table_name, amount as cancel_amount, amount as total, created_date as created, 'delivered' as status, '-' as payment_method, 'AR' as type")
+      ->where("created_date >= '$date_from' OR updated_date >= '$date_from'");
+
+    $column = 'id';
+    $direction = 'desc';
+    
+    if($type == "AR") {
+      $total = $pjOrderReturn->findCount()->getData();
+    } else {
+      $total = $pjOrderModel->findCount()->getData();
+    }
+
+    $rowCount = $rowCount ?: 10;
+    $pages = ceil($total / $rowCount);
+    if ($page) {
+      $page = $this->_get->toInt('page') ?: 1;
+    } else {
+      $page = 1;
+    }
+     
+    $offset = ((int) $page - 1) * $rowCount;
+    if ($page > $pages) {
+      $page = $pages;
+    }
+
+    $pjOrderModel = $pjOrderModel
+    ->orderBy("$column $direction")
+    ->limit($rowCount, $offset)
+    ->findAll()
+    ->getData();
+
+    $pjOrderReturn = $pjOrderReturn
+    ->orderBy("$column $direction")
+    ->limit($rowCount, $offset)
+    ->findAll()
+    ->getData();
+
+    $data = array_merge($pjOrderModel, $pjOrderReturn);
+
+    $order_ids = array_column($pjOrderModel, 'id');
+    //$this->pr($order_ids);
+    $pjOrderData = "";
+    $pjOrderItems = pjOrderItemModel::factory();
+    if ($order_ids) {
+      $pjOrderData = $pjOrderItems->whereIn('order_id', $order_ids)
+      ->whereIn('status', RETURN_TYPES)
+      ->findAll()
+      ->getData();
+    }
+    //$this->pr($pjOrderData);
+    $groupedOrderItems = array();
+    if ($pjOrderData) {
+      $groupedOrderItems = array_reduce($pjOrderData, function($carry, $item) {
+        if(!isset($carry[$item['order_id']])){
+          $carry[$item['order_id']] = ['order_id'=>$item['order_id'],'cancel_amount'=>$item['price'] * $item['cnt']];
+        } else {
+          $carry[$item['order_id']]['cancel_amount'] += $item['price'] * $item['cnt'];
+        }
+        return $carry;
+      });
+    }
+
+    $dailyReturnOrderTotal = 0;
+    $adminReturnOrderTotal = 0;
+
+    foreach($data as $k => $v) {
+      $data[$k]['table_name'] = "<strong class='list-pos-type'>".$data[$k]['table_name']."</strong>";
+      $data[$k]['order_date'] = date("d-m-Y", strtotime($v['created']));
+      $data[$k]['total'] = "<strong class='list-pos-type'>".pjCurrency::formatPrice($v['total'])."</strong>";
+      if($v['type'] == "AR") {
+        $data[$k]['cancel_amount'] = "<strong class='list-pos-type'>".pjCurrency::formatPrice($v['cancel_amount'])."</strong>";
+        $adminReturnOrderTotal += $v['cancel_amount'];
+      } else {
+        // $v['sms_sent_time'] == "" ? $data[$k]['sms_sent_time'] = '-' : $data[$k]['sms_sent_time'] = explode(" ", $v['sms_sent_time']) [1];
+        // if (explode(" ", $v['p_dt']) [0] == explode(" ", $today) [0] || explode(" ", $v['d_dt']) [0] == explode(" ", $today) [0]) {
+        //   $v['d_dt'] == "" ? $data[$k]['expected_delivery'] = explode(" ", $v['p_dt']) [1] : $data[$k]['expected_delivery'] = explode(" ", $v['d_dt']) [1];
+        // } else {
+        //   $v['d_dt'] == "" ? $data[$k]['expected_delivery'] = $this->getDateFormatted($v['p_dt']) : $data[$k]['expected_delivery'] = $this->getDateFormatted($v['d_dt']);
+        // }
+        // if ($v['delivered_time'] == null) {
+        //   $data[$k]['deliver_t'] = $data[$k]['expected_delivery'];
+        //   $data[$k]['deliver_sts'] = "none";
+        // } else {
+        //   if (explode(" ", $v['delivered_time']) [1] > explode(" ", $v['delivery_dt']) [1]) {
+        //     $data[$k]['deliver_sts'] = "failure";
+        //   } else {
+        //     $data[$k]['deliver_sts'] = "success";
+        //   }
+        //   $data[$k]['deliver_t'] = $v['delivered_time'];
+        // }
+        // $v['delivered_time'] == "" ? $data[$k]['delivered_time'] = '-' : $data[$k]['delivered_time'] = explode(" ", $v['delivered_time']) [1];
+        if ($data[$k]['is_paid'] == 1) {
+          if (strtolower($data[$k]['payment_method']) == 'bank') {
+            $data[$k]['payment_method'] = 'Card';
+          } else {
+            $data[$k]['payment_method'] = 'Cash';
+          }
+        } else {
+          $data[$k]['payment_method'] = '-';
+        }
+        $data[$k]['cancel_amount'] = "<strong class='list-pos-type'>".pjCurrency::formatPrice($groupedOrderItems[$v['id']]['cancel_amount'])."</strong>";
+        $dailyReturnOrderTotal += $groupedOrderItems[$v['id']]['cancel_amount'];
+      }
+    }
+
+    // echo "<pre>";
+    // print_r($data);
+    // echo "</pre>";
+
+    $returnTypeData = array();
+
+    foreach($data as $datum) {
+      if($datum['type'] == $type) {
+        array_push($returnTypeData, $datum);
+      }
+    }
+
+    // echo "<pre>";
+    // print_r($returnTypeData);
+    // echo "</pre>";die;
+
+    $overAllReturnOrderTotal = "<strong class='list-pos-type'>".pjCurrency::formatPrice($dailyReturnOrderTotal+$adminReturnOrderTotal)."</strong>";
+    $dailyReturnOrderTotal = "<strong class='list-pos-type'>".pjCurrency::formatPrice($dailyReturnOrderTotal)."</strong>";
+    $adminReturnOrderTotal = "<strong class='list-pos-type'>".pjCurrency::formatPrice($adminReturnOrderTotal)."</strong>";
+
+    $response = array();
+    $response['data'] = $returnTypeData;
+    $response['adminReturnOrderTotal'] = $adminReturnOrderTotal;
+    $response['dailyReturnOrderTotal'] = $dailyReturnOrderTotal;
+    $response['overAllReturnOrderTotal'] = $overAllReturnOrderTotal;
+    $response['total'] = $total;
+    $response['pages'] = $pages;
+    $response['page'] = $page;
+    $response['rowCount'] = $rowCount;
+    $response['column'] = $column;
+    $response['direction'] = $direction;
+
+    // echo "<pre>";
+    // print_r($response);
+    // echo "</pre>";die;
+
+    return $response;
   }
 
 

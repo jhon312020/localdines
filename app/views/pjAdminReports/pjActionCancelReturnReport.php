@@ -57,10 +57,17 @@
         </div><!-- /.row -->
 
         <div class="row" id="pos-grid-header">
-          <div class="col-md-3">
+          <div class="col-md-6">
             <input id="gridType" type="hidden" name="type" value="RO">
-            <button data-type="RO" class="btn btn-primary pos-list-button selected js-switchGrid">Daily Order Returns <span></span></button>
-            <button data-type="AR" class="btn btn-primary pos-list-button js-switchGrid">Admin Order Returns <span></span></button>
+            <button id="returnOrder" data-type="RO" class="btn btn-primary pos-list-button selected js-switchGrid">
+              <strong class="list-pos-type" >Daily Order Returns - </strong><span><?php echo $tpl['dailyReturnOrderTotal']; ?></span>
+            </button>
+            <button id="adminOrder" data-type="AR" class="btn btn-primary pos-list-button js-switchGrid">
+              <strong class="list-pos-type">Admin Order Returns - </strong><span><?php echo $tpl['adminReturnOrderTotal']; ?></span>
+            </button>
+          </div>
+          <div id="totalOfReturnOrder" class="col-md-6">
+            <h1>Total - <span><?php echo $tpl['overAllReturnOrderTotal']; ?></span></h1>
           </div>
         </div><!-- /.row -->
 

@@ -262,6 +262,25 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 			$('.ibox-content').removeClass('sk-loading');
 		}
 
+    function setTotalCount() {
+      var type = $('#gridType').val();
+      var from = $('#date_from').val();
+      var to = $('#date_to').val();
+      var q = $('#query').val();
+      $.ajax({
+        type: "GET",
+        async: false,
+        global: false,
+        url: "index.php?controller=pjAdminReports&action=getReturnOrdersCount&type="+type+"&date_from="+from+"&date_to="+to+"&q="+q+"&page="+page,
+        success: function (data) {
+          console.log(data);
+          $("#returnOrder span").html(data.dailyReturnOrderTotal);
+          $("#adminOrder span").html(data.adminReturnOrderTotal);
+        },
+      });
+      
+    }
+
     function viewProductList(action) {
       $('.ibox-content').addClass('sk-loading');
       var from = $('#date_from').val();
@@ -314,11 +333,13 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           autoclose: true
         }).on('changeDate', function (e) {
         	generateList.call(null);
+          setTotalCount.call(null);
 				});
         $('#date_to').datepicker({
           autoclose: true
         }).on('changeDate', function (e) {
         	generateList.call(null);
+          setTotalCount.call(null);
 				});
 			}
 
@@ -327,6 +348,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
             e.preventDefault();
           }
           generateList.call(null);
+          setTotalCount.call(null);
         }).on("submit", ".frm-filter-TopProduct", function (e) {
           if (e && e.preventDefault) {
             e.preventDefault();
@@ -398,6 +420,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
             $("#gridType").val(type);
             generateList.call(null);
           }
+          setTotalCount.call(null);
         })
 	  });
 
