@@ -7,6 +7,7 @@
         <?php
           $voucher_code = isset($tpl['arr']['voucher_code'])?stripslashes($tpl['arr']['voucher_code']):''; ?>
         <input type="text" name="voucher_code" class="jsVK-normal form-control voucher" value="<?php echo $voucher_code;?>">
+        <span id="voucher_code-error" class="help-block d-none">voucher code is invalid</span>
       </div>
     </div>
   </div><!-- /.col-md-3 -->

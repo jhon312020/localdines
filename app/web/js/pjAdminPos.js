@@ -671,59 +671,6 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             }
             //return false;
             
-            // var firstRowIndex = $('#fdOrderList_1').find("tbody.main-body > tr:first-child").attr("data-index");
-            // var lastRow = $("#fdOrderList_1 tr:last");
-            // var lastRowIndex = $("#fdOrderList_1 tr:last").attr("data-index");
-            // var $product_last = $("#fdProduct_"+lastRowIndex);
-            // var $price_last = $("#fdPrice_"+lastRowIndex);
-            
-            // if ($product_last.val() == "" && $price_last.val() == "") {
-            //   if (lastRowIndex == firstRowIndex) {
-            //     $product_last.parent().parent().addClass("has-error");
-            //     $price_last.parent().addClass('has-error');
-            //     valid = false;
-            //     $ele = $product_last;
-            //     $err_ele.push($product_last);
-            //   }
-            //   else{
-  
-            //     lastRow.remove();
-            //     $product_last.parent().parent().removeClass("has-error");
-            //     $price_last.parent().removeClass('has-error');
-            //     $('#fdOrderList_1').find("tbody.main-body > tr.fdLine").each(function() {
-            //         var index = $(this).attr('data-index'),
-            //           $product = $('#fdProduct_' + index),
-            //           $price = $('#fdPrice_' + index);
-            //         if($price.val() == '')
-            //         {
-            //           $price.parent().addClass('has-error');
-            //           valid = false;
-            //           $ele = $product;
-            //           $err_ele.push($price);
-            //         }else{
-            //           $price.parent().removeClass('has-error');
-            //         }
-            //       });
-            //     //valid = true;
-            //   }
-            // } else {
-            //   $('#fdOrderList_1').find("tbody.main-body > tr.fdLine").each(function() {
-            //         var index = $(this).attr('data-index'),
-            //           $product = $('#fdProduct_' + index),
-            //           $price = $('#fdPrice_' + index);
-            //         if($price.val() == '')
-            //         {
-            //           $price.parent().addClass('has-error');
-            //           valid = false;
-            //           $ele = $product;
-            //           $err_ele.push($price);
-            //         }else{
-            //           $price.parent().removeClass('has-error');
-            //         }
-            //       });
-  
-            // }
-            
             // !MEGAMIND
             //valid = false;
             if (valid == true) {
@@ -1142,7 +1089,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
               // $("#voucher-container input-error").css("display","none");
               $("#voucher-container input-error").hide();
             }
-            $(active_frm + " #vouchercode").val(code);
+            //$(active_frm + " #vouchercode").val(code);
             calPrice(1);
           } else {
             console.log('data validateVoucher',data)
@@ -1151,7 +1098,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             $("#voucher_code-error").removeClass("d-none");
             $("#voucher_code-error").text('voucher code is invalid');
             $("#voucher_code-error").show();
-            $(active_frm + " #vouchercode").val('');
+            //$(active_frm + " #vouchercode").val('');
             calPrice(1);
           }
           
@@ -1804,63 +1751,12 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           $(".frm-filter").submit();
           getPendingOrders("Web");
         })
-        .on("click", "#btn-epos", function() {
-          $(this).toggleClass("activeFrmBtn");
-          $("#btn-telephone").toggleClass("activeFrmBtn");
-          $(this).attr("disabled", true);
-          $("#btn-telephone").attr("disabled", false);
-          $("#frm-type").val("#frmCreateOrder_epos");
-          resetCart("#frmCreateOrder_pos");
-          $("#frmCreateOrder_pos #fdPosTableContainer .main-body").html("");
-          var $table_pos = $("#frmCreateOrder_pos #fdPosTableContainer").html();
-          $("#frmCreateOrder_epos #fdEposTableContainer").html($table_pos);
-          $("#frmCreateOrder_pos #fdPosTableContainer").html("");
-          $("#rowSwitch").css("display", "none");
-          $("#orderTab").css("display", "none");
-          // $("#btns-pos").toggleClass("d-none");
-          // $("#btns-epos").toggleClass("d-none");
-          $("#type").removeAttr("checked");
-          $("#btn-pause").removeClass("d-none");
-          $("#alertJs").addClass("d-none");
-          $("#frmCreateOrder_pos").addClass("d-none");
-          $("#frmCreateOrder_epos").removeClass("d-none");
-          // $("#frmCreateOrder_pos").find("table").removeAttr("id");
-          // $("#frmCreateOrder_epos").find("table").attr("id", "fdOrderList_1");
-          $("#frmCreateOrder_pos").find(".voucher").removeAttr("id");
-          $("#frmCreateOrder_epos").find(".voucher").attr("id", "voucher_code");
-        })
-        .on("click", "#btn-telephone", function() {
-          $(this).toggleClass("activeFrmBtn");
-          $("#btn-epos").toggleClass("activeFrmBtn");
-          $(this).attr("disabled", true);
-          $("#btn-epos").attr("disabled", false);
-          $("#frm-type").val("#frmCreateOrder_pos");
-          resetCart("#frmCreateOrder_epos");
-          $("#frmCreateOrder_epos #fdEposTableContainer .main-body").html("");
-          var $table_epos = $("#frmCreateOrder_epos #fdEposTableContainer").html();
-          $("#frmCreateOrder_pos #fdPosTableContainer").html($table_epos);
-          $("#frmCreateOrder_epos #fdEposTableContainer").html("");
-          $("#rowSwitch").css("display", "block");
-          $("#orderTab").css("display", "block");
-          // $("#btns-pos").toggleClass("d-none");
-          // $("#btns-epos").toggleClass("d-none");
-          $("#type").prop("checked", true);
-          $("#btn-pause").addClass("d-none");
-          $("#alertJs").addClass("d-none");
-          $("#frmCreateOrder_pos").removeClass("d-none");
-          $("#frmCreateOrder_epos").addClass("d-none");
-          // $("#frmCreateOrder_pos").find("table").attr("id", "fdOrderList_1");
-          // $("#frmCreateOrder_epos").find("table").removeAttr("id");
-          $("#frmCreateOrder_epos").find(".voucher").removeAttr("id");
-          $("#frmCreateOrder_pos").find(".voucher").attr("id", "voucher_code");
-          hideTelPhoneDelivery();
-        })
         .on("click", ".money-container .btn", function() {
           if($("#fdOrderList_1 .main-body tr").length == 0) {
             cartEmptyPopup();
           } else {
             var amt = $(this).attr("data-rs");
-            $(" #payment_modal_pay").val(amt);
+            $("#payment_modal_pay").val(amt);
             showBalance(amt);
           }
           

@@ -134,7 +134,7 @@ class pjAdminPosOrders extends pjAdmin {
       $this->appendJs('clockpicker.js', PJ_THIRD_PARTY_PATH . 'clockpicker/');
       $this->appendCss('datepicker3.css', PJ_THIRD_PARTY_PATH . 'bootstrap_datepicker/');
       $this->appendJs('bootstrap-datepicker.js', PJ_THIRD_PARTY_PATH . 'bootstrap_datepicker/');
-      $this->appendJs('jquery.validate.min.js', PJ_THIRD_PARTY_PATH . 'validate/');
+      //$this->appendJs('jquery.validate.min.js', PJ_THIRD_PARTY_PATH . 'validate/');
       $this->appendJs('additional-methods.js', PJ_THIRD_PARTY_PATH . 'validate/');
       $this->appendCss('bootstrap-select.min.css', PJ_THIRD_PARTY_PATH . 'bootstrap_select/1.13.18/css/');
       $this->appendJs('bootstrap-select.min.js', PJ_THIRD_PARTY_PATH . 'bootstrap_select/1.13.18/js/');  
