@@ -914,7 +914,7 @@ class pjAdminReports extends pjAdmin {
     // print_r($returnTypeData);
     // echo "</pre>";die;
 
-    $overAllReturnOrderTotal = "<strong class='list-pos-type'>".pjCurrency::formatPrice($dailyReturnOrderTotal+$adminReturnOrderTotal)."</strong>";
+    $overAllReturnOrderTotal = "<strong>".pjCurrency::formatPrice($dailyReturnOrderTotal+$adminReturnOrderTotal)."</strong>";
     $dailyReturnOrderTotal = "<strong class='list-pos-type'>".pjCurrency::formatPrice($dailyReturnOrderTotal)."</strong>";
     $adminReturnOrderTotal = "<strong class='list-pos-type'>".pjCurrency::formatPrice($adminReturnOrderTotal)."</strong>";
 

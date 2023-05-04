@@ -273,9 +273,10 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
         global: false,
         url: "index.php?controller=pjAdminReports&action=getReturnOrdersCount&type="+type+"&date_from="+from+"&date_to="+to+"&q="+q+"&page="+page,
         success: function (data) {
-          console.log(data);
+          // console.log(data);
           $("#returnOrder span").html(data.dailyReturnOrderTotal);
           $("#adminOrder span").html(data.adminReturnOrderTotal);
+          $("#totalOfReturnOrder span").html(data.overAllReturnOrderTotal)
         },
       });
       

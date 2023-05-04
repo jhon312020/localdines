@@ -66,7 +66,7 @@
               <strong class="list-pos-type">Admin Order Returns - </strong><span><?php echo $tpl['adminReturnOrderTotal']; ?></span>
             </button>
           </div>
-          <div id="totalOfReturnOrder" class="col-md-6">
+          <div id="totalOfReturnOrder" class="col-md-6 text-right">
             <h1>Total - <span><?php echo $tpl['overAllReturnOrderTotal']; ?></span></h1>
           </div>
         </div><!-- /.row -->
