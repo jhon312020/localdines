@@ -1145,8 +1145,12 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             $(active_frm + " #vouchercode").val(code);
             calPrice(1);
           } else {
+            console.log('data validateVoucher',data)
             $("#voucher-container input").attr("data-wt","invalid");
             $("#voucher-container input").parent().parent().addClass("has-error");
+            $("#voucher_code-error").removeClass("d-none");
+            $("#voucher_code-error").text('voucher code is invalid');
+            $("#voucher_code-error").show();
             $(active_frm + " #vouchercode").val('');
             calPrice(1);
           }
