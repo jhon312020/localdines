@@ -742,6 +742,34 @@ class pjAdminReports extends pjAdmin {
     }
   }
 
+  public function pjActionGetAdminReturnOrderInfo() {
+    $this->setAjax(true);
+    if ($this->isXHR()) {
+      if ($this->_get->toInt('id') <= 0) {
+        echo "invalid parameter";
+        exit;
+      } else {
+        $id = $this->_get->toInt('id');
+        $pjOrderReturn = pjOrderReturnModel::factory()
+          ->find($id)
+          ->getData();
+
+        if($pjOrderReturn['product_id'] != 0) {
+          $pjOrderReturn = pjOrderReturnModel::factory()
+            ->select("t1.*, t2.content as product_name")
+            ->join('pjMultiLang', "t2.model='pjProduct' AND t2.foreign_id=t1.id AND t2.field='name' AND t2.locale='" . $this->getLocaleId() . "'", 'left outer')
+            ->find($id)
+            ->getData();
+          
+        }
+        $this->set('data', $pjOrderReturn);
+        // echo "<pre>";
+        // print_r($pjOrderReturn);
+        // echo "</pre>";die;
+      }
+    }
+  }
+
   public function pjActionCheckOrderTime() {
     $this->setAjax(true);
     if ($this->isXHR()) {
@@ -793,7 +821,7 @@ class pjAdminReports extends pjAdmin {
       ->where('status', 'delivered');
 
     $pjOrderReturn = $pjOrderReturn
-      ->select("order_id, 'Return Order' as table_name, amount as cancel_amount, amount as total, created_date as created, 'delivered' as status, '-' as payment_method, 'AR' as type")
+      ->select("id, order_id, 'Return Order' as table_name, amount as cancel_amount, amount as total, created_date as created, 'delivered' as status, '-' as payment_method, 'AR' as type")
       ->where("created_date >= '$date_from' OR updated_date >= '$date_from'");
 
     $column = 'id';
