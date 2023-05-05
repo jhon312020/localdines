@@ -417,6 +417,7 @@ class pjAdminPosOrders extends pjAdmin {
       $data['ip'] = pjUtil::getClientIp();
       if ($this->_post->check('is_paid')) {
         $data['is_paid'] = 1;
+        $data['payment_method'] = $post['payment_method'];
         $data['status'] = 'delivered';
       } else {
         $data['is_paid'] = 0;
@@ -480,6 +481,8 @@ class pjAdminPosOrders extends pjAdmin {
       if (!empty($post['vouchercode'])) {
         $post['voucher_code'] = $post['vouchercode'];
       }
+      //$this->pr($data);
+      //$this->pr_die($post);
       $pjOrderModel->reset()
         ->where('id', $id)->limit(1)
         ->modifyAll(array_merge($post, $data, $post_data));
