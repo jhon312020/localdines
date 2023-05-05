@@ -661,7 +661,7 @@ td .btn-secondary:hover {
 .cancel_popup button.cancel {
   background-color: #337ab7!important;
 }
-#payment_modal_bal {
+.payment_bal {
     font-size: 40px;
 }
 .list-pos-type {

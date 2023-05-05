@@ -46,7 +46,7 @@ if(isset($tpl['arr']['total'])) {
 
   <div class="row">
     <div class="col-lg-4 col-sm-4 text-left"> <b>Return Balance: </b> <span id="payment_modal_return_bal" class="payment_bal"></span></div>
-    <div class="col-lg-4 col-sm-4 text-left"> <b>Recive Balance: </b> <span id="payment_modal_recive_bal" class="payment_bal"></span></div>
+    <div class="col-lg-4 col-sm-4 text-left"> <b>Receive Balance: </b> <span id="payment_modal_receive_bal" class="payment_bal"></span></div>
     <div class="col-lg-1 col-sm-1 text-right"> <b>Card: </b> <span id="" class="payment_bal"></span></div>
     <div class="col-lg-3 col-sm-3 text-right">
       <div class="input-group money-container" >
