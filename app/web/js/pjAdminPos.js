@@ -234,54 +234,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
         }
       }
     })
-    // $('#p_time').on("change",function() {
-    //   var mins;
-    //   if($(this).val()) {
-    //     mins = parseInt($(this).val());
-    //     pickupTime(mins);
-    //     validatePickupTime();
-    //     if ($("#pickup_time").val()) {
-    //        $("#pickup_time").parent().parent().removeClass("has-error")
-    //     }
-    //     if ($("#voucher-container input").val()) {
-    //       validateVoucher($("#voucher-container input").val());
-    //     } else {
-    //       calPrice(1);
-    //       $("#voucher-container input").removeAttr("disabled");
-    //     }
-    //   } else {
-    //     $("#pickup_time").val('');
-    //     $("#pickup_time").parent().parent().addClass("has-error");
-    //     $("#aproxPt").text('');
-    //     if ($("#voucher-container input").val()) {
-    //       calPrice(1);
-    //     }
-    //   }
-    // })
-    // $('#p_time').on("focusout",function() {
-    //   var mins;
-    //   if($(this).val()) {
-    //     mins = parseInt($(this).val());
-    //     pickupTime(mins);
-    //     validatePickupTime();
-    //     if ($("#pickup_time").val()) {
-    //        $("#pickup_time").parent().parent().removeClass("has-error")
-    //     }
-    //     if ($("#voucher-container input").val()) {
-    //       validateVoucher($("#voucher-container input").val());
-    //     } else {
-    //       calPrice(1);
-    //       $("#voucher-container input").removeAttr("disabled");
-    //     }
-    //   } else {
-    //     $("#pickup_time").val('');
-    //     $("#pickup_time").parent().parent().addClass("has-error");
-    //     $("#aproxPt").text('');
-    //     if ($("#voucher-container input").val()) {
-    //       calPrice(1);
-    //     } 
-    //   }
-    // })
+    
     $('#phone_no').on("focusout", function() {
       validatePhoneNumber($(this).val());
     })
@@ -310,25 +263,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
         calPrice(1);
       }   
     })
-    // $('#voucher-container input').on("keyup", function() {
-      
-    //   if ($(this).val()) {
-    //     validateVoucher($(this).val());
-    //   } else {
-    //     $("#voucher-container input").parent().removeClass("has-error");
-    //     calPrice(1);
-    //   }
-      
-    // })
-    // $('#voucher-container input').on("input", function() {
-      
-    //   if ($(this).val()) {
-    //     validateVoucher($(this).val());
-    //   } else {
-    //     $("#voucher-container input").parent().removeClass("has-error");
-    //     calPrice(1);
-    //   }
-    // })
+   
       if ($frmCreateOrder.length > 0 || $frmUpdateOrder.length > 0 || $frmUpdatePosOrder.length > 0) {
         if($frmCreateOrder.length > 0) {
           deliveryTime(40);
@@ -1373,19 +1308,19 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           dataType: "json",
           fields: ["order_id", "total", "table_name", "order_date", "payment_method", "status"],
           paginator: {
-            actions: [
-              {
-                text: myLabel.delete_selected,
-                url: "index.php?controller=pjAdminOrders&action=pjActionDeleteOrderBulk",
-                render: true,
-                confirmation: myLabel.delete_confirmation,
-              },
-              {
-                text: myLabel.exported,
-                url: "index.php?controller=pjAdminOrders&action=pjActionExportOrder",
-                ajax: false,
-              },
-            ],
+            // actions: [
+            //   {
+            //     text: myLabel.delete_selected,
+            //     url: "index.php?controller=pjAdminOrders&action=pjActionDeleteOrderBulk",
+            //     render: true,
+            //     confirmation: myLabel.delete_confirmation,
+            //   },
+            //   {
+            //     text: myLabel.exported,
+            //     url: "index.php?controller=pjAdminOrders&action=pjActionExportOrder",
+            //     ajax: false,
+            //   },
+            // ],
             gotoPage: true,
             paginate: true,
             total: true,
@@ -1539,19 +1474,19 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           dataType: "json",
           fields: ["order_id", "surname",  "post_code",  "order_despatched", "delivered_customer", "deliver_t", "total", "payment_method", "type"],
           paginator: {
-            actions: [
-              {
-                text: myLabel.delete_selected,
-                url: "index.php?controller=pjAdminOrders&action=pjActionDeleteOrderBulk",
-                render: true,
-                confirmation: myLabel.delete_confirmation,
-              },
-              {
-                text: myLabel.exported,
-                url: "index.php?controller=pjAdminOrders&action=pjActionExportOrder",
-                ajax: false,
-              },
-            ],
+            // actions: [
+            //   {
+            //     text: myLabel.delete_selected,
+            //     url: "index.php?controller=pjAdminOrders&action=pjActionDeleteOrderBulk",
+            //     render: true,
+            //     confirmation: myLabel.delete_confirmation,
+            //   },
+            //   {
+            //     text: myLabel.exported,
+            //     url: "index.php?controller=pjAdminOrders&action=pjActionExportOrder",
+            //     ajax: false,
+            //   },
+            // ],
             gotoPage: true,
             paginate: true,
             total: true,
@@ -4658,10 +4593,10 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
               $("#d_address_2").val("");
               $("#d_city").val("");
               $("#c_name").val("") && $("#c_name").addClass("required");
-              if ($("#c_name").length !=0 || $("#c_surname").length != 0) {
-                $("#c_surname-error").addClass("d-none");
-                $("#c_name-error").addClass("d-none");
-              }
+              // if ($("#c_name").length !=0 || $("#c_surname").length != 0) {
+              //   $("#c_surname-error").addClass("d-none");
+              //   $("#c_name-error").addClass("d-none");
+              // }
               $("#mobile_delivery_info_yes").prop("checked",true);
               $("#mobile_offer_yes").prop("checked",false);
               $("#email_receipt_yes").prop("checked",true);
