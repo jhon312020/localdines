@@ -15,6 +15,7 @@
   <input type="hidden" id="is_paused" name="is_paused" value = "0">
   <input type="hidden" id="res_table_name" name="res_table_name" value="<?php echo $tpl['arr']['table_name']; ?>" />
   <input type="hidden" id="payment_method" name="payment_method" value="cash" />
+  <input type="hidden" id="cash_amount" name="cash_amount" value="" />
   <input type="hidden" id="origin" name="origin" value="Pos" />
   <input type="hidden" id="customer_paid" name="customer_paid" value="0" />
   <input type="hidden" id="total_persons" name="total_persons" value="0" />

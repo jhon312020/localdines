@@ -102,6 +102,12 @@ ALTER TABLE `food_delivery_order_returns` ADD `size` VARCHAR(15) NULL DEFAULT NU
 
 ALTER TABLE `food_delivery_order_returns` ADD `order_id` VARCHAR(15) NULL DEFAULT NULL AFTER `id`;
 
+05-May-23
+
+ALTER TABLE `food_delivery_orders` ADD `cash_amount` DECIMAL NULL DEFAULT NULL AFTER `payment_method`;
+
+ALTER TABLE `food_delivery_orders` CHANGE `cash_amount` `cash_amount` DECIMAL(16,2) NULL DEFAULT NULL;
+
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 

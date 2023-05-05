@@ -20,6 +20,7 @@
   <input type="hidden" id="is_paused" name="is_paused" value = "<?php echo $tpl['arr']['status'] == PENDING_STATUS ? '1' : '0'; ?>">
   <input type="hidden" id="res_table_name" name="res_table_name" value="<?php echo $tpl['arr']['table_name'];?>" />
   <input type="hidden" id="payment_method" name="payment_method" value="Cash" />
+  <input type="hidden" id="cash_amount" name="cash_amount" value="" />
   <input type="hidden" id="is_paid" name="is_paid" value = "0">
   <input type="hidden" id="customer_paid" name="customer_paid" value="0" />
   <input type="hidden" id="api_payment_response" name="response" value="" />

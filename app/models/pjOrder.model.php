@@ -20,6 +20,7 @@ class pjOrderModel extends pjAppModel
 		array('name' => 'total_persons', 'type' => 'int', 'default' => 0),
 		array('name' => 'status', 'type' => 'enum', 'default' => 'pending'),
 		array('name' => 'payment_method', 'type' => 'varchar', 'default' => ':NULL'),
+    array('name' => 'cash_amount', 'type' => 'decimal', 'default' => ':NULL'),
 		array('name' => 'is_paid', 'type' => 'tinyint', 'default' => 0),
 		array('name' => 'txn_id', 'type' => 'varchar', 'default' => ':NULL'),
 		array('name' => 'processed_on', 'type' => 'datetime', 'default' => ':NULL'),

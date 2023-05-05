@@ -336,7 +336,7 @@ class pjAdminPosOrders extends pjAdmin {
 
       $id = $this->_post->toInt('id');
       $post = $this->_post->raw();
-      //$this->pr_die($post);
+      // $this->pr_die($post);
       $arr = $pjOrderModel->find($id)->getData();
       if (empty($arr)) {
         pjUtil::redirect($_SERVER['PHP_SELF'] . "?controller=pjAdminPosOrders&action=pjActionIndex&err=AR08&origin=Telephone");
@@ -3027,7 +3027,18 @@ class pjAdminPosOrders extends pjAdmin {
       $data['surname'] = "POS";
       $data['first_name'] = "POS";
       $data['table_name'] = $post['res_table_name'];
-      $data['payment_method'] = (strtolower($post['payment_method'])=='card')?'bank':'cash';
+      // echo "<pre>";
+      // print_r($post);
+      // echo "</pre>";die;
+      if(strtolower($post['payment_method']) == "cash") {
+        $data['payment_method']= 'cash';
+      } elseif(strtolower($post['payment_method']) == "parcial") {
+        $data['payment_method']= 'parcial';
+        $data['cash_amount']= $post['cash_amount'];
+      } else {
+        $data['payment_method']= 'bank';
+      }
+      // $data['payment_method'] = (strtolower($post['payment_method'])=='card')?'bank':'cash';
       $default_chef = pjAuthUserModel::factory()->select("t1.*")
         ->where('role_id', '5')
         ->limit(1)
@@ -3122,7 +3133,15 @@ class pjAdminPosOrders extends pjAdmin {
       $data['is_paid'] = $post['is_paid'];
       $data['type'] = $post['origin'] == 'web' ? 'pickup & call' : 'pickup';
       $data['status'] = $post['is_paused'] == 0 ? 'delivered' : 'pending';
-      $data['payment_method'] = (strtolower($post['payment_method'])=='card')?'bank':'cash';
+      if(strtolower($post['payment_method']) == "cash") {
+        $data['payment_method']= 'cash';
+      } elseif(strtolower($post['payment_method']) == "parcial") {
+        $data['payment_method']= 'parcial';
+        $data['cash_amount']= $post['cash_amount'];
+      } else {
+        $data['payment_method']= 'bank';
+      }
+      // $data['payment_method'] = (strtolower($post['payment_method'])=='card')?'bank':'cash';
       if (!empty($post['p_date']) && !empty($post['pickup_time'])) {
         $p_date = $post['p_date'];
         $p_time = $post['pickup_time'];
