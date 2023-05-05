@@ -3416,13 +3416,21 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           var eventMessage = JSON.parse(event.data);
           if (eventMessage.hasOwnProperty('result')) {
             var transactionResult = eventMessage.result.transactionResult;
-            $("#cover-spin").hide();
             if (transactionResult == "SUCCESSFUL") {
               $("#api_payment_response").val(JSON.stringify(eventMessage));
               //$('#paymentBtn').trigger('click');
-              formObj.submit();
+              swal({
+                title: "Transaction Success",
+                text: transactionResult,
+                // type: "warning",
+                confirmButtonColor: "#337ab7",
+                confirmButtonText: "OK",
+                closeOnConfirm: false,
+              },function () {
+                formObj.submit();
+                swal.close();
+              });
             } else {
-              socket.close();
               swal({
                 title: "Transaction Failed",
                 text: transactionResult,
@@ -3432,8 +3440,11 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
                 closeOnConfirm: false,
               },function () {
                 swal.close();
+                $("#cover-spin").hide();
               });
+              socket.close();
             }
+            $("#paymentBtn").attr('disabled', false);
             
           }
         };
