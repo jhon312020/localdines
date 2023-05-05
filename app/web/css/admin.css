@@ -652,7 +652,7 @@ td .btn-secondary:hover {
 }
 #postcode-on-off {
     position: absolute;
-    top: 104px;
+    top: 62px;
     right: 40px;
 }
 #onoffswitch-switch-legend {
@@ -997,3 +997,17 @@ td .btn-secondary:hover {
     -webkit-animation: spin .8s linear infinite;
     animation: spin .8s linear infinite;
 }
+#loader_text {
+  left:46%;
+  top:44%;  
+  position:absolute;
+  -moz-animation: loading-text-opacity 2s linear 0s infinite normal;
+  -o-animation: loading-text-opacity 2s linear 0s infinite normal;
+  -webkit-animation: loading-text-opacity 2s linear 0s infinite normal;
+  animation: loading-text-opacity 2s linear 0s infinite normal;
+  font-size: 10px;
+  font-weight: bold;
+  margin-top:20px;
+  text-align: center;
+}
+

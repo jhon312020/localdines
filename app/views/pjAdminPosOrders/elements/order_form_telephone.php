@@ -183,7 +183,7 @@
           </div>
         </div>
         <div class="tab-pane fade" id="orderType" role="tabpanel" aria-labelledby="orderType-tab">
-          <div class="row" style="margin-top: 10px;">
+          <div class="row">
           </div>
           <fieldset class="order-delivery" style="display:none">
             <legend>Address Details 

@@ -10,13 +10,13 @@ class pjPaymentResponseModel extends pjAppModel {
 	protected $table = 'api_payment_responses';
 
 	protected $schema = array(
-		array('name' => 'id', 'type' => 'int',),
-		array('name' => 'order_id', 'type' => 'varchar'),
-		array('name' => 'response', 'type' => 'text'),
-		array('name' => 'method', 'type' => 'varchar'),
-    array('name' => 'is_active', 'type' => 'boolean'),
+		array('name' => 'id', 'type' => 'int','default' => 'none'),
+		array('name' => 'order_id', 'type' => 'varchar','default' => 'none'),
+		array('name' => 'response', 'type' => 'text','default' => 'none'),
+		array('name' => 'method', 'type' => 'varchar','default' => 'none'),
+    array('name' => 'is_active', 'type' => 'boolean','default' => 'none'),
 	);
-	
+
 	public static function factory($attr=array()) {
 		return new pjPaymentResponseModel($attr);
 	}
