@@ -8,6 +8,7 @@
         <span class="confirm_payment_method" id="confirm_payment_method">
           <button id = "paymentTypeCash" class="btn payment-method-btn selected"><?php echo "Cash"; ?></button>
           <button id = "paymentTypeCard" class="btn payment-method-btn"><?php echo "Card"; ?></button>
+          <button id = "paymentTypeSplit" class="btn payment-method-btn"><?php echo "Split"; ?></button>
         </span>
       </div>
     </div>

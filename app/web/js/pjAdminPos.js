@@ -1777,7 +1777,23 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             var $form = null;
             var $activeForm = null;
             var total = $("#payment_modal_tot").text();
-            if ($(this).attr("data-valid") == "true" && total != "") {
+            var billTotal = parseFloat(total);
+            console.log('Total',total);
+            var payment_method = $('#payment_method').val();
+            var cash_amount = parseFloat($('#payment_cash_amount').val());
+            var card_amount = parseFloat($('#payment_card_amount').val());
+            var customer_paid = cash_amount + card_amount;
+            console.log(payment_method);
+            console.log(cash_amount);
+            console.log(card_amount);
+            //return;
+            if (payment_method == 'split' && (cash_amount == 0 || card_amount == 0)) {
+              displayFormErrors(payment_method, 'Error in cash or card amount');
+              return;
+            } else if (payment_method == 'split' && (customer_paid > billTotal || customer_paid < billTotal)) {
+              displayFormErrors(payment_method, 'Error in total collected amount');
+              return;
+            } else if ($(this).attr("data-valid") == "true" && total != "") {
               if ($frmUpdatePosOrder.length > 0 || $frmUpdateOrder.length > 0) {
                 $("#is_paused").val(0);
                 $("#is_paid").val(1);
@@ -1792,17 +1808,12 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
               } else {
                 orderSubmit();
               }
-              
               return;
-              
             } else {
-              $("#payment_modal_pay").removeClass("cus-input-valid");
-              $("#payment_modal_pay").addClass("cus-input-err");
-              $("#error-msg").removeClass("d-none");
-              $("#cover-spin").hide();
+              displayFormErrors(payment_method, 'Please Enter a valid amount!');
             }
           }
-           $(this).attr("disabled",false);
+          //$(this).attr("disabled",false);
         })
         .on("click", "#pauseModal #paymentBtn", function() {
           if (tableID) {
@@ -1880,41 +1891,40 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
         })
         .on("click", ".payment-method-btn", function() {
           $(".payment-method-btn").removeClass("selected");
+          $("#card-error-msg").addClass("d-none");
+          $("#cash-error-msg").addClass("d-none");
           $(this).addClass('selected');
           var paymentType = $(this).text().trim().toLowerCase();
-          var total = $('#payment_modal_tot').text();
-          var cash_amount = $('#payment_cash_amount').val();
-          var amt = total - cash_amount;
-          var currency = $("#payment_modal_curr").text();
+          var total = parseFloat($('#payment_modal_tot').text()).toFixed(2);
+          var paid_amount = total;
+          $('#payment_method').val(paymentType);
           if (paymentType == 'card') {
+            $(".jsCard").removeClass("d-none");
+            $(".jsCash").addClass("d-none");
             $(".money-container .btn").addClass("d-none");
-            $('#payment_card_amount').val(parseFloat(amt).toFixed(2));
-            $("#payment_modal_pay").removeClass("cus-input-err");
-            $("#payment_modal_pay").addClass("cus-input-valid");
-            $("#error-msg").addClass("d-none");
-            let balance_format = currency +" "+ parseFloat("0.00").toFixed(2);
+            $('#payment_cash_amount').val('0.00');
+            $('#payment_card_amount').val(paid_amount);
+            $('#payment_modal_pay').val(total);
+            $("#paymentBtn").attr("data-valid", "true");     
+          } else if (paymentType == 'split') {
+            $(".jsCard").removeClass("d-none");
+            $(".jsCash").removeClass("d-none");
             $("#paymentBtn").attr("data-valid", "true");
-            $("#payment_modal_receive_bal").text(balance_format);
-            $("#payment_modal_return_bal").text(balance_format);
-            var paid_amount = parseFloat($('#payment_cash_amount').val()) + parseFloat($('#payment_card_amount').val());
-            $("#payment_modal_pay").val(parseFloat(paid_amount).toFixed(2));
-            // console.log(paid_amount);
-            // showBalance(amt);
-            $('#payment_method').val(paymentType);
-            if(cash_amount != "0.00") {
-              $('#payment_method').val("partial");
-            }
-            
+            $(".money-container .btn").removeClass("d-none");
+            paid_amount = (parseFloat($('#payment_cash_amount').text()) + parseFloat($('#payment_card_amount').text())).toFixed(2);
           } else {
+            $(".jsCard").addClass("d-none");
+            $(".jsCash").removeClass("d-none");
             $('#payment_method').val('cash'); 
             $(".money-container .btn").removeClass("d-none");
             $('#payment_cash_amount').val('0.00');
             $('#payment_card_amount').val('0.00');
             $('#payment_modal_pay').val('0.00');
-            $('#payment_modal_receive_bal').text('');
-            $('#payment_modal_return_bal').text('');
+            $('#payment_modal_bal').text('');
             $("#paymentBtn").attr("data-valid", "false");
+            paid_amount = 0.00;
           }
+          showBalance(paid_amount);     
         })
         .on("hidden.bs.modal", "#paymentModal, #paymentTelModal", function (e) {
           var modalID = '#'+e.target.id;
@@ -1926,7 +1936,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           $("#clientPhoneNumberBtn").attr("data-phone", $(this).val());
           $("#pause_phone-error").addClass("d-none");
         })
-        .on("change", "#payment_cash_amount", function() {
+        .on("change", "#payment_cash_amount, #payment_card_amount", function() {
           if($("#fdOrderList_1 .main-body tr").length == 0) {
             cartEmptyPopup();
           } else {
@@ -1937,7 +1947,16 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             $(" #payment_modal_pay").inputFilter(function(value) {
               return /^\d*\.?\d*$/.test(value);    // Allow digits only, using a RegExp
              },"Only digits allowed");
-            showBalance($(this).val());
+            var paid_amount = 0.00;
+            var cash_amount = $('#payment_cash_amount').val();
+            var card_amount = $('#payment_card_amount').val();
+            if (cash_amount != '') {
+              paid_amount += parseFloat(cash_amount);
+            }
+            if (card_amount != '') {
+              paid_amount += parseFloat(card_amount);
+            }
+            showBalance(paid_amount);
           }
           
         })
@@ -3397,9 +3416,24 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
         
       // });
       // $(document).ready()
+      function displayFormErrors(payment_method, errorMessage) {
+        $("#payment_modal_pay").removeClass("cus-input-valid");
+        $("#payment_modal_pay").addClass("cus-input-err");
+        var elementID = "#card-error-msg";
+        switch(payment_method) {
+          case 'split':
+          case 'card':
+            elementID = "#card-error-msg";
+          break;
+          default:
+            elementID = "#cash-error-msg";
+        }
+        $(elementID).html(errorMessage);
+        $(elementID).removeClass("d-none");
+        $("#cover-spin").hide();
+        $("#paymentBtn").attr("disabled",false);
+      }
       function orderSubmit() {
-        console.log('Called me');
-        //return;
         var $form = null;
         var $activeForm = null;
         var total = $("#payment_modal_tot").text();
@@ -3411,7 +3445,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
         
         var selPayType = $('#payment_method').val();
 
-        if ((selPayType == "card" || selPayType == "partial") && dojo_payment_active == "1") {
+        if ((selPayType == "card" || selPayType == "split") && dojo_payment_active == "1") {
           saleAmount = $('#payment_card_amount').val();
 
           dojoPayment(saleAmount, $form);
@@ -3447,54 +3481,54 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             if (transactionResult == "SUCCESSFUL") {
               $("#api_payment_response").val(JSON.stringify(eventMessage));
               //$('#paymentBtn').trigger('click');
-              swal({
-                title: "Transaction Success",
-                text: transactionResult,
-                // type: "warning",
-                confirmButtonColor: "#337ab7",
-                confirmButtonText: "OK",
-                closeOnConfirm: false,
-              },function () {
-                formObj.submit();
-                swal.close();
-              });
+              sweetSuccessAlert("Transaction Success", transactionResult, formObj);
             } else {
-              swal({
-                title: "Transaction Failed",
-                text: transactionResult,
-                // type: "warning",
-                confirmButtonColor: "#DD6B55",
-                confirmButtonText: "OK",
-                closeOnConfirm: false,
-              },function () {
-                swal.close();
-                $("#cover-spin").hide();
-              });
+              sweetErrorAlert("Transaction Failed", transactionResult);
               socket.close();
             }
             $("#paymentBtn").attr('disabled', false);
-            
+          }
+          else if (eventMessage.hasOwnProperty('error')) {
+            sweetErrorAlert("Transaction Failed", eventMessage.error.message);
           }
         };
-
         socket.onclose = function(event) {
          console.log('Closed', event.data);
         };
 
         socket.onerror = function(error) {
           console.log('error',error);
-          $("#cover-spin").hide();
-          swal({
-            title: "Transaction Failed",
-            text: error,
-            // type: "warning",
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText: "OK",
-            closeOnConfirm: false,
-          },function () {
-            swal.close();
-          });
+          sweetErrorAlert("Transaction Failed", error);
         }
+      }
+
+      function sweetSuccessAlert(title, transactionResult, formObj) {
+        swal({
+          title: title,
+          text: transactionResult,
+          // type: "warning",
+          confirmButtonColor: "#337ab7",
+          
+          confirmButtonText: "OK",
+          closeOnConfirm: false,
+        },function () {
+          formObj.submit();
+          swal.close();
+        });
+      }
+      function sweetErrorAlert(title, transactionResult) {
+        swal({
+          title: title,
+          text: transactionResult,
+          // type: "warning",
+          confirmButtonColor: "#DD6B55",
+          confirmButtonText: "OK",
+          closeOnConfirm: false,
+        },function () {
+          swal.close();
+          $("#paymentBtn").attr("disabled",false);
+          $("#cover-spin").hide();
+        });
       }
       function updateCanRetButtonToRedo(rowObj, rowID, newRowID) {
         var productReturnID = '#productReturn_'+rowID;
@@ -4775,34 +4809,26 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             var tot = $("#payment_modal_tot").text();
             var tot_int = parseFloat(tot);
             var balance;
-            paying = paying.trim();
             var currency = $("#payment_modal_curr").text();
-            var receive_balance_format = currency + " 0.00" ;
-            var return_balance_format = currency + " 0.00" ;
-            if(isNaN(paying) || paying == '') {
-              $("#error-msg").removeClass("d-none");
-              $("#payment_modal_pay").removeClass("cus-input-valid")
-              $("#payment_modal_pay").addClass("cus-input-err");
-              balance_format = currency + " 0.00" ;
+            var balance_amt = currency + " 0.00" ;
+            var paid_amount = parseFloat($('#payment_cash_amount').val()) + parseFloat($('#payment_card_amount').val());
+            if (isNaN(paying) || paying == '') {
               $("#paymentBtn").attr("data-valid", "false");
+              console.log('if', paying);
             } else if(parseFloat(paying) < tot_int ) {
-              $("#error-msg").removeClass("d-none");
-              $("#payment_modal_pay").removeClass("cus-input-valid")
-              $("#payment_modal_pay").addClass("cus-input-err");
-              balance = tot_int - parseFloat(paying);
-              receive_balance_format = currency +" "+ parseFloat(balance).toFixed(2);
+               console.log('else if', paying);
+              balance = tot_int - parseFloat(paid_amount);
+              balance_amt = currency +" "+ parseFloat(balance).toFixed(2);
               $("#paymentBtn").attr("data-valid", "false");
             } else {
-              $("#payment_modal_pay").removeClass("cus-input-err");
-              $("#payment_modal_pay").addClass("cus-input-valid");
-              $("#error-msg").addClass("d-none");
-              balance = parseFloat(paying) - tot_int;
-              return_balance_format = currency +" "+ parseFloat(balance).toFixed(2);
+              console.log('else', paying);
+              balance = parseFloat(paid_amount) - tot_int;
+              balance_amt = currency +" "+ parseFloat(balance).toFixed(2);
               $("#paymentBtn").attr("data-valid", "true");
+              $("#casd-error-msg").addClass("d-none");
+              $("#card-error-msg").addClass("d-none");
             }
-            $("#payment_modal_receive_bal").text(receive_balance_format);
-            $("#payment_modal_return_bal").text(return_balance_format);
-            var paid_amount = parseFloat($('#payment_cash_amount').val()) + parseFloat($('#payment_card_amount').val());
+            $("#payment_modal_bal").text(balance_amt);
             $("#payment_modal_pay").val(parseFloat(paid_amount).toFixed(2));
           }
           function currencyBtns(cart_tot, $modalName) {

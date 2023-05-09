@@ -605,6 +605,12 @@ td .btn-secondary:hover {
     font-size: 18px;
     font-weight: bold;
 }
+.confirm_payment_method .btn {
+  margin-left: 5px;
+  margin-right: 5px;
+  width: 18%;
+  font-size: 15px;
+}
 .confirm_table_name .btn {
   margin-bottom: 25px;
   width: 17%;
