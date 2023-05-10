@@ -1690,9 +1690,19 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           if($("#fdOrderList_1 .main-body tr").length == 0) {
             cartEmptyPopup();
           } else {
-            var amt = $(this).attr("data-rs");
-            $("#payment_cash_amount").val(amt);
-            showBalance(amt);
+            var card_amount = 0.00, paid_amount = 0.00;
+            var cash_amount = $(this).attr("data-rs");
+            $("#payment_cash_amount").val(cash_amount);
+            var paymentType = $('#payment_method').val();
+            if (paymentType == 'split') {
+              card_amount = parseFloat($("#payment_card_amount").val()).toFixed(2);
+              if (isNaN(card_amount)) {
+                card_amount = 0.00;
+              }
+            }
+            paid_amount = parseFloat(card_amount) + parseFloat(cash_amount);
+            console.log('Money Container', paid_amount);
+            showBalance(paid_amount.toFixed(2));
           }
           
         })
@@ -1787,7 +1797,8 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             console.log(cash_amount);
             console.log(card_amount);
             //return;
-            if (payment_method == 'split' && (cash_amount == 0 || card_amount == 0)) {
+            if (payment_method == 'split' && (cash_amount == 0 || card_amount == 0 || isNaN(cash_amount) || isNaN(card_amount))) {
+              console.log('came here');
               displayFormErrors(payment_method, 'Error in cash or card amount');
               return;
             } else if (payment_method == 'split' && (customer_paid > billTotal || customer_paid < billTotal)) {
@@ -1911,7 +1922,8 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             $(".jsCash").removeClass("d-none");
             $("#paymentBtn").attr("data-valid", "true");
             $(".money-container .btn").removeClass("d-none");
-            paid_amount = (parseFloat($('#payment_cash_amount').text()) + parseFloat($('#payment_card_amount').text())).toFixed(2);
+            paid_amount = (parseFloat($('#payment_cash_amount').val()) + parseFloat($('#payment_card_amount').val())).toFixed(2);
+            console.log('Split paid_amont', paid_amount);
           } else {
             $(".jsCard").addClass("d-none");
             $(".jsCash").removeClass("d-none");
@@ -4811,25 +4823,23 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             var balance;
             var currency = $("#payment_modal_curr").text();
             var balance_amt = currency + " 0.00" ;
-            var paid_amount = parseFloat($('#payment_cash_amount').val()) + parseFloat($('#payment_card_amount').val());
             if (isNaN(paying) || paying == '') {
               $("#paymentBtn").attr("data-valid", "false");
-              console.log('if', paying);
             } else if(parseFloat(paying) < tot_int ) {
-               console.log('else if', paying);
-              balance = tot_int - parseFloat(paid_amount);
-              balance_amt = currency +" "+ parseFloat(balance).toFixed(2);
+              balance = (tot_int - paying).toFixed(2);
+              balance_amt = currency +" "+ balance;
               $("#paymentBtn").attr("data-valid", "false");
             } else {
-              console.log('else', paying);
-              balance = parseFloat(paid_amount) - tot_int;
-              balance_amt = currency +" "+ parseFloat(balance).toFixed(2);
+              //balance = (paying - tot_int).toFixed(2);
+              balance = (tot_int - paying).toFixed(2);
+              balance_amt = currency +" "+ balance;
+              
               $("#paymentBtn").attr("data-valid", "true");
-              $("#casd-error-msg").addClass("d-none");
+              $("#cash-error-msg").addClass("d-none");
               $("#card-error-msg").addClass("d-none");
             }
             $("#payment_modal_bal").text(balance_amt);
-            $("#payment_modal_pay").val(parseFloat(paid_amount).toFixed(2));
+            $("#payment_modal_pay").val(paying);
           }
           function currencyBtns(cart_tot, $modalName) {
             var currency_sign = $($modalName+" #payment_modal_curr").text();

@@ -3035,8 +3035,8 @@ class pjAdminPosOrders extends pjAdmin {
       // echo "</pre>";die;
       if(strtolower($post['payment_method']) == "cash") {
         $data['payment_method']= 'cash';
-      } elseif(strtolower($post['payment_method']) == "parcial") {
-        $data['payment_method']= 'parcial';
+      } elseif(strtolower($post['payment_method']) == "split") {
+        $data['payment_method']= 'split';
         $data['cash_amount']= $post['cash_amount'];
       } else {
         $data['payment_method']= 'bank';
@@ -3138,8 +3138,8 @@ class pjAdminPosOrders extends pjAdmin {
       $data['status'] = $post['is_paused'] == 0 ? 'delivered' : 'pending';
       if(strtolower($post['payment_method']) == "cash") {
         $data['payment_method']= 'cash';
-      } elseif(strtolower($post['payment_method']) == "parcial") {
-        $data['payment_method']= 'parcial';
+      } elseif(strtolower($post['payment_method']) == "split") {
+        $data['payment_method']= 'split';
         $data['cash_amount']= $post['cash_amount'];
       } else {
         $data['payment_method']= 'bank';

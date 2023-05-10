@@ -30,7 +30,29 @@
        <td><strong>Total</strong></td>
        <td style="padding: 2px 15px; float: right;"><strong><?php echo pjCurrency::formatPrice($tpl['arr']['total']); ?><strong></td>
       </tr>
-      <?php if ($tpl['arr']['payment_method'] != 'bank') { ?>
+      <?php if ($tpl['arr']['payment_method'] == 'split') { ?>
+      <tr>
+        <td><strong>Cash Tendered</strong></td>
+        <td style="padding: 2px 15px; float: right;"><strong>
+          <?php echo pjCurrency::formatPrice($tpl['arr']['cash_amount']); ?>
+          <strong>
+        </td>
+      </tr>
+      <tr>
+        <td><strong>Card </strong></td>
+        <td style="padding: 2px 15px; float: right;"><strong>
+          <?php echo pjCurrency::formatPrice(($tpl['arr']['total'] - $tpl['arr']['cash_amount'])); ?>
+          <strong>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2"><hr/></td>
+      </tr>
+      <tr>
+        <td><strong>Balance</strong></td>
+        <td style="padding: 2px 15px; float: right;"><strong><?php echo pjCurrency::formatPrice($tpl['arr']['customer_paid'] - $tpl['arr']['total']); ?><strong></td>
+      </tr>
+      <?php } elseif ($tpl['arr']['payment_method'] != 'bank') { ?>
       <tr>
         <td><strong>Cash Tendered</strong></td>
         <td style="padding: 2px 15px; float: right;"><strong>
