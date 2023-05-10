@@ -3830,6 +3830,11 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             }
             var $this = $(this);
             var that = this;
+            
+            $("#paymentBtn").attr('disabled', false);
+            $("#payment_modal_bal").text('');
+            $("#payment_cash_amount").val('0.00');
+            $("#payment_card_amount").val('0.00');
             if($this.attr("data-hasSize") == 'T') {
               $.post(
                 "index.php?controller=pjAdminPosOrders&action=pjActionGetProductSizes", 
@@ -4147,6 +4152,9 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           $('#specialInstructionsModal').modal('hide');
         })
         .on("click", ".pj-remove-product", function (e) {
+            $("#payment_modal_bal").text('');
+            $("#payment_cash_amount").val('0.00');
+            $("#payment_card_amount").val('0.00');
             if (e && e.preventDefault) {
               e.preventDefault();
             }
@@ -4826,12 +4834,12 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             if (isNaN(paying) || paying == '') {
               $("#paymentBtn").attr("data-valid", "false");
             } else if(parseFloat(paying) < tot_int ) {
-              balance = (tot_int - paying).toFixed(2);
+              balance = (paying - tot_int).toFixed(2);
               balance_amt = currency +" "+ balance;
               $("#paymentBtn").attr("data-valid", "false");
             } else {
-              //balance = (paying - tot_int).toFixed(2);
-              balance = (tot_int - paying).toFixed(2);
+              balance = (paying - tot_int).toFixed(2);
+              //balance = (tot_int - paying).toFixed(2);
               balance_amt = currency +" "+ balance;
               
               $("#paymentBtn").attr("data-valid", "true");
@@ -5007,7 +5015,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             $(getActiveForm()).find('#customer_paid').val(0);
             $(".payment-method-btn").removeClass("selected");
             $(".confirm_payment_method button:first-child").addClass("selected");
-            console.log($(".confirm_payment_method button:first-child").text());
+            console.log('money', $(".confirm_payment_method button:first-child").text());
             $('#payment_method').val($(".confirm_payment_method button:first-child").text());
             $(".confirm-table-btn").removeClass("selected");
             tableID = $('#res_table_name').val();
@@ -5021,6 +5029,13 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             var cart_tot = argument;
             var htmlBtns =  "<a href='javascript:;' class='btn' data-rs='"+ cart_tot +"'>"+ currency_sign +" "+ cart_tot +"</a>";
             $(".money-container #payment_btn_val").html(htmlBtns);
+            $(".money-container .btn").removeClass("d-none");
+            $('#payment_cash_amount').val("0.00");
+            $('#payment_card_amount').val("0.00");
+            $('#payment_modal_pay').val("0.00");
+            $('#paymentBtn').attr("data-valid", false);
+            $(".jsCard").addClass("d-none");
+            $(".jsCash").removeClass("d-none");
             $('#confirm-table-error-msg').text('');
             $("#payment_modal_tot").text(cart_tot);
           }
