@@ -387,9 +387,11 @@ class pjAdminReports extends pjAdmin {
     $total_expenses = 0;
     $total_supplier_exp = 0;
     $total_return_orders = 0;
+    // print_r($confirmed_arr);
+    // die;
     foreach($confirmed_arr as $v) {
       $total_amount += $v['total'];
-      //echo '<pre>'; print_r($v); echo '</pre>';
+      // echo '<pre>'; print_r($v); echo '</pre>';
       if (strtolower($v['table_name']) === 'take away') {
       	$num_of_direct_sales++;
       	$total_direct_sales += $v['total'];
@@ -398,11 +400,16 @@ class pjAdminReports extends pjAdmin {
       	$total_table_sales += $v['total'];
       }
       if (strtolower($v['payment_method']) === 'bank') {
-      	$num_of_card_sales++;
-      	$card_sales += $v['total'];
+        $num_of_card_sales++;
+        $card_sales += $v['total'];
+      } elseif(strtolower($v['payment_method']) === 'split') {
+        $num_of_card_sales++;
+        $num_of_cash_sales++;
+        $card_sales = $card_sales += $v['total'] - $v['cash_amount'];
+        $cash_sales += $v['cash_amount'];
       } else {
-      	$num_of_cash_sales++;
-      	$cash_sales += $v['total'];
+        $num_of_cash_sales++;
+        $cash_sales += $v['total'];
       }
       switch (strtolower($v['origin'])) {
       	case "pos":
