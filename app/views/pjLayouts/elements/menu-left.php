@@ -30,6 +30,10 @@ $isScriptPaymentsController = in_array($controller_name, array('pjPayments'));
 $isScriptExpenseController = in_array($controller_name, array('pjAdminExpense'));
 $isScriptExpenseIndex = $isScriptExpenseController && in_array($action_name, array('pjActionIndex', 'pjActionCreate', 'pjActionUpdate'));
 
+$isScriptSmsController = in_array($controller_name, array('pjAdminSms'));
+$isScriptSmsIndex = $isScriptSmsController && in_array($action_name, array('pjActionIndex',));
+
+
 // Permissions Expense
 $hasAccessScriptExpense = 1;
 
@@ -137,6 +141,20 @@ $hasAccessScriptPOSReportsIndex       = pjAuth::factory('pjAdminReports', 'pjAct
 // Permissions - Qr Code
 $hasAccessScriptQrCode                  = pjAuth::factory('pjAdminQrCode')->hasAccess();
 
+// Permissions - Sms
+// $hasAccessScriptSms                = pjAuth::factory('pjAdminSms', 'pjActionIndex')->hasAccess();
+
+$hasAccessScriptSms = 1;
+
+$isSmsController = in_array($controller_name, array('pjAdminSms'));
+
+if ( $_SESSION[$controller->defaultUser]['role_id'] == 4) {
+    $hasAccessScriptSms       = true;
+} 
+// else {
+//     $hasAccessScriptSms       = false;
+// }   
+
 // Permissions - Settings
 $hasAccessScriptOptions                 = pjAuth::factory('pjAdminOptions')->hasAccess();
 $hasAccessScriptOptionsBooking          = pjAuth::factory('pjAdminOptions', 'pjActionOrders')->hasAccess();
@@ -224,6 +242,13 @@ $hasAccessScriptOptionsPrintOrder       = pjAuth::factory('pjAdminOptions', 'pjA
         <span class="nav-label"><?php echo "Expenses";?></span>
     </a></li>
 <?php endif; ?>    
+
+<?php if($hasAccessScriptSms): ?>
+    <li <?php echo $isScriptSmsController ? ' class="active"' : NULL; ?>><a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminSms&amp;action=pjActionIndex">
+        <i class="fa fa-comments"></i>
+        <span class="nav-label"><?php echo "SMS";?></span>
+    </a></li>
+<?php endif; ?>   
 
 <?php if (pjObject::getPlugin('pjVouchers') !== NULL): ?>
     <?php if ($hasAccessScriptVouchers): ?>
