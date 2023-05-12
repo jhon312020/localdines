@@ -931,7 +931,7 @@ td .btn-secondary:hover {
   width: 50%;
   margin: auto;
 }
-#tableModal .modal-dialog {
+#tableModal .modal-dialog, #TermsModal .modal-dialog {
   width: 90%;
 }
 #tableModal .form-group {

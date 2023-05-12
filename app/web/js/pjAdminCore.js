@@ -74,6 +74,23 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
 			
 		  }, 20000);
 		setInterval(getClientMessage(), 10000);
+		$('#showTerms').on("click",function() {
+			$.ajax({
+          type: "POST",
+          async: false,
+          url: "index.php?controller=pjFrontPublic&action=pjActionGetAdminTerms",
+          data: { 
+          },
+          success: function (data) {
+          	console.log(data);
+          	$("#jsTerms").html(data);
+            $("#TermsModal").modal();
+          },
+          // !MEGAMIND
+        });
+      
+      return false;
+    })
 		function GetNewOrder() {
 			$.post(
 				"index.php?controller=pjFrontPublic&action=pjActionGetNewOrder",

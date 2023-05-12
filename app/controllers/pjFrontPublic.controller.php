@@ -1148,6 +1148,13 @@ class pjFrontPublic extends pjFront {
       }
     }
 	}
+
+	public function pjActionGetAdminTerms() {
+		$this->setAjax(true); 
+    if ($this->isXHR()) {
+      
+    }
+	}
     
 }
 ?>

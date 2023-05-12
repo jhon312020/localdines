@@ -1016,7 +1016,6 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           // }
           
           if (data == "true") {
-            console.log(data);
             $("#voucher-container input").attr("data-wt","valid");
             $("#voucher-container input").parent().parent().removeClass("has-error");
             $("#voucher_code-error").addClass("d-none");
@@ -1027,7 +1026,6 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             //$(active_frm + " #vouchercode").val(code);
             calPrice(1);
           } else {
-            console.log('data validateVoucher',data)
             $("#voucher-container input").attr("data-wt","invalid");
             $("#voucher-container input").parent().parent().addClass("has-error");
             $("#voucher_code-error").removeClass("d-none");
@@ -1701,7 +1699,6 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
               }
             }
             paid_amount = parseFloat(card_amount) + parseFloat(cash_amount);
-            console.log('Money Container', paid_amount);
             showBalance(paid_amount.toFixed(2));
           }
           
@@ -1710,6 +1707,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           $('#payment_modal_pay').val('0.00');
           $('#payment_cash_amount').val('0.00');
           $('#payment_card_amount').val('0.00');
+          $('#payment_modal_bal').text('');
           $('#payment_modal_receive_bal').text('');
           $('#payment_modal_return_bal').text('');
           $("#paymentBtn").attr("data-valid", "false");
@@ -1788,17 +1786,11 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             var $activeForm = null;
             var total = $("#payment_modal_tot").text();
             var billTotal = parseFloat(total);
-            console.log('Total',total);
             var payment_method = $('#payment_method').val();
             var cash_amount = parseFloat($('#payment_cash_amount').val());
             var card_amount = parseFloat($('#payment_card_amount').val());
             var customer_paid = cash_amount + card_amount;
-            console.log(payment_method);
-            console.log(cash_amount);
-            console.log(card_amount);
-            //return;
             if (payment_method == 'split' && (cash_amount == 0 || card_amount == 0 || isNaN(cash_amount) || isNaN(card_amount))) {
-              console.log('came here');
               displayFormErrors(payment_method, 'Error in cash or card amount');
               return;
             } else if (payment_method == 'split' && (customer_paid > billTotal || customer_paid < billTotal)) {
@@ -1907,6 +1899,9 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           $(this).addClass('selected');
           var paymentType = $(this).text().trim().toLowerCase();
           var total = parseFloat($('#payment_modal_tot').text()).toFixed(2);
+          if (isNaN(total)) {
+            total = parseFloat(0.00).toFixed(2);
+          }
           var paid_amount = total;
           $('#payment_method').val(paymentType);
           if (paymentType == 'card') {
@@ -1923,7 +1918,6 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             $("#paymentBtn").attr("data-valid", "true");
             $(".money-container .btn").removeClass("d-none");
             paid_amount = (parseFloat($('#payment_cash_amount').val()) + parseFloat($('#payment_card_amount').val())).toFixed(2);
-            console.log('Split paid_amont', paid_amount);
           } else {
             $(".jsCard").addClass("d-none");
             $(".jsCash").removeClass("d-none");
@@ -1934,7 +1928,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             $('#payment_modal_pay').val('0.00');
             $('#payment_modal_bal').text('');
             $("#paymentBtn").attr("data-valid", "false");
-            paid_amount = 0.00;
+            paid_amount = parseFloat(0.00).toFixed(2);
           }
           showBalance(paid_amount);     
         })
@@ -2553,7 +2547,6 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           $("#cus-extra_"+index).addClass("btn-has-extra");
           $("#cus-extra_"+index).removeClass("btn-extras-add");
           var veiwElement = $("#load_data_"+index+"_"+qty_no);
-          console.log('hidden_arr', hidden_arr);
           veiwElement.empty();
           var filtered = hidden_arr.filter((temp) => {
             return temp.qty_no == qty_no;
@@ -2672,7 +2665,6 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           $("#btnCalc").trigger("click");
         })
         .on("click", ".onoffswitch-order .onoffswitch-checkbox", function (e) {
-          console.log('comes in');
         })
         .on("change", ".onoffswitch-order .onoffswitch-checkbox", function (e) {
           if (!$(this).prop("checked")) {
@@ -2963,7 +2955,6 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
         }).on("click", ".bootstrap-touchspin-down", function(event) {
           //reducedQtyID = true;
           reducedQtyID = $(this).parent().parent().parent().attr("data-parent-index");
-          console.log('down:', reducedQtyID);
           let product_qty = parseInt($("#fdProductQty_" + reducedQtyID).val(), 10);
           let extraID = '#extra-'+reducedQtyID;
           let specialID = '#fdSpecialInstruction_'+reducedQtyID;
@@ -2987,8 +2978,6 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             spl_count = specialIns.length;
           }
           if (extras_count || spl_count) {
-            //console.log('Before deleteing',extras);
-            //console.log('product_qty', product_qty)
             let product_qty_no = '';
             for (let qty = 1; qty<=product_qty; qty++ ) {
               product_qty_no = 'qty_'+qty;
@@ -3011,7 +3000,6 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
               $(extraButtonID).addClass("btn-has-extra");
               $(extraButtonID).removeClass("btn-extras-add");
             }
-            //console.log('Special Length', new_specialIns.length);
             if (new_specialIns.length) {
               $(splInsButtonID).addClass("btn-has-si");
             } else {
@@ -3145,7 +3133,6 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
               var concatName = 'CanOrReturn_';
               var productID = '#fdProduct_'+rowID;
               var productNewObj = newRowObj.find(productID);
-              console.log(productNewObj.attr('name'));
 
               var productNewName = 'product_id['+newRowID+']'; ;
               //newRowObj.find(productID).attr('name', productName);
@@ -3202,7 +3189,6 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
               // productReturnObj.children("a").attr('data-index', newRowID);
               // productReturnObj.children("a").children('i').removeClass('fa-strikethrough').addClass('fa-undo');
               updateCanRetButtonToRedo(newRowObj, rowID, newRowID );
-              console.log('id');
               $('#fdOrderList_1').find('tr:last').after(newRowObj);
             } else {
               $(strikeThroughRow).parent().parent().parent().addClass('strikethrough');
@@ -3237,8 +3223,6 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           } else {
             var cancelID = "#fdProdRetOrCancel_"+rowID;
             var cancelReturnReasonID = "#fdProdRetOrCancelReason_"+rowID;
-            
-            console.log(rowObj);
             rowObj.removeClass('strikethrough');
             $(cancelID).val('');
             $(cancelReturnReasonID).val('');
@@ -3300,15 +3284,12 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
          
          // $('#orderContainer').addClass('animated fadeInRight');
       });
-      $("#inputPostCode").change(function (e) {
-        
-        console.log("Called change event of inputpostcode 2382");
+      $("#inputPostCode").change(function (e) {        
         // if (e.keyCode == 13) {
         // e.preventDefault();
         getAddresses($(this));
         //return false;
         //}
-        
       });
       $(".arr").on("click", function() {
         $("#col-5").toggle("slow");
@@ -4381,9 +4362,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           function getTotal() {
             var $frm = null;
             var active_frm = getActiveForm();
-            console.log(`active form ${active_frm}`);
             $frm = $(active_frm);
-            console.log('form', $frm);
             //if ($("#fdOrderList_1").find("tbody.main-body > tr").length > 0 || 1) {
               $(".ibox-content").addClass("sk-loading");
               $.post(
@@ -4503,7 +4482,6 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
                 if (price > 0 && product_qty > 0) {
                   total += parseFloat(price) * product_qty;
                   var extraID = '#extra-'+index;
-                  //console.log('row index:', index);
                   if($(extraID).length) {
                     var extras = $(extraID).val();
                     if (extras) {
@@ -4828,20 +4806,26 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           function showBalance(paying) {
             var tot = $("#payment_modal_tot").text();
             var tot_int = parseFloat(tot);
+            if (isNaN(tot_int)) {
+              tot_int = parseFloat(0.00).toFixed(2);
+            }
             var balance;
             var currency = $("#payment_modal_curr").text();
             var balance_amt = currency + " 0.00" ;
             if (isNaN(paying) || paying == '') {
               $("#paymentBtn").attr("data-valid", "false");
             } else if(parseFloat(paying) < tot_int ) {
-              balance = (paying - tot_int).toFixed(2);
+              if (paying == 0) {
+                balance = (0.00).toFixed(2);
+              } else {
+                balance = (paying - tot_int).toFixed(2);
+              }
               balance_amt = currency +" "+ balance;
               $("#paymentBtn").attr("data-valid", "false");
             } else {
               balance = (paying - tot_int).toFixed(2);
               //balance = (tot_int - paying).toFixed(2);
               balance_amt = currency +" "+ balance;
-              
               $("#paymentBtn").attr("data-valid", "true");
               $("#cash-error-msg").addClass("d-none");
               $("#card-error-msg").addClass("d-none");
@@ -5015,7 +4999,6 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             $(getActiveForm()).find('#customer_paid').val(0);
             $(".payment-method-btn").removeClass("selected");
             $(".confirm_payment_method button:first-child").addClass("selected");
-            console.log('money', $(".confirm_payment_method button:first-child").text());
             $('#payment_method').val($(".confirm_payment_method button:first-child").text());
             $(".confirm-table-btn").removeClass("selected");
             tableID = $('#res_table_name').val();
