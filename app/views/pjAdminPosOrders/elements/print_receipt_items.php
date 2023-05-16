@@ -30,7 +30,8 @@
     
     <?php 
       if (array_key_exists($oi['hash'], $tpl['oi_extras']) ) { 
-        while($counter < $product_count) {
+        $extras_count = count($tpl['oi_extras'][$oi['hash']]);
+        while($counter < $extras_count) {
           $extra = $tpl['oi_extras'][$oi['hash']][$counter]; //echo 'came here';
           echo '<br/><span style="margin-left: 20px">'.$extra->extra_name ." x ".$extra->extra_count.'</span>';
           $counter++;
@@ -45,8 +46,9 @@
       echo $strikeThroughStart;
       echo pjCurrency::formatPrice($oi['cnt'] * $oi['price']); 
       if (array_key_exists($oi['hash'], $tpl['oi_extras']) ) { 
-        $counter =0;
-        while($counter < $product_count) {
+        $counter = 0;
+        $extras_count = count($tpl['oi_extras'][$oi['hash']]);
+        while($counter < $extras_count) {
           $extra = $tpl['oi_extras'][$oi['hash']][$counter]; //echo 'came here';
           echo '<br/><span>&nbsp;&nbsp;'.pjCurrency::formatPrice($extra->extra_count * $extra->extra_price).'</span>';
           $counter++;
