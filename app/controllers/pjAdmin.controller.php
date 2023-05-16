@@ -412,7 +412,9 @@ class pjAdmin extends pjAppController {
       $returnOrCancelReasons = array();
       if (array_key_exists('return_or_cancel', $post)) {
       	$returnOrCancelProducts = array_filter($post['return_or_cancel']);
-      	$returnOrCancelReasons = array_filter($post['return_or_cancel_reason']);
+      	if (array_key_exists('return_or_cancel_reason', $post)) {
+      		$returnOrCancelReasons = array_filter($post['return_or_cancel_reason']);
+      	}
       }
       if (!$delivered_return) {
       //$this->pr($post);
