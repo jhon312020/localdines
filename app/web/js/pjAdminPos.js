@@ -1215,7 +1215,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
         if (pjGrid.queryString == '') {
          queryString += '&origin='+$("#grid-type").val()
         } else {
-          queryString += pgGrid.queryString;
+          queryString += pjGrid.queryString;
         }
         var $grid_epos = $("#grid-epos").datagrid({
           buttons: [
@@ -1338,7 +1338,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
         if (pjGrid.queryString == '') {
          queryString += '&origin='+$("#grid-type").val();
         } else {
-          queryString += pgGrid.queryString;
+          queryString += pjGrid.queryString;
         }
         var $grid = $("#grid").datagrid({
           buttons: [
