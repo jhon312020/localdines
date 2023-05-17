@@ -1084,30 +1084,35 @@ class pjFrontPublic extends pjFront {
 	}
 	// Action to get credit balance
 
-    public function pjActionGetCreditBalance() {
-      if (!isset($this->option_arr['plugin_sms_api_key'])) {
-				self::jsonResponse(array('status' => 'ERR', 'text' => 'Sms api not set'));
-            exit;
-      } else {
-				// Account details
-				$apiKey = urlencode($this->option_arr['plugin_sms_api_key']);
-				//$apiKey = urlencode("NzQ2MjM2NGE3OTMxNmM1Nzc2NDI1ODQyNjI2ZjQ1NjI=");
-				// Prepare data for POST request
-				$data = array('apikey' => $apiKey);
-			
-				// Send the POST request with cURL
-				$ch = curl_init('https://api.txtlocal.com/balance'); 
-				curl_setopt($ch, CURLOPT_POST, true);
-				curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-				$response = curl_exec($ch);
-				curl_close($ch);
-				// Process your response here
+  public function pjActionGetCreditBalance() {
+    if (!isset($this->option_arr['plugin_sms_api_key'])) {
+			self::jsonResponse(array('status' => 'ERR', 'text' => 'Sms api not set'));
+          exit;
+    } else {
+			// Account details
+			$apiKey = urlencode($this->option_arr['plugin_sms_api_key']);
+			//$apiKey = urlencode("NzQ2MjM2NGE3OTMxNmM1Nzc2NDI1ODQyNjI2ZjQ1NjI=");
+			// Prepare data for POST request
+			$data = array('apikey' => $apiKey);
+		
+			// Send the POST request with cURL
+			$ch = curl_init('https://api.txtlocal.com/balance'); 
+			curl_setopt($ch, CURLOPT_POST, true);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			$response = curl_exec($ch);
+			if ($response === false) {
+				//echo 'curl error:'.curl_error($ch);
+				self::jsonResponse(array('status' => 'Error', 'text' => array("sms"=>"0", "mms"=>"0")));
+			} else {
+				echo "came here";
 				$balance = json_decode($response);
 				self::jsonResponse(array('status' => 'OK', 'text' => $balance->balance));
-				exit;
+			}
+			curl_close($ch);
+			exit;
 		}
-  }
+	}
 
   public function pjActionGetClientMessage() {
 		$this->setAjax(true);
