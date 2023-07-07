@@ -309,6 +309,7 @@ class pjAdminReports extends pjAdmin {
     }
 		$order_ids = $this->_post->toString('order_ids');
     $expense_ids = $this->_post->toString('expense_ids');
+    $income_ids = $this->_post->toString('income_ids');
     $return_order_ids = $this->_post->toString('return_order_ids');
 		if ($order_ids) {
 			$order_ids_arr = explode(',', $order_ids);
@@ -323,6 +324,12 @@ class pjAdminReports extends pjAdmin {
       $pjExpenseModel = pjExpenseModel::factory();
       $pjExpenseModel->whereIn('id', $expense_ids);
       $pjExpenseModel->modifyAll(array('is_z_viewed'=>1))->getAffectedRows();
+    }
+    if ($income_ids) {
+      $income_ids = explode(',', $income_ids);
+      $pjIncomeModel = pjIncomeModel::factory();
+      $pjIncomeModel->whereIn('id', $income_ids);
+      $pjIncomeModel->modifyAll(array('is_z_viewed'=>1))->getAffectedRows();
     } 
     if ($return_order_ids) {
       $return_order_ids = explode(',', $return_order_ids);
@@ -348,6 +355,9 @@ class pjAdminReports extends pjAdmin {
     $pjExpenseModel = pjExpenseModel::factory();
     $pjExpenseModel->where(sprintf("( (DATE(created_date) BETWEEN '%1\$s' AND '%2\$s') )", $date_from, $date_to));
 
+    $pjIncomeModel = pjIncomeModel::factory();
+    $pjIncomeModel->where(sprintf("( (DATE(created_date) BETWEEN '%1\$s' AND '%2\$s') )", $date_from, $date_to));
+
     $pjOrderReturn = pjOrderReturnModel::factory();
     $pjOrderReturn->where(sprintf("( (DATE(created_date) BETWEEN '%1\$s' AND '%2\$s') )", $date_from, $date_to));
 
@@ -356,6 +366,7 @@ class pjAdminReports extends pjAdmin {
     if ($zReport) {
     	$pjOrderModel->where('t1.is_z_viewed', 0);
       $pjExpenseModel->where('t1.is_z_viewed', 0);
+      $pjIncomeModel->where('t1.is_z_viewed', 0);
       $pjOrderReturn->where('t1.is_z_viewed', 0);
     }
     $pjOrderModel->where('t1.status', 'delivered');
@@ -386,6 +397,8 @@ class pjAdminReports extends pjAdmin {
     $num_of_expenses = 0;
     $total_expenses = 0;
     $total_supplier_exp = 0;
+    $num_of_incomes = 0;
+    $total_incomes = 0;
     $total_return_orders = 0;
     // print_r($confirmed_arr);
     // die;
@@ -440,6 +453,17 @@ class pjAdminReports extends pjAdmin {
       $total_supplier_exp = array_sum(array_column($total_expenses_arr,'amount'));
     }
 
+    //Incomes
+    
+    $num_of_incomes  = $pjIncomeModel->findCount()->getData();
+    $total_incomes_arr = $pjIncomeModel->select("id, amount")->findAll()->getData();
+    $income_ids = "";
+    if ($total_incomes_arr) {
+      $income_id_arr = array_column($total_incomes_arr,'id');
+      $income_ids = implode(',', $income_id_arr);
+      $total_incomes = array_sum(array_column($total_incomes_arr,'amount'));
+    }
+
     // Return Order
     $num_of_return_orders = $pjOrderReturn->findCount()->getData();
     $total_return_order_arr = $pjOrderReturn->select("id, amount")->findAll()->getData();
@@ -453,9 +477,9 @@ class pjAdminReports extends pjAdmin {
     // Cash in hand
     $cash_in_hand = 0;
     $total_expenses = $total_supplier_exp + $total_return_orders;
-    $cash_in_hand = $total_amount - $total_expenses;
+    $cash_in_hand = $total_amount - $total_expenses + $total_incomes;
 
-    return compact('total_amount', 'num_of_direct_sales', 'total_direct_sales', 'num_of_table_sales', 'total_table_sales', 'num_of_sales', 'num_of_card_sales', 'num_of_cash_sales', 'card_sales', 'cash_sales', 'report_order_ids', 'num_of_pos_sales', 'num_of_web_sales', 'num_of_telephone_sales' , 'num_of_expenses', 'total_supplier_exp', 'total_expenses', 'num_of_return_orders', 'total_return_orders', 'expense_ids', 'return_order_ids', 'cash_in_hand');
+    return compact('total_amount', 'num_of_direct_sales', 'total_direct_sales', 'num_of_table_sales', 'total_table_sales', 'num_of_sales', 'num_of_card_sales', 'num_of_cash_sales', 'card_sales', 'cash_sales', 'report_order_ids', 'num_of_pos_sales', 'num_of_web_sales', 'num_of_telephone_sales' ,'num_of_incomes','total_incomes', 'income_ids', 'num_of_expenses', 'total_supplier_exp', 'total_expenses', 'num_of_return_orders', 'total_return_orders', 'expense_ids', 'return_order_ids', 'cash_in_hand');
 	}
 
 

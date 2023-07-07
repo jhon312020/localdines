@@ -108,6 +108,58 @@ ALTER TABLE `food_delivery_orders` ADD `cash_amount` DECIMAL NULL DEFAULT NULL A
 
 ALTER TABLE `food_delivery_orders` CHANGE `cash_amount` `cash_amount` DECIMAL(16,2) NULL DEFAULT NULL;
 
+07-Jul-23
+
+Table structure for table `food_delivery_incomes`
+--
+
+CREATE TABLE `food_delivery_incomes` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `address` text DEFAULT NULL,
+  `postal_code` varchar(10) DEFAULT NULL,
+  `amount` varchar(10) DEFAULT NULL,
+  `contact_person` varchar(255) DEFAULT NULL,
+  `contact_number` varchar(12) DEFAULT NULL,
+  `is_z_viewed` tinyint(4) NOT NULL,
+  `is_active` tinyint(1) NOT NULL DEFAULT 1,
+  `created_date` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_date` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `food_delivery_incomes`
+--
+
+INSERT INTO `food_delivery_incomes` (`id`, `name`, `address`, `postal_code`, `amount`, `contact_person`, `contact_number`, `is_z_viewed`, `is_active`, `created_date`, `updated_date`) VALUES
+(9, 'test', 'test', 'test', '10', 'test', '1234567890', 1, 1, '2023-07-07 15:06:14', '2023-07-07 15:06:14');
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `food_delivery_incomes`
+--
+ALTER TABLE `food_delivery_incomes`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `food_delivery_incomes`
+--
+ALTER TABLE `food_delivery_incomes`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 

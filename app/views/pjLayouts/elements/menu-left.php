@@ -44,6 +44,13 @@ $isScriptSuppliersIndex = $isScriptSuppliersController && in_array($action_name,
 // Permissions Supplier
 $hasAccessScriptSuppliers = 1;
 
+// Income Controller
+$isScriptIncomesController = in_array($controller_name, array('pjAdminIncomes'));
+$isScriptIncomesIndex = $isScriptIncomesController && in_array($action_name, array('pjActionIndex', 'pjActionCreate', 'pjActionUpdate'));
+
+// Permissions Income
+$hasAccessScriptIncomes = 1;
+
 // Returns Controller
 $isScriptOrderReturnsController = in_array($controller_name, array('pjAdminOrderReturns'));
 $isScriptOrderReturnsIndex = $isScriptOrderReturnsController && in_array($action_name, array('pjActionIndex', 'pjActionCreate', 'pjActionUpdate'));
@@ -233,6 +240,13 @@ $hasAccessScriptOptionsPrintOrder       = pjAuth::factory('pjAdminOptions', 'pjA
     <li <?php echo $isScriptSuppliersController ? ' class="active"' : NULL; ?>><a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminSuppliers&amp;action=pjActionIndex">
         <i class="fa fa-building-o" aria-hidden="true"></i>
         <span class="nav-label"><?php echo "Suppliers";?></span>
+    </a></li>
+<?php endif; ?>
+
+<?php if($hasAccessScriptIncomes): ?>
+    <li <?php echo $isScriptIncomesController ? ' class="active"' : NULL; ?>><a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminIncomes&amp;action=pjActionIndex">
+        <i class="fa fa-handshake-o" aria-hidden="true"></i>
+        <span class="nav-label"><?php echo "Incomes";?></span>
     </a></li>
 <?php endif; ?>
 

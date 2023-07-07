@@ -54,6 +54,13 @@
                 <td colspan="2"><hr/></td>
               </tr>
               <tr>
+                <th><?php echo "No of Incomes: ";?></th>
+                <td class="currency"><?php echo $tpl['sales_report']['num_of_incomes']; ?></td>
+              </tr>
+              <tr>
+                <td colspan="2"><hr/></td>
+              </tr>
+              <tr>
                 <th><?php echo "Cash Sales: ";?></th>
                 <td class="currency"><?php echo pjCurrency::formatPrice($tpl['sales_report']['cash_sales']); ?></td>
               </tr>
@@ -79,6 +86,32 @@
               <tr>
                 <th><?php echo "Total Sales: ";?></th>
                 <td class="currency"><?php echo pjCurrency::formatPrice($tpl['sales_report']['total_amount']); ?></td>
+              </tr>
+              <tr>
+                <td colspan="2"><hr/></td>
+              </tr>
+              <tr>
+                <th><?php echo "Total Incomes: ";?></th>
+                <td class="currency"><?php echo pjCurrency::formatPrice($tpl['sales_report']['total_incomes']); ?></td>
+              </tr>
+              <tr>
+                <td colspan="2"><hr/><hr/></td>
+              </tr>
+              <tr>
+                <th><?php echo "Net Amount: ";?></th>
+                <td class="currency"><?php echo pjCurrency::formatPrice($tpl['sales_report']['cash_in_hand']); ?></td>
+              </tr>
+              <tr>
+                <td colspan="2"><hr/><hr/></td>
+              </tr>
+              <tr>
+                <tr>
+                <th><?php echo "Total Return Order Exp: ";?></th>
+                <td class="currency"><?php echo pjCurrency::formatPrice($tpl['sales_report']['total_return_orders']); ?></td>
+              </tr>
+              <tr>
+                <th><?php echo "Total Suppliers Exp: ";?></th>
+                <td class="currency"><?php echo pjCurrency::formatPrice($tpl['sales_report']['total_supplier_exp']); ?></td>
               </tr>
               <tr>
                 <td colspan="2"><hr/></td>
@@ -112,8 +145,10 @@
     $(document).on("click", "#zReportBtn", function(e) {
       var report_order_ids = "<?php echo $tpl['sales_report']['report_order_ids']; ?>";
       var expense_ids = "<?php echo $tpl['sales_report']['expense_ids']; ?>";
+      var income_ids = "<?php echo $tpl['sales_report']['income_ids']; ?>";
       var return_order_ids = "<?php echo $tpl['sales_report']['return_order_ids']; ?>";
       console.log(expense_ids);
+      console.log(income_ids);
       $.ajax({
         type: "POST",
         async: false,
@@ -121,6 +156,7 @@
         data: {
           order_ids: report_order_ids,
           expense_ids: expense_ids,
+          income_ids: income_ids,
           return_order_ids: return_order_ids
         },
         success: function (data) {
