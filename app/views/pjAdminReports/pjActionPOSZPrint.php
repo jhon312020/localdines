@@ -106,11 +106,6 @@
  <button class="btn btn-primary printbutton" id="zReportBtn" type="button">Print</button>
  <a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminReports&amp;action=pjActionPOSZIndex" class="btn btn-primary nextbutton"><i class="fa fa-plus"></i> <?php echo "Close" ?></a>
 </div>
-<pre>
-  <?php echo $tpl['sales_report']['expense_ids']; ?>
-  <?php echo $tpl['sales_report']['report_order_ids']; ?>
-</pre>
-
 <script type="text/javascript">
   $(document).ready(function() {
   // your code

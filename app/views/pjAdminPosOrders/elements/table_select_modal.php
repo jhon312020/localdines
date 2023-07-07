@@ -11,7 +11,7 @@
             <div class="confirm_table_name" id="confirm_table_name">
               <?php foreach ($tpl['table_list'] as $table_id => $name) { ?>
                 <a id = "<?php echo $table_id; ?>" class="btn confirm-table-btn" alt="<?php echo stripslashes($name); ?>">
-                  <img src='/app/web/img/backend/icon-add-table.png'/> 
+                  <img src="<?php echo IMAGE_BACKEND_URL.'icon-add-table.png' ?>"/> 
                   <?php echo stripslashes($name); ?>
                 </a>
               <?php } ?>

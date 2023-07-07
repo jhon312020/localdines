@@ -89,7 +89,7 @@
         <td colspan="2"><hr/></td>
       </tr>
       <tr>
-        <td colspan="2" style="font-size:14px"><img height="150" width="150" src='<?php echo APP_URL."/app/web/upload/qrcode/QrCodeScanImage.png" ?>'><br/>Click & Collect<br/><br/>Thank you for ordering from <?php echo $tpl['location_arr'][0]['name'];?>!</td>
+        <td colspan="2" style="font-size:14px"><img height="150" width="150" src='<?php echo UPLOAD_URL."qrcode/QrCodeScanImage.png"; ?>'><br/>Click & Collect<br/><br/>Thank you for ordering from <?php echo $tpl['location_arr'][0]['name'];?>!</td>
       </tr>
 		</tbody>
 	</table>
