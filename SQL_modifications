@@ -116,16 +116,40 @@ Table structure for table `food_delivery_incomes`
 CREATE TABLE `food_delivery_incomes` (
   `id` int(11) NOT NULL,
   `name` varchar(255) DEFAULT NULL,
-  `address` text DEFAULT NULL,
+  `address` text,
   `postal_code` varchar(10) DEFAULT NULL,
   `amount` varchar(10) DEFAULT NULL,
   `contact_person` varchar(255) DEFAULT NULL,
   `contact_number` varchar(12) DEFAULT NULL,
   `is_z_viewed` tinyint(4) NOT NULL,
-  `is_active` tinyint(1) NOT NULL DEFAULT 1,
-  `created_date` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_date` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `is_active` tinyint(1) NOT NULL DEFAULT '1',
+  `created_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `food_delivery_incomes`
+--
+ALTER TABLE `food_delivery_incomes`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `food_delivery_incomes`
+--
+ALTER TABLE `food_delivery_incomes`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+//07-July-2023
+
+ALTER TABLE `food_delivery_products` ADD `counter_number` INT NULL AFTER `image`;
 
 --
 -- Dumping data for table `food_delivery_incomes`

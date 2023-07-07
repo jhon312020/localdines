@@ -7,6 +7,19 @@
 <div class="col-sm-3">
     <div class="img-container" data-id="<?php echo $product['id']; ?>" data-extra="<?php echo $product['cnt_extras'];?>" data-hasSize ="<?php echo $product['set_different_sizes']; ?>">
         <img src="<?php echo $imgSrc; ?>" alt="" class="img-responsive" width="100%" style="height: 100%;">
+        <?php 
+            $count = 0;
+            $productName = $product['name']; 
+            $counterExists = strpos($productName, ' - ');
+            if ($counterExists) {
+                echo $count = substr ($productName, ($counterExists + 3));
+        ?>
+                 <div class="counter_number">
+                    <?php echo $count; ?>
+                </div>
+       <?php  } ?>
+
+       
         <div class="content-price">
             <?php if ($product['set_different_sizes'] == 'F') { ?>
                 <h4><?php echo pjCurrency::formatPrice($product['price']); ?></h4>

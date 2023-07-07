@@ -41,7 +41,7 @@
     ?>
 
    </td>
-   <td class="nani" style="padding: 5px 5px; float: right; margin-right: 10px">
+   <td class="nani itemTD">
     <?php 
       echo $strikeThroughStart;
       echo pjCurrency::formatPrice($oi['cnt'] * $oi['price']); 
