@@ -114,7 +114,7 @@
                                 </div>
                             </div><!-- /.form-group -->
                         </div><!-- /.col-sm-6 -->
-
+                        
                         <div class="col-sm-6">
                             <div class="row">
                                 <div class="col-sm-12">
@@ -167,6 +167,15 @@
                                 </div>
                             </div>
                         </div><!-- /.col-sm-6 -->
+
+                        <div class="col-sm-3">
+                          <div class="form-group">
+                            <label class="control-label"><?php echo "Product Number"; ?></label>
+                              <div>
+                                <input type="number" class="form-control col-sm-6" name="counter_number" id="counter_number" />
+                              </div>
+                          </div>
+                         </div>
                     </div><!-- /.row -->
 
                     <!-- Added by JR -->

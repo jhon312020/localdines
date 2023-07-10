@@ -165,6 +165,7 @@
 							} 
 							?>
                         </div><!-- /.col-sm-6 -->
+            
 
                         <div class="col-sm-6">
                         	<?php
@@ -215,12 +216,20 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
+                            </div>
 
                            <!-- MEGAMIND -->
 
                         </div><!-- /.col-sm-6 -->
+                         <div class="col-sm-3">
+                            <div class="form-group" data-index="<?php echo $v['id']; ?>">
+                                <label class="control-label"><?php echo "Product Number"; ?></label>
+                                <div>
+                                    <input type="number" class="form-control col-sm-6" name="counter_number" id="counter_number" value="<?php echo $tpl['arr']['counter_number']; ?>" />
+                                </div>
+                            </div>
+                         </div>
                     </div><!-- /.row -->
 
                     <!-- Added by JR -->

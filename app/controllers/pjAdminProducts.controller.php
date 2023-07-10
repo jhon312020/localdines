@@ -109,6 +109,8 @@ class pjAdminProducts extends pjAdmin {
         $data['set_different_sizes']="F";
       }
 
+      $data['counter_number']  = $post['counter_number'];
+
       $data['order']=$pjProductModel->getLastOrder();
       // print_r($post);
       // exit;
@@ -490,6 +492,12 @@ class pjAdminProducts extends pjAdmin {
       } else {
         $data['set_different_sizes']="F";
       }
+
+      // $data['counter_number']  = $this->_post->toInt('counter_number');
+      
+       $data['counter_number']  = $post['counter_number'];
+    
+      
 
       $pjProductModel =pjProductModel::factory();
       $err ='AP01';
