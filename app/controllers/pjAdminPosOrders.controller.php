@@ -612,7 +612,7 @@ class pjAdminPosOrders extends pjAdmin {
         ->getData();
       if ($category_arr) {
         $category_arr = array_column($category_arr, 'product_id');
-        $product_arr = pjProductModel::factory()->select('t1.id, t2.content AS name, t1.set_different_sizes, t1.price, t1.status, t1.image, (SELECT COUNT(*) FROM `' . pjProductExtraModel::factory()
+        $product_arr = pjProductModel::factory()->select('t1.id, t2.content AS name, t1.set_different_sizes, t1.price, t1.status, t1.image, t1.counter_number, (SELECT COUNT(*) FROM `' . pjProductExtraModel::factory()
           ->getTable() . '` AS TPE WHERE TPE.product_id=t1.id) as cnt_extras')
           ->join('pjMultiLang', "t2.foreign_id = t1.id AND t2.model = 'pjProduct' AND t2.locale = '" . $this->getLocaleId() . "' AND t2.field = 'name'", 'left')
           ->whereIn("t1.id", $category_arr)->groupBy('t1.id, t1.set_different_sizes, t1.price')
@@ -635,6 +635,18 @@ class pjAdminPosOrders extends pjAdmin {
         ->orderBy("price_name ASC")
         ->findAll()
         ->getData();
+      $category = pjCategoryModel::factory()->join('pjMultiLang', "t2.foreign_id = t1.id AND t2.model = 'pjCategory' AND t2.locale = '" . $this->getLocaleId() . "' AND t2.field = 'name'", 'left')
+          ->select("t2.content AS name")
+          // ->where("t1.status", 11)
+          // ->where("t1.id", $category_id)
+          ->find($category_id)
+          //->findAll()
+          ->getData();
+      $name = '';
+      if ($category) {
+        $name = $category['name'];
+      } 
+      $this->set('category', $name);
       $this->set('price_arr', $price_arr);
     }
   }
