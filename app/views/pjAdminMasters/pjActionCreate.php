@@ -3,7 +3,7 @@
   <div class="col-sm-12">
     <div class="row">
       <div class="col-lg-9 col-md-8 col-sm-6">
-        <h2>  Add new Supplier<?php //__('infoAddProductTitle');?></h2>
+        <h2>  Add new Master<?php //__('infoAddProductTitle');?></h2>
       </div>
     </div><!-- /.row -->
   </div><!-- /.col-md-12 -->
@@ -12,9 +12,9 @@
   <div class="col-sm-12 col-lg-offset-3 col-lg-6 ">
     <div class="ibox float-e-margins">
       <div class="ibox-content">
-        <form action="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminSuppliers&amp;action=pjActionCreate" method="post" id="frmCreateSupplier" autocomplete="off">
+        <form action="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminMasters&amp;action=pjActionCreate" method="post" id="frmCreateMaster" autocomplete="off">
           <?php
-          include PJ_VIEWS_PATH . 'pjAdminSuppliers/elements/pjSupplierFormElement.php';
+          include PJ_VIEWS_PATH . 'pjAdminMasters/elements/pjMasterFormElement.php';
           ?>
         </form>
       </div>

@@ -3,7 +3,7 @@
   <div class="col-sm-12">
     <div class="row">
       <div class="col-lg-9 col-md-8 col-sm-6">
-        <h2> Edit Supplier<?php //__('infoAddProductTitle');?></h2>
+        <h2> Edit Master<?php //__('infoAddProductTitle');?></h2>
       </div>
     </div><!-- /.row -->
     <?php //echo "<pre>"; print_r($tpl['company_arr']); echo "</pre>"; ?>
@@ -16,10 +16,10 @@
   <div class="col-lg-12">
     <div class="ibox float-e-margins">
       <div class="ibox-content">
-        <form action="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminSuppliers&amp;action=pjActionUpdate" method="post" id="frmUpdateSupplier" autocomplete="off">
-          <input type="hidden" name="company_id" value="<?php echo $tpl['arr']['id']; ?>">
+        <form action="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminMasters&amp;action=pjActionUpdate" method="post" id="frmUpdateMaster" autocomplete="off">
+          <input type="hidden" name="Master_id" value="<?php echo $tpl['arr']['id']; ?>">
           <?php
-          include PJ_VIEWS_PATH . 'pjAdminSuppliers/elements/pjSupplierFormElement.php';
+          include PJ_VIEWS_PATH . 'pjAdminMasters/elements/pjMasterFormElement.php';
           ?>
         </form>
       </div>

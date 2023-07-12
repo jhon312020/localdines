@@ -42,7 +42,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 				page: page
 			});
 			$grid.datagrid("option", "cache", cache);
-			$grid.datagrid("load", "index.php?controller=pjAdminIncomes&action=pjActionGetIncomeList", "c_name", "ASC", content.page, content.rowCount);
+			$grid.datagrid("load", "index.php?controller=pjAdminIncomes&action=pjActionGetIncome", "c_name", "ASC", content.page, content.rowCount);
 			return false;
 			$('.ibox-content').removeClass('sk-loading');
 
@@ -50,6 +50,30 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 
 		if ($frmFindDate.length > 0) {
 			
+			if ($('#datePickerOptions').length) {
+	        	$.fn.datepicker.dates['en'] = {
+	        		days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+	    		    daysMin: $('#datePickerOptions').data('days').split("_"),
+	    		    daysShort: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+	    		    months: $('#datePickerOptions').data('months').split("_"),
+	    		    monthsShort: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+	    		    format: $('#datePickerOptions').data('format'),
+	            	weekStart: parseInt($('#datePickerOptions').data('wstart'), 10),
+	    		};
+	        };
+	        $('#date_from').datepicker({
+	        	// endDate: $('#date_to').val(),
+	            autoclose: true
+	        }).on('changeDate', function (e) {
+	        	generateList.call(null);
+			});
+	        $('#date_to').datepicker({
+	        	// startDate: $('#date_from').val(),
+	            autoclose: true
+	        }).on('changeDate', function (e) {
+
+	        	generateList.call(null);
+			});
 		}
 		
 		if ($frmCreateIncome.length > 0 && validate) {
@@ -87,11 +111,11 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 				submitHandler: function(form){
 					var ladda_buttons = $(form).find('.ladda-button');
 				    if(ladda_buttons.length > 0)
-              {
-                var l = ladda_buttons.ladda();
-                l.ladda('start');
-              }
-              form.submit();
+                    {
+                        var l = ladda_buttons.ladda();
+                        l.ladda('start');
+                    }
+                    form.submit();
 					return false;
 				}
 			});
@@ -146,19 +170,16 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 				buttons: [{type: "edit", url: "index.php?controller=pjAdminIncomes&action=pjActionUpdate&id={:id}"},
 				          {type: "delete", url: "index.php?controller=pjAdminIncomes&action=pjActionDeleteIncome&id={:id}"}
 				          ],
-				columns: [
-						  {text: myLabel.company_name, type: "text", sortable: false, editable: false},
-                  {text: myLabel.contact_name, type: "text", sortable: true, editable: true},
-				          {text: myLabel.contact_number, type: "text", sortable: true, editable: true},
-				          {text: myLabel.amount, type: "text", sortable: true, editable: true},
-                  {text: myLabel.address, type: "text", sortable: false, editable: false},
-				          {text: myLabel.postal_code, type: "text", sortable: false, editable: false}],
-				dataUrl: "index.php?controller=pjAdminIncomes&action=pjActionGetIncomeList" + pjGrid.queryString,
+				columns: [{text: myLabel.date, type: "text", sortable: false, editable: false},
+						  {text: myLabel.company, type: "text", sortable: false, editable: false},
+				          {text: myLabel.amount, type: "text", sortable: false, editable: false},
+						{text: myLabel.address, type: "text", sortable: true, editable: true}],
+				dataUrl: "index.php?controller=pjAdminIncomes&action=pjActionGetIncome" + pjGrid.queryString,
 				dataType: "json",
-				fields: ['name','contact_person', 'contact_number', 'amount', 'address', 'postal_code'],
+				fields: ['date','c_name', 'amount','address'],
 				paginator: {
 					actions: [
-					   {text: myLabel.delete_selected, url: "index.php?controller=pjAdminIncomes&action=pjActionDeleteCompanyBulk", render: true, confirmation: myLabel.delete_confirmation}
+					   {text: myLabel.delete_selected, url: "index.php?controller=pjAdminIncomes&action=pjActionDeleteIncomeBulk", render: true, confirmation: myLabel.delete_confirmation}
 					],
 					gotoPage: true,
 					paginate: true,
@@ -184,8 +205,24 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 				q: $this.find("input[name='q']").val()
 			});
 			$grid.datagrid("option", "cache", cache);
-			$grid.datagrid("load", "index.php?controller=pjAdminincomes&action=pjActionGetIncomeList", "c_name", "ASC", content.page, content.rowCount);
+			$grid.datagrid("load", "index.php?controller=pjAdminIncomes&action=pjActionGetIncome", "c_name", "ASC", content.page, content.rowCount);
 			return false;
 		});
+
+		$(document).ready(function() {
+			if(updated_category != '' && page > 0) {
+				// var updated_category = $("#updated_product_category");
+				// var page = $("#updated_product_page");
+				var content = $grid.datagrid("option", "content"),
+				cache = $grid.datagrid("option", "cache");
+				$.extend(cache, {
+					category_id: updated_category,
+					page: page
+				});
+				$grid.datagrid("option", "cache", cache);
+				$grid.datagrid("load", "index.php?controller=pjAdminIncomes&action=pjActionGetProduct", "is_featured", "DESC", content.page, content.rowCount);
+				return false;
+			}
+		})
 	});
 })(jQuery_1_8_2);

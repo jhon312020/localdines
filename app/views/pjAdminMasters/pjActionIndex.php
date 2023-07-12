@@ -2,7 +2,7 @@
   <div class="col-sm-12">
     <div class="row">
     	<div class="col-lg-12 col-md-12 col-sm-12">
-        <h2>List of Suppliers<?php //__('infoExtrasTitle');?></h2>
+        <h2>List of Masters<?php //__('infoExtrasTitle');?></h2>
       </div>
     </div><!-- /.row -->
   </div><!-- /.col-md-12 -->
@@ -14,7 +14,7 @@
       <div class="ibox-content">
         <div class="row">
       	  <div class="col-md-4">
-          	<a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminSuppliers&amp;action=pjActionCreate" class="btn btn-primary"><i class="fa fa-plus"></i> Add Supplier<?php //__('btnAddExtra') ?></a>
+          	<a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminMasters&amp;action=pjActionCreate" class="btn btn-primary"><i class="fa fa-plus"></i> Add Master<?php //__('btnAddExtra') ?></a>
           </div><!-- /.col-md-6 -->
           <div class="col-md-4">
           	<form action="" method="get" class="form-horizontal frm-filter">
@@ -39,7 +39,8 @@ var pjGrid = pjGrid || {};
     pjGrid.queryString = "";
 var myLabel = myLabel || {};
 myLabel.date = "Date";
-myLabel.company_name = "Supplier Name";
+myLabel.master_type = "Master Type";
+myLabel.company_name = "Master Name";
 myLabel.contact_name = "Contact Name";
 myLabel.contact_number = "Contact Number";
 myLabel.address = "Address";

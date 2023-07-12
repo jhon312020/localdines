@@ -3,15 +3,16 @@
     
     <div class="form-group">
       <label class="control-label">Supplier</label>
-      <select name="supplier" id="supplier" class="form-control select-voucher required" data-msg-required="This field is required.">
+      <select name="master" id="master" class="form-control select-voucher required" data-msg-required="This field is required.">
         <option value="">-- Choose --</option>
         <?php
-          if(!empty($tpl['suppliers'])) {
-            foreach($tpl['suppliers'] as $supplier) {
-              ?><option value="<?php echo $supplier['id'] ?>"
-               <?php echo array_key_exists('arr', $tpl) && $tpl['arr']['supplier_id']== $supplier['id'] ? "selected" : '' ?>><?php echo $supplier['name'] ?></option><?php 
+          if(!empty($tpl['masters'])) {
+            foreach($tpl['masters'] as $master) {
+              ?><option value="<?php echo $master['id'] ?>"
+               <?php echo array_key_exists('arr', $tpl) && $tpl['arr']['master_id']== $master['id'] ? "selected" : '' ?>><?php echo $master['name'] ?></option><?php 
             }
           }
+          
         ?>                                
       </select>
     </div><!-- /.form-group -->

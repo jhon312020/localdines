@@ -132,11 +132,11 @@ class pjAdmin extends pjAppController {
 			'pjAdminExpense::pjActionCreate' => 'pjAdminPosOrders::pjActionIndex',
 			'pjAdminExpense::pjActionUpdate' => 'pjAdminPosOrders::pjActionIndex',
 			//Suppliers
-			'pjAdminSuppliers::pjActionIndex' => 'pjAdminPosOrders::pjActionIndex',
-			'pjAdminSuppliers::pjActionCreate' => 'pjAdminPosOrders::pjActionIndex',
-			'pjAdminSuppliers::pjActionGetSupplierList' => 'pjAdminPosOrders::pjActionIndex',
-			'pjAdminSuppliers::pjActionDeleteSupplier' => 'pjAdminPosOrders::pjActionIndex',
-			'pjAdminSuppliers::pjActionUpdate' => 'pjAdminPosOrders::pjActionIndex',
+			'pjAdminMasters::pjActionIndex' => 'pjAdminPosOrders::pjActionIndex',
+			'pjAdminMasters::pjActionCreate' => 'pjAdminPosOrders::pjActionIndex',
+			'pjAdminMasters::pjActionGetMasterList' => 'pjAdminPosOrders::pjActionIndex',
+			'pjAdminMasters::pjActionDeleteMaster' => 'pjAdminPosOrders::pjActionIndex',
+			'pjAdminMasters::pjActionUpdate' => 'pjAdminPosOrders::pjActionIndex',
 			//Sms
 			'pjAdminSms::pjActionIndex' => 'pjAdminPosOrders::pjActionIndex',
 			'pjAdminSms::pjActionGetSms' => 'pjAdminPosOrders::pjActionIndex',

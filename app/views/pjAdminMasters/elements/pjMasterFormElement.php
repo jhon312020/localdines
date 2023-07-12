@@ -1,8 +1,23 @@
 <div class="row">
   <div class="col-sm-12 col-lg-12">
 
+     <div class="form-group">
+      <label class="control-label">Master Type</label>
+      <select name="master" id="master" class="form-control select-voucher required" data-msg-required="This field is required.">
+        <option value="">-- Choose --</option>
+        <?php
+          if(!empty($tpl['masters_types'])) {
+            foreach($tpl['masters_types'] as $master) {
+              ?><option value="<?php echo $master['id'] ?>"
+               <?php echo array_key_exists('arr', $tpl) && $tpl['arr']['master_type_id']== $master['id'] ? "selected" : '' ?>><?php echo $master['name'] ?></option><?php 
+            }
+          }
+        ?>                                
+      </select>
+    </div><!-- /.form-group -->
+
     <div class="form-group">
-      <label class="control-label">Supplier Name</label>
+      <label class="control-label">Master Name</label>
       <input type="text" name="name" id="company_name" value="<?php echo array_key_exists('arr', $tpl) && $tpl['arr']['name'] ? $tpl['arr']['name'] : '' ?>" class="form-control required" data-msg-required="This field is required." />
     </div><!-- /.form-group -->
 
@@ -43,7 +58,7 @@
         <span class="ladda-label"><?php __('btnSave'); ?></span>
           <?php include $controller->getConstant('pjBase', 'PLUGIN_VIEWS_PATH') . 'pjLayouts/elements/button-animation.php'; ?>
       </button>
-      <a class="btn btn-white btn-lg pull-right" href="<?php echo PJ_INSTALL_URL; ?>index.php?controller=pjAdminSuppliers&action=pjActionIndex"><?php __('btnCancel'); ?></a>
+      <a class="btn btn-white btn-lg pull-right" href="<?php echo PJ_INSTALL_URL; ?>index.php?controller=pjAdminMasters&action=pjActionIndex"><?php __('btnCancel'); ?></a>
     </div><!-- /.clearfix -->
   </div>
 </div>

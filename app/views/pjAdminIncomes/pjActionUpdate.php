@@ -3,7 +3,7 @@
   <div class="col-sm-12">
     <div class="row">
       <div class="col-lg-9 col-md-8 col-sm-6">
-        <h2> Edit Income<?php //__('infoAddProductTitle');?></h2>
+        <h2> Edit incomes<?php //__('infoAddProductTitle');?></h2>
       </div>
     </div><!-- /.row -->
     <?php //echo "<pre>"; print_r($tpl['company_arr']); echo "</pre>"; ?>
@@ -16,8 +16,8 @@
   <div class="col-lg-12">
     <div class="ibox float-e-margins">
       <div class="ibox-content">
-        <form action="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminIncomes&amp;action=pjActionUpdate" method="post" id="frmUpdateIncome" autocomplete="off">
-          <input type="hidden" name="company_id" value="<?php echo $tpl['arr']['id']; ?>">
+        <form action="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminIncomes&amp;action=pjActionUpdate" method="post" id="frmUpdateIncome" autocomplete="off" enctype="multipart/form-data">
+          <input type="hidden" name="Income_id" value="<?php echo $tpl['arr']['id']; ?>">
           <?php
           include PJ_VIEWS_PATH . 'pjAdminIncomes/elements/pjIncomeFormElement.php';
           ?>
@@ -29,7 +29,7 @@
 
 <style>
     table .form-group{
-      margin-bottom: 0px !important;
+        margin-bottom: 0px !important;
     }
 </style>
 <script type="text/javascript">

@@ -3,8 +3,8 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 	$(function () {
 		"use strict";
 		var $frmFindDate = $("#frmFindDate"),
-			$frmCreateSupplier = $("#frmCreateSupplier"),
-			$frmUpdateSupplier = $("#frmUpdateSupplier"),
+			$frmCreateMaster = $("#frmCreateMaster"),
+			$frmUpdateMaster = $("#frmUpdateMaster"),
 			$dialogDelete = $("#dialogDeleteImage"),
 			dialog = ($.fn.dialog !== undefined),
 			chosen = ($.fn.chosen !== undefined),
@@ -42,7 +42,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 				page: page
 			});
 			$grid.datagrid("option", "cache", cache);
-			$grid.datagrid("load", "index.php?controller=pjAdminSuppliers&action=pjActionGetSupplierList", "c_name", "ASC", content.page, content.rowCount);
+			$grid.datagrid("load", "index.php?controller=pjAdminMasters&action=pjActionGetMaster", "c_name", "ASC", content.page, content.rowCount);
 			return false;
 			$('.ibox-content').removeClass('sk-loading');
 
@@ -52,8 +52,8 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 			
 		}
 		
-		if ($frmCreateSupplier.length > 0 && validate) {
-			$frmCreateSupplier.validate({
+		if ($frmCreateMaster.length > 0 && validate) {
+			$frmCreateMaster.validate({
 				errorPlacement: function(error, element) {
 					if (element.hasClass('select2-hidden-accessible')) {
                         error.insertAfter(element.next('.chosen-container'));
@@ -96,8 +96,8 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 				}
 			});
 		}
-		if ($frmUpdateSupplier.length > 0 && validate) {
-			$frmUpdateSupplier.validate({
+		if ($frmUpdateMaster.length > 0 && validate) {
+			$frmUpdateMaster.validate({
 				errorPlacement: function(error, element) {
 					if (element.hasClass('select2-hidden-accessible')) {
                         error.insertAfter(element.next('.chosen-container'));
@@ -143,8 +143,8 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 
 		if ($("#grid").length > 0 && datagrid) {
 			var $grid = $("#grid").datagrid({
-				buttons: [{type: "edit", url: "index.php?controller=pjAdminSuppliers&action=pjActionUpdate&id={:id}"},
-				          {type: "delete", url: "index.php?controller=pjAdminSuppliers&action=pjActionDeleteSupplier&id={:id}"}
+				buttons: [{type: "edit", url: "index.php?controller=pjAdminMasters&action=pjActionUpdate&id={:id}"},
+				          {type: "delete", url: "index.php?controller=pjAdminMasters&action=pjActionDeleteMaster&id={:id}"}
 				          ],
 				columns: [
 						  {text: myLabel.company_name, type: "text", sortable: false, editable: false},
@@ -152,19 +152,19 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 				          {text: myLabel.contact_number, type: "text", sortable: true, editable: true},
                   {text: myLabel.address, type: "text", sortable: false, editable: false},
 				          {text: myLabel.postal_code, type: "text", sortable: false, editable: false}],
-				dataUrl: "index.php?controller=pjAdminSuppliers&action=pjActionGetSupplierList" + pjGrid.queryString,
+				dataUrl: "index.php?controller=pjAdminMasters&action=pjActionGetMaster" + pjGrid.queryString,
 				dataType: "json",
 				fields: ['name','contact_person', 'contact_number', 'address', 'postal_code'],
 				paginator: {
 					actions: [
-					   {text: myLabel.delete_selected, url: "index.php?controller=pjAdminSuppliers&action=pjActionDeleteCompanyBulk", render: true, confirmation: myLabel.delete_confirmation}
+					   {text: myLabel.delete_selected, url: "index.php?controller=pjAdminMasters&action=pjActionDeleteCompanyBulk", render: true, confirmation: myLabel.delete_confirmation}
 					],
 					gotoPage: true,
 					paginate: true,
 					total: true,
 					rowCount: true
 				},
-				saveUrl: "index.php?controller=pjAdminSuppliers&action=pjActionSaveProduct&id={:id}",
+				saveUrl: "index.php?controller=pjAdminMasters&action=pjActionSaveProduct&id={:id}",
 				select: {
 					field: "id",
 					name: "record[]",
@@ -183,7 +183,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 				q: $this.find("input[name='q']").val()
 			});
 			$grid.datagrid("option", "cache", cache);
-			$grid.datagrid("load", "index.php?controller=pjAdminSuppliers&action=pjActionGetSupplierList", "c_name", "ASC", content.page, content.rowCount);
+			$grid.datagrid("load", "index.php?controller=pjAdminMasters&action=pjActionGetMaster", "c_name", "ASC", content.page, content.rowCount);
 			return false;
 		});
 	});

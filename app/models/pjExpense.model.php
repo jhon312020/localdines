@@ -12,7 +12,7 @@ class pjExpenseModel extends pjAppModel
 	
 	protected $schema = array(
 		array('name' => 'id', 'type' => 'int', 'default' => ':NULL'),
-		array('name' => 'supplier_id', 'type' => 'int', 'default' => ':NULL'),
+		array('name' => 'master_id', 'type' => 'int', 'default' => ':NULL'),
 		array('name' => 'category_id', 'type' => 'int', 'default' => ':NULL'),
 		array('name' => 'sub_category', 'type' => 'varchar', 'default' => ':NULL'),
 		array('name' => 'expense_name', 'type' => 'varchar', 'default' => ':NULL'),

@@ -50,7 +50,7 @@ class pjAdminExpense extends pjAdmin {
             $pjExpenseModel = $pjExpenseModel
             ->select("t1.*,date_format(t1.created_date, '%m-%d-%Y') as date,t1.expense_name as product_name, t2.name as c_name")
             ->where("(t1.created_date >= '$from' AND t1.created_date <= '$to')")
-            ->join('pjSupplier', 't2.id=t1.supplier_id', 'left outer');
+            ->join('pjMaster', 't2.id=t1.master_id', 'left outer');
 
             if ($q = $this->_get->toString('q'))
             {
@@ -111,8 +111,8 @@ class pjAdminExpense extends pjAdmin {
             $data = array();
             $post = $this->_post->raw();
 
-            if ($post['supplier'] && $post['category'] && $post['amount']) {
-                $data['supplier_id'] = $post['supplier'];
+            if ($post['master'] && $post['category'] && $post['amount']) {
+                $data['master_id'] = $post['master'];
                 $data['category_id'] = $post['category'];
                 $data['sub_category'] = $post['sub_category'];
                 $data['expense_name'] = $post['expense_name'];
@@ -132,9 +132,10 @@ class pjAdminExpense extends pjAdmin {
         if (self::isGet()) {
             $this->setLocalesData();
 
-            $this->set('suppliers', pjSupplierModel::factory()
+            $this->set('masters', pjMasterModel::factory()
                 ->select('t1.*')
                 ->where('t1.is_active', '1')
+                ->where('t1.master_type_id', '1')
                 ->orderBy('`name` ASC')
                 ->findAll()
                 ->getData());
@@ -204,8 +205,8 @@ class pjAdminExpense extends pjAdmin {
             $post = $this->_post->raw();
             $id = $this->_post->toInt('Expense_id');
 
-            if ($post['supplier'] && $post['category'] && $post['amount']) {
-                $data['supplier_id'] = $post['supplier'];
+            if ($post['master'] && $post['category'] && $post['amount']) {
+                $data['master_id'] = $post['master'];
                 $data['category_id'] = $post['category'];
                 $data['sub_category'] = $post['sub_category'];
                 $data['expense_name'] = $post['expense_name'];
@@ -233,9 +234,10 @@ class pjAdminExpense extends pjAdmin {
 
             $this->setLocalesData();
 
-            $this->set('suppliers', pjSupplierModel::factory()
+            $this->set('masters', pjMasterModel::factory()
                 ->select('t1.*')
                 ->where('t1.is_active', '1')
+                ->where('t1.master_type_id', '1')
                 ->orderBy('`name` ASC')
                 ->findAll()
                 ->getData());

@@ -37,12 +37,12 @@ $isScriptSmsIndex = $isScriptSmsController && in_array($action_name, array('pjAc
 // Permissions Expense
 $hasAccessScriptExpense = 1;
 
-// Supplier Controller
-$isScriptSuppliersController = in_array($controller_name, array('pjAdminSuppliers'));
-$isScriptSuppliersIndex = $isScriptSuppliersController && in_array($action_name, array('pjActionIndex', 'pjActionCreate', 'pjActionUpdate'));
+// Master Controller
+$isScriptMastersController = in_array($controller_name, array('pjAdminMasters'));
+$isScriptMastersIndex = $isScriptMastersController && in_array($action_name, array('pjActionIndex', 'pjActionCreate', 'pjActionUpdate'));
 
-// Permissions Supplier
-$hasAccessScriptSuppliers = 1;
+// Permissions Master
+$hasAccessScriptMasters = 1;
 
 // Income Controller
 $isScriptIncomesController = in_array($controller_name, array('pjAdminIncomes'));
@@ -236,10 +236,10 @@ $hasAccessScriptOptionsPrintOrder       = pjAuth::factory('pjAdminOptions', 'pjA
     </a></li>
 <?php endif; ?> 
 
-<?php if($hasAccessScriptSuppliers): ?>
-    <li <?php echo $isScriptSuppliersController ? ' class="active"' : NULL; ?>><a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminSuppliers&amp;action=pjActionIndex">
+<?php if($hasAccessScriptMasters): ?>
+    <li <?php echo $isScriptMastersController ? ' class="active"' : NULL; ?>><a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminMasters&amp;action=pjActionIndex">
         <i class="fa fa-building-o" aria-hidden="true"></i>
-        <span class="nav-label"><?php echo "Suppliers";?></span>
+        <span class="nav-label"><?php echo "Masters";?></span>
     </a></li>
 <?php endif; ?>
 
