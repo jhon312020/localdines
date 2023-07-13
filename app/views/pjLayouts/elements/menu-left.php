@@ -44,6 +44,13 @@ $isScriptMastersIndex = $isScriptMastersController && in_array($action_name, arr
 // Permissions Master
 $hasAccessScriptMasters = 1;
 
+// Postalcode Controller
+$isScriptPostalcodeController = in_array($controller_name, array('pjAdminPostalcode'));
+$isScriptPostalcodeIndex = $isScriptPostalcodeController && in_array($action_name, array('pjActionIndex', 'pjActionCreate', 'pjActionUpdate'));
+
+// Permissions Postalcode
+$hasAccessScriptPostalcode = 1;
+
 // Income Controller
 $isScriptIncomesController = in_array($controller_name, array('pjAdminIncomes'));
 $isScriptIncomesIndex = $isScriptIncomesController && in_array($action_name, array('pjActionIndex', 'pjActionCreate', 'pjActionUpdate'));
@@ -233,6 +240,13 @@ $hasAccessScriptOptionsPrintOrder       = pjAuth::factory('pjAdminOptions', 'pjA
     <li <?php echo $isReviewsController ? ' class="active"' : NULL; ?>><a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminReviews&amp;action=pjActionIndex">
         <i class="fa fa-star"></i>
         <span class="nav-label"><?php echo "Reviews";?></span>
+    </a></li>
+<?php endif; ?>
+
+<?php if($hasAccessScriptPostalcode): ?>
+    <li <?php echo $isScriptPostalcodeController ? ' class="active"' : NULL; ?>><a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminPostalcode&amp;action=pjActionIndex">
+        <i class="fa fa-map-pin" aria-hidden="true"></i>
+        <span class="nav-label"><?php echo "Postalcodes";?></span>
     </a></li>
 <?php endif; ?> 
 

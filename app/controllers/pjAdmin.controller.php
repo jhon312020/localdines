@@ -131,12 +131,18 @@ class pjAdmin extends pjAppController {
 			'pjAdminExpense::pjActionGetExpense' => 'pjAdminPosOrders::pjActionIndex',
 			'pjAdminExpense::pjActionCreate' => 'pjAdminPosOrders::pjActionIndex',
 			'pjAdminExpense::pjActionUpdate' => 'pjAdminPosOrders::pjActionIndex',
-			//Suppliers
+			//Masters
 			'pjAdminMasters::pjActionIndex' => 'pjAdminPosOrders::pjActionIndex',
 			'pjAdminMasters::pjActionCreate' => 'pjAdminPosOrders::pjActionIndex',
-			'pjAdminMasters::pjActionGetMasterList' => 'pjAdminPosOrders::pjActionIndex',
+			'pjAdminMasters::pjActionGetMaster' => 'pjAdminPosOrders::pjActionIndex',
 			'pjAdminMasters::pjActionDeleteMaster' => 'pjAdminPosOrders::pjActionIndex',
 			'pjAdminMasters::pjActionUpdate' => 'pjAdminPosOrders::pjActionIndex',
+			//Postalcode
+			'pjAdminPostalcode::pjActionIndex' => 'pjAdminPosOrders::pjActionIndex',
+			'pjAdminPostalcode::pjActionCreate' => 'pjAdminPosOrders::pjActionIndex',
+			'pjAdminPostalcode::pjActionGetPostalcode' => 'pjAdminPosOrders::pjActionIndex',
+			'pjAdminPostalcode::pjActionDeletePostalcode' => 'pjAdminPosOrders::pjActionIndex',
+			'pjAdminPostalcode::pjActionUpdate' => 'pjAdminPosOrders::pjActionIndex',
 			//Sms
 			'pjAdminSms::pjActionIndex' => 'pjAdminPosOrders::pjActionIndex',
 			'pjAdminSms::pjActionGetSms' => 'pjAdminPosOrders::pjActionIndex',
@@ -144,7 +150,7 @@ class pjAdmin extends pjAppController {
 			//Incomes
 			'pjAdminIncomes::pjActionIndex' => 'pjAdminPosOrders::pjActionIndex',
 			'pjAdminIncomes::pjActionCreate' => 'pjAdminPosOrders::pjActionIndex',
-			'pjAdminIncomes::pjActionGetIncomeList' => 'pjAdminPosOrders::pjActionIndex',
+			'pjAdminIncomes::pjActionGetIncome' => 'pjAdminPosOrders::pjActionIndex',
 			'pjAdminIncomes::pjActionDeleteIncome' => 'pjAdminPosOrders::pjActionIndex',
 			'pjAdminIncomes::pjActionUpdate' => 'pjAdminPosOrders::pjActionIndex',
 			//
