@@ -18,8 +18,8 @@ class pjMasterModel extends pjAppModel {
     array('name' => 'is_active', 'type' => 'boolean', 'default' => ':1'),
     array('name' => 'postal_code', 'type' => 'varchar', 'default' => ':NULL'),
 		array('name' => 'contact_number', 'type' => 'varchar', 'default' => ':NULL'),
-				array('name' => 'created_date', 'type' => 'datetime', 'default' => ':NULL'),
-		array('name' => 'updated_date', 'type' => 'datetime', 'default' => ':NULL')
+		array('name' => 'created_at', 'type' => 'datetime', 'default' => ':NULL'),
+		array('name' => 'updated_at', 'type' => 'datetime', 'default' => ':NULL')
 	);
 	
 	public static function factory($attr=array()) {

@@ -26,7 +26,10 @@
       <div class="col-sm-5 col-lg-7">
         <h2 id="orderIndexTitle" style="margin-left: 48%; text-align:center; margin-bottom: 0px; font-size:30px"><strong><?php __('infoOrdersListTitle');?></strong></h2>
       </div>
-      <div class="col-sm-6 col-lg-4" style="margin-top: 20px; text-align: right; padding-right: 30px"><a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminPosOrders&amp;action=pjActionCreateEatin" class="btn btn-primary"><i class="fa fa-plus"> </i> EAT IN </a>
+      <div class="col-sm-6 col-lg-4" style="margin-top: 20px; text-align: right; padding-right: 30px">
+        <?php if (!CAFE_MODEL) { ?>
+        <a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminPosOrders&amp;action=pjActionCreateEatin" class="btn btn-primary"><i class="fa fa-plus"> </i> EAT IN </a>
+      <?php } ?>
          <a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminPosOrders&amp;action=pjActionCreateTelephone" class="btn btn-primary pos-list-button"><i class="fa fa-plus"> </i> TEL </a>
          <a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminPosOrders&amp;action=pjActionCreate" class="btn btn-primary pos-list-button"><i class="fa fa-plus"> </i> TAKE AWAY</a></div>
     </div><!-- /.row -->

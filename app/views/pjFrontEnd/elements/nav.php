@@ -49,14 +49,13 @@
 
       <div class="logo me-auto">
 
-        <h1><a href="<?php echo APP_URL;?>/frontend/menu.php"><?php __('script_name') ?> </a></h1>
+        <h1><a href="<?php echo APP_HOME_URL;?>index.php"><?php __('script_name') ?> </a></h1>
 
         <!-- Uncomment below if you prefer to use an image logo -->
 
         <!-- <a href="index.html"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
 
       </div>
-
 
 
       <nav id="navbar" class="navbar order-last order-lg-0">
@@ -113,7 +112,7 @@
 
           </li>
 
-          <li><a class="nav-link scrollto" href="index.php#contact">Contact</a></li>
+          <li><a class="nav-link scrollto" href="<?php echo APP_HOME_URL. 'index.php#contact';?>">Contact</a></li>
           <?php
       			if($controller->isFrontLogged())
       			{ 
@@ -130,8 +129,6 @@
         <i class="bi bi-list mobile-nav-toggle"></i>
 
       </nav><!-- .navbar -->
-
-      
 
      <!-- <a href="index.php#book-a-table" class="book-a-table-btn scrollto">Book a table</a> -->
        <!-- <i class="fa fa-search search-me" style="margin-left: 10px;font-size: 25px;color: #fff;"></i>

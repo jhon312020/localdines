@@ -311,8 +311,11 @@ class pjAdminPosOrders extends pjAdmin {
       } else {
         $err = 'AR04';
       }
-      pjUtil::redirect(PJ_INSTALL_URL . "index.php?controller=pjAdminPosOrders&action=pjActionPrintOrder&source=index&origin=Tel&id=$id");
-      //pjUtil::redirect(PJ_INSTALL_URL . "index.php?controller=pjAdminPosOrders&action=pjActionIndex");
+      if (KITCHEN_PRINT) {
+        pjUtil::redirect(PJ_INSTALL_URL . "index.php?controller=pjAdminPosOrders&action=pjActionPrintOrder&source=index&origin=Tel&id=$id");
+        //pjUtil::redirect(PJ_INSTALL_URL . "index.php?controller=pjAdminPosOrders&action=pjActionIndex");
+      }
+      
     }
     $this->getInculdeData();
     $arr['table_name'] = 'Take Away';
@@ -3080,7 +3083,7 @@ class pjAdminPosOrders extends pjAdmin {
       } else {
         $err = 'AR04';
       }
-      if ($post['is_paused']) {
+      if ($post['is_paused'] && KITCHEN_PRINT) {
         //pjUtil::redirect(PJ_INSTALL_URL . "index.php?controller=pjAdminPosOrders&action=pjActionIndex");
         //pjActionPrintOrder&id=15&source=index
         pjUtil::redirect(PJ_INSTALL_URL . "index.php?controller=pjAdminPosOrders&action=pjActionPrintOrder&source=index&origin=Pos&id=$id");
@@ -3186,7 +3189,7 @@ class pjAdminPosOrders extends pjAdmin {
         ->where('id', $id)->limit(1)
         ->modifyAll(array_merge($post, $data, $post_data));
       $err = 'AR01';
-      if ($post['is_paused']) {
+      if ($post['is_paused'] && KITCHEN_PRINT) {
         //pjUtil::redirect(PJ_INSTALL_URL . "index.php?controller=pjAdminPosOrders&action=pjActionIndex&err=$err");
         // pjUtil::redirect(PJ_INSTALL_URL . "index.php?controller=pjAdminPosOrders&action=pjActionInitialKPrint&source=index&origin=Pos&id=$id");
         pjUtil::redirect(PJ_INSTALL_URL . "index.php?controller=pjAdminPosOrders&action=pjActionPrintOrder&source=index&origin=Pos&id=$id");

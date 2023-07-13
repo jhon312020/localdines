@@ -46,7 +46,7 @@ ALTER TABLE food_delivery_categories ADD product_type ENUM('veg', 'non-veg', 'bo
 
 26-Apr-23
 
-CREATE TABLE food_delivery_order_returns ( id INT NOT NULL AUTO_INCREMENT, product_name VARCHAR(255), reason TEXT, price DECIMAL(10,2), qty INT, amount DECIMAL(10,2), purchase_date DATETIME, is_z_viewed TINYINT(1) DEFAULT 0, created_date DATETIME, updated_date DATETIME, PRIMARY KEY (id) )
+CREATE TABLE food_delivery_order_returns ( id INT NOT NULL AUTO_INCREMENT, product_name VARCHAR(255), reason TEXT, price DECIMAL(10,2), qty INT, amount DECIMAL(10,2), purchase_date DATETIME, is_z_viewed TINYINT(1) DEFAULT 0, created_at DATETIME, updated_at DATETIME, PRIMARY KEY (id) )
 
 27-Apr-23
 
@@ -123,8 +123,8 @@ CREATE TABLE `food_delivery_incomes` (
   `contact_number` varchar(12) DEFAULT NULL,
   `is_z_viewed` tinyint(4) NOT NULL,
   `is_active` tinyint(1) NOT NULL DEFAULT '1',
-  `created_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -155,7 +155,7 @@ ALTER TABLE `food_delivery_products` ADD `counter_number` INT NULL AFTER `image`
 -- Dumping data for table `food_delivery_incomes`
 --
 
-INSERT INTO `food_delivery_incomes` (`id`, `name`, `address`, `postal_code`, `amount`, `contact_person`, `contact_number`, `is_z_viewed`, `is_active`, `created_date`, `updated_date`) VALUES
+INSERT INTO `food_delivery_incomes` (`id`, `name`, `address`, `postal_code`, `amount`, `contact_person`, `contact_number`, `is_z_viewed`, `is_active`, `created_at`, `updated_at`) VALUES
 (9, 'test', 'test', 'test', '10', 'test', '1234567890', 1, 1, '2023-07-07 15:06:14', '2023-07-07 15:06:14');
 
 --
@@ -237,13 +237,13 @@ CREATE TABLE `food_delivery_masters` (
   `id` int(11) NOT NULL,
   `master_type_id` int(11) NOT NULL,
   `name` varchar(255) DEFAULT NULL,
-  `address` text DEFAULT NULL,
+  `description` text DEFAULT NULL,
   `postal_code` varchar(10) DEFAULT NULL,
   `contact_person` varchar(255) DEFAULT NULL,
   `contact_number` varchar(12) DEFAULT NULL,
   `is_active` tinyint(1) NOT NULL DEFAULT 1,
-  `created_date` datetime DEFAULT current_timestamp(),
-  `updated_date` int(11) NOT NULL DEFAULT current_timestamp()
+  `created_at` datetime DEFAULT current_timestamp(),
+  `updated_at` int(11) NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -283,8 +283,8 @@ CREATE TABLE `food_delivery_expenses` (
   `description` text DEFAULT NULL,
   `amount` float DEFAULT NULL,
   `is_z_viewed` tinyint(4) NOT NULL,
-  `created_date` datetime DEFAULT NULL,
-  `updated_date` datetime DEFAULT NULL
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -321,8 +321,8 @@ CREATE TABLE `food_delivery_incomes` (
   `amount` varchar(10) DEFAULT NULL,
   `is_z_viewed` tinyint(4) NOT NULL DEFAULT 0,
   `is_active` tinyint(1) NOT NULL DEFAULT 1,
-  `created_date` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_date` timestamp NOT NULL DEFAULT current_timestamp()
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -601,8 +601,8 @@ CREATE TABLE IF NOT EXISTS `food_delivery_expenses` (
   `expense_name` varchar(255) DEFAULT NULL,
   `description` text,
   `amount` float DEFAULT NULL,
-  `created_date` datetime DEFAULT NULL,
-  `updated_date` datetime DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 COMMIT;

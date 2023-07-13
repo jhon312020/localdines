@@ -48,8 +48,8 @@ class pjAdminExpense extends pjAdmin {
             }
 
             $pjExpenseModel = $pjExpenseModel
-            ->select("t1.*,date_format(t1.created_date, '%m-%d-%Y') as date,t1.expense_name as product_name, t2.name as c_name")
-            ->where("(t1.created_date >= '$from' AND t1.created_date <= '$to')")
+            ->select("t1.*,date_format(t1.created_at, '%m-%d-%Y') as date,t1.expense_name as product_name, t2.name as c_name")
+            ->where("(t1.created_at >= '$from' AND t1.created_at <= '$to')")
             ->join('pjMaster', 't2.id=t1.master_id', 'left outer');
 
             if ($q = $this->_get->toString('q'))
@@ -118,8 +118,8 @@ class pjAdminExpense extends pjAdmin {
                 $data['expense_name'] = $post['expense_name'];
                 $data['description'] = $post['description'];
                 $data['amount'] = $post['amount'];
-                $data['created_date'] = date("Y-m-d H:i:s");
-                $data['updated_date'] = date("Y-m-d H:i:s");
+                $data['created_at'] = date("Y-m-d H:i:s");
+                $data['updated_at'] = date("Y-m-d H:i:s");
 
                 $err = 'AP09';
                 $pjExpenseModel->setAttributes($data)->insert()->getInsertId();
@@ -212,7 +212,7 @@ class pjAdminExpense extends pjAdmin {
                 $data['expense_name'] = $post['expense_name'];
                 $data['description'] = $post['description'];
                 $data['amount'] = $post['amount'];
-                $data['updated_date'] = date("Y-m-d H:i:s");
+                $data['updated_at'] = date("Y-m-d H:i:s");
 
                 $err = 'AP09';
                 $pjExpenseModel->reset()->where('id', $id)->limit(1)->modifyAll($data);

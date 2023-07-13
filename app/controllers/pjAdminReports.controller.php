@@ -353,13 +353,13 @@ class pjAdminReports extends pjAdmin {
     $location_clause = "";
     //$pjOrderModel->where('t1.origin', $origin)->where('t1.deleted_order', 0);
     $pjExpenseModel = pjExpenseModel::factory();
-    $pjExpenseModel->where(sprintf("( (DATE(created_date) BETWEEN '%1\$s' AND '%2\$s') )", $date_from, $date_to));
+    $pjExpenseModel->where(sprintf("( (DATE(created_at) BETWEEN '%1\$s' AND '%2\$s') )", $date_from, $date_to));
 
     $pjIncomeModel = pjIncomeModel::factory();
-    $pjIncomeModel->where(sprintf("( (DATE(created_date) BETWEEN '%1\$s' AND '%2\$s') )", $date_from, $date_to));
+    $pjIncomeModel->where(sprintf("( (DATE(created_at) BETWEEN '%1\$s' AND '%2\$s') )", $date_from, $date_to));
 
     $pjOrderReturn = pjOrderReturnModel::factory();
-    $pjOrderReturn->where(sprintf("( (DATE(created_date) BETWEEN '%1\$s' AND '%2\$s') )", $date_from, $date_to));
+    $pjOrderReturn->where(sprintf("( (DATE(created_at) BETWEEN '%1\$s' AND '%2\$s') )", $date_from, $date_to));
 
 
     $pjOrderModel->where('t1.deleted_order', 0);
@@ -851,8 +851,8 @@ class pjAdminReports extends pjAdmin {
       ->where('status', 'delivered');
 
     $pjOrderReturn = $pjOrderReturn
-      ->select("id, order_id, 'Return Order' as table_name, amount as cancel_amount, amount as total, created_date as created, 'delivered' as status, '-' as payment_method, 'AR' as type")
-      ->where("created_date >= '$date_from' OR updated_date >= '$date_from'");
+      ->select("id, order_id, 'Return Order' as table_name, amount as cancel_amount, amount as total, created_at as created, 'delivered' as status, '-' as payment_method, 'AR' as type")
+      ->where("created_at >= '$date_from' OR updated_at >= '$date_from'");
 
     $column = 'id';
     $direction = 'desc';

@@ -43,7 +43,7 @@ class pjAdminOrderReturns extends pjAdmin {
           $pjOrderReturnCustom = $pjOrderReturnCustom->where("(product_name LIKE '%$q%')");
       }
       
-      $column = 'created_date';
+      $column = 'created_at';
       $direction = 'DESC';
       if ($this->_get->toString('column') && in_array(strtoupper($this->_get->toString('direction')), array('ASC', 'DESC'))) {
         $column = $this->_get->toString('column');
@@ -79,11 +79,11 @@ class pjAdminOrderReturns extends pjAdmin {
         ->getData();
 
       $data = array_merge($pjOrderReturnCustom, $pjOrderReturn);
-      // $key_values = array_column($data, 'created_date'); 
+      // $key_values = array_column($data, 'created_at'); 
       // array_multisort($key_values, SORT_DESC, $data);
       foreach ($data as $k => $value) {
         $data[$k]['purchase_date'] = date('d-m-Y', strtotime($data[$k]['purchase_date']));
-        $data[$k]['created_date'] = date('d-m-Y', strtotime($data[$k]['created_date']));
+        $data[$k]['created_at'] = date('d-m-Y', strtotime($data[$k]['created_at']));
       }
       pjAppController::jsonResponse(compact('data', 'total', 'pages', 'page', 'rowCount', 'column', 'direction'));
     }
@@ -119,8 +119,8 @@ class pjAdminOrderReturns extends pjAdmin {
         $data['qty'] = $post['quantity'];
         $data['amount'] = $post['amount'];
         $data['purchase_date'] = date('Y-m-d', strtotime($post['purchase_date']));
-        $data['created_date'] = date("Y-m-d H:i:s");
-        $data['updated_date'] = date("Y-m-d H:i:s");
+        $data['created_at'] = date("Y-m-d H:i:s");
+        $data['updated_at'] = date("Y-m-d H:i:s");
         if ($post['product_id'] == 0) {
           $data['product_name'] = $post['product_name'];
         }
@@ -205,7 +205,7 @@ class pjAdminOrderReturns extends pjAdmin {
         $data['qty'] = $post['quantity'];
         $data['amount'] = $post['amount'];
         $data['purchase_date'] = date('Y-m-d', strtotime($post['purchase_date']));
-        $data['updated_date'] = date("Y-m-d H:i:s");
+        $data['updated_at'] = date("Y-m-d H:i:s");
         if ($post['product_id'] == 0) {
           $data['product_name'] = $post['product_name'];
         }
@@ -249,7 +249,7 @@ class pjAdminOrderReturns extends pjAdmin {
       
 
       $this->set('purchase_date', $arr['purchase_date']);
-      $this->set('return_date', $arr['created_date']);
+      $this->set('return_date', $arr['created_at']);
 
       $this->appendCss('bootstrap-chosen.css', PJ_THIRD_PARTY_PATH . 'chosen/');
       $this->appendJs('chosen.jquery.js', PJ_THIRD_PARTY_PATH . 'chosen/');
