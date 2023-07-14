@@ -314,6 +314,8 @@ class pjAdminPosOrders extends pjAdmin {
       if (KITCHEN_PRINT) {
         pjUtil::redirect(PJ_INSTALL_URL . "index.php?controller=pjAdminPosOrders&action=pjActionPrintOrder&source=index&origin=Tel&id=$id");
         //pjUtil::redirect(PJ_INSTALL_URL . "index.php?controller=pjAdminPosOrders&action=pjActionIndex");
+      } else {
+         pjUtil::redirect(PJ_INSTALL_URL . "index.php?controller=pjAdminPosOrders&action=pjActionIndex");
       }
       
     }
@@ -484,8 +486,8 @@ class pjAdminPosOrders extends pjAdmin {
       if (!empty($post['vouchercode'])) {
         $post['voucher_code'] = $post['vouchercode'];
       }
-      //$this->pr($data);
-      //$this->pr_die($post);
+      // $this->pr($data);
+      // $this->pr_die($post);
       $pjOrderModel->reset()
         ->where('id', $id)->limit(1)
         ->modifyAll(array_merge($post, $data, $post_data));
@@ -498,7 +500,11 @@ class pjAdminPosOrders extends pjAdmin {
         }
         pjUtil::redirect(PJ_INSTALL_URL . "index.php?controller=pjAdminPosOrders&action=pjActionInitialPrint&id=$id");
       } else {
-        pjUtil::redirect(PJ_INSTALL_URL . "index.php?controller=pjAdminPosOrders&action=pjActionPrintOrder&source=index&origin=Pos&id=$id");
+        if (KITCHEN_PRINT) {
+          pjUtil::redirect(PJ_INSTALL_URL . "index.php?controller=pjAdminPosOrders&action=pjActionPrintOrder&source=index&origin=Pos&id=$id");
+        } else {
+          pjUtil::redirect(PJ_INSTALL_URL . "index.php?controller=pjAdminPosOrders&action=pjActionCreate");
+        }
       }
       
     }
@@ -2977,7 +2983,7 @@ class pjAdminPosOrders extends pjAdmin {
     //exit;
   }
 
- public function pjActionGetSpecialInstructionTypes() {
+  public function pjActionGetSpecialInstructionTypes() {
     $this->setAjax(true);
     if ($this->isXHR()) {
       $spcl_ins_arr = pjSpecialInstructionModel::factory()->join('pjMultiLang', "t2.foreign_id = t1.id AND t2.model = 'pjSpecialInstruction' AND t2.locale = '" . $this->getLocaleId() . "' AND t2.field = 'name'", 'left')
@@ -3083,10 +3089,14 @@ class pjAdminPosOrders extends pjAdmin {
       } else {
         $err = 'AR04';
       }
-      if ($post['is_paused'] && KITCHEN_PRINT) {
+      if ($post['is_paused']) {
         //pjUtil::redirect(PJ_INSTALL_URL . "index.php?controller=pjAdminPosOrders&action=pjActionIndex");
         //pjActionPrintOrder&id=15&source=index
-        pjUtil::redirect(PJ_INSTALL_URL . "index.php?controller=pjAdminPosOrders&action=pjActionPrintOrder&source=index&origin=Pos&id=$id");
+        if (KITCHEN_PRINT) {
+          pjUtil::redirect(PJ_INSTALL_URL . "index.php?controller=pjAdminPosOrders&action=pjActionPrintOrder&source=index&origin=Pos&id=$id");
+        } else {
+          pjUtil::redirect(PJ_INSTALL_URL . "index.php?controller=pjAdminPosOrders&action=pjActionIndex");
+        }
       } else {
         //pjUtil::redirect(PJ_INSTALL_URL . "index.php?controller=pjAdminPosOrders&action=pjActionSalePrint&id=$id");
         if ($data['payment_method'] == 'cash') {
@@ -3189,10 +3199,14 @@ class pjAdminPosOrders extends pjAdmin {
         ->where('id', $id)->limit(1)
         ->modifyAll(array_merge($post, $data, $post_data));
       $err = 'AR01';
-      if ($post['is_paused'] && KITCHEN_PRINT) {
+      if ($post['is_paused']) {
         //pjUtil::redirect(PJ_INSTALL_URL . "index.php?controller=pjAdminPosOrders&action=pjActionIndex&err=$err");
         // pjUtil::redirect(PJ_INSTALL_URL . "index.php?controller=pjAdminPosOrders&action=pjActionInitialKPrint&source=index&origin=Pos&id=$id");
-        pjUtil::redirect(PJ_INSTALL_URL . "index.php?controller=pjAdminPosOrders&action=pjActionPrintOrder&source=index&origin=Pos&id=$id");
+        if (KITCHEN_PRINT) {
+          pjUtil::redirect(PJ_INSTALL_URL . "index.php?controller=pjAdminPosOrders&action=pjActionPrintOrder&source=index&origin=Pos&id=$id");
+        } else {
+           pjUtil::redirect(PJ_INSTALL_URL . "index.php?controller=pjAdminPosOrders&action=pjActionIndex");
+        }
       } else {
         //pjUtil::redirect(PJ_INSTALL_URL . "index.php?controller=pjAdminPosOrders&action=pjActionSalePrint&id=$id");
         if ($data['payment_method'] == 'cash') {
@@ -3382,7 +3396,6 @@ class pjAdminPosOrders extends pjAdmin {
       }
     }
   }
-
 
   public function pjActionReturnOrderItem() {
     $this->checkLogin();

@@ -361,7 +361,6 @@ class pjAdminReports extends pjAdmin {
     $pjOrderReturn = pjOrderReturnModel::factory();
     $pjOrderReturn->where(sprintf("( (DATE(created_at) BETWEEN '%1\$s' AND '%2\$s') )", $date_from, $date_to));
 
-
     $pjOrderModel->where('t1.deleted_order', 0);
     if ($zReport) {
     	$pjOrderModel->where('t1.is_z_viewed', 0);

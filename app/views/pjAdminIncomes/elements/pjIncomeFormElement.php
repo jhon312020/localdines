@@ -1,9 +1,8 @@
 <div class="row">
   <div class="col-sm-6">
-    
     <div class="form-group">
       <label class="control-label">Partner</label>
-      <select name="master" id="master" class="form-control select-voucher required" data-msg-required="This field is required.">
+      <select name="master" id="master" class="form-control select-voucher required touchBigSelect" data-msg-required="This field is required.">
         <option value="">-- Choose --</option>
         <?php
           if(!empty($tpl['masters'])) {
@@ -17,6 +16,13 @@
     </div><!-- /.form-group -->
 
     <div class="form-group">
+      <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-calendar"></i></span> 
+        <input type="text" name="date_from" id="date_from" value="<?php echo date("d.m.Y");?>" class="form-control" readonly>
+      </div>
+    </div><!-- /.form-group -->
+
+    <div class="form-group">
       <label class="control-label">Amount</label>
       <div class="input-group pjFdProductAmount">
         <input type="text" id="amount" value="<?php echo array_key_exists('arr', $tpl) && $tpl['arr']['amount'] ? $tpl['arr']['amount'] : '' ?>" name="amount" class="form-control pj-field-amount required number" data-msg-required="This field is required."/>
@@ -26,15 +32,13 @@
 
   </div>
 
-
-<div class="col-sm-6">
+  <div class="col-sm-6">
     <div class="form-group">
       <label class="control-label">Description</label>
       <textarea class="form-control form-control-lg" name="description"><?php echo array_key_exists('arr', $tpl) && $tpl['arr']['description'] ? $tpl['arr']['description'] : '' ?></textarea>
     </div><!-- /.form-group -->
-
   </div>
-  </div>
+</div>
 
 <div class="hr-line-dashed"></div>
 <div class="row">

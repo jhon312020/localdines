@@ -184,4 +184,63 @@
   myLabel.delivered = '<?php echo "Delivered"; ?>';
   myLabel.posType = '<?php echo "Pos Type"; ?>';
   myLabel.paymentType = '<?php echo "Payment"; ?>';
+  var kPrint = {
+    type: "print",
+    text: " Kprint",
+    url: "index.php?controller=pjAdminPosOrders&action=pjActionPrintOrder&id={:id}&source=index",
+  };
+
+  var buttons = [
+    {
+      type: "edit",
+      text: " Edit",
+      url: "index.php?controller=pjAdminPosOrders&action=pjActionUpdate&id={:id}",
+    },
+    {
+      type: "print",
+      text: " Rprint",
+      url: "index.php?controller=pjAdminPosOrders&action=pjActionSalePrint&id={:id}&source=index",
+    },
+    {
+      type: "info",
+      text: " info",
+      url: "#",
+    },
+    {
+      type: "return",
+      text: " Return",
+      url: "index.php?controller=pjAdminPosOrders&action=pjActionReturnOrderItem&id={:id}",
+    },
+    {
+      type: "cancel",
+      url: "index.php?controller=pjAdminPosOrders&action=pjActionCancelOrder&id={:id}",
+    },
+    {
+      type: "delete",
+      url: "index.php?controller=pjAdminPosOrders&action=pjActionDeleteOrder&id={:id}",
+      model: "Order"
+    },
+  ];
+  var telButtons = [
+    {
+      type: "delay",
+      //text: "Delay",
+      url: "#",
+    },
+    {
+      type: "info",
+      text: " info",
+      url: "#",
+    },
+  ]
+  var infoIndex = 4;
+  var isKitchen = '<?php echo KITCHEN_PRINT; ?>';
+  if (isKitchen === '1') {
+    buttons.splice(1, 0, kPrint);
+    var infoIndex = 5;
+  }
+  telButtons = telButtons.concat(buttons);
+  telButtons.splice(infoIndex, 1);
+  // console.log(buttons);
+  // console.log(telButtons);
 </script>

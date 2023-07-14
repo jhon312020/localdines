@@ -13,7 +13,7 @@
   </div><!-- /.col-md-12 -->
 </div> 
 <div class="row wrapper wrapper-content animated fadeInRight">
-  <div class="col-lg-12">
+  <div class="col-sm-12 col-lg-offset-3 col-lg-6">
     <div class="ibox float-e-margins">
       <div class="ibox-content">
         <form action="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminMasters&amp;action=pjActionUpdate" method="post" id="frmUpdateMaster" autocomplete="off">

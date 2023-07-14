@@ -1218,42 +1218,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           queryString += pjGrid.queryString;
         }
         var $grid_epos = $("#grid-epos").datagrid({
-          buttons: [
-            {
-              type: "edit",
-              text: " Edit",
-              url: "index.php?controller=pjAdminPosOrders&action=pjActionUpdate&id={:id}",
-            },
-            {
-              type: "print",
-              text: " Kprint",
-              url: "index.php?controller=pjAdminPosOrders&action=pjActionPrintOrder&id={:id}&source=index",
-            },
-            {
-              type: "print",
-              text: " Rprint",
-              url: "index.php?controller=pjAdminPosOrders&action=pjActionSalePrint&id={:id}&source=index",
-            },
-            {
-              type: "info",
-              text: " info",
-              url: "#",
-            },
-            {
-              type: "return",
-              text: " Return",
-              url: "index.php?controller=pjAdminPosOrders&action=pjActionReturnOrderItem&id={:id}",
-            },
-            {
-              type: "cancel",
-              url: "index.php?controller=pjAdminPosOrders&action=pjActionCancelOrder&id={:id}",
-            },
-            {
-              type: "delete",
-              url: "index.php?controller=pjAdminPosOrders&action=pjActionDeleteOrder&id={:id}",
-              model: "Order"
-            },
-          ],
+          buttons: buttons,
           columns: [
             { text: myLabel.id, type: "text", sortable: false},
             {
@@ -1341,47 +1306,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           queryString += pjGrid.queryString;
         }
         var $grid = $("#grid").datagrid({
-          buttons: [
-            {
-              type: "delay",
-              //text: "Delay",
-              url: "#",
-            },
-            {
-              type: "info",
-              text: " info",
-              url: "#",
-            },
-            {
-              type: "edit",
-              text: " Edit",
-              url: "index.php?controller=pjAdminPosOrders&action=pjActionUpdate&id={:id}",
-            },
-            {
-              type: "print",
-              text: " Kprint",
-              url: "index.php?controller=pjAdminPosOrders&action=pjActionPrintOrder&id={:id}&source=index",
-            },
-            {
-              type: "print",
-              //text: " Rprint",
-              url: "index.php?controller=pjAdminPosOrders&action=pjActionSalePrint&id={:id}&source=index",
-            },
-            {
-              type: "return",
-              text: " Return",
-              url: "index.php?controller=pjAdminPosOrders&action=pjActionReturnOrderItem&id={:id}",
-            },
-            {
-              type: "cancel",
-              url:"index.php?controller=pjAdminPosOrders&action=pjActionCancelOrder&id={:id}",
-            },
-            {
-              type: "delete",
-              url: "index.php?controller=pjAdminPosOrders&action=pjActionDeleteOrder&id={:id}",
-              model: "Order"
-            },
-          ],
+          buttons: telButtons,
           columns: [
             { text: myLabel.id, type: "text", sortable: false},
             //{ text: myLabel.phone, type: "text", sortable: false },
