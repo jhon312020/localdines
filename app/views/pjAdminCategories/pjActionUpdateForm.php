@@ -28,6 +28,21 @@ $filter = __('filter', true);
         }
         ?>
         <div class="row">
+          <div class="col-sm-12">
+            <div class="form-group">
+              <label class="control-label"><?php echo "Main Category" //__('lblCategoryPackingFee'); ?></label>
+              <div class="input-group col-xs-12">
+                <select name="category_id" id="category_id" class="form-control select2-hidden-accessible">
+                  <option value="0"><?php __('lblChoose'); ?></option>
+                  <?php foreach ($tpl['arr']['categories'] as $category_id=>$name) { ?>
+                    <option value="<?php echo $category_id; ?>"<?php echo $category_id == $tpl['arr']['category_id'] ? ' selected="selected"' : null;?>><?php echo stripslashes($name); ?></option>
+                  <?php } ?>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
           <div class="col-sm-6">
             <div class="form-group">
               <label class="control-label"><?php echo "Order" //__('lblCategoryPackingFee'); ?></label>

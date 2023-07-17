@@ -92,12 +92,15 @@ class pjAdminPosOrders extends pjAdmin {
         ->getData();
 
       $this->set('category_arr', $category_arr);
+      //$this->pr($category_arr);
       $category_list = [];
       foreach ($category_arr as $category) {
-        $category_list[$category['id']] = $category['name'];
+        if ($category['category_id'] != '') {
+          $category_list[$category['category_id']][$category['id']] = $category['name'];
+        }
       }
       $this->set('category_list', $category_list);
-
+      //$this->pr($category_list);
       // !MEGAMIND
       $this->set('table_list', $this->getRestaurantTables());
 
@@ -198,8 +201,8 @@ class pjAdminPosOrders extends pjAdmin {
         $data['client_id'] = $client_exist[0]['id'];
         $c_update = array();
         $c_update['c_type'] = $this->getClientType($data);
-        if ($client_exist[0]['c_address_1'] == '' || $client_exist[0]['c_city'] == '' || $client_exist[0]['c_postcode'] == '')
-        {
+        if ($client_exist[0]['c_address_1'] == '' || $client_exist[0]['c_city'] == '' 
+          || $client_exist[0]['c_postcode'] == '') {
           $c_update['c_address_1'] = $post['d_address_1'];
           $c_update['c_address_2'] = $post['d_address_2'];
           $c_update['c_city'] = $post['d_city'];

@@ -3613,28 +3613,39 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           tinymce.execCommand("mceRemoveEditor", true, "mceEditor");
         }
       });
-		$(".category-container").on("click", function() {
-        $(".category-container").removeClass("selected"); 
-        var id = $(this).data("id");
-        var category = $(this).text();
-        $(this).addClass("selected");
-        //$("#btnCategories").text(category);
-        //$("#slideCategories").css("display", "block");
-        //$("#categories-sec").slideUp(); 
-        $.ajax({
-          type: "POST",
-          url: "index.php?controller=pjAdminPosOrders&action=pjActionGetProductsForCategory",
-          data: {"category_id": id},
-          success: function (data) {
-            $("#products-sec").parents(".ibox-content").fadeIn();
-              $("#products-sec").html(data);
-              $("#products-sec").fadeIn();
-              if ($("#products-sec")) {
-                showPage(1);
-              }
-          }
-        })
+		$(".jsCategoryContainer").on("click", function() {
+      $(".category-container").removeClass("selected"); 
+      var id = $(this).data("id");
+      var category = $(this).text();
+      $(this).addClass("selected");
+      //$("#btnCategories").text(category);
+      //$("#slideCategories").css("display", "block");
+      //$("#categories-sec").slideUp(); 
+      $.ajax({
+        type: "POST",
+        url: "index.php?controller=pjAdminPosOrders&action=pjActionGetProductsForCategory",
+        data: {"category_id": id},
+        success: function (data) {
+          $("#products-sec").parents(".ibox-content").fadeIn();
+            $("#products-sec").html(data);
+            $("#products-sec").fadeIn();
+            if ($("#products-sec")) {
+              showPage(1);
+            }
+        }
       })
+    })
+    $(".jsMainCategoryContainer").on("click", function() {
+      $(".jsMainCategoryContainer").removeClass("selected"); 
+      var id = $(this).data("id");
+      var category = $(this).text();
+      $(this).addClass("selected");
+      console.log('this', id);
+      //$("#btnCategories").text(category);
+      $(".jsSubCatContainer").hide();
+      //$("#category_id_"+id).removeClass("d-none");
+      $("#category_id_"+id).slideToggle(); 
+    })
 
         // $("#slideCategories").on("click", function() {
         //   $("#btnCategories").text("Menu")

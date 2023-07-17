@@ -1,5 +1,6 @@
 <?php
 $filter = __('filter', true);
+// echo '<pre>'; print_r($tpl); echo '</pre>';
 ?>
 <form action="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminCategories&amp;action=pjActionCreate" method="post" id="frmCreateCategory">
 	<input type="hidden" name="category_create" value="1" />
@@ -21,6 +22,21 @@ $filter = __('filter', true);
 			    </div>
         </div>
       <?php } ?>
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="form-group">
+            <label class="control-label"><?php echo "Main Category" //__('lblCategoryPackingFee'); ?></label>
+            <div class="input-group col-xs-12">
+              <select name="category_id" id="category_id" class="form-control select2-hidden-accessible">
+                <option value="0"><?php __('lblChoose'); ?></option>
+                <?php foreach ($tpl['arr']['categories'] as $category_id=>$name) { ?>
+                  <option value="<?php echo $category_id; ?>"><?php echo stripslashes($name); ?></option>
+                <?php } ?>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="row">
         <div class="col-sm-6">
           <div class="form-group">

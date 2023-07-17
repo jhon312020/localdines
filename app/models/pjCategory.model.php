@@ -14,6 +14,7 @@ class pjCategoryModel extends pjAppModel
 		array('name' => 'id', 'type' => 'int', 'default' => ':NULL'),
 		array('name' => 'order', 'type' => 'int', 'default' => ':NULL'),
 		array('name' => 'packing_fee', 'type' => 'decimal', 'default' => ':NULL'),
+		array('name' => 'category_id', 'type' => 'int', 'default' => '0'),
     array('name' => 'status', 'type' => 'enum', 'default' => 'T'),
 		array('name' => 'product_type', 'type' => 'enum', 'default' => 'none'),
 	);
