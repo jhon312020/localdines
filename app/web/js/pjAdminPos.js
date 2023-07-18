@@ -354,7 +354,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             },
             c_email: {
               remote:
-                "index.php?controller=pjAdminOrders&action=pjActionCheckClientEmail",
+                "index.php?controller=pjAdminPosOrders&action=pjActionCheckClientEmail",
             },
             mobile_delivery_info: {
               required: true,
@@ -486,7 +486,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             },
             c_email: {
               remote:
-                "index.php?controller=pjAdminOrders&action=pjActionCheckClientEmail",
+                "index.php?controller=pjAdminPosOrders&action=pjActionCheckClientEmail",
             },
             mobile_delivery_info: {
               required: true,
@@ -629,7 +629,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             },
             c_email: {
               remote:
-                "index.php?controller=pjAdminOrders&action=pjActionCheckClientEmail",
+                "index.php?controller=pjAdminPosOrders&action=pjActionCheckClientEmail",
             },
             mobile_delivery_info: {
               required: true,
@@ -859,7 +859,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
         $.ajax({
           type: "POST",
           async: false,
-          url: "index.php?controller=pjAdminOrders&action=pjActionCheckPickup",
+          url: "index.php?controller=pjAdminPosOrders&action=pjActionCheckPickup",
           data: {
             type: function () {
               return $frm.find("input[name='type']").is(":checked")
@@ -1274,13 +1274,13 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             // actions: [
             //   {
             //     text: myLabel.delete_selected,
-            //     url: "index.php?controller=pjAdminOrders&action=pjActionDeleteOrderBulk",
+            //     url: "index.php?controller=pjAdminPosOrders&action=pjActionDeleteOrderBulk",
             //     render: true,
             //     confirmation: myLabel.delete_confirmation,
             //   },
             //   {
             //     text: myLabel.exported,
-            //     url: "index.php?controller=pjAdminOrders&action=pjActionExportOrder",
+            //     url: "index.php?controller=pjAdminPosOrders&action=pjActionExportOrder",
             //     ajax: false,
             //   },
             // ],
@@ -1289,7 +1289,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             total: true,
             rowCount: true,
           },
-          saveUrl: "index.php?controller=pjAdminOrders&action=pjActionSaveOrder&id={:id}",
+          saveUrl: "index.php?controller=pjAdminPosOrders&action=pjActionSaveOrder&id={:id}",
           select: {
             field: "id",
             name: "record[]",
@@ -1322,7 +1322,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
                       editableRenderer: function () {
                         return 0;
                       },
-                      //saveUrl: "index.php?controller=pjAdminOrders&action=pjActionSaveOrderDespatched&id={:id}",
+                      //saveUrl: "index.php?controller=pjAdminPosOrders&action=pjActionSaveOrderDespatched&id={:id}",
                       positiveLabel: myLabel.yes, positiveValue: "1", negativeLabel: myLabel.no, negativeValue: "0", 
                       cellClass: "text-center",
                       //negativeClass: "bg-danger"
@@ -1336,7 +1336,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
                         return 0;
                       },
                       // if() {
-                      //saveUrl: "index.php?controller=pjAdminOrders&action=pjActionSaveDeliveredCustomer&id={:id}",
+                      //saveUrl: "index.php?controller=pjAdminPosOrders&action=pjActionSaveDeliveredCustomer&id={:id}",
                       // }
                       positiveLabel: myLabel.yes, positiveValue: "1", negativeLabel: myLabel.no, negativeValue: "0", 
                       cellClass: "text-center"},
@@ -1346,7 +1346,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             //           editableRenderer: function () {
             //             return 0;
             //           },
-            //           saveUrl: "index.php?controller=pjAdminOrders&action=pjActionSaveOrderPaid&id={:id}",
+            //           saveUrl: "index.php?controller=pjAdminPosOrders&action=pjActionSaveOrderPaid&id={:id}",
             //           positiveLabel: myLabel.yes, positiveValue: "1", negativeLabel: myLabel.no, negativeValue: "0", 
             //           cellClass: "text-center",
             //           //negativeClass: "bg-danger"
@@ -1400,13 +1400,13 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             // actions: [
             //   {
             //     text: myLabel.delete_selected,
-            //     url: "index.php?controller=pjAdminOrders&action=pjActionDeleteOrderBulk",
+            //     url: "index.php?controller=pjAdminPosOrders&action=pjActionDeleteOrderBulk",
             //     render: true,
             //     confirmation: myLabel.delete_confirmation,
             //   },
             //   {
             //     text: myLabel.exported,
-            //     url: "index.php?controller=pjAdminOrders&action=pjActionExportOrder",
+            //     url: "index.php?controller=pjAdminPosOrders&action=pjActionExportOrder",
             //     ajax: false,
             //   },
             // ],
@@ -2118,7 +2118,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             index = $this.attr("data-index"),
             option = $("option:selected", this).attr("data-extra");
           $(".fdExtraBusiness_" + index).hide();
-          $.get("index.php?controller=pjAdminOrders&action=pjActionGetPrices", {
+          $.get("index.php?controller=pjAdminPosOrders&action=pjActionGetPrices", {
             product_id: $this.val(),
             index: index,
           }).done(function (data) {
@@ -2268,7 +2268,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             $pjFdEditClient.attr("href", href);
             $pjFdEditClient.css("display", "inline-block");
             $.get(
-              "index.php?controller=pjAdminOrders&action=pjActionGetClient&id=" +
+              "index.php?controller=pjAdminPosOrders&action=pjActionGetClient&id=" +
                 $(this).val()
             ).done(function (data) {
               if ($("#c_title").length > 0) {
@@ -2563,7 +2563,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             $.ajax({
               type: "POST",
               async: false,
-              url: "index.php?controller=pjAdminOrders&action=pjActionGetDelayMessage",
+              url: "index.php?controller=pjAdminPosOrders&action=pjActionGetDelayMessage",
               data: { 
                 value: function() {
                   return val;
@@ -2620,7 +2620,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
               //   $cinfo = $.ajax({
               //     type: "POST",
               //     async: false,
-              //     url: "index.php?controller=pjAdminOrders&action=pjActionCheckClientPhoneNumber",
+              //     url: "index.php?controller=pjAdminPosOrders&action=pjActionCheckClientPhoneNumber",
               //     data: { 
               //       value: function() {
               //         return $c_phone;
@@ -2707,7 +2707,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
   
           $emailContentWrapper.html("");
           $.get(
-            "index.php?controller=pjAdminOrders&action=pjActionReminderEmail",
+            "index.php?controller=pjAdminPosOrders&action=pjActionReminderEmail",
             {
               id: booking_id,
             }
@@ -2736,7 +2736,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             var l = Ladda.create(this);
             l.start();
             $.post(
-              "index.php?controller=pjAdminOrders&action=pjActionReminderEmail",
+              "index.php?controller=pjAdminPosOrders&action=pjActionReminderEmail",
               $emailContentWrapper.find("form").serialize()
             ).done(function (data) {
               if (data.status == "OK") {
@@ -2799,7 +2799,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
         //     var categoryID = $(this).data("id");
         //     var catName = $(this).text();
         //     $.post(
-        //       "index.php?controller=pjAdminOrders&action=pjActionGetProductsForCategory",
+        //       "index.php?controller=pjAdminPosOrders&action=pjActionGetProductsForCategory",
         //       {category_id: categoryID}
         //     ).done(function (data) {
         //       $('#catModalTitle').text(catName);
@@ -2823,7 +2823,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           // var categoryID = $(this).data("id");
           // var catName = $(this).text();
           // $.post(
-          //   "index.php?controller=pjAdminOrders&action=pjActionGetProductsForCategory",
+          //   "index.php?controller=pjAdminPosOrders&action=pjActionGetProductsForCategory",
           //   {category_id: categoryID}
           // ).done(function (data) {
           //   $('#catModalTitle').text(catName);
@@ -3238,7 +3238,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
       //     $.ajax({
       //       type: "POST",
       //       async: false,
-      //       url: "index.php?controller=pjAdminOrders&action=pjActionCheckPostcode",
+      //       url: "index.php?controller=pjAdminPosOrders&action=pjActionCheckPostcode",
       //       data: {post_code: postCode},
       //       success: function (data) {
       //         if (data.code == 100) {

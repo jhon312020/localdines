@@ -798,6 +798,7 @@ class pjFrontPublic extends pjFront {
 	    ->join('pjMultiLang', sprintf("t2.foreign_id = t1.id AND t2.model = 'pjCategory' AND t2.locale = '%u' AND t2.field = 'name'", $this->getLocaleId()), 'left')
 	    ->select(sprintf("t1.*, t2.content as name, (SELECT COUNT(TPC.product_id) FROM `%s` AS TPC WHERE TPC.category_id=t1.id) AS cnt_products", pjProductCategoryModel::factory()->getTable()))
 	    ->where('t1.status', 'T')
+	    ->where("(t1.category_id >= 0)")
 	    ->orderBy("`order` ASC")
 	    ->findAll()
 	    ->getData();

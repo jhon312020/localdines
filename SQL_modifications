@@ -391,6 +391,10 @@ ALTER TABLE `food_delivery_order_returns` CHANGE `created_date` `created_at` DAT
 
 ALTER TABLE `food_delivery_categories` ADD `category_id` INT NOT NULL DEFAULT '0' AFTER `packing_fee`;
 
+if (!defined("KITCHEN_PRINT")) define("KITCHEN_PRINT", 0);
+if (!defined("CAFE_MODEL")) define("CAFE_MODEL", 0);
+if (!defined("SUB_CATEGORY")) define("SUB_CATEGORY", 1);
+
 
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
