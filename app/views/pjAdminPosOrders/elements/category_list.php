@@ -2,7 +2,7 @@
 <div id="js-main-categories" class="row wrapper wrapper-content animated">
   <?php foreach($tpl['category_list'][0] as $key=>$category)  { ?>
     <div class="col-12 jsSubCatContainer" id=<?php echo "category_id_".$key; ?> style="display: none;">
-      <div class="jsSlideUp">
+      <div id="slide-up">
         <?php foreach($tpl['category_list'][$key] as $subKey=>$subCategory)  { 
           $subCategory = strlen($subCategory) > 8 ? substr($subCategory, 0, 7)."..." : $subCategory;
         ?>

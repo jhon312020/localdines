@@ -3614,7 +3614,8 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
         }
       });
 		$(".jsCategoryContainer").on("click", function() {
-      $(".category-container").removeClass("selected"); 
+      $(".jsCategory-container").removeClass("selected"); 
+      $(".jsCategoryContainer").removeClass("selected"); 
       var id = $(this).data("id");
       var category = $(this).text();
       $(this).addClass("selected");

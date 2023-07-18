@@ -310,7 +310,6 @@ td .btn-secondary:hover {
   text-shadow:0px 1px 0px #494d0c;
 }
 .main-category-container {
-  box-shadow: 0px 5px 14px -7px #806c0a;
   cursor:pointer;
   color:#ffffff;
   font-family:Arial;
@@ -320,13 +319,16 @@ td .btn-secondary:hover {
   text-shadow:0px 1px 0px #494d0c;
 }
 .main-category-container-1 {
-  background:linear-gradient(to bottom, #FF2400 5%, #9B111E 100%); 
-  background-color:#D10000;
+  background:linear-gradient(to bottom, #4b5357 5%, #adb5b9 100%);
+  box-shadow: 0px 5px 14px -7px #adb5b9;
+  background-color:#adb5b9;
 }
 .main-category-container-2 {
-  background:linear-gradient(to bottom, #964B00 5%, #65350F 100%);
-  background-color:#f59323;
+  background:linear-gradient(to bottom, #960018 5%, #FF2800 100%); 
+  box-shadow: 0px 5px 14px -7px #FF2800;
+  background-color:#FF2800;
 }
+
 .category-container,#btnCategories,#slideCategories {
   border-radius:8px;
 }
@@ -335,7 +337,7 @@ td .btn-secondary:hover {
   font-weight: 100;
   color: #000;
 }
-#js-categories .selected {
+#js-categories .selected, #slide-up .selected {
   background:linear-gradient(to bottom, #337ab7 5%, #337ab7 100%);
 }
 .products .img-container {

@@ -94,13 +94,20 @@ class pjAdminPosOrders extends pjAdmin {
       $this->set('category_arr', $category_arr);
       //$this->pr($category_arr);
       $category_list = [];
-      foreach ($category_arr as $category) {
-        if ($category['category_id'] != '') {
-          $category_list[$category['category_id']][$category['id']] = $category['name'];
+      if (SUB_CATEGORY) {
+        foreach ($category_arr as $category) {
+          if ($category['category_id'] != '') {
+            $category_list[$category['category_id']][$category['id']] = $category['name'];
+          }
+        }
+      } else {
+        foreach ($category_arr as $category) {
+          $category_list[$category['id']] = $category['name'];
         }
       }
+     
       $this->set('category_list', $category_list);
-      //$this->pr($category_list);
+      // $this->pr($category_list);
       // !MEGAMIND
       $this->set('table_list', $this->getRestaurantTables());
 

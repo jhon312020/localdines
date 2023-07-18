@@ -387,6 +387,10 @@ COMMIT;
 
 ALTER TABLE `food_delivery_order_returns` CHANGE `created_date` `created_at` DATETIME NULL DEFAULT NULL, CHANGE `updated_date` `updated_at` DATETIME NULL DEFAULT NULL;
 
+18-July-2023
+
+ALTER TABLE `food_delivery_categories` ADD `category_id` INT NOT NULL DEFAULT '0' AFTER `packing_fee`;
+
 
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
