@@ -43,9 +43,6 @@ class pjAdminProducts extends pjAdmin {
         ->select('id, product_type')
         ->groupBy('product_type')
         ->findAll()->getData();
-      // echo "<pre>";
-      // print_r($categories);
-      // echo "</pre>";
       $product_types = array_column($categories, 'product_type');
       if (in_array("none", $product_types) && count($product_types) == 1) {
         self::jsonResponse(array('status'=> true, 'code'=> 200, 'text'=> 'null'));
@@ -118,8 +115,6 @@ class pjAdminProducts extends pjAdmin {
       $data['counter_number']  = $post['counter_number'];
 
       $data['order']=$pjProductModel->getLastOrder();
-      // print_r($post);
-      // exit;
       $id = $pjProductModel->setAttributes(array_merge($post, $data))->insert()->getInsertId();
 
       if ($id  !== false && (int)$id > 0) {
@@ -156,15 +151,12 @@ class pjAdminProducts extends pjAdmin {
           }
         }
 
-        //print_r($post['i18n']);
         if (isset($_FILES['image'])) {
           if ($_FILES['image']['error'] == 0) {
             if (getimagesize($_FILES['image']["tmp_name"]) !=false) {
               $Image = new pjImage();
 
               if ($Image->getErrorCode() !== 200) {
-                // print_r(getimagesize($_FILES['image']["tmp_name"]));
-                // exit;
                 $Image->setAllowedTypes(array('image/png', 'image/gif', 'image/jpg', 'image/jpeg', 'image/pjpeg'));
 
                 if ($Image->load($_FILES['image'])) {
@@ -361,7 +353,6 @@ class pjAdminProducts extends pjAdmin {
       $rowCount =$this->_get->toInt('rowCount') ? : 10;
       $pages =ceil($total / $rowCount);
       $page =$this->_get->toInt('page') ? : 1;
-      //$page = 3;
       $offset =((int)$page - 1) * $rowCount;
 
       if ($page > $pages) {
@@ -463,7 +454,6 @@ class pjAdminProducts extends pjAdmin {
       $data =array();
       $post =$this->_post->raw();
 
-      // print_r($post);
       if ($this->_post->check('is_featured')) {
         $data['is_featured']=1;
       } else {
@@ -499,7 +489,6 @@ class pjAdminProducts extends pjAdmin {
         $data['set_different_sizes']="F";
       }
 
-      // $data['counter_number']  = $this->_post->toInt('counter_number');
       
        $data['counter_number']  = $post['counter_number'];
     
@@ -648,8 +637,6 @@ class pjAdminProducts extends pjAdmin {
       }
 
       if ($err =='AP01') {
-        // $_SESSION['updateProductCategory'] = $post['category_id'][0];
-        // $_SESSION['updateProductPage'] = $post['page'];
         pjUtil::redirect(PJ_INSTALL_URL . "index.php?controller=pjAdminProducts&action=pjActionIndex&err=AP01&category=" . $post['category'] . "&page=" . $post['page']);
       } else {
         pjUtil::redirect(PJ_INSTALL_URL . "index.php?controller=pjAdminProducts&action=pjActionUpdate&id=" . $id . "&err=AP10");

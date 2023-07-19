@@ -13,26 +13,20 @@ class pjFrontPublic extends pjFront {
 	public function pjActionMain() {
     $this->setAjax(true);
     if ($this->isXHR() || $this->_get->check('_escaped_fragment_')) {
-    	//echo '<pre>'; print_r($_SESSION); echo '</pre>';
-			// $hasImage = $this->_get->toString('hasImg');
-			// echo $hasImage;
       $this->set('main', $this->getCategories());
       $this->set('cart_box', pjFrontCart::getCartInfo($this->_get('cart'), $this->getLocaleId()));
-			//$this->set('has_image', $hasImage);
     }
 	}
 	public function pjActionMainQr() {
     $this->setAjax(true);
     if ($this->isXHR() || $this->_get->check('_escaped_fragment_')) {
       $this->set('mainQr', $this->getCategories());
-      //$this->set('cart_box', pjFrontCart::getCartInfo($this->_get('cart'), $this->getLocaleId()));
 		}
 		$options = pjOptionModel::factory()
 		->where('t1.foreign_id', 2)
 		->orderBy('t1.order ASC')
 		->findAll()
 		->getData();
-		//print_r($options);
 		$this->set('front_option', $options);
 	}
 	
@@ -58,7 +52,6 @@ class pjFrontPublic extends pjFront {
 	
 	public function pjActionCart() {
     $this->setAjax(true);
-    //echo "comes cart controller";
     if ($this->isXHR() || $this->_get->check('_escaped_fragment_')) {
 			$cart_box = pjFrontCart::getCartInfo($this->_get('cart'), $this->getLocaleId());
 			$price = 0;
@@ -154,7 +147,6 @@ class pjFrontPublic extends pjFront {
 				->where('t1.field', 'o_bank_account')
 				->limit(1)
 				->findAll()->getDataIndex(0);
-				//echo '<pre>'.print_r($bank_account); echo "</pre>"; exit;
 				if (isset($bank_account['content'])) {
 					$this->set('bank_account', $bank_account['content']);
 				} else {
@@ -204,7 +196,6 @@ class pjFrontPublic extends pjFront {
 	    
 	    if ($this->isXHR())
 	    {
-	        //$_SESSION['social_login'] = true;
 			$s_client = array();
 			$s_client["c_name"] = $_REQUEST["g_name"];
 			$s_client['surname'] = $_REQUEST['g_surname'];
@@ -216,8 +207,6 @@ class pjFrontPublic extends pjFront {
 					  ->findAll()
 					  ->getData();
 
-			// print_r($client);
-			// exit;
 		    if(count($client) > 0) {
                 if($client[0]['register_type'] == 'S') {
 					
@@ -235,12 +224,7 @@ class pjFrontPublic extends pjFront {
 			} else {
 				$s_client['c_password'] = 'staticPassword';
 				$s_client['status'] = 'T';
-				// $s_client["c_address_1"] = "address 1";
-				// $s_client["c_address_2"] = "address 2";
-				// $s_client["c_address_3"] = "address 3";
-				// $s_client["c_city"] = "city";
 				$s_client["c_type"] = "New";
-				//$s_client["post_code"] = "postcode";
 				$s_client["register_type"] = "S";
 				$s_client["mobile_delivery_info"] = 0;
 				$s_client["mobile_offer"] = 0;
@@ -302,7 +286,6 @@ class pjFrontPublic extends pjFront {
 	public function pjActionReview()
 	{
 	    $this->setAjax(true);
-		//print_r($this);
 	
 	    if ($this->isXHR() || $this->_get->check('_escaped_fragment_'))
 	    {
@@ -310,12 +293,6 @@ class pjFrontPublic extends pjFront {
 	        {
 	            
 	        }else{
-				//print_r($_REQUEST['p_id']);
-				// print_r($_POST);
-				// print_r($_GET);
-				//print_r($_COOKIE);
-				
-				// exit; 
 				$product = $_REQUEST['p_id'];
 				$review_info = [$_REQUEST['star'], $_REQUEST['via'], $_REQUEST['page']];
 	            $product_arr = pjProductModel::factory()
@@ -323,8 +300,6 @@ class pjFrontPublic extends pjFront {
 	            ->select('t1.*,t2.content AS name')
 				
 				->where('t1.id', $product)
-	            //->join('pjBaseMultiLang', sprintf("t2.model='pjBaseCountry' AND t2.foreign_id=t1.id AND t2.field='name' AND t2.locale='%u'", $this->getLocaleId()), 'left outer')
-	            //->orderBy('`country_title` ASC')
 	            ->findAll()
 	            ->getData();
 				$this->set('product_arr', $product_arr);
@@ -381,8 +356,6 @@ class pjFrontPublic extends pjFront {
         $this->set('status', 'ERR');
       }
       $cart_box = pjFrontCart::getCartInfo($this->_get('cart'), $this->getLocaleId());
-			// print_r($cart_box);
-			// exit;
       $price = 0;
       if ($cart_box['cart']) {
 	      foreach ($cart_box['cart'] as $hash => $item) {
@@ -419,7 +392,6 @@ class pjFrontPublic extends pjFront {
       ->where('t1.field', 'o_bank_account')
       ->limit(1)
       ->findAll()->getDataIndex(0);
-      //$this->set('bank_account', $bank_account['content']);
       if (isset($bank_account['content'])) {
 				$this->set('bank_account', $bank_account['content']);
 			} else {
@@ -543,14 +515,7 @@ class pjFrontPublic extends pjFront {
 			$today = date('Y-m-d');
       if ($this->_get->toInt('location_id') > 0 &&  !empty($get_date)) {
         $date = pjDateTime::formatDate($get_date, $this->option_arr['o_date_format']);
-				//echo $date;
-				// if ($date == $today) {
-				// 	$option = 'asap';
-				// 	$this->tpl['option'] = $option;
-				// 	//$wt_arr = [];
-				// } else {
         $wt_arr = pjAppController::getWorkingTime($date, $this->_get->toInt('location_id'), $this->_get->toString('type'));
-				//}
 	            
       } else {
         $wt_arr = array('start_hour' => 0, 'end_hour' => 23);
@@ -558,9 +523,7 @@ class pjFrontPublic extends pjFront {
         $this->_set('d_time', '00:00');
       }
       $this->tpl['date'] = $date;
-		//if ($date != $today) {
       	$this->tpl['wt_arr'] = $wt_arr;
-		//}
     }
 	}
 	
@@ -653,7 +616,6 @@ class pjFrontPublic extends pjFront {
 			->orderBy('t1.order ASC')
 			->findAll()
 			->getData();
-			//$this->pr($arr);
 			$this->set('front_option', $options);
 	    $this->set('arr', $arr);
 			$this->set('page_type', $page);
@@ -837,15 +799,6 @@ class pjFrontPublic extends pjFront {
 			$page_type = $this->_get->toString('page');
 			$hasImage = $this->_get->toString('hasImg');
 			$this->set('has_image', $hasImage);
-			
-	        // $search_results = pjMultiLangModel::factory()
-			//            ->select('DISTINCT t1.foreign_id')
-			// 		   ->where("t1.content LIKE '%$key%' AND t1.model = 'pjProduct'")
-			// 		   ->findAll()
-			// 		   ->getData();
-		    // print_r($search_results);
-			// exit;
-			//$this->set('search_results', $search_results);
 
 			$pjProductModel = pjProductModel::factory();
 	        $arr = $pjProductModel
@@ -921,24 +874,15 @@ class pjFrontPublic extends pjFront {
 			->orderBy('t1.order ASC')
 			->findAll()
 			->getData();
-			//print_r($options);
 			$this->set('front_option', $options);
 	    }
-	    //exit;
 	}
 
 	public function pjActionSendOtp() {
     $this->setAjax(true);
     if ($this->isXHR())
     {
-			// $otp = mt_rand(100000,999999); 
-			// $_SESSION['otp'] = $otp;
-			// $msg = "Please enter OTP ".$otp;
-			//echo $otp;
-				
-			//$response = $this->sendMessage($c_phone,$msg);
-			//print_r($response);
-			//exit;
+
     }
 	}
 
@@ -951,7 +895,6 @@ class pjFrontPublic extends pjFront {
 			->join('pjMultiLang', sprintf("t2.foreign_id = t1.id AND t2.model = 'pjProduct' AND t2.locale = '%u' AND t2.field = 'name'", $this->getLocaleId()), 'left')
 			->join('pjMultiLang', sprintf("t3.foreign_id = t1.id AND t3.model = 'pjProduct' AND t3.locale = '%u' AND t3.field = 'description'", $this->getLocaleId()), 'left')
 			->join('pjProductCategory', 't4.product_id=t1.id', 'left outer')
-			//->join('pjReview', 't5.product_id = t1.id', 'left outer')
 			->select("t1.*, t2.content AS name, t3.content AS description, t4.category_id, (SELECT COUNT(TO.product_id) FROM `".pjReviewModel::factory()->getTable()."` AS `TO` WHERE `TO`.product_id=t1.id AND `TO`.status = 1) AS cnt_reviews")
 			->where('t1.id', $prd_id)
 			->findAll()
@@ -1034,8 +977,6 @@ class pjFrontPublic extends pjFront {
 	public function pjActionGetNewOrder() {
 		$this->setAjax(true);
     if ($this->isXHR()) {
-			// $now = date( 'y-m-d H:i', time ());
-			// $now = $now.":00";
 			$now = date( 'y-m-d');
 			$now = $now." 00:00:00";
 			$order = pjOrderModel::factory()
@@ -1092,7 +1033,6 @@ class pjFrontPublic extends pjFront {
     } else {
 			// Account details
 			$apiKey = urlencode($this->option_arr['plugin_sms_api_key']);
-			//$apiKey = urlencode("NzQ2MjM2NGE3OTMxNmM1Nzc2NDI1ODQyNjI2ZjQ1NjI=");
 			// Prepare data for POST request
 			$data = array('apikey' => $apiKey);
 		
@@ -1103,7 +1043,6 @@ class pjFrontPublic extends pjFront {
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 			$response = curl_exec($ch);
 			if ($response === false) {
-				//echo 'curl error:'.curl_error($ch);
 				self::jsonResponse(array('status' => 'Error', 'text' => array("sms"=>"0", "mms"=>"0")));
 			} else {
 				echo "came here";
@@ -1140,8 +1079,6 @@ class pjFrontPublic extends pjFront {
       if ($this->isFrontLogged()) {
 				$client = $_SESSION[$this->defaultClient];
         $orders = pjOrderModel::factory()
-				// ->join('pjClient', "t2.id=t1.client_id", 'left outer')
-				// ->join('pjAuthUser', "t3.id=t2.foreign_id", 'left outer')
 				->select("t1.*")
 				->where("t1.client_id", $client['client_id'])
 				->orderBy('t1.id desc')

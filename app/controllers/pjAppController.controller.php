@@ -124,9 +124,6 @@ class pjAppController extends pjBaseAppController
         if(!in_array($this->_get->toString('controller'), array('pjFront')))
         {
             $this->appendJs('pjAdminCore.js?version=123');
-            // TODO: DELETE unnecessary files
-            #$this->appendCss('reset.css');
-            #$this->appendCss('pj-all.css', PJ_FRAMEWORK_LIBS_PATH . 'pj/css/');
             $this->appendCss('admin.css');
         }
         
@@ -421,7 +418,6 @@ class pjAppController extends pjBaseAppController
                     if (!empty($data['p_date']) && !empty($data['pickup_time']))
                     {
                         
-                        //$p_time = $data['p_time'];
                         $p_time = $data['pickup_time'];
 
                         if(count(explode(" ", $p_time)) == 2)
@@ -438,11 +434,9 @@ class pjAppController extends pjBaseAppController
                     }
 	                
 	            } else {
-                    //echo $data['d_date']."and".$data['delivery_time'];
                     if (!empty($data['d_date']) && !empty($data['delivery_time']))
                     {   
                         
-                        //$d_time = $data['d_time'];
                         $d_time = $data['delivery_time'];
                         
                         if(count(explode(" ", $d_time)) == 2)
@@ -464,7 +458,6 @@ class pjAppController extends pjBaseAppController
 	            {
 	                $dt = strtotime($dt);
 	                $valid = false;
-                    //print_r($dt);
 	                switch ($arr['valid'])
 	                {
 	                    case 'fixed':

@@ -36,8 +36,6 @@ class pjFrontClient extends pjAuth
     public function createClient()
     {
         $params = $this->getParams();
-        // print_r($params);
-        // exit;
 
         $u_data = array();
         $u_data['is_active'] = 'T';
@@ -77,8 +75,6 @@ class pjFrontClient extends pjAuth
                 $c_data['email_receipt'] = isset($params['email_receipt'])?$params['email_receipt']: ":NULL"; 
                 $c_data['email_offer'] = isset($params['email_offer'])?$params['email_offer']: ":NULL";
                 $c_data['register_type'] = isset($params['register_type']) ? $params['register_type'] : "T";
-                // print_r($c_data);
-                // exit;
                 $client_id = pjClientModel::factory()->setAttributes($c_data)->insert()->getInsertId();
                 if ($client_id !== false && (int) $client_id > 0)
                 {
@@ -98,9 +94,7 @@ class pjFrontClient extends pjAuth
         $client = pjClientModel::factory()->where('foreign_id', $params['id'])->findAll()->getDataIndex(0);
         if(!empty($client))
         {
-            //echo "comes to make session client";
             $user = pjAuth::init($params)->getUser();
-            //print_r($user);
             $client['client_id'] = $client['id'];
             unset($client['id']);
             $client = array_merge($user, $client);

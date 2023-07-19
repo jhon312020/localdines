@@ -213,7 +213,6 @@ class pjAdminReports extends pjAdmin {
       } else {
         $data = $this->getPOSReportData(0, $date_from, $date_to);
       }
-	    //echo '<pre>'; print_r($data); echo '</pre>';
 	    $this->set('date_from', $date_from);
 	    $this->set('date_to', $date_to);
 	    $this->set('report_title', "X Report");
@@ -229,7 +228,6 @@ class pjAdminReports extends pjAdmin {
       return;
     }
     if (self::isGet()) {
-      //$date_from = date('Y-m-d', time() - 30 * 86400 );
       $date_from = date('Y-m-d');
       $date_to = date('Y-m-d');
       $data = $this->getPOSReportData(true, $date_from, $date_to);
@@ -315,8 +313,6 @@ class pjAdminReports extends pjAdmin {
 			$order_ids_arr = explode(',', $order_ids);
 			$pjOrderModel = pjOrderModel::factory();
 	    $pjOrderModel->whereIn('id', $order_ids_arr);
-	    //$origin = 'Pos';
-	    //$pjOrderModel->where('origin', $origin);
 	    $pjOrderModel->modifyAll(array('is_z_viewed'=>1))->getAffectedRows();
 		} 
     if ($expense_ids) {
@@ -346,12 +342,10 @@ class pjAdminReports extends pjAdmin {
 	}
 
 	public function getPOSReportData($zReport = 0, $date_from, $date_to) {
-    //$date_from = $date_to = date('Y-m-d');
     $origin = 'Pos';
     $pjOrderModel = pjOrderModel::factory();
     $pjOrderModel->where(sprintf("( (DATE(p_dt) BETWEEN '%1\$s' AND '%2\$s') OR (DATE(d_dt) BETWEEN '%1\$s' AND '%2\$s') )", $date_from, $date_to));
     $location_clause = "";
-    //$pjOrderModel->where('t1.origin', $origin)->where('t1.deleted_order', 0);
     $pjExpenseModel = pjExpenseModel::factory();
     $pjExpenseModel->where(sprintf("( (DATE(created_at) BETWEEN '%1\$s' AND '%2\$s') )", $date_from, $date_to));
 
@@ -369,7 +363,6 @@ class pjAdminReports extends pjAdmin {
       $pjOrderReturn->where('t1.is_z_viewed', 0);
     }
     $pjOrderModel->where('t1.status', 'delivered');
-    //$num_of_sales = $pjOrderModel->findCount()->getData();
     $num_of_sales = $confirmed_orders = $pjOrderModel->findCount()->getData();
     $confirmed_arr = $pjOrderModel->findAll()->getData();
     $order_id_arr = $pjOrderModel->getDataPair(null, 'id');
@@ -399,11 +392,8 @@ class pjAdminReports extends pjAdmin {
     $num_of_incomes = 0;
     $total_incomes = 0;
     $total_return_orders = 0;
-    // print_r($confirmed_arr);
-    // die;
     foreach($confirmed_arr as $v) {
       $total_amount += $v['total'];
-      // echo '<pre>'; print_r($v); echo '</pre>';
       if (strtolower($v['table_name']) === 'take away') {
       	$num_of_direct_sales++;
       	$total_direct_sales += $v['total'];
@@ -492,10 +482,6 @@ class pjAdminReports extends pjAdmin {
     $from = $today . " " . "00:00:00";
     $to = $today . " " . "23:59:59";
     $res = $this->getReturnOrders($from, $to, "RO", "", 10, 1);
-
-    // echo "<pre>";
-    // print_r($res);
-    // echo "</pre>";die;
     
     $this->set('adminReturnOrderTotal', $res['adminReturnOrderTotal']);
     $this->set('dailyReturnOrderTotal', $res['dailyReturnOrderTotal']);
@@ -546,7 +532,6 @@ class pjAdminReports extends pjAdmin {
       if ($this->_get->toString('date_from') && $this->_get->toString('date_to')) {
         $date_from = date('Y-m-d 00:00:00', strtotime($this->_get->toString('date_from')));
         $date_to = date('Y-m-d 23:59:59', strtotime($this->_get->toString('date_to')));
-        // echo $date_from; echo "<br>"; echo $date_to; echo "<br>"; echo date('Y-m-d 23:59:59'); die;
       }
       
       $pjOrderItemModel = pjOrderItemModel::factory()
@@ -579,7 +564,6 @@ class pjAdminReports extends pjAdmin {
       $rowCount = $this->_get->toInt('rowCount') ?: 10;
       $pages = ceil($total / $rowCount);
       $page = $this->_get->toInt('page') ?: 1;
-      //$page = 3;
       $offset = ((int) $page - 1) * $rowCount;
       if ($page > $pages)
       {
@@ -638,7 +622,6 @@ class pjAdminReports extends pjAdmin {
       $rowCount = $this->_get->toInt('rowCount') ?: 10;
       $pages = ceil($total / $rowCount);
       $page = $this->_get->toInt('page') ?: 1;
-      //$page = 3;
       $offset = ((int) $page - 1) * $rowCount;
       if ($page > $pages) {
         $page = $pages;
@@ -678,10 +661,6 @@ class pjAdminReports extends pjAdmin {
       $column = $res['column'];
       $direction = $res['direction'];
 
-      // echo "<pre>";
-      // print_r($res);
-      // echo "</pre>";die;
-
       pjAppController::jsonResponse(compact('data', 'total', 'pages', 'page', 'rowCount', 'column', 'direction'));
     }
     exit;
@@ -701,9 +680,6 @@ class pjAdminReports extends pjAdmin {
       }
       $res = $this->getReturnOrders($from, $to, $this->_get->toString('type'), $q = $this->_get->toString('q'), $this->_get->toInt('rowCount'), $this->_get->toInt('page'));
 
-      // echo "<pre>";
-      // print_r($res);
-      // echo "</pre>";die;
       $adminReturnOrderTotal = $res['adminReturnOrderTotal'];
       $dailyReturnOrderTotal = $res['dailyReturnOrderTotal'];
       $overAllReturnOrderTotal = $res['overAllReturnOrderTotal'];
@@ -729,12 +705,8 @@ class pjAdminReports extends pjAdmin {
               AES_DECRYPT(t1.cc_num, '" . PJ_SALT . "') AS `cc_num`,
               AES_DECRYPT(t1.cc_exp, '" . PJ_SALT . "') AS `cc_exp`,
               AES_DECRYPT(t1.cc_code, '" . PJ_SALT . "') AS `cc_code`")
-          //->where("t1.id", $id)
-        // ->orderBy("$col $dir")
-        // ->limit($rowCount, $offset)
         ->find($id)
         ->getData();
-        //$this->pr_die($order);
         $this->getOrderItems($id, false);
         $role_id = $this->getRoleId();
 
@@ -742,7 +714,6 @@ class pjAdminReports extends pjAdmin {
           $order["surname"] = $order["surname"] = $order["first_name"];
         }
         if ($role_id != ADMIN_R0LE_ID && $order['status'] == 'delivered') {  
-          //$order["surname"] = substr($order["surname"], 0, 2).str_repeat("*", strLen($order['surname']) - 2); 
           if ($order["surname"]) {
             $order["surname"] = substr($order["surname"], 0, 2).str_repeat("*", 10); 
           }
@@ -792,9 +763,6 @@ class pjAdminReports extends pjAdmin {
           
         }
         $this->set('data', $pjOrderReturn);
-        // echo "<pre>";
-        // print_r($pjOrderReturn);
-        // echo "</pre>";die;
       }
     }
   }
@@ -817,9 +785,6 @@ class pjAdminReports extends pjAdmin {
         $current_time = time();
         $time_difference = $current_time - $new;
         array_push($ids, $created['order_id']);
-        // if($time_difference > 3600) {
-        //   array_push($ids, $created['order_id']);
-        // }
       }
       if(count($ids)) {
         return self::jsonResponse(array('status' => 'true', 'orders' => $ids));
@@ -890,7 +855,6 @@ class pjAdminReports extends pjAdmin {
     $data = array_merge($pjOrderModel, $pjOrderReturn);
 
     $order_ids = array_column($pjOrderModel, 'id');
-    //$this->pr($order_ids);
     $pjOrderData = "";
     $pjOrderItems = pjOrderItemModel::factory();
     if ($order_ids) {
@@ -899,7 +863,6 @@ class pjAdminReports extends pjAdmin {
       ->findAll()
       ->getData();
     }
-    //$this->pr($pjOrderData);
     $groupedOrderItems = array();
     if ($pjOrderData) {
       $groupedOrderItems = array_reduce($pjOrderData, function($carry, $item) {
@@ -923,24 +886,6 @@ class pjAdminReports extends pjAdmin {
         $data[$k]['cancel_amount'] = "<strong class='list-pos-type'>".pjCurrency::formatPrice($v['cancel_amount'])."</strong>";
         $adminReturnOrderTotal += $v['cancel_amount'];
       } else {
-        // $v['sms_sent_time'] == "" ? $data[$k]['sms_sent_time'] = '-' : $data[$k]['sms_sent_time'] = explode(" ", $v['sms_sent_time']) [1];
-        // if (explode(" ", $v['p_dt']) [0] == explode(" ", $today) [0] || explode(" ", $v['d_dt']) [0] == explode(" ", $today) [0]) {
-        //   $v['d_dt'] == "" ? $data[$k]['expected_delivery'] = explode(" ", $v['p_dt']) [1] : $data[$k]['expected_delivery'] = explode(" ", $v['d_dt']) [1];
-        // } else {
-        //   $v['d_dt'] == "" ? $data[$k]['expected_delivery'] = $this->getDateFormatted($v['p_dt']) : $data[$k]['expected_delivery'] = $this->getDateFormatted($v['d_dt']);
-        // }
-        // if ($v['delivered_time'] == null) {
-        //   $data[$k]['deliver_t'] = $data[$k]['expected_delivery'];
-        //   $data[$k]['deliver_sts'] = "none";
-        // } else {
-        //   if (explode(" ", $v['delivered_time']) [1] > explode(" ", $v['delivery_dt']) [1]) {
-        //     $data[$k]['deliver_sts'] = "failure";
-        //   } else {
-        //     $data[$k]['deliver_sts'] = "success";
-        //   }
-        //   $data[$k]['deliver_t'] = $v['delivered_time'];
-        // }
-        // $v['delivered_time'] == "" ? $data[$k]['delivered_time'] = '-' : $data[$k]['delivered_time'] = explode(" ", $v['delivered_time']) [1];
         if ($data[$k]['is_paid'] == 1) {
           if (strtolower($data[$k]['payment_method']) == 'bank') {
             $data[$k]['payment_method'] = 'Card';
@@ -955,9 +900,6 @@ class pjAdminReports extends pjAdmin {
       }
     }
 
-    // echo "<pre>";
-    // print_r($data);
-    // echo "</pre>";
 
     $returnTypeData = array();
 
@@ -967,9 +909,6 @@ class pjAdminReports extends pjAdmin {
       }
     }
 
-    // echo "<pre>";
-    // print_r($returnTypeData);
-    // echo "</pre>";die;
 
     $overAllReturnOrderTotal = "<strong>".pjCurrency::formatPrice($dailyReturnOrderTotal+$adminReturnOrderTotal)."</strong>";
     $dailyReturnOrderTotal = "<strong class='list-pos-type'>".pjCurrency::formatPrice($dailyReturnOrderTotal)."</strong>";
@@ -986,10 +925,6 @@ class pjAdminReports extends pjAdmin {
     $response['rowCount'] = $rowCount;
     $response['column'] = $column;
     $response['direction'] = $direction;
-
-    // echo "<pre>";
-    // print_r($response);
-    // echo "</pre>";die;
 
     return $response;
   }

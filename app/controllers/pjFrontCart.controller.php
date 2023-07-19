@@ -121,21 +121,7 @@ class pjFrontCart extends pjFront {
   public function pjActionAddPromo() {
     $this->setAjax(true);
     if ($this->isXHR()) {
-      // $pre = array(
-      //     'type' => $this->_get('type'),
-      //     'd_date' => $this->_get('d_date'),
-      //     'd_time' => $this->_get('d_time'),
-      //     'd_dt' => $this->_get('d_date') . ' ' . $this->_get('d_time'),
-      //     'p_date' => $this->_get('p_date'),
-      //     'p_time' => $this->_get('p_time'),
-      //     'p_dt' => $this->_get('p_date') . ' ' . $this->_get('p_time'),
-      // );
-      // if($this->_get('type') == 'pickup')
-      // {
-      //     unset($pre['type']);
-      // }
       $pre = array(
-          //'type' => 'delivery',
           'd_date' => date('d.m.Y'),
           'delivery_time' => date('H:i'),
           'd_dt' => date('d.m.Y') . ' ' . date('H:i'),
@@ -144,12 +130,6 @@ class pjFrontCart extends pjFront {
           'p_dt' => $this->_get('p_date') . ' ' . $this->_get('p_time'),
           'origin' => 'web'
       );
-      // if($this->_get('type') == 'pickup')
-      // {
-      //     unset($pre['type']);
-      // }
-      // print_r($pre);
-      // exit;
       $post = $this->_post->raw();
       $resp = pjAppController::getDiscount(array_merge($post, $pre), $this->option_arr);
       $promo_statuses = __('promo_statuses', true, false);
@@ -180,19 +160,6 @@ class pjFrontCart extends pjFront {
   public function pjActionVoucherValidate() {
     $this->setAjax(true);
     if ($this->isXHR()) {
-      // $pre = array(
-      //     'type' => $this->_get('type'),
-      //     'd_date' => $this->_get('d_date'),
-      //     'd_time' => $this->_get('d_time'),
-      //     'd_dt' => $this->_get('d_date') . ' ' . $this->_get('d_time'),
-      //     'p_date' => $this->_get('p_date'),
-      //     'p_time' => $this->_get('p_time'),
-      //     'p_dt' => $this->_get('p_date') . ' ' . $this->_get('p_time'),
-      // );
-      // if($this->_get('type') == 'pickup')
-      // {
-      //     unset($pre['type']);
-      // }
       $pre = array(
           'type' => 'delivery',
           'd_date' => date('d.m.Y'),
@@ -202,12 +169,6 @@ class pjFrontCart extends pjFront {
           'p_time' => $this->_get('p_time'),
           'p_dt' => $this->_get('p_date') . ' ' . $this->_get('p_time'),
       );
-      // if($this->_get('type') == 'pickup')
-      // {
-      //     unset($pre['type']);
-      // }
-      // print_r($pre);
-      // exit;
       $post = $this->_post->raw();
       $resp = pjAppController::getDiscount(array_merge($post, $pre), $this->option_arr);
       $promo_statuses = __('promo_statuses', true, false);

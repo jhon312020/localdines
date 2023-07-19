@@ -7,15 +7,8 @@ class pjAdminReviews extends pjAdmin {
   public function pjActionGetReviews() {
 		$this->setAjax(true);
 		if ($this->isXHR()) {
-			// $u_id = '175';
-			// $u_phone = pjAuthUserModel::factory()
-			// ->select("t1.phone")
-			// ->find($u_id)
-			// ->getData();
-			// echo $u_phone['phone'];
 		    $pjReviewModel = pjReviewModel::factory()->join('pjProduct', 't2.id=t1.product_id', 'left outer')
 		    ->join('pjMultiLang', "t3.model='pjProduct' AND t3.foreign_id=t1.product_id AND t3.field='name' AND t3.locale='".$this->getLocaleId()."'", 'left outer');
-			//print_r($pjClientModel);
 			if ($q = trim($this->_get->toString('q'))) {
 				$pjReviewModel->where("(t1.review LIKE '%$q%' OR t3.content like '%$q%' OR t1.type like '%$q%')");
 			}
@@ -51,23 +44,10 @@ class pjAdminReviews extends pjAdmin {
 			->limit($rowCount, $offset)
 			->findAll()
 			->getData();
-			//$comments = ['Bad','Poor','Average','Great','Excellent'];
-			//$this->pr($data);
 			foreach($data as $k => $v) {
-				//$data[$k]['rating'] = $comments[$v['rating']-1];
 				$star = $data[$k]['rating'];
 				$data[$k]['rating'] = "<span class='star star_$star'></span>";
 				$data[$k]['created_at'] = date('d-m-Y', strtotime($v['created_at']));
-				// if ($v['user_type'] == "client") {
-				// 	$user_info = $this->getUserInfo($v['user_id']);
-				// 	if ($user_info) {
-				// 		$data[$k]['user_type'] = $user_info['name'];
-				// 		$data[$k]['phone'] = $user_info['phone'];
-				// 	} else {
-				// 		$data[$k]['user_type'] = 'Guest';
-				// 		$data[$k]['phone'] = '';
-				// 	}
-				// } 
 				if ($v['user_type'] == "client" && $v['name'] != '') {
 					$data[$k]['user_type'] = $v['name'];
 					$data[$k]['phone'] = $v['phone'];
@@ -82,12 +62,10 @@ class pjAdminReviews extends pjAdmin {
 	}  
 
 	public function pjActionCreate() {
-	//if($this->isFrontLogged()) {
 		if (self::isPost() && $this->_post->toInt('review_create')) {
 			$post = $this->_post->raw();
 			print_r($post);
 		}
-	//}
 	}
 
 	public function pjActionIndex() {
@@ -118,8 +96,6 @@ class pjAdminReviews extends pjAdmin {
         $post['status'] = 'F';
         $data['status'] = 'F';
       }
-      // print_r($this->_post->toString('surname'));
-      // exit;
       $post['c_postcode'] = $post['post_code'];
       $pjClientModel->where('id', $id)->limit(1)->modifyAll($post);
       $client = $pjClientModel->reset()->find($id)->getData();
@@ -138,16 +114,12 @@ class pjAdminReviews extends pjAdmin {
       pjOrderModel::factory()
        	->where("phone_no", $old_phone[0]['phone']) 
      		->where("status", "pending")
-       	->modifyAll(array("phone_no" => $data['phone']));
-     	//->getAffectedRows();
-      // echo "<pre>";print_r($order);
-      // exit;        
+       	->modifyAll(array("phone_no" => $data['phone']));    
       pjAuth::init($data)->updateUser();
       pjUtil::redirect(PJ_INSTALL_URL . "index.php?controller=pjAdminReviews&action=pjActionUpdate&id=".$id."&err=AC01");
     }
     if (self::isGet() && $this->_get->toInt('id')) {
       $id = $this->_get->toInt('id');
-      //$review_table = pjReviewModel::factory()->getTable();
       $arr = pjReviewModel::factory()
       	->join('pjMultiLang', "t2.model='pjProduct' AND t2.foreign_id=t1.product_id AND t2.field='name' AND t2.locale='".$this->getLocaleId()."'", 'left outer')
       	->select("t1.*, t2.content AS product_name")
@@ -164,12 +136,6 @@ class pjAdminReviews extends pjAdmin {
 		    pjUtil::redirect(PJ_INSTALL_URL. "index.php?controller=pjAdminReviews&action=pjActionIndex&err=AC08");
   		}
       $this->set('arr', $arr);
-			// $country_arr = pjBaseCountryModel::factory()
-			// ->select('t1.id, t2.content AS country_title')
-			// ->join('pjBaseMultiLang', "t2.model='pjBaseCountry' AND t2.foreign_id=t1.id AND t2.field='name' AND t2.locale='".$this->getLocaleId()."'", 'left outer')
-			// ->where('status', 'T')
-			// ->orderBy('`country_title` ASC')->findAll()->getData();
-			// $this->set('country_arr', $country_arr);
 			$this->appendCss('bootstrap-chosen.css', PJ_THIRD_PARTY_PATH . 'chosen/');
 			$this->appendJs('chosen.jquery.js', PJ_THIRD_PARTY_PATH . 'chosen/');
 			$this->appendJs('jquery.validate.min.js', PJ_THIRD_PARTY_PATH . 'validate/');
@@ -193,8 +159,6 @@ class pjAdminReviews extends pjAdmin {
 		}
 		$pjReviewModel = pjReviewModel::factory();
 		$Review = $pjReviewModel->find($this->_get->toInt('id'))->getData();
-		// print_r($Review);
-		// exit;
 		if (!$pjReviewModel->reset()->set('id', $this->_get->toInt('id'))->erase()->getAffectedRows()) {
 	    self::jsonResponse(array('status' => 'ERR', 'code' => 105, 'text' => 'Review has not been deleted.'));
 		}
@@ -202,12 +166,6 @@ class pjAdminReviews extends pjAdmin {
 	  	->where('id', $Review['product_id'])
 	  	->findAll()
 	  	->getData();
-    // if ($product[0]['no_of_ratings'] > 0) {
-    // 	pjProductModel::factory()
-    // 	->where('id', $Review['product_id'])
-    // 	->modifyAll(array(
-    //     'no_of_ratings' => $product[0]['no_of_ratings'] - 1));
-    // }
 		self::jsonResponse(array('status' => 'OK', 'code' => 200, 'text' => 'Review has been deleted'));
 		exit;
 	}
@@ -222,8 +180,6 @@ class pjAdminReviews extends pjAdmin {
         self::jsonResponse(array('status' => 'ERR', 'code' => 101, 'text' => 'Missing, empty or invalid parameters.'));
       }
       $rid = $this->_get->toInt('id');
-      //$pid = $this->_post->toInt('pid');
-      //print_r(self::isPost());
       if ($rid) {
       	$row = pjReviewModel::factory()
         ->where('id', $rid)
@@ -240,17 +196,6 @@ class pjAdminReviews extends pjAdmin {
 	        ->where('id', $review[0]['product_id'])
 	        ->findAll()
 	        ->getData();
-        // if ($review[0]['status'] == 1) {
-        // 	pjProductModel::factory()
-        // 	->where('id', $review[0]['product_id'])
-        // 	->modifyAll(array(
-        //  'no_of_ratings' => $product_rate[0]['no_of_ratings'] + 1));
-        // } else {
-        // 	pjProductModel::factory()
-        // 	->where('id', $review[0]['product_id'])
-        // 	->modifyAll(array(
-        //     'no_of_ratings' => $product_rate[0]['no_of_ratings'] - 1));  
-        // }
       }
       self::jsonResponse(array('status' => 'OK', 'code' => 200, 'text' => 'Review status has been changed.'));
     }
@@ -281,12 +226,10 @@ class pjAdminReviews extends pjAdmin {
       $ch = curl_init('https://api.voodoosms.com/sendsms');
       $msg = json_encode(
         [
-      	//'to' => '44'.$data['phone_no'],
           'to' => '447792995419',
           'from' => DOMAIN,
           'msg' => $msg,
           'schedule' => "now",
-          //'external_reference' => "Testing VoodooSMS",
           'sandbox' => true
         ]
       );

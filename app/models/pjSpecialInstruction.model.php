@@ -14,7 +14,6 @@ class pjSpecialInstructionModel extends pjAppModel
 		array('name' => 'id', 'type' => 'int', 'default' => ':NULL'),
 		array('name' => 'parent_id', 'type' => 'int', 'default' => ':NULL'),
 		array('name' => 'order', 'type' => 'int', 'default' => ':NULL'),
-		//array('name' => 'instruction', 'type' => 'text', 'default' => ':NULL'),
         array('name' => 'image', 'type' => 'decimal', 'default' => ':NULL'),
 		array('name' => 'type', 'type' => 'enum', 'default' => 'parent'),
 		array('name' => 'status', 'type' => 'enum', 'default' => 'T'),

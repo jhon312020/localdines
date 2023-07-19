@@ -60,7 +60,6 @@ class pjAdminPosOrders extends pjAdmin {
       $hot_products_arr = pjProductModel::factory()->select('t1.id, t2.content AS name, t1.set_different_sizes, t1.price, t1.status, t1.preparation_time,t1.image, (SELECT COUNT(*) FROM `' . pjProductExtraModel::factory()
         ->getTable() . '` AS TPE WHERE TPE.product_id=t1.id) as cnt_extras')
         ->join('pjMultiLang', "t2.foreign_id = t1.id AND t2.model = 'pjProduct' AND t2.locale = '" . $this->getLocaleId() . "' AND t2.field = 'name'", 'left')
-        //->whereIn("t1.id", $category_arr)
         ->where('is_featured=1')
         ->groupBy('t1.id, t1.set_different_sizes, t1.price')
         ->limit(12)
@@ -96,7 +95,6 @@ class pjAdminPosOrders extends pjAdmin {
         ->getData();
 
       $this->set('category_arr', $category_arr);
-      //$this->pr($category_arr);
       $category_list = [];
       if (SUB_CATEGORY) {
         foreach ($category_arr as $category) {
@@ -111,11 +109,9 @@ class pjAdminPosOrders extends pjAdmin {
       }
      
       $this->set('category_list', $category_list);
-      // $this->pr($category_list);
       // !MEGAMIND
       $this->set('table_list', $this->getRestaurantTables());
 
-      //echo '<pre>'; print_r($tables_arr); echo '<pre>';
       $location_arr = pjLocationModel::factory()->join('pjMultiLang', "t2.foreign_id = t1.id AND t2.model = 'pjLocation' AND t2.locale = '" . $this->getLocaleId() . "' AND t2.field = 'name'", 'left')
         ->select("t1.*, t2.content AS name")
         ->orderBy("name ASC")
@@ -148,7 +144,6 @@ class pjAdminPosOrders extends pjAdmin {
       $this->appendJs('clockpicker.js', PJ_THIRD_PARTY_PATH . 'clockpicker/');
       $this->appendCss('datepicker3.css', PJ_THIRD_PARTY_PATH . 'bootstrap_datepicker/');
       $this->appendJs('bootstrap-datepicker.js', PJ_THIRD_PARTY_PATH . 'bootstrap_datepicker/');
-      //$this->appendJs('jquery.validate.min.js', PJ_THIRD_PARTY_PATH . 'validate/');
       $this->appendJs('additional-methods.js', PJ_THIRD_PARTY_PATH . 'validate/');
       $this->appendCss('bootstrap-select.min.css', PJ_THIRD_PARTY_PATH . 'bootstrap_select/1.13.18/css/');
       $this->appendJs('bootstrap-select.min.js', PJ_THIRD_PARTY_PATH . 'bootstrap_select/1.13.18/js/');  
@@ -182,7 +177,6 @@ class pjAdminPosOrders extends pjAdmin {
     if (self::isPost() && $this->_post->toInt('order_create')) {
       $post_total = $this->getTotal();
       $post = $this->_post->raw();
-      //$this->pr_die($post);
       $data = array();
       $data['uuid'] = time();
       $data['ip'] = pjUtil::getClientIp();
@@ -266,8 +260,6 @@ class pjAdminPosOrders extends pjAdmin {
           $data['p_time'] = 0;
           $data['d_time'] = $this->_post->toInt('d_time');
           $d_date = $post['d_date'];
-
-          //$d_date = 2021-04-31;
           $d_time = $post['delivery_time'];
           if (count(explode(" ", $d_time)) == 2) {
             list($_time, $_period) = explode(" ", $d_time);
@@ -318,16 +310,12 @@ class pjAdminPosOrders extends pjAdmin {
       ));
       if ($id !== false && (int)$id > 0) {
         $this->saveOrderItems($post, $id, false);
-        // if ($post['response']) {
-        //   $this->savePaymentResponse($post, $id);
-        // }
         $err = 'AR07';
       } else {
         $err = 'AR04';
       }
       if (KITCHEN_PRINT) {
         pjUtil::redirect(PJ_INSTALL_URL . "index.php?controller=pjAdminPosOrders&action=pjActionPrintOrder&source=index&origin=Tel&id=$id");
-        //pjUtil::redirect(PJ_INSTALL_URL . "index.php?controller=pjAdminPosOrders&action=pjActionIndex");
       } else {
          pjUtil::redirect(PJ_INSTALL_URL . "index.php?controller=pjAdminPosOrders&action=pjActionIndex");
       }
@@ -355,7 +343,6 @@ class pjAdminPosOrders extends pjAdmin {
 
       $id = $this->_post->toInt('id');
       $post = $this->_post->raw();
-      // $this->pr_die($post);
       $arr = $pjOrderModel->find($id)->getData();
       if (empty($arr)) {
         pjUtil::redirect($_SERVER['PHP_SELF'] . "?controller=pjAdminPosOrders&action=pjActionIndex&err=AR08&origin=Telephone");
@@ -445,7 +432,6 @@ class pjAdminPosOrders extends pjAdmin {
         $data['type'] = 'delivery';
         if (!empty($post['d_date']) && !empty($post['delivery_time'])) {
           $d_date = $post['d_date'];
-          //$d_date = 2021-04-31;
           $d_time = $post['delivery_time'];
           if (count(explode(" ", $d_time)) == 2) {
             list($_time, $_period) = explode(" ", $d_time);
@@ -500,8 +486,6 @@ class pjAdminPosOrders extends pjAdmin {
       if (!empty($post['vouchercode'])) {
         $post['voucher_code'] = $post['vouchercode'];
       }
-      // $this->pr($data);
-      // $this->pr_die($post);
       $pjOrderModel->reset()
         ->where('id', $id)->limit(1)
         ->modifyAll(array_merge($post, $data, $post_data));
@@ -553,7 +537,6 @@ class pjAdminPosOrders extends pjAdmin {
       }
       $oi_arr[] = $item;
     }
-    //$this->pr($oi_arr);
     $this->set('oi_extras', $oi_extras);
     $product_ids = array_column($oi_arr, 'foreign_id');
     $product_arr = pjProductModel::factory()->select('t1.id, t2.content AS name, t1.set_different_sizes, t1.price, t1.status, t1.preparation_time, t1.image, (SELECT COUNT(*) FROM `' . pjProductExtraModel::factory()
@@ -563,7 +546,6 @@ class pjAdminPosOrders extends pjAdmin {
           ->findAll()
           ->getData();
     $product_arr = array_combine(array_column($product_arr, 'id'),$product_arr);
-    //$this->pr($product_arr);
     $category = pjProductCategoryModel::factory()->select('t1.*')
       ->findAll()
       ->getData();
@@ -660,10 +642,7 @@ class pjAdminPosOrders extends pjAdmin {
         ->getData();
       $category = pjCategoryModel::factory()->join('pjMultiLang', "t2.foreign_id = t1.id AND t2.model = 'pjCategory' AND t2.locale = '" . $this->getLocaleId() . "' AND t2.field = 'name'", 'left')
           ->select("t2.content AS name")
-          // ->where("t1.status", 11)
-          // ->where("t1.id", $category_id)
           ->find($category_id)
-          //->findAll()
           ->getData();
       $name = '';
       if ($category) {
@@ -836,13 +815,10 @@ class pjAdminPosOrders extends pjAdmin {
         ->getData();
       $extra_arr = $pjExtraModel->findAll()->getData();
       $cnt_arr = $this->_post->toArray('cnt');
-      // $this->pr($product_id_arr);
-      // $this->pr($cnt_arr);
       $returnOrCancelProducts = array();
       if (array_key_exists('return_or_cancel', $post)) {
         $returnOrCancelProducts = array_filter($post['return_or_cancel']);
       }
-      //$this->pr($returnOrCancelProducts);
       foreach ($product_id_arr as $hash => $product_id) {
         $_price = 0;
         $extra_price = 0;
@@ -857,9 +833,6 @@ class pjAdminPosOrders extends pjAdmin {
           $_price = 0;
           $extra_price = 0;
           if ($product['id'] == $product_id) {
-            // if (array_key_exists('product_type', $post) && array_key_exists($hash, $post['product_type']) &&$post['product_type']["$hash"] == "custom") {
-            //   $_price = $post['price_id'][$hash];
-            // }
             if ($product['set_different_sizes'] == 'T') {
               $price_id_arr = $this->_post->toArray('price_id');
               $price_arr = $pjProductPriceModel->reset()->find($price_id_arr[$hash])->getData();
@@ -870,12 +843,10 @@ class pjAdminPosOrders extends pjAdmin {
               $_price = $product['price'];
             }
             $extra_id_arr = $this->_post->toArray('extras');
-            //$this->pr($extra_id_arr);
             $product_price = $_price * $cnt_arr[$hash];
             $price_packing += $product['packing_fee'] * $cnt_arr[$hash];
             if (array_key_exists($hash, $extra_id_arr) && isset($extra_id_arr[$hash])) {
               $decode_extras = json_decode(stripslashes($extra_id_arr[$hash]));
-              //$this->pr($decode_extras);
               if ($decode_extras) {
                 foreach ($decode_extras as $i=>$selectedExtra) {
                   foreach ($extra_arr as $extra) {
@@ -888,7 +859,6 @@ class pjAdminPosOrders extends pjAdmin {
               }
             }
             $extras_total += $extra_price;
-            //$_price = $product_price + $extra_price;
             $_price = $product_price;
             $price += $_price;
             break;
@@ -960,14 +930,6 @@ class pjAdminPosOrders extends pjAdmin {
       ));
     }
     $prices = $this->_post->toArray('prices');
-    // if (empty($prices))
-    // {
-    //   self::jsonResponse(array(
-    //     'status' => 'ERR',
-    //     'code' => 102,
-    //     'text' => 'Missing, empty or invalid parameters.'
-    //   ));
-    // }
     if ($prices) {
       foreach ($prices as $index => $price) {
         $prices[$index] = pjCurrency::formatPrice($price);
@@ -1026,7 +988,6 @@ class pjAdminPosOrders extends pjAdmin {
         $pjMultiLangModel = pjMultiLangModel::factory();
         $prodarr['i18n'] = $pjMultiLangModel->getMultiLang($product_id, 'pjProduct');
         $description = $prodarr['i18n'][$this->getLocaleId() ]['description'];
-        //echo $description;
         if ($description != '') {
           self::jsonResponse(array(
             'status' => 'OK',
@@ -1048,7 +1009,6 @@ class pjAdminPosOrders extends pjAdmin {
         'code' => 100
       ));
     }
-    //exit;
   }
 
   protected function getClientType($data) {
@@ -1130,7 +1090,6 @@ class pjAdminPosOrders extends pjAdmin {
         exit;
       }
       $client_info = pjClientModel::factory()
-      //->join('pjOrder', "t2.client_id = t1.id")
       ->join('pjAuthUser', "t2.id = t1.foreign_id")
         ->select('t1.*, t2.name,t2.u_surname,t2.email')
         ->where('t2.phone', $this
@@ -1156,7 +1115,6 @@ class pjAdminPosOrders extends pjAdmin {
     $this->setAjax(true);
     $statusExists = false;
     if ($this->isXHR()) {
-      //$pos = 'Pos';
       $origin = $this->_get->toString('origin')?$this->_get->toString('origin'):'Telephone';
       $pjOrderModel = pjOrderModel::factory()
         ->where("(t1.origin = '$origin')")->join('pjClient', "t2.id=t1.client_id", 'left outer')
@@ -1238,8 +1196,6 @@ class pjAdminPosOrders extends pjAdmin {
       if ($client_id = $this->_get->toInt('client_id')) {
         $pjOrderModel->where('t1.client_id', $client_id);
       }
-      // $column = 'created';
-      // $direction = 'DESC';
       $column = 'delivery_dt';
       $direction = 'ASC';
       if ($this->_get->toString('column') && in_array(strtoupper($this->_get->toString('direction')) , array(
@@ -1254,7 +1210,6 @@ class pjAdminPosOrders extends pjAdmin {
       date_default_timezone_set($timezone);
       $today = date('Y-m-d', time());
       $toDay = $today . " " . "00:00:00";
-      //print_r($toDay);
       if ($this->_get->toString('type') != 'all' && $this->_get->toString('type') != 'delivered') {
         $col = 'delivery_dt';
         $dir = 'ASC';
@@ -1309,11 +1264,9 @@ class pjAdminPosOrders extends pjAdmin {
 								AES_DECRYPT(t1.cc_num, '" . PJ_SALT . "') AS `cc_num`,
 								AES_DECRYPT(t1.cc_exp, '" . PJ_SALT . "') AS `cc_exp`,
 								AES_DECRYPT(t1.cc_code, '" . PJ_SALT . "') AS `cc_code`")
-        //->where("(t1.created >= '$toDay')")
           ->orderBy("$column DESC")->limit($rowCount, $offset)->findAll()
           ->getData();
       }
-      //print_r($today);
       foreach ($data as $k => $v) {
         // MEGAMIND
         if ($v['surname'] == '') {
@@ -1358,7 +1311,7 @@ class pjAdminPosOrders extends pjAdmin {
         }
         // !MEGAMIND
       }
-      //echo "<pre>";print_r($data); echo "</pre>";
+
       pjAppController::jsonResponse(compact('data', 'total', 'pages', 'page', 'rowCount', 'column', 'direction'));
     }
     exit;
@@ -1371,8 +1324,6 @@ class pjAdminPosOrders extends pjAdmin {
       $pjOrderModel = pjOrderModel::factory();
       if ($q = $this->_get->toString('q')) {
         // MEGAMIND
-     //    $pjOrderModel->where("(t1.id ='$q' OR t1.uuid = '$q' OR t1.surname LIKE '%$q%' 
-					// OR t3.email LIKE '%$q%' OR t3.phone = '$q' OR t1.post_code = '$q')");
       	$q = preg_replace("/[^0-9]/", "", $q );
 				$pjOrderModel->where("(t1.id LIKE '%$q%' OR t1.uuid LIKE '%$q%' OR t1.surname LIKE '%$q%')");
         // !MEGAMIND
@@ -1450,10 +1401,8 @@ class pjAdminPosOrders extends pjAdmin {
       $timezone = $this->option_arr['o_timezone'] ? $this->option_arr['o_timezone'] : ADMIN_TIME_ZONE;
       date_default_timezone_set($timezone);
       if ($this->_get->toString('type') == 'all') {
-        //echo 'came in';
         $data = $pjOrderModel->select("t1.*")
           ->orderBy("$column $direction, t1.status ASC")
-        	//->orderBy()
         	->limit($rowCount, $offset)->findAll()
         	->getData();
       } else {
@@ -1463,8 +1412,6 @@ class pjAdminPosOrders extends pjAdmin {
         	 ->orderBy("t1.status ASC, $column $direction")
         	->findAll()
         	->getData();
-        //echo '<pre>'; print_r($data_unordered); echo '</pre>';
-        //echo count($data_unordered)."---".$rowCount."---".$offset;
         $pending = array();
         $delivered = array();
         $data_ordered = array();
@@ -1483,15 +1430,6 @@ class pjAdminPosOrders extends pjAdmin {
         }
         $data = $data_ordered;
       }
-      // usort($data, function($a, $b)
-      // {
-      // 	if($a['status'] == "pending" && $b['status'] == "pending") {
-      // 		return 0;
-      // 	} else {
-      // 		return 1;
-      // 	}
-      // });
-      //print_r($data);
       $table_list = $this->getRestaurantTables();
       foreach ($data as $k => $v) {
         // MEGAMIND
@@ -1531,7 +1469,6 @@ class pjAdminPosOrders extends pjAdmin {
         }
         $data[$k]['order_date'] = date("d-m-Y", strtotime($v['created']));
       }
-      //echo "<pre>";print_r($data); echo "</pre>";
       pjAppController::jsonResponse(compact('data', 'total', 'pages', 'page', 'rowCount', 'column', 'direction'));
     }
     exit;
@@ -1868,14 +1805,6 @@ class pjAdminPosOrders extends pjAdmin {
         $this->kitchenPrintFormat($printer, $data, $special_instructions, true);
         $printer->lineFeed();
         //Already Printed line order
-        // $printer->lineFeed();
-        // $printer->setAlignment(SunmiCloudPrinter::ALIGN_CENTER);
-        // $printer->appendText(str_repeat("-", 55));
-        // $printer->lineFeed();
-        // $printer->setAlignment(SunmiCloudPrinter::ALIGN_LEFT);
-        // $printer->restoreDefaultLineSpacing();
-        // $printer->setPrintModes(false, false, false);
-        // $this->kitchenPrintFormat($printer, $data, $special_instructions, false);
         if ($data['arr']['d_notes'] != '') { 
           $printer->lineFeed(2);
           $printer->appendText(str_repeat("-", 55));
@@ -1904,9 +1833,6 @@ class pjAdminPosOrders extends pjAdmin {
         } else {
           $printMessage = "Failed";
         }
-        //$this->updateKitchenPrint($id);
-        //$closePath = $_SERVER['PHP_SELF'].'?controller=pjAdminPosOrders&amp;action='.$this->getActionName($source);
-        //echo "<a href='$closePath' class='btn btn-primary nextbutton'><i class='fa fa-plus'></i>Close</a>";
         $this->set('printMessage', $printMessage);
         $this->set('origin', $data['arr']['origin']);
       }
@@ -1914,49 +1840,7 @@ class pjAdminPosOrders extends pjAdmin {
 
   }
 
-  // public function kitchenPrintFormat($printer, $data, $special_instructions, $newItem = false) {
-  //   foreach ($data['product_arr'] as $product) {
-  //     foreach ($data['oi_arr'] as $k => $oi) {
-  //       $lineItem = '';
-  //       if ((($newItem && ($oi['cnt'] != $oi['print'])) || (!$newItem && ($oi['print']))) && $oi['foreign_id'] == $product['id']) {
-  //         if ($newItem) {
-  //           $lineItem = ($oi['cnt'] - $oi['print']);
-  //         } else {
-  //           $lineItem = $oi['print'];
-  //         }
-  //         $lineItem .= " x ".strtoupper($product['name'])." ".$oi['size'];
-  //         $printer->appendText("$lineItem");
-  //         if ($oi['special_instruction'] != '') {
-  //           $printer->lineFeed();
-  //           $spcl_ins = $oi['special_instruction'];
-  //           $spcl_ins_arr = explode(",", $spcl_ins);
-  //             foreach ($spcl_ins_arr as $ins) {
-  //               foreach ($special_instructions as $instruction) {
-  //                 if ($ins == $instruction['id']) {
-  //                   $printer->appendImage($instruction['image'], 0);
-  //                 }
-  //               }
-  //             }
-  //           } 
-  //           if (array_key_exists($oi['hash'], $data['oi_extras'])) { 
-  //             $proExtra = $data['oi_extras'][$oi['hash']]; 
-  //             foreach($proExtra as $extra) {
-  //               $printer->appendText(" - ".$extra['extra_name'] ." x ".$extra['cnt'] ."\n");
-  //             } 
-  //           }
-  //           if ($oi['custom_special_instruction'] != '')
-  //           {
-  //             $printer->appendText(" - \n");
-  //             $printer->appendText(str_repeat(" ", 4).$oi['custom_special_instruction']."\n");
-  //           } else {
-  //             $printer->appendText("\n");
-  //           }
-  //       }
-  //     }
-  //   }
-  // } 
   public function kitchenPrintFormat($printer, $data, $special_instructions, $newItem = false) {
-    //$this->pr_die($data);
     foreach ($data['oi_arr'] as $k => $oi) {
       if ($oi['is_kitchen']) {
         $lineItem = '';
@@ -2220,7 +2104,6 @@ class pjAdminPosOrders extends pjAdmin {
         list($_time, $_period) = explode(" ", $d_time);
         $time = pjDateTime::formatTime($_time . ' ' . $_period, $this->option_arr['o_time_format']);
       } else {
-        // list($_date, $_time) = explode(" ", $date_time);
         $time = pjDateTime::formatTime($d_time, $this->option_arr['o_time_format']);
       }
       $date = pjDateTime::formatDate($d_date, $this->option_arr['o_date_format']);
@@ -2333,11 +2216,6 @@ class pjAdminPosOrders extends pjAdmin {
           ));
         }
       }
-      // self::jsonResponse(array(
-      //   'status' => 'OK',
-      //   'code' => 200,
-      //   'text' => 'Your order has been despatched.'
-      // ));
     }
     exit;
   }
@@ -2360,20 +2238,11 @@ class pjAdminPosOrders extends pjAdmin {
         ));
       }
       $gid = $this->_get->toInt('id');
-      //$pid = $this->_post->toInt('pid');
-      //print_r(self::isPost());
       if ($gid) {
         pjOrderModel::factory()->where('id', $gid)->modifyAll(array(
           'is_paid' => ":IF(`is_paid`='0','1','0')"
         ));
       }
-      // elseif ($pid) {
-      // 	pjOrderModel::factory()
-      //  ->where('id', $pid)
-      //  ->modifyAll(array(
-      //      'is_paid' => ":IF(`is_paid`='0','1','0')"
-      //  ));
-      // }
       self::jsonResponse(array(
         'status' => 'OK',
         'code' => 200,
@@ -2410,7 +2279,6 @@ class pjAdminPosOrders extends pjAdmin {
         ->find($id)->getData();
       $msg = "Your Order has Delivered";
       if ($data['delivered_customer'] == 1) {
-        //$response = $this->sendMessage($data['phone_no'], $msg);
         $response['status'] = 'success';
         if ($response['status'] == 'success') {
           pjOrderModel::factory()->where('id', $id)->modifyAll(array(
@@ -2478,7 +2346,6 @@ class pjAdminPosOrders extends pjAdmin {
         ->where('t1.id', $id)->findAll()
         ->getData();
 
-      //print_r($msg);
       self::jsonResponse(array(
         'status' => 'OK',
         'code' => 200,
@@ -2506,7 +2373,6 @@ class pjAdminPosOrders extends pjAdmin {
         ));
       }
       $id = $this->_post->toInt('id');
-      //$id = 110;
       $pjOrderModel = pjOrderModel::factory()->where('t1.deleted_order', 0)
         ->join('pjClient', "t2.id=t1.client_id", 'left outer')
         ->join('pjAuthUser', "t3.id=t2.foreign_id", 'left outer');
@@ -2516,12 +2382,9 @@ class pjAdminPosOrders extends pjAdmin {
             AES_DECRYPT(t1.cc_exp, '" . PJ_SALT . "') AS `cc_exp`,
             AES_DECRYPT(t1.cc_code, '" . PJ_SALT . "') AS `cc_code`")
         ->where("t1.id", $id)
-      // ->orderBy("$col $dir")
-      // ->limit($rowCount, $offset)
       ->findAll()
       ->getData();
       $titles = array();
-      //echo '<pre>';print_r($order);echo '</pre>';
       $defaultType = array('R', 'B');
       if ($order) {
         $delayQueryObj = pjDelayMessagesModel::factory()->select('t1.id, t1.title');
@@ -2534,11 +2397,6 @@ class pjAdminPosOrders extends pjAdmin {
         $titles = array_column($titles, 'title', 'id');
       }
       $this->set('titles', $titles);
-      // self::jsonResponse(array(
-      //   'status' => 'OK',
-      //   'code' => 200,
-      //   'text' => $msg[0]['message']
-      // ));
     }
   }
 
@@ -2631,12 +2489,6 @@ class pjAdminPosOrders extends pjAdmin {
           $pjOrder->where('id', $id)->modifyAll(array('is_viewed' => 2))->getAffectedRows();
         }
         $text = __('plugin_base_sms_test_sms_sent_to', true) . ' ' . $data['phone_no'];
-        // self::jsonResponse(array(
-        //   'status' => 'OK',
-        //   'code' => 200,
-        //   'title' => __('plugin_base_sms_sent', true) ,
-        //   'text' => $response
-        // ));
         self::jsonResponse(array(
           'status' => 'OK',
           'code' => 200,
@@ -2651,7 +2503,6 @@ class pjAdminPosOrders extends pjAdmin {
           'text' => $text
         ));
       }
-      //}
     }
     exit;
   }
@@ -2831,18 +2682,15 @@ class pjAdminPosOrders extends pjAdmin {
 
   function sendMessage($phone, $msg) {
     $pjSmsApi = new tlSmsApi();
-   // $response = 1;
     if (ENVIRONMENT != 'production') {
       $phone = TESTMOBILENUMBER;
     }
     $response = $pjSmsApi
     ->setApiKey('NTY1NGVmYWI4N2Y2ODA2YzllYzQwOTFhZWVjOWNlMGQ=')
-    // ->setApiKey($this->option_arr['plugin_sms_api_key'])
     ->setNumber($phone)
     ->setText($msg)
     ->setSender(DOMAIN)
     ->send();
-    //$this->pr($response);
     if ($response == '1') {
       $sts = '1';
     } else {
@@ -2875,20 +2723,15 @@ class pjAdminPosOrders extends pjAdmin {
 							AES_DECRYPT(t1.cc_num, '" . PJ_SALT . "') AS `cc_num`,
 							AES_DECRYPT(t1.cc_exp, '" . PJ_SALT . "') AS `cc_exp`,
 							AES_DECRYPT(t1.cc_code, '" . PJ_SALT . "') AS `cc_code`")
-          //->where("t1.id", $id)
-        // ->orderBy("$col $dir")
-        // ->limit($rowCount, $offset)
         ->find($id)
         ->getData();
-        //$this->pr_die($order);
         $this->getOrderItems($id, false);
         $role_id = $this->getRoleId();
 
         if ($order["surname"] == '' || is_null($order["surname"]) || $order["surname"] === 0) {
           $order["surname"] = $order["surname"] = $order["first_name"];
         }
-        if ($role_id != ADMIN_R0LE_ID && $order['status'] == 'delivered') {  
-          //$order["surname"] = substr($order["surname"], 0, 2).str_repeat("*", strLen($order['surname']) - 2); 
+        if ($role_id != ADMIN_R0LE_ID && $order['status'] == 'delivered') {   
           if ($order["surname"]) {
             $order["surname"] = substr($order["surname"], 0, 2).str_repeat("*", 10); 
           }
@@ -2910,34 +2753,7 @@ class pjAdminPosOrders extends pjAdmin {
           $order['c_type'] = "guest";
         }
         $order['address'] = $address;
-        //$this->pr_die($order);
-        // foreach ($order as $k => $v) {
-        //   if ($v["surname"] == '' || is_null($v["surname"]) || $v["surname"] === 0) {
-        //     $v["surname"] = $order[$k]["surname"] = $v["first_name"];
-        //   }
-        //   if ($role_id != ADMIN_R0LE_ID && $v['status'] == 'delivered') {  
-        //     //$order[$k]["surname"] = substr($v["surname"], 0, 2).str_repeat("*", strLen($v['surname']) - 2); 
-        //     if ($v["surname"]) {
-        //       $order[$k]["surname"] = substr($v["surname"], 0, 2).str_repeat("*", 10); 
-        //     }
-        //     if ($v["sms_email"]) {
-        //       $order[$k]["sms_email"] = substr($v["sms_email"], 0, 2).str_repeat("*", (strLen($v['sms_email']) - 2));
-        //     }
-        //     if ($v["phone_no"]) {
-        //       $order[$k]["phone_no"] = substr($v["phone_no"], 0, 2).str_repeat("*", (strLen($v['phone_no']) - 2));
-        //     }
-        //   }
-        //   $v['sms_sent_time'] == NULL ? $order[$k]['sms_sent_time'] = "-" : $order[$k]['sms_sent_time'] = $v['sms_sent_time'];
-        //   $v['delivered_time'] == NULL ? $order[$k]['delivered_time'] = "-" : $order[$k]['delivered_time'] = $v['delivered_time'];
-        //   if ($order[$k]['client_id'] == NULL && $order[$k]['origin'] == "web") {
-        //     $order[$k]['c_type'] = "guest";
-        //   }
-        // }
         $this->set('order_details', $order);
-        // self::jsonResponse(array(
-        //   'status' => 'Ok',
-        //   'data' => $order
-        // ));
       }
     }
   }
@@ -2956,10 +2772,8 @@ class pjAdminPosOrders extends pjAdmin {
           ->findAll()
           ->getData();
         $this->set('price_arr', $price_arr);
-        //self::jsonResponse(array('status' => 'Ok', 'data' => $price_arr));
       }
     }
-    //exit;
   }
 
   public function pjActionGetSpecialInstructions() {
@@ -2995,7 +2809,6 @@ class pjAdminPosOrders extends pjAdmin {
       $this->set('special_instructions', $spcl_ins_arr);
       $this->set('selected_ins_arr', $selected_ins_arr);
     }
-    //exit;
   }
 
   public function pjActionGetSpecialInstructionTypes() {
@@ -3024,7 +2837,6 @@ class pjAdminPosOrders extends pjAdmin {
       $this->set('qty', $qty);
       $this->set('page', 'qty_1');
     }
-    //exit;
   }
 
   public function pjActionViewSpecialInstructionTypes() {
@@ -3049,7 +2861,6 @@ class pjAdminPosOrders extends pjAdmin {
     if (self::isPost() && $this->_post->toInt('order_create')) {
       $post_total = $this->getTotal();
       $post = $this->_post->raw();
-      //$this->pr_die($post);
       $data = array();
       $data['uuid'] = time();
       $data['ip'] = pjUtil::getClientIp();
@@ -3066,9 +2877,6 @@ class pjAdminPosOrders extends pjAdmin {
       $data['surname'] = "POS";
       $data['first_name'] = "POS";
       $data['table_name'] = $post['res_table_name'];
-      // echo "<pre>";
-      // print_r($post);
-      // echo "</pre>";die;
       if(strtolower($post['payment_method']) == "cash") {
         $data['payment_method']= 'cash';
       } elseif(strtolower($post['payment_method']) == "split") {
@@ -3077,7 +2885,6 @@ class pjAdminPosOrders extends pjAdmin {
       } else {
         $data['payment_method']= 'bank';
       }
-      // $data['payment_method'] = (strtolower($post['payment_method'])=='card')?'bank':'cash';
       $default_chef = pjAuthUserModel::factory()->select("t1.*")
         ->where('role_id', '5')
         ->limit(1)
@@ -3105,20 +2912,16 @@ class pjAdminPosOrders extends pjAdmin {
         $err = 'AR04';
       }
       if ($post['is_paused']) {
-        //pjUtil::redirect(PJ_INSTALL_URL . "index.php?controller=pjAdminPosOrders&action=pjActionIndex");
-        //pjActionPrintOrder&id=15&source=index
         if (KITCHEN_PRINT) {
           pjUtil::redirect(PJ_INSTALL_URL . "index.php?controller=pjAdminPosOrders&action=pjActionPrintOrder&source=index&origin=Pos&id=$id");
         } else {
           pjUtil::redirect(PJ_INSTALL_URL . "index.php?controller=pjAdminPosOrders&action=pjActionIndex");
         }
       } else {
-        //pjUtil::redirect(PJ_INSTALL_URL . "index.php?controller=pjAdminPosOrders&action=pjActionSalePrint&id=$id");
         if ($data['payment_method'] == 'cash') {
           $this->pjActionCashDrawer();
         }
         pjUtil::redirect(PJ_INSTALL_URL . "index.php?controller=pjAdminPosOrders&action=pjActionInitialPrint&id=$id");
-        //pjUtil::redirect(PJ_INSTALL_URL . "index.php?controller=pjAdminPosOrders&action=pjActionPrintOrder&source=index&origin=Pos&id=$id");
       }
     }
     $this->appendJs('jquery.datagrid.js', PJ_FRAMEWORK_LIBS_PATH . 'pj/js/');
@@ -3149,18 +2952,13 @@ class pjAdminPosOrders extends pjAdmin {
       $id = $this->_post->toInt('id');
       $post = $this->_post->raw();
       $arr = $pjOrderModel->find($id)->getData();
-      // echo '<pre>'; print_r($post); echo '</pre>';
-      // exit;
-      // $this->pr_die($post);
       if (empty($arr)) {
         pjUtil::redirect($_SERVER['PHP_SELF'] . "?controller=pjAdminPosOrders&action=pjActionIndex&err=AR08");
       }
 
       if (isset($post['product_id']) && count($post['product_id']) > 0) {
         $keys = array_keys($post['product_id']);
-        //$this->pr_die($keys);
         $pjOrderItemModel->reset()->where('order_id', $id)->whereNotIn('hash', $keys)->eraseAll();
-        //$pjOrderItemModel->reset()->where('order_id', $id)->where('type', 'extra')->whereNotIn('hash', $keys)->eraseAll();
         if ($id !== false && (int)$id > 0) {
           $this->saveOrderItems($post, $id, false);
           if ($post['response']) {
@@ -3184,7 +2982,6 @@ class pjAdminPosOrders extends pjAdmin {
       } else {
         $data['payment_method']= 'bank';
       }
-      // $data['payment_method'] = (strtolower($post['payment_method'])=='card')?'bank':'cash';
       if (!empty($post['p_date']) && !empty($post['pickup_time'])) {
         $p_date = $post['p_date'];
         $p_time = $post['pickup_time'];
@@ -3215,15 +3012,12 @@ class pjAdminPosOrders extends pjAdmin {
         ->modifyAll(array_merge($post, $data, $post_data));
       $err = 'AR01';
       if ($post['is_paused']) {
-        //pjUtil::redirect(PJ_INSTALL_URL . "index.php?controller=pjAdminPosOrders&action=pjActionIndex&err=$err");
-        // pjUtil::redirect(PJ_INSTALL_URL . "index.php?controller=pjAdminPosOrders&action=pjActionInitialKPrint&source=index&origin=Pos&id=$id");
         if (KITCHEN_PRINT) {
           pjUtil::redirect(PJ_INSTALL_URL . "index.php?controller=pjAdminPosOrders&action=pjActionPrintOrder&source=index&origin=Pos&id=$id");
         } else {
            pjUtil::redirect(PJ_INSTALL_URL . "index.php?controller=pjAdminPosOrders&action=pjActionIndex");
         }
       } else {
-        //pjUtil::redirect(PJ_INSTALL_URL . "index.php?controller=pjAdminPosOrders&action=pjActionSalePrint&id=$id");
         if ($data['payment_method'] == 'cash') {
           $this->pjActionCashDrawer();
         }
@@ -3241,14 +3035,12 @@ class pjAdminPosOrders extends pjAdmin {
     $this->setAjax(true);
     if ($this->isXHR()) {
       $post = $this->_post->raw();
-      //print_r($post);
       $table_id = $this->_post->toInt('table_id');
       $pjOrderModel = pjOrderModel::factory();
       $recordCount = $pjOrderModel->where('origin', 'Pos')
         ->where('status', 'pending')
         ->where('deleted_order', 0)
         ->where('date(t1.created) >= date(now())')
-        //DATE(NOW()) = DATE(duedate)
         ->where("table_name", "$table_id")->findCount()
         ->getData();
       if ($recordCount) {
@@ -3304,7 +3096,6 @@ class pjAdminPosOrders extends pjAdmin {
       $this->set('location_arr', $location_arr);
       $timezone = $this->option_arr['o_timezone'] ? $this->option_arr['o_timezone'] : ADMIN_TIME_ZONE;
       $this->set('timezone', $timezone);
-      //$this->set('action', $this->getActionName($source));
       $this->set('action', 'pjActionIndex');
     }
   }
@@ -3400,13 +3191,11 @@ class pjAdminPosOrders extends pjAdmin {
     if ($this->isXHR()) {
       $product_id = $this->_post->toString('product_id');
       $post = $this->_post->raw();
-      //s$this->pr($post);
       if ($product_id) {
         $product_arr['price'] = $post['price'];
         $product_arr['qty'] = $post['quantity'];
         $product_arr['total'] =  $post['price'] * $post['quantity'];
         $product_arr['description'] =  'Custom - '.$post['name'];
-        //$this->pr($product_arr);
         $this->set('product_arr', $product_arr);
       }
     }
@@ -3459,7 +3248,6 @@ class pjAdminPosOrders extends pjAdmin {
       }
       $oi_arr[] = $item;
     }
-    //$this->pr($oi_arr);
     $this->set('oi_extras', $oi_extras);
     $product_ids = array_column($oi_arr, 'foreign_id');
     $product_arr = pjProductModel::factory()->select('t1.id, t2.content AS name, t1.set_different_sizes, t1.price, t1.status, t1.preparation_time, t1.image, (SELECT COUNT(*) FROM `' . pjProductExtraModel::factory()
@@ -3469,7 +3257,6 @@ class pjAdminPosOrders extends pjAdmin {
           ->findAll()
           ->getData();
     $product_arr = array_combine(array_column($product_arr, 'id'),$product_arr);
-    //$this->pr($product_arr);
     $category = pjProductCategoryModel::factory()->select('t1.*')
       ->findAll()
       ->getData();

@@ -235,7 +235,6 @@ class pjFrontEnd extends pjFront {
       	}
 				if (isset($_SESSION['social_login'])) {
         		unset($_SESSION['social_login']);
-					//header('Location: https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=http://stage.cygnusinfosystems.com.php74-42.lan3-1.websitetestlink.com/localdines/front_localdines/menu.php');
       	} 
       	$this->session->unsetData($this->defaultClient);
 				pjAppController::jsonResponse(array('status' => 'OK', 'code' => 200, 'text' => 'Successfully Logged out!'));
@@ -322,10 +321,7 @@ class pjFrontEnd extends pjFront {
 				$this->_set('type', $type);
 				if ($type == 'delivery') {
 					$postcode = $this->_get->toString('postcode');
-					// $addresslist = $this->_get->toString('addresslist');
-					// print_r(json_decode($this->_get->toString('addresslist'), true));
 					$this->_set('post_code', $postcode);
-					//$this->_set('address_list', $addresslist);
 				}
 			}
 			pjAppController::jsonResponse(array('status' => 'OK', 'code' => 200, 'text' => ''));
@@ -377,9 +373,6 @@ class pjFrontEnd extends pjFront {
         	}
         }
       }
-      // $this->_unset('voucher_code');
-      // $this->_unset('voucher_discount');
-      // $this->_unset('voucher_type');
       pjAppController::jsonResponse(array('status' => 'OK', 'code' => 200, 'text' => ''));
     }
     exit;
@@ -391,8 +384,6 @@ class pjFrontEnd extends pjFront {
 	    
 	    if ($this->isXHR())
 	    {
-			// print_r($this->_post->toString('login_remember'));
-			// exit;
 	        $data = array();
 	        $data['login_email'] = $this->_post->toString('login_email');
 	        $data['login_password'] = $this->_post->toString('login_password');
@@ -454,11 +445,8 @@ class pjFrontEnd extends pjFront {
 			$_SESSION['otp'] = $otp;
 			$msg = sprintf(OTP_MESSAGE, $otp, DOMAIN, WEB_CONTACT_NO);
 			$c_phone = $_SESSION[$this->defaultForm]['c_phone'];
-			//echo $otp;
 			$response = $this->sendMessage($c_phone, $msg);
 			pjAppController::jsonResponse(array('status' => 'OK', 'code' => 200, 'text' => 'OTP Sent', 'msg'=>$msg));
-			//print_r($response);
-			//exit;
     }
 		exit;
 	}
@@ -496,14 +484,6 @@ class pjFrontEnd extends pjFront {
 	public function pjActionSaveForm() {
     $this->setAjax(true);
     if ($this->isXHR()) {
-      // if($this->option_arr['o_captcha_type_front'] == 'system')
-      // {
-	    //     $captcha = $this->_post->toString('captcha');
-	    //     if ((int) $this->option_arr['o_bf_include_captcha'] === 3 && (!$captcha || ($captcha && !pjCaptcha::validate($captcha, $this->session->getData($this->defaultCaptcha))) ))
-	    //     {
-	    //         pjAppController::jsonResponse(array('code' => 110, 'text' => $this->_post->toString('captcha')));
-	    //     }
-      // }
       if ($this->session->has($this->defaultForm)) {
         $this->session->setData($this->defaultForm, array());
       }
@@ -521,7 +501,6 @@ class pjFrontEnd extends pjFront {
 			} else {
 				$resp = array('code' => 200, 'user' => 'old');
 			}
-	    // $resp = array('code' => 200);
 	    pjAppController::jsonResponse($resp);
     }
 		exit;
@@ -869,8 +848,6 @@ class pjFrontEnd extends pjFront {
   			AES_DECRYPT(t1.cc_code, '".PJ_SALT."') AS `cc_code`")
   			->find($order_id)
   			->getData();
-  			// print_r($order_arr);
-  			// exit;
   			$pdata = array();
   			$pdata['order_id'] = $order_id;
   			$pdata['payment_method'] = $payment;
@@ -881,15 +858,12 @@ class pjFrontEnd extends pjFront {
   			
   			pjAppController::addOrderDetails($order_arr, $this->getLocaleId());
                 
-  			//if (!$is_guest) {
   				pjFrontEnd::pjActionConfirmSend($this->option_arr, $order_arr, PJ_SALT, 'confirmation', $this->getLocaleId());
-  			//}
   			
   			$this->session->unsetData($this->defaultStore);
   			$this->session->unsetData($this->defaultForm);
   			$this->session->unsetData($this->defaultCaptcha);
   			
-  			//$json = array('code' => 200, 'text' => __('front_messages_ARRAY_4', true), 'order_id' => $order_id, 'payment' => $payment);
         $json = array('code' => 200, 'text' => "Your order submitted successfully once accepted Confirmation message will be sent to you. [STAG]Close[ETAG]", 'order_id' => $order_id, 'payment' => $payment);
       } else {
         $json = array('code' => 100, 'text' => '');
@@ -1175,30 +1149,6 @@ class pjFrontEnd extends pjFront {
 	private function doubleCheckData($data)
 	{
 	    $double_check_error = __('double_check_error', true);
-	    // if($this->option_arr['o_captcha_type_front'] == 'system')
-	    // {
-	    //     if((int) $this->option_arr['o_bf_include_captcha'] === 3 && !isset($data['captcha']))
-	    //     {
-	    //         return array('status' => 'ERR', 'code' => 101, 'text' => $double_check_error[101]);
-	    //     }
-	    //     if((int) $this->option_arr['o_bf_include_captcha'] === 3 && !pjValidation::pjActionNotEmpty($data['captcha']))
-	    //     {
-	    //         return array('status' => 'ERR', 'code' => 102, 'text' => $double_check_error[102]);
-	    //     }
-	    //     if((int) $this->option_arr['o_bf_include_captcha'] === 3 && !pjCaptcha::validate($data['captcha'], $this->session->getData($this->defaultCaptcha)))
-	    //     {
-	    //         return array('status' => 'ERR', 'code' => 103, 'text' => $double_check_error[103]);
-	    //     }
-	    // }else{
-	    //     if((int) $this->option_arr['o_bf_include_captcha'] === 3 && !isset($data['recaptcha']))
-	    //     {
-	    //         return array('status' => 'ERR', 'code' => 101, 'text' => $double_check_error[101]);
-	    //     }
-	    //     if((int) $this->option_arr['o_bf_include_captcha'] === 3 && !pjValidation::pjActionNotEmpty($data['recaptcha']))
-	    //     {
-	    //         return array('status' => 'ERR', 'code' => 102, 'text' => $double_check_error[102]);
-	    //     }
-	    // }
 	    if($data['type'] == 'delivery')
 	    {
 	        if(!isset($data['d_location_id']))
@@ -1221,10 +1171,6 @@ class pjFrontEnd extends pjFront {
 	        {
 	            return array('status' => 'ERR', 'code' => 110, 'text' => $double_check_error[104]);
 	        }
-	        // if((int) $this->option_arr['o_df_include_address_2'] === 3 && !pjValidation::pjActionNotEmpty($data['d_address_2']))
-	        // {
-	        //     return array('status' => 'ERR', 'code' => 111, 'text' => $double_check_error[104]);
-	        // }
 	        if((int) $this->option_arr['o_df_include_city'] === 3 && !isset($data['d_city']))
 	        {
 	            return array('status' => 'ERR', 'code' => 112, 'text' => $double_check_error[104]);
@@ -1249,31 +1195,7 @@ class pjFrontEnd extends pjFront {
 	        {
 	            return array('status' => 'ERR', 'code' => 117, 'text' => $double_check_error[104]);
 	        }
-	        // if((int) $this->option_arr['o_df_include_country'] === 3 && !isset($data['d_country_id']))
-	        // {
-	        //     return array('status' => 'ERR', 'code' => 118, 'text' => $double_check_error[104]);
-	        // }
-	        // if((int) $this->option_arr['o_df_include_country'] === 3 && (int) $data['d_country_id'] <= 0)
-	        // {
-	        //     return array('status' => 'ERR', 'code' => 119, 'text' => $double_check_error[104]);
-	        // }
-	        // if((int) $this->option_arr['o_df_include_notes'] === 3 && !isset($data['d_notes']))
-	        // {
-	        //     return array('status' => 'ERR', 'code' => 120, 'text' => $double_check_error[104]);
-	        // }
-	        // if((int) $this->option_arr['o_df_include_notes'] === 3 && !pjValidation::pjActionNotEmpty($data['d_notes']))
-	        // {
-	        //     return array('status' => 'ERR', 'code' => 121, 'text' => $double_check_error[104]);
-	        // }
 	    }else{
-	        // if((int) $this->option_arr['o_pf_include_notes'] === 3 && !isset($data['p_notes']))
-	        // {
-	        //     return array('status' => 'ERR', 'code' => 104, 'text' => $double_check_error[104]);
-	        // }
-	        // if((int) $this->option_arr['o_pf_include_notes'] === 3 && !pjValidation::pjActionNotEmpty($data['p_notes']))
-	        // {
-	        //     return array('status' => 'ERR', 'code' => 105, 'text' => $double_check_error[104]);
-	        // }
 	    }
 	    if((int) $this->option_arr['o_bf_include_address_1'] === 3 && !isset($data['c_address_1']))
 	    {
@@ -1467,7 +1389,6 @@ class pjFrontEnd extends pjFront {
     }
 		$response = $pjSmsApi
 			->setApiKey($this->option_arr['plugin_sms_api_key'])
-			//->setNumber(447466708066)
 			->setNumber($phone)
 			->setText($msg)
 			->setSender(DOMAIN)

@@ -116,7 +116,6 @@ class pjAdminSpecialInstructions extends pjAdmin
 	    
 	    if ($this->isXHR())
 		{
-			//$pjCategoryModel = pjSpecialInstructionModel::factory();
 			
 			$pjCategoryModel = pjSpecialInstructionModel::factory()->join('pjMultiLang', sprintf("t2.foreign_id = t1.id AND t2.model = 'pjSpecialInstruction' AND t2.locale = '%u' AND t2.field = 'name'", $this->getLocaleId()), 'left');
 			if ($q = $this->_get->toString('q'))
@@ -151,7 +150,6 @@ class pjAdminSpecialInstructions extends pjAdmin
 			->select("t1.*, t2.content AS instruction")
 			->where("t1.status", "T")
 			->where("t1.type", "child")
-			// ->groupBy("t1.parent_id")
 			->orderBy("`$column` $direction")
 			->limit($rowCount, $offset)
 			->findAll()
@@ -167,7 +165,6 @@ class pjAdminSpecialInstructions extends pjAdmin
 	
 		if ($this->isXHR())
 		{
-			//$pjCategoryModel = pjSpecialInstructionModel::factory();
 			$pjCategoryModel = pjSpecialInstructionModel::factory()->join('pjMultiLang', sprintf("t2.foreign_id = t1.id AND t2.model = 'pjSpecialInstruction' AND t2.locale = '%u' AND t2.field = 'name'", $this->getLocaleId()), 'left');
 			if ($q = $this->_get->toString('q'))
 			{

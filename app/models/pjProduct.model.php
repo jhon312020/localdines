@@ -22,7 +22,6 @@ class pjProductModel extends pjAppModel {
 		array('name' => 'preparation_time', 'type' => 'int', 'default' => ':NULL'),
 		array('name' => 'status', 'type' => 'tinyint', 'default' => 1),
 		array('name' => 'counter_number', 'type' => 'int', 'default' =>':NULL' ),
-		//array('name' => 'no_of_ratings', 'type' => 'int', 'default' => 0)
 	);
 	
 	public $i18n = array('name', 'description');

@@ -127,13 +127,6 @@ class SunmiCloudPrinter
             "Content-Type:"    . "application/json"
         ];
 
-        // print $url . "<br>";
-        // print $header[0] . "<br>";
-        // print $header[1] . "<br>";
-        // print $header[2] . "<br>";
-        // print $header[3] . "<br>";
-        // print $body_data . "<br>";
-        // print "<br>";
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
@@ -378,8 +371,6 @@ class SunmiCloudPrinter
     // open drawer command.
     function openDrawer()
     {
-        //$this->orderData .= sprintf("1014%02x", ($full_cut) ? 68 : 65);
-        //$this->orderData .= sprintf("1b7000%02x", 32);
         $this->orderData .= "1b70003232";
     }
 

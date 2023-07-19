@@ -9,7 +9,6 @@ class pjFrontReview extends pjFront {
   	$this->setAjax(true);
   	if (self::isPost() && $this->_post->toInt('review_create') && $this->_post->toInt('rating')) {
 			$post = $this->_post->raw();
-			// echo "comes";
 			$data = array();
 			$data['product_id'] = $post['product_id'];
 			$data['rating'] = $post['rating'];

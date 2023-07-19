@@ -42,7 +42,6 @@ class pjAdminQrCode extends pjAdmin {
 					->where('`key`', 'front_qr')
 					->modifyAll(array('value' => $val))
 					->getAffectedRows();
-		//print_r($affected);
 		if ($affected == 1) {
 			self::jsonResponse(array('status' => 'OK', 'code' => 200, 'text' => 'Front Option Updated'));
 		} else {
@@ -56,10 +55,6 @@ class pjAdminQrCode extends pjAdmin {
     if (!pjAuth::factory()->hasAccess()) {
       self::jsonResponse(array('status' => 'ERR', 'code' => 102, 'text' => 'Access denied.'));
     }
-    // if (!$this->isXHR())
-    // {
-    //     self::jsonResponse(array('status' => 'ERR', 'code' => 100, 'text' => 'Missing headers.'));
-    // }
     if (!self::isPost()) {
       self::jsonResponse(array('status' => 'ERR', 'code' => 101, 'text' => 'HTTP method not allowed.'));
     }

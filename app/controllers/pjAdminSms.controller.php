@@ -18,11 +18,6 @@ class pjAdminSms extends pjAdmin
     public function pjActionIndex()
     {
         $pjAuth = pjAuth::factory();
-        // if (!$pjAuth->hasAccess('settings') && !$pjAuth->hasAccess('list'))
-        // {
-        //     $this->sendForbidden();
-        //     return;
-        // }
 
         if (self::isPost() && $this->_post->toInt('sms_post') == 1)
         {
@@ -115,11 +110,6 @@ class pjAdminSms extends pjAdmin
         $this->setAjax(true);
         
         $this->checkLogin();
-        // if (!pjAuth::factory('pjAdminSms', 'pjActionIndex_list')->hasAccess())
-        // {
-        //     $this->sendForbidden();
-        //     return;
-        // }
         
         $pjBaseSmsModel = pjBaseSmsModel::factory();
         
@@ -149,7 +139,6 @@ class pjAdminSms extends pjAdmin
         
         $data = $pjBaseSmsModel->orderBy("$column $direction")->limit($rowCount, $offset)->findAll()->getData();
         $statuses = __('plugin_base_sms_statuses', true);
-        //print_r($statuses);
         foreach ($data as &$item)
         {
             if (!empty($item['created']))
@@ -170,9 +159,6 @@ class pjAdminSms extends pjAdmin
                 $item['created'] = NULL;
             }
             
-            
-            //print_r($item);
-            //$item['status'] = isset($statuses[$item['status']]) ? $statuses[$item['status']] : $item['status'];
             $item['status'] = $item['status']==1 ? '<span class="success-color"><i class="fa fa-check-circle fa-2x" aria-hidden="true"></i></span>' : '<span class="failed-color"><i class="fa fa-times fa-2x" aria-hidden="true"></i></span>';
         }
         $data_old = $data;
@@ -222,55 +208,13 @@ class pjAdminSms extends pjAdmin
                 }
             }
         }
-        //$pjSmsApi = new pjSmsApi();
-        
-        //$postcode = new ioPostcodeAPI();
-        //$response = $postcode->lookup('ig11 8ld');
-        // print_r($response);
-        
-        //jaslin
         $pjSmsApi = new tlSmsApi();
-        //$postcode = new ioPostcodeAPI();
-       // $lookup = $postcode->lookup("SW1A 2AA");
-        
-        //jaslinn
-
-        //->setType('unicode')
-
-        //jaslin
          $response = $pjSmsApi
         ->setApiKey($this->_post->toString('plugin_sms_api_key'))
         ->setNumber($number)
         ->setText(__('plugin_base_sms_test_message', true))
         ->setSender('TXTLOCAL')
         ->send();
-        //jaslinn
-        // $api_key = $this->_post->toString('plugin_sms_api_key');
-        // $ch = curl_init('https://api.voodoosms.com/sendsms');
-        
-        // $msg = json_encode(
-        //     [
-        //         'to' => $number,
-        //         'from' => "Localdines",
-        //         'msg' => "Test message by JR",
-        //         'schedule' => "now",
-        //         'external_reference' => "Testing VoodooSMS",
-        //         'sandbox' => true
-        //     ]
-        // );
-        // curl_setopt($ch, CURLOPT_POST, true);
-        // curl_setopt($ch, CURLOPT_HTTPHEADER, [
-        //     'Authorization: ' . $api_key
-        // ]);
-        // curl_setopt($ch, CURLOPT_POSTFIELDS, $msg);
-        // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-        // $response = curl_exec($ch);
-        // $response = json_decode($response);
-
-        // curl_close($ch);
-        // print_r($response['status']);
-        // exit;
         if($response['status'] == 'success')
         {
             $text = __('plugin_base_sms_test_sms_sent_to', true) . ' ' . $number;
@@ -279,7 +223,6 @@ class pjAdminSms extends pjAdmin
             $statuses = __('plugin_base_sms_statuses', true);
             
             $text = isset($statuses[$response]) ? $statuses[$response] : $response;
-            //$text = $response->error->msg;
             self::jsonResponse(array('status' => 'ERR', 'code' => 103, 'title' => __('plugin_base_sms_failed_to_send', true), 'text' => $text));
         }
         exit;
@@ -311,21 +254,7 @@ class pjAdminSms extends pjAdmin
         $response = curl_setopt($ch, CURLOPT_HTTPHEADER, [
             'Authorization: ' . $api_key
         ]);
-        // $pjHttp = new pjHttp();
-        // $response = $pjHttp
-        // ->setMethod('post')
-        // ->setData(array('key' => $this->_post->toString('plugin_sms_api_key')))
-        // ->curlRequest('https://www.phpjabbers.com/web-sms/api/verify.php')
-        // //->curlRequest('https://api.voodoosms.com/sendsms')
-        // ->getResponse();
-        
-        //$response = self::jsonDecode($response);
-        
         if ($response == 1) {
-        //     echo "It is true";
-        // }
-        //if ($response['status'] == 'OK')
-        //{
             self::jsonResponse(array('status' => 'OK', 'code' => 200, 'text' => __('plugin_base_sms_key_is_correct', true)));
         }
         else
