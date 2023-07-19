@@ -17,27 +17,27 @@
 
     <div class="form-group">
       <label class="control-label">Master Name</label>
-      <input type="text" name="name" id="company_name" value="<?php echo array_key_exists('arr', $tpl) && $tpl['arr']['name'] ? $tpl['arr']['name'] : '' ?>" class="form-control required" data-msg-required="This field is required." />
+      <input type="text" name="name" id="company_name" value="<?php echo array_key_exists('arr', $tpl) && $tpl['arr']['name'] ? $tpl['arr']['name'] : '' ?>" class="jsVK-normal form-control required" data-msg-required="This field is required." />
     </div><!-- /.form-group -->
 
     <div class="form-group">
       <label class="control-label">Contact Name</label>
-      <input type="text" name="contact_person" id="contact_person" value="<?php echo array_key_exists('arr', $tpl) && $tpl['arr']['contact_person'] ? $tpl['arr']['contact_person'] : '' ?>" class="form-control required" data-msg-required="This field is required." />
+      <input type="text" name="contact_person" id="contact_person" value="<?php echo array_key_exists('arr', $tpl) && $tpl['arr']['contact_person'] ? $tpl['arr']['contact_person'] : '' ?>" class="jsVK-normal form-control required" data-msg-required="This field is required." />
     </div><!-- /.form-group -->
 
     <div class="form-group">
       <label class="control-label">Contact Number</label>
-      <input type="text" name="contact_number" id="contact_number" value="<?php echo array_key_exists('arr', $tpl) && $tpl['arr']['contact_number'] ? $tpl['arr']['contact_number'] : '' ?>" class="form-control required number" data-msg-required="This field is required." />
+      <input type="text" name="contact_number" id="contact_number" value="<?php echo array_key_exists('arr', $tpl) && $tpl['arr']['contact_number'] ? $tpl['arr']['contact_number'] : '' ?>" class="jsVK-numpad form-control required contact_number" data-msg-required="This field is required." data-kioskboard-type="numpad" data-kioskboard-placement="bottom" />
     </div><!-- /.form-group -->
 
     <div class="form-group">
       <label class="control-label">Address</label>
-      <textarea class="form-control form-control-lg" name="address"><?php echo array_key_exists('arr', $tpl) && $tpl['arr']['address'] ? $tpl['arr']['address'] : '' ?></textarea>
+      <textarea class="jsVK-normal form-control form-control-lg address" name="address" data-msg-required="This field is required."><?php echo array_key_exists('arr', $tpl) && $tpl['arr']['address'] ? $tpl['arr']['address'] : '' ?></textarea>
     </div><!-- /.form-group -->
 
     <div class="form-group">
       <label class="control-label">Postal Code</label>
-      <input type="text" name="postal_code" id="postal_code" value="<?php echo array_key_exists('arr', $tpl) && $tpl['arr']['postal_code'] ? $tpl['arr']['postal_code'] : '' ?>" class="form-control" data-msg-required="This field is required." />
+      <input type="text" name="postal_code" id="postal_code" value="<?php echo array_key_exists('arr', $tpl) && $tpl['arr']['postal_code'] ? $tpl['arr']['postal_code'] : '' ?>" class="jsVK-numpad form-control" data-msg-required="This field is required." data-kioskboard-type="numpad" data-kioskboard-placement="bottom" />
     </div><!-- /.form-group -->
 
   </div>
