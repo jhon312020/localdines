@@ -8,11 +8,9 @@ class pjAdminProducts extends pjAdmin {
   public function pjActionCheckPrices() {
     $this->setAjax(true);
     $post =$this->_post->raw();
-
     if (isset($post['set_different_sizes']) && $post['set_different_sizes']=='T') {
       if (isset($post['index_arr']) && $post['index_arr'] !='') {
         $index_arr =explode("|", $post['index_arr']);
-
         foreach ($index_arr as $k => $v) {
           if (strpos($v, 'fd') !==false) {
             if ($post['product_price'][$v] > 99999999999999.99) {
@@ -21,37 +19,45 @@ class pjAdminProducts extends pjAdmin {
           }
         }
       }
-    }
-
-    else {
+    } else {
       if ($post['price'] > 99999999999999.99) {
         self::jsonResponse(array('status'=> 'ERR', 'code'=> 100, 'text'=> __('price_err_ARRAY_100', true)));
       }
     }
-
     self::jsonResponse(array('status'=> 'OK', 'code'=> 200, 'text'=> ''));
   }
 
   public function pjActionCheckProductType() {
     $this->setAjax(true);
-    $post =$this->_post->raw();
-    $categories = pjCategoryModel::factory()
-      ->whereIn('id', $post['cat_array'])
-      ->select('id, product_type')
-      ->groupBy('product_type')
-      ->findAll()->getData();
-    // echo "<pre>";
-    // print_r($categories);
-    // echo "</pre>";
-    $product_types = array_column($categories, 'product_type');
-    if (in_array("none", $product_types) && count($product_types) == 1) {
-      self::jsonResponse(array('status'=> true, 'code'=> 200, 'text'=> 'null'));
-    } elseif (in_array("both", $product_types) || in_array("non-veg", $product_types)) {
-      self::jsonResponse(array('status'=> false, 'code'=> 200, 'text'=> false));
+    if ( !$this->isXHR()) {
+      self::jsonResponse(array('status'=> 'ERR', 'code'=> 100, 'text'=> 'Missing headers.'));
+    }
+
+    if ( !self::isPost()) {
+      self::jsonResponse(array('status'=> 'ERR', 'code'=> 101, 'text'=> 'HTTP method not allowed.'));
+    }
+    $post = $this->_post->raw();
+    if ($post) {
+      $categories = pjCategoryModel::factory()
+        ->whereIn('id', $post['cat_array'])
+        ->select('id, product_type')
+        ->groupBy('product_type')
+        ->findAll()->getData();
+      // echo "<pre>";
+      // print_r($categories);
+      // echo "</pre>";
+      $product_types = array_column($categories, 'product_type');
+      if (in_array("none", $product_types) && count($product_types) == 1) {
+        self::jsonResponse(array('status'=> true, 'code'=> 200, 'text'=> 'null'));
+      } elseif (in_array("both", $product_types) || in_array("non-veg", $product_types)) {
+        self::jsonResponse(array('status'=> false, 'code'=> 200, 'text'=> false));
+      } else {
+        self::jsonResponse(array('status'=> false, 'code'=> 200, 'text'=> true));
+      }
+      exit;  
     } else {
       self::jsonResponse(array('status'=> false, 'code'=> 200, 'text'=> true));
     }
-    exit;
   }
 
   public function pjActionCreate() {

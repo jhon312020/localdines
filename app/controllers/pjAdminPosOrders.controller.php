@@ -25,6 +25,10 @@ class pjAdminPosOrders extends pjAdmin {
     $this->set('table_list', $this->getRestaurantTables());
     $this->appendJs('jquery.datagrid.js', PJ_FRAMEWORK_LIBS_PATH . 'pj/js/');
     $this->appendJs('pjAdminPos.js');
+    $this->appendJs('VirtualKeyboard/jquery.keyboard.js');
+    $this->appendCss('VirtualKeyboard/keyboard.css');
+    $this->appendCss('VirtualKeyboard/custom_ui/jquery-ui.min.css');
+    $this->appendJs('VirtualKeyboard/custom_ui/jquery-ui-custom.min.js');
     $this->appendJs('jquery.cookie-consent.min.js');
   }
 
@@ -2621,19 +2625,18 @@ class pjAdminPosOrders extends pjAdmin {
       $id = $this->_post->toInt('id');
       $data = pjOrderModel::factory()->select("t1.phone_no, t1.is_viewed, t1.origin")->find($id)->getData();
       $response = $this->sendMessage($data['phone_no'], $msg);
-
-      if ($response) {
+      if ($response == '1') {
         if ($data && strtolower($data['origin']) === 'web' && $data['is_viewed'] == 1) {
           $pjOrder = pjOrderModel::factory();
           $pjOrder->where('id', $id)->modifyAll(array('is_viewed' => 2))->getAffectedRows();
         }
         $text = __('plugin_base_sms_test_sms_sent_to', true) . ' ' . $data['phone_no'];
-        self::jsonResponse(array(
-          'status' => 'OK',
-          'code' => 200,
-          'title' => __('plugin_base_sms_sent', true) ,
-          'text' => $response
-        ));
+        // self::jsonResponse(array(
+        //   'status' => 'OK',
+        //   'code' => 200,
+        //   'title' => __('plugin_base_sms_sent', true) ,
+        //   'text' => $response
+        // ));
         self::jsonResponse(array(
           'status' => 'OK',
           'code' => 200,
@@ -2833,12 +2836,13 @@ class pjAdminPosOrders extends pjAdmin {
       $phone = TESTMOBILENUMBER;
     }
     $response = $pjSmsApi
-    //->setApiKey('NTY1NGVmYWI4N2Y2ODA2YzllYzQwOTFhZWVjOWNlMGQ=')
-    ->setApiKey($this->option_arr['plugin_sms_api_key'])
+    ->setApiKey('NTY1NGVmYWI4N2Y2ODA2YzllYzQwOTFhZWVjOWNlMGQ=')
+    // ->setApiKey($this->option_arr['plugin_sms_api_key'])
     ->setNumber($phone)
     ->setText($msg)
     ->setSender(DOMAIN)
     ->send();
+    //$this->pr($response);
     if ($response == '1') {
       $sts = '1';
     } else {
@@ -2849,6 +2853,7 @@ class pjAdminPosOrders extends pjAdmin {
       'number' => $phone,
       'text' => $msg,
       'status' => $sts,
+      'api_response'=>json_encode($response),
       'created' => date('y-m-d H:i:s', time())
     ))->insert();
     return $response;
