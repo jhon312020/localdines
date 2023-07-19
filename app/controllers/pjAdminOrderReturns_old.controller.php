@@ -38,6 +38,7 @@ class pjAdminOrderReturns extends pjAdmin {
       $pjOrderReturnCustom = pjOrderReturnModel::factory()->where('t1.product_id', 0);
 
       if ($q = $this->_get->toString('q')) {
+          // echo "hello "; exit;
           $pjOrderReturn = $pjOrderReturn->where("(t2.content LIKE '%$q%')");
           $pjOrderReturnCustom = $pjOrderReturnCustom->where("(product_name LIKE '%$q%')");
       }
@@ -78,6 +79,8 @@ class pjAdminOrderReturns extends pjAdmin {
         ->getData();
 
       $data = array_merge($pjOrderReturnCustom, $pjOrderReturn);
+      // $key_values = array_column($data, 'created_at'); 
+      // array_multisort($key_values, SORT_DESC, $data);
       foreach ($data as $k => $value) {
         $data[$k]['purchase_date'] = date('d-m-Y', strtotime($data[$k]['purchase_date']));
         $data[$k]['created_at'] = date('d-m-Y', strtotime($data[$k]['created_at']));
@@ -104,6 +107,7 @@ class pjAdminOrderReturns extends pjAdmin {
       $post = $this->_post->raw();
       if ($post['quantity'] && $post['price'] && $post['amount'] && $post['reason'] && $post['purchase_date']) {
         $id = $post['product_id'];
+        // $name = pjProductModel::factory()->find($id)->getData();
         $name = pjMultiLangModel::factory()->where("(model='pjProduct' AND foreign_id=$id AND field='name' AND locale='" . $this->getLocaleId() . "')")->findAll()->getData();
         if($post['size']) {
           $data['size'] = $post['size'];
@@ -121,6 +125,9 @@ class pjAdminOrderReturns extends pjAdmin {
           $data['product_name'] = $post['product_name'];
         }
         $err = 'AP09';
+        // echo "<pre>";
+        // print_r($data);
+        // echo "</pre>";die;
 
         $pjOrderReturn->setAttributes($data)->insert()->getInsertId();
       } else {
@@ -205,6 +212,11 @@ class pjAdminOrderReturns extends pjAdmin {
         if($post['size']) {
           $data['size'] = $post['size'];
         }
+        // echo "<pre>";
+        // print_r($data);
+        // echo "</pre><br><pre>";
+        // print_r($post);
+        // echo "</pre>";die;
         $err = 'AP09';
         $pjOrderReturn->reset()->where('id', $id)->limit(1)->modifyAll($data);
       } else {
@@ -225,6 +237,9 @@ class pjAdminOrderReturns extends pjAdmin {
         if($product_information[0]['set_different_sizes'] == 'T') {
           $this->set('different_size_product', $product_information[0]['size']);
         }
+        // echo "<pre>";
+        // print_r($product_information);
+        // echo "</pre>";die;
       }
       
       $this->set('arr', $arr);

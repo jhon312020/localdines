@@ -276,8 +276,6 @@ class pjAdmin extends pjAppController {
     $amount_delivery_orders = $pjOrderModel->reset()->select("SUM(total) AS amount")->where("type", "delivery")->where("DATE(t1.d_dt) = CURDATE()")->findAll()->getData();
     $cnt_pickup_orders = $pjOrderModel->reset()->where("type", "pickup")->where("DATE(t1.p_dt) = CURDATE()")->findCount()->getData();
     $amount_pickup_orders = $pjOrderModel->reset()->select("SUM(total) AS amount")->where("type", "pickup")->where("DATE(t1.p_dt) = CURDATE()")->findAll()->getData();
-    //$cnt_orders = $pjOrderModel->reset()->findCount()->getData();
-    //$amount_orders = $pjOrderModel->reset()->select("SUM(total) AS amount")->findAll()->getData();
     $cnt_orders = $pjOrderModel->reset()->where("DATE(t1.d_dt) = CURDATE() or DATE(t1.p_dt) = CURDATE()")->findCount()->getData();
     $amount_orders = $pjOrderModel->reset()->select("SUM(total) AS amount")->where("DATE(t1.d_dt) = CURDATE() or DATE(t1.p_dt) = CURDATE()")->findAll()->getData();
     
@@ -288,8 +286,6 @@ class pjAdmin extends pjAppController {
     $this->set('cnt_orders', $cnt_orders);
     $this->set('amount_orders', !empty($amount_orders) ? $amount_orders[0]['amount'] : 0);
 		$role_id = $this->getRoleId();
-    // print_r($role_id);
-		// exit;
 		if ($role_id == 4) {
 			$timezone = $this->option_arr['o_timezone']? $this->option_arr['o_timezone']: ADMIN_TIME_ZONE;
       date_default_timezone_set($timezone);
@@ -414,7 +410,6 @@ class pjAdmin extends pjAppController {
       ->getTable()))->find($productID)->getData();
 	}
 	public function saveOrderItems($post, $order_id, $delivered_return = false) {
-		//$this->pr($post);
 		if (isset($post['product_id']) && count($post['product_id']) > 0) {
       $pjOrderItemModel = pjOrderItemModel::factory();
       $pjProductPriceModel = pjProductPriceModel::factory();
@@ -431,7 +426,6 @@ class pjAdmin extends pjAppController {
       	}
       }
       if (!$delivered_return) {
-      //$this->pr($post);
 	      foreach ($post['product_id'] as $k => $pid) {
 	      	$product = array();
 	      	$item_order = ":NULL";
@@ -440,26 +434,8 @@ class pjAdmin extends pjAppController {
 	      		$product = $this->getProduct($pid);
 	        	$item_order = $category_order[$product['category_id']];
 	      	} 
-	        //$this->pr_die($product);
 	        if (strpos($k, 'new_') === 0) {
-	          // $price = 0;
-	          // $price_id = ":NULL";
-	          // if ($pid == 0) {	
-	          //   $price = $post['price_id'][$k];
-	          //   $type = "custom";
-	          //   $custom_name = $post['product_description'][$k];
-	          // } else if ($product['set_different_sizes'] == 'T') {
-	          //   $price_id = $post['price_id'][$k];
-	          //   $price_arr = $pjProductPriceModel->reset()->find($price_id)->getData();
-	          //   if ($price_arr) {
-	          //     $price = $price_arr['price'];
-	          //   }
-	          // } else {
-	          //   $price = $product['price'];
-	          // }
 	          list($type, $custom_name, $price_id, $price, $print) = $this->getPriceDetails($pid, $k, $post, $product);
-	          //echo $type;
-	          //exit;
 	          $oid = $pjOrderItemModel->reset()
 	            ->setAttributes(array(
 	            'order_id' => $order_id,
@@ -476,12 +452,8 @@ class pjAdmin extends pjAppController {
 	            'custom_special_instruction' => $post['custom_special_instruction'][$k]
 	          ))->insert()
 	            ->getInsertId();
-	            //$this->pr($post);
-	            //$this->pr_die($post['extras'][$k]);
 	          if ($product['cnt_extras'] && $oid !== false && (int)$oid > 0) {
-	            //$this->pr_die($post['extras'][$k]);
 	            if (array_key_exists($k, $post['extras']) && isset($post['extras'][$k]) && $post['extras'][$k]!= "") {
-	              //$decode_extras = json_decode($post['extras'][$k]);
 	               $pjOrderItemModel->reset()
 	                  ->setAttributes(array(
 	                  'order_id' => $order_id,
@@ -534,7 +506,7 @@ class pjAdmin extends pjAppController {
 	        }
 	      }
     	}
-      //exit;
+
       if (count($returnOrCancelReasons)) {
       	foreach ($returnOrCancelReasons as $key => $reason) {
       		$pjOrder = pjOrderItemModel::factory();
@@ -545,15 +517,10 @@ class pjAdmin extends pjAppController {
       		} else {
       			$rows = $pjOrder->where('hash', $key)->where('order_id', $order_id)->modifyAll(array('status' => $productStatus, 'cancel_or_return_reason'=>$cancelOrReturnReason, 'print' => 0))->getAffectedRows();
       		}
-      		
-      		// if ($rows) {
-      		// 	$pjOrder->where('order_id', $order_id)->modifyAll(array('print' => 0))->getAffectedRows();
-      		// }
       	}
       }
     }
     return true;
-    //exit;
 	}
 
 	public function getPriceDetails($pid, $prdHash, $post, $product) {
@@ -621,10 +588,6 @@ class pjAdmin extends pjAppController {
       $pjProductPriceModel = pjProductPriceModel::factory();
       $oi_arr = array();
       $pjOrderItemObject = pjOrderItemModel::factory()->where('t1.order_id', $arr['id']);
-      // echo $kPrint;
-      // if ($kPrint) {
-      //   $pjOrderItemObject->where('print','=', '0');
-      // }
       $_oi_arr = $pjOrderItemObject->orderBy("item_order ASC")->findAll()->getData();
 
       if ($kPrint) {
@@ -640,7 +603,6 @@ class pjAdmin extends pjAppController {
       $product_ids = array_column($_oi_arr, 'foreign_id');
 
       $product_arr = pjProductModel::factory()->join('pjMultiLang', sprintf("t2.foreign_id = t1.id AND t2.model = 'pjProduct' AND t2.locale = '%u' AND t2.field = 'name'", $this->getLocaleId()) , 'left')
-        //->join('pjProductCategory', "t3.product_id = t1.id", 'left')
         ->select(sprintf("t1.*, t2.content AS name,
                 (SELECT GROUP_CONCAT(extra_id SEPARATOR '~:~') FROM `%s` WHERE product_id = t1.id GROUP BY product_id LIMIT 1) AS allowed_extras,
                 (SELECT COUNT(*) FROM `%s` AS TPE WHERE TPE.product_id=t1.id) as cnt_extras", pjProductExtraModel::factory()
@@ -651,10 +613,7 @@ class pjAdmin extends pjAppController {
         ->findAll()
         ->toArray('allowed_extras', '~:~')
         ->getData();
-      //$product_names = array_column($product_arr, 'name', 'id');
       $product_arr = array_combine(array_column($product_arr, 'id'),$product_arr);
-      //$this->pr($product_arr);
-      //$this->pr($product_names);
       $extra_arr = pjExtraModel::factory()->join('pjMultiLang', "t2.foreign_id = t1.id AND t2.model = 'pjExtra' AND t2.locale = '" . $this->getLocaleId() . "' AND t2.field = 'name'", 'left')
           ->select("t1.*, t2.content AS name")
           ->where("t1.id IN (SELECT TPE.extra_id FROM `" . pjProductExtraModel::factory()
@@ -667,7 +626,6 @@ class pjAdmin extends pjAppController {
       foreach ($extra_arr as $extra) {
         $extras[$extra['id']] = $extra;
       }
-      //\\$this->pr($_oi_arr);
       foreach ($_oi_arr as $item) {
       	$item['is_kitchen'] = 1;
         $item['is_web_orderable'] = 1;
@@ -694,16 +652,12 @@ class pjAdmin extends pjAppController {
             $item['is_veg'] = $product_arr[$item['foreign_id']]['is_veg'];
         }
         if ($item['type'] == 'extra') {
-          //$item['extra_name'] = $extras[$item['foreign_id']]['name'];
           $extras = json_decode($item['special_instruction']);
-          //$extras = array_column($extras, array_map(function() {}, $extras), "" );
-          //$this->pr($extras);
           $oi_extras[$item['hash']] = $extras;
         } else {
           $oi_arr[] = $item;
         }
       }
-      //$this->pr($_oi_arr);
       if ($isForPrinting) {
         return compact('arr', 'product_arr', 'oi_arr', 'oi_extras');
       } else {
@@ -734,57 +688,5 @@ class pjAdmin extends pjAppController {
       ->getInsertId();
     return $paymentID;
   }
-
-//public function pjActionCheckNewOrder() {
-	// 	$this->setAjax(true);
-  //     if ($this->isXHR())
-  //     {
-	// 		$today = date( 'y-m-d', time ());
-	// 		$today = $today." "."00:00:00";
-	// 		$orders = pjOrderModel::factory()
-	// 		          ->select('t1.*')
-	// 				  ->where('t1.status', 'pending')
-	// 				  ->where('t1.origin', 'web')
-    //                   ->where('t1.deleted_order', '0')
-	// 				  ->where("(t1.created >= '$today')")
-	// 				  ->findAll()
-	// 				  ->getData();
-	// 		if(count($orders) > 0) {
-	// 			$no_of_orders = count($orders);
-	// 			return self::jsonResponse(array('status' => 'true', 'orders' => $no_of_orders));
-	// 		} else {
-	// 			return self::jsonResponse(array('status' => 'false', 'orders' => 'no pending orders'));
-	// 		}
-	// 	}
-	// 	exit;
-// }
-
-// public function pjActionGetNewOrder() {
-	// 	$this->setAjax(true);
-    //     if ($this->isXHR())
-    //     {
-	// 		$now = date( 'y-m-d H:i', time ());
-	// 		$now = $now.":00";
-	// 		// $now = date( 'y-m-d');
-	// 		// $now = $now." 00:00:00";
-	// 		$order = pjOrderModel::factory()
-	// 		          ->select('t1.*')
-	// 				  ->where('t1.status', 'pending')
-	// 				  ->where('t1.origin', 'web')
-    //                   ->where('t1.deleted_order', '0')
-	// 				  //->where("(t1.created >= '$now')")
-	// 				  ->orderBy("created DESC")
-	// 				  ->limit(1)
-	// 				  ->findAll()
-	// 				  ->getData();
-			
-	// 		if(!empty($order)) {
-	// 			return self::jsonResponse(array('status' => 'true', 'order' => $order));
-	// 		} else {
-	// 			return self::jsonResponse(array('status' => 'false', 'orders' => 'no recent orders'));
-	// 		}
-	// 	}
-	// 	exit;
-// }
 }
 ?>

@@ -65,7 +65,6 @@ class pjAdminOptions extends pjAdmin
 					->where('`key`', 'front_qr')
 					->modifyAll(array('value' => $val))
 					->getAffectedRows();
-		//print_r($affected);
 		if ($affected == 1) {
 			self::jsonResponse(array('status' => 'OK', 'code' => 200, 'text' => 'Front Option Updated'));
 		} else {

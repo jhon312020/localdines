@@ -55,7 +55,7 @@ class pjAdminExpense extends pjAdmin {
 
             if ($q = $this->_get->toString('q'))
             {
-                // echo "hello "; exit;
+    
                 $pjExpenseModel = $pjExpenseModel->where("(t1.expense_name LIKE '%$q%' OR t2.name LIKE '%$q%')");
             }
             

@@ -65,6 +65,8 @@ class pjAdminClients extends pjAdmin
 	    if (self::isPost() && $this->_post->toInt('client_create'))
 	    {
 	        $post = $this->_post->raw();
+	        // print_r($post);
+	        // exit;
 	        if($this->_post->check('status'))
 	        {
 	            $post['status'] = 'T';
@@ -72,6 +74,8 @@ class pjAdminClients extends pjAdmin
 	            $post['status'] = 'F';
 	        }
 	        $post['locale_id'] = $this->getLocaleId();
+          //   $post['email_offer'] == 'on' ? $post['email_offer'] = 1 : $post['email_offer'] = 0;
+	        // $post['mobile_offer'] == 'on' ? $post['mobile_offer'] = 1 : $post['mobile_offer'] = 0;
 	        $post['email_offer'] = isset($post['email_offer']) && $post['email_offer'] == 'on' ? 1 : 0;
 			$post['mobile_offer'] = isset($post['mobile_offer']) && $post['mobile_offer'] == 'on' ? 1 : 0;
 			$post['c_type'] = 'New';
@@ -179,6 +183,10 @@ class pjAdminClients extends pjAdmin
 			{
 				self::jsonResponse(array('status' => 'ERR', 'code' => 105, 'text' => 'Client has not been deleted.'));
 			}
+            // if (!$pjClientModel->reset()->set('id', $this->_get->toInt('id'))->erase()->getAffectedRows())
+			// {
+			// 	self::jsonResponse(array('status' => 'ERR', 'code' => 105, 'text' => 'Client has not been deleted.'));
+			// }
 			$removeData = array();
 			$removeData['d_address_1'] = "GDPR removal";
 			$removeData['d_address_2'] = "GDPR removal";
@@ -200,6 +208,7 @@ class pjAdminClients extends pjAdmin
 			->where("id", $client['foreign_id']) 
 			->modifyAll($removeUserData)
 			->getAffectedRows();
+			//pjAuthUserModel::factory()->set('id', $client['foreign_id'])->erase();
 		    self::jsonResponse(array('status' => 'OK', 'code' => 200, 'text' => 'Client has been deleted'));
 		}
 		
@@ -277,6 +286,7 @@ class pjAdminClients extends pjAdmin
 		if ($this->isXHR())
 		{
 		    $pjClientModel = pjClientModel::factory()->join('pjAuthUser', 't2.id=t1.foreign_id', 'left outer');
+			//print_r($pjClientModel);
 			if ($q = $this->_get->toString('q'))
 			{
 				$pjClientModel->where("(t2.email LIKE '%$q%' OR t2.name LIKE '%$q%' OR t2.u_surname LIKE '%$q%' OR t2.phone='$q' OR t1.c_postcode LIKE '%$q%')");
@@ -308,11 +318,14 @@ class pjAdminClients extends pjAdmin
 			}
 
 			$data = $pjClientModel
+			//->join('pjOrder', 't3.client_id = t1.id')
 			->select("t1.id, t2.email AS c_email, t2.name AS c_name, t2.u_surname AS c_surname, t2.phone, t1.c_postcode, t2.status, (SELECT COUNT(TO.client_id) FROM `".pjOrderModel::factory()->getTable()."` AS `TO` WHERE `TO`.client_id=t1.id) AS cnt_orders")
 			->orderBy("$column $direction")
 			->limit($rowCount, $offset)
 			->findAll()
 			->getData();
+			//print_r($data);
+			//$this->set('data_arr',$data);
 			foreach($data as $k => $v)
 			{
 				if ($v['c_email'] == '0') {
@@ -425,6 +438,8 @@ class pjAdminClients extends pjAdmin
 	        $pjClientModel = pjClientModel::factory();
 	        $id = $this->_post->toInt('id');
 	        $post = $this->_post->raw();
+	        // print_r($post);
+	        // exit;
 	        $data = array();
 	        if($this->_post->check('status'))
 	        {
@@ -434,8 +449,12 @@ class pjAdminClients extends pjAdmin
 	            $post['status'] = 'F';
 	            $data['status'] = 'F';
 	        }
+	        // print_r($this->_post->toString('surname'));
+	        // exit;
+	        // $post['email_offer'] == 'on' ? $post['email_offer'] = 1 : $post['email_offer'] = 0;
+	        // $post['mobile_offer'] == 'on' ? $post['mobile_offer'] = 1 : $post['mobile_offer'] = 0;
 	        $post['email_offer'] = isset($post['email_offer']) && $post['email_offer'] == 'on' ? 1 : 0;
-			$post['mobile_offer'] = isset($post['mobile_offer']) && $post['mobile_offer'] == 'on' ? 1 : 0;
+					$post['mobile_offer'] = isset($post['mobile_offer']) && $post['mobile_offer'] == 'on' ? 1 : 0;
 	        
 	        $post['c_postcode'] = $post['post_code'];
 	        $pjClientModel->where('id', $id)->limit(1)->modifyAll($post);
@@ -455,7 +474,13 @@ class pjAdminClients extends pjAdmin
 	        pjOrderModel::factory()
              ->where("phone_no", $old_phone[0]['phone']) 
              ->where("status", "pending")
-             ->modifyAll(array("phone_no" => $data['phone']));        
+             ->modifyAll(array("phone_no" => $data['phone']));
+	               //->getAffectedRows();
+	                 
+
+	        // echo "<pre>";print_r($order);
+	        // exit;        
+
 	        pjAuth::init($data)->updateUser();
 	        pjUtil::redirect(PJ_INSTALL_URL . "index.php?controller=pjAdminClients&action=pjActionUpdate&id=".$id."&err=AC01");
 	    }

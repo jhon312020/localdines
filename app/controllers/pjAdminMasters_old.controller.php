@@ -34,11 +34,23 @@ class pjAdminMasters extends pjAdmin {
     $this->setAjax(true);
     if ($this->isXHR()) {
       $pjMasterModel = pjMasterModel::factory();
+      // $today = date('Y-m-d');
+      // $from = $today . " " . "00:00:00";
+      // $to = $today . " " . "23:59:59";
+      // if ($this->_get->toString('date_from') && $this->_get->toString('date_to')) {
+      //   $date_from = DateTime::createFromFormat('d.m.Y', $this->_get->toString('date_from'));
+      //   $from = $date_from->format('Y-m-d'). " " . "00:00:00";
+      //   $date_to = DateTime::createFromFormat('d.m.Y', $this->_get->toString('date_to'));
+      //   $to = $date_to->format('Y-m-d'). " " . "23:59:59";
+      // }
+
       $pjMasterModel = $pjMasterModel
         ->select("t1.*,date_format(t1.created_at, '%m-%d-%Y') as date,t1.name as product_name, t2.name as c_name")
+        // ->where("(t1.created_at >= '$from' AND t1.created_at <= '$to')")
         ->join('pjMasterType', 't2.id=t1.master_type_id', 'left outer');
 
       if ($q = $this->_get->toString('q')) {
+        // echo "hello "; exit;
         $pjMasterModel = $pjMasterModel->where("(t1.name LIKE '%$q%' OR t2.name LIKE '%$q%')");
       }
         
