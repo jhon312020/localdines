@@ -2556,9 +2556,13 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
         .on("change", "#delay_reason", function (e) {
           var val = $(this).val();
           var msgArea = $("#message");
-          if (val == 5) {
-            msgArea.val("");
-            msgArea.attr("placeholder","Type the reason...")
+          if (val == '') {
+            $("#d_msg").prop('disabled', true);
+            msgArea.val('');
+          } else if (val == 5) {
+            msgArea.val('');
+            msgArea.attr("placeholder","Type the reason...");
+            $("#d_msg").prop('disabled', false);
           } else {
             $.ajax({
               type: "POST",
@@ -2572,9 +2576,10 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
               success: function (msg) {
                 if (msg.code == 200) {
                   msgArea.val(msg.text);
-                }
-                else {
-                  alert("Something is wrong");
+                  $("#d_msg").prop('disabled', false);
+                } else {
+                  //alert("Something is wrong");
+                  $("#d_msg").prop('disabled', true);
                 }
               },
             });
@@ -3317,8 +3322,8 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
         if (firstCategory.length) {
           load_initial_items(firstCategory.attr("data-id"), firstCategory.attr("data-category"));
           $(".category-container").first().addClass("selected");
-          load_keyboard();
         }
+        load_keyboard();
         clockUpdate();
         setInterval(clockUpdate, 1000); 
       });

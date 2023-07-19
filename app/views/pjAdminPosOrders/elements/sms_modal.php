@@ -21,9 +21,9 @@
             
           </span>
           <div class="form-group" style="margin-top: 20px;">
-            <textarea class="form-control" rows='5' id="message" name="delay_msg"></textarea>
+            <textarea class="form-control jsVK-normal" rows='5' id="message" name="delay_msg"></textarea>
           </div>
-          <button type="button" class="btn btn-primary btn-w-m-75 btn-h-m-40" id="d_msg">Send</button>
+          <button type="button" class="btn btn-primary btn-w-m-75 btn-h-m-40" id="d_msg" disabled>Send</button>
           </form>
       </div>
     </div>
