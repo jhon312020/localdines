@@ -25,7 +25,7 @@
     <div class="form-group">
       <label class="control-label">Amount</label>
       <div class="input-group pjFdProductAmount">
-        <input type="text" id="amount" value="<?php echo array_key_exists('arr', $tpl) && $tpl['arr']['amount'] ? $tpl['arr']['amount'] : '' ?>" name="amount" class="form-control pj-field-amount required number" data-msg-required="This field is required."/>
+        <input type="text" id="amount" value="<?php echo array_key_exists('arr', $tpl) && $tpl['arr']['amount'] ? $tpl['arr']['amount'] : '' ?>" name="amount" class="jsVK-numpad form-control pj-field-amount required number" data-msg-required="This field is required." data-kioskboard-type="numpad" data-kioskboard-placement="bottom" />
         <span class="input-group-addon"><?php echo pjCurrency::getCurrencySign($tpl['option_arr']['o_currency']); ?></span> 
       </div>
     </div><!-- /.form-group -->
@@ -35,7 +35,7 @@
   <div class="col-sm-6">
     <div class="form-group">
       <label class="control-label">Description</label>
-      <textarea class="form-control form-control-lg" name="description"><?php echo array_key_exists('arr', $tpl) && $tpl['arr']['description'] ? $tpl['arr']['description'] : '' ?></textarea>
+      <textarea class="jsVK-normal form-control form-control-lg" name="description"><?php echo array_key_exists('arr', $tpl) && $tpl['arr']['description'] ? $tpl['arr']['description'] : '' ?></textarea>
     </div><!-- /.form-group -->
   </div>
 </div>

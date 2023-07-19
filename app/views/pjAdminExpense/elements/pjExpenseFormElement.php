@@ -36,7 +36,7 @@
     <div class="form-group">
       <label class="control-label">Amount</label>
       <div class="input-group pjFdProductAmount">
-        <input type="text" id="amount" value="<?php echo array_key_exists('arr', $tpl) && $tpl['arr']['amount'] ? $tpl['arr']['amount'] : '' ?>" name="amount" class="form-control pj-field-amount required number" data-msg-required="This field is required."/>
+        <input type="text" id="amount" value="<?php echo array_key_exists('arr', $tpl) && $tpl['arr']['amount'] ? $tpl['arr']['amount'] : '' ?>" name="amount" class="jsVK-numpad form-control pj-field-amount required number" data-msg-required="This field is required." data-kioskboard-type="numpad" data-kioskboard-placement="bottom" />
         <span class="input-group-addon"><?php echo pjCurrency::getCurrencySign($tpl['option_arr']['o_currency']); ?></span> 
       </div>
     </div><!-- /.form-group -->
@@ -47,17 +47,17 @@
 
     <div class="form-group">
       <label class="control-label">Expense Name</label>
-      <input type="text" name="expense_name" id="exp_name" value=" <?php echo array_key_exists('arr', $tpl) && $tpl['arr']['expense_name'] ? $tpl['arr']['expense_name'] : '' ?>" class="form-control " data-msg-required="This field is required." />
+      <input type="text" name="expense_name" id="exp_name" value=" <?php echo array_key_exists('arr', $tpl) && $tpl['arr']['expense_name'] ? $tpl['arr']['expense_name'] : '' ?>" class="jsVK-normal form-control " data-msg-required="This field is required." />
     </div><!-- /.form-group -->
 
     <div class="form-group">
       <label class="control-label">Sub category</label>
-      <input type="text" name="sub_category" id="sub_cat" value=" <?php echo array_key_exists('arr', $tpl) && $tpl['arr']['sub_category'] ? $tpl['arr']['sub_category'] : '' ?>" class="form-control " data-msg-required="This field is required." />
+      <input type="text" name="sub_category" id="sub_cat" value=" <?php echo array_key_exists('arr', $tpl) && $tpl['arr']['sub_category'] ? $tpl['arr']['sub_category'] : '' ?>" class="jsVK-normal form-control " data-msg-required="This field is required." />
     </div><!-- /.form-group -->
 
     <div class="form-group">
       <label class="control-label">Description</label>
-      <textarea class="form-control form-control-lg" name="description"><?php echo array_key_exists('arr', $tpl) && $tpl['arr']['description'] ? $tpl['arr']['description'] : '' ?></textarea>
+      <textarea class="jsVK-normal form-control form-control-lg" name="description"><?php echo array_key_exists('arr', $tpl) && $tpl['arr']['description'] ? $tpl['arr']['description'] : '' ?></textarea>
     </div><!-- /.form-group -->
 
   </div>

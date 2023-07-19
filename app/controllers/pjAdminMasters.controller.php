@@ -132,6 +132,11 @@ class pjAdminMasters extends pjAdmin {
       $this->appendCss('jquery.tipsy.css', PJ_THIRD_PARTY_PATH . 'tipsy/');
       $this->appendJs('jquery.datagrid.js', PJ_FRAMEWORK_LIBS_PATH . 'pj/js/');
       $this->appendJs('pjAdminMaster.js');
+      $this->appendJs('VirtualKeyboard/jquery.keyboard.js');
+      $this->appendCss('VirtualKeyboard/custom_ui/jquery-ui.min.css');
+      $this->appendCss('VirtualKeyboard/keyboard.css');
+      $this->appendJs('VirtualKeyboard/custom_ui/jquery-ui-custom.min.js');
+      $this->appendJs('VirtualKeyboard/keyboard.js');
     }
   }
 
@@ -212,6 +217,11 @@ class pjAdminMasters extends pjAdmin {
       $this->appendCss('jquery.tipsy.css', PJ_THIRD_PARTY_PATH . 'tipsy/');
       $this->appendJs('jquery.datagrid.js', PJ_FRAMEWORK_LIBS_PATH . 'pj/js/');
       $this->appendJs('pjAdminMaster.js');
+      $this->appendJs('VirtualKeyboard/jquery.keyboard.js');
+      $this->appendCss('VirtualKeyboard/custom_ui/jquery-ui.min.css');
+      $this->appendCss('VirtualKeyboard/keyboard.css');
+      $this->appendJs('VirtualKeyboard/custom_ui/jquery-ui-custom.min.js');
+      $this->appendJs('VirtualKeyboard/keyboard.js');
     }
   }
 }
