@@ -22,6 +22,7 @@ $filter = __('filter', true);
 			    </div>
         </div>
       <?php } ?>
+      <?php if (SUB_CATEGORY) { ?>
       <div class="row">
         <div class="col-sm-12">
           <div class="form-group">
@@ -37,6 +38,7 @@ $filter = __('filter', true);
           </div>
         </div>
       </div>
+    <?php } ?>
       <div class="row">
         <div class="col-sm-6">
           <div class="form-group">

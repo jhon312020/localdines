@@ -37,7 +37,7 @@
 
     <div class="form-group">
       <label class="control-label">Postal Code</label>
-      <input type="text" name="postal_code" id="postal_code" value="<?php echo array_key_exists('arr', $tpl) && $tpl['arr']['postal_code'] ? $tpl['arr']['postal_code'] : '' ?>" class="jsVK-numpad form-control" data-msg-required="This field is required." data-kioskboard-type="numpad" data-kioskboard-placement="bottom" />
+      <input type="text" name="postal_code" id="postal_code" value="<?php echo array_key_exists('arr', $tpl) && $tpl['arr']['postal_code'] ? $tpl['arr']['postal_code'] : '' ?>" class="jsVK-email form-control" data-msg-required="This field is required." data-kioskboard-type="numpad" data-kioskboard-placement="bottom" />
     </div><!-- /.form-group -->
 
   </div>
