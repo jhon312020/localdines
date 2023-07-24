@@ -1058,3 +1058,9 @@ td .btn-secondary:hover {
   font-size: 2.5em;
   height: 100%;
 }
+.product_desc, .tdProductName {
+  color: black;
+}
+.pos-list-button {
+  min-width: 100px;
+}

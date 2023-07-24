@@ -3,7 +3,7 @@
   <?php foreach($tpl['category_list'][0] as $key=>$category)  { ?>
     <div class="col-12 jsSubCatContainer" id=<?php echo "category_id_".$key; ?> style="display: none;">
       <div id="slide-up">
-        <?php if (in_array($key, $tpl['category_list'])) { foreach($tpl['category_list'][$key] as $subKey=>$subCategory)  { 
+        <?php if (array_key_exists($key, $tpl['category_list'])) { foreach($tpl['category_list'][$key] as $subKey=>$subCategory)  { 
           $subCategory = strlen($subCategory) > 8 ? substr($subCategory, 0, 7)."..." : $subCategory;
         ?>
           <div class="col-sm-2 col-lg-1 cus-category" data-id="<?php echo $subKey; ?>" data-category="<?php echo $subCategory; ?>">

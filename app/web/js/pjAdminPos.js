@@ -3385,7 +3385,8 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
         // VCMINVLUIP0 - simulates an unsuccessful payment result
         // VCMINVLTIP0 - simulates a "TIMED_OUT" payment result
         let socket = new WebSocket(dojo_host);
-        let terminalID = "VCMINVLSIP0";
+        // let terminalID = "VCMINVLSIS0";
+        let terminalID = "97774431";
         let saleID = 1;
         amt = amt.replace(/\./g, "");
         amt = parseFloat(amt);

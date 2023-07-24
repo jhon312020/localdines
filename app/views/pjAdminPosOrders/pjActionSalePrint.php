@@ -97,11 +97,11 @@
 </div>
 <br/><br/>
 <div class="hidden-print" style="margin: 5px 10px; width: 500px;">
-  <!--<a href="<?php //echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminPosOrders&action=pjActionInitialKPrint&source=index&id=<?php //echo $tpl['arr']['id'] ?>&origin=<?php //echo ucfirst($tpl['arr']['origin']); ?>" class="btn btn-primary nextbutton"><i class="fa fa-plus"></i> <?php //echo "KPrint" ?></a>-->
+  <a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminPosOrders&action=pjActionInitialKPrint&source=index&id=<?php echo $tpl['arr']['id'] ?>&origin=<?php echo ucfirst($tpl['arr']['origin']); ?>" class="btn btn-primary nextbutton"><i class="fa fa-plus"></i> <?php echo "KPrint" ?></a>
   <a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminPosOrders&amp;action=<?php echo $tpl['action']; ?>&amp;origin=<?php echo ucfirst($tpl['arr']['origin']);?>" class="btn btn-primary nextbutton"><i class="fa fa-plus"></i> <?php echo "Close" ?></a>
 </div>
 <script type="text/javascript">
   $(document).ready(function() {
-    printDiv('receiptContainer');
+    //printDiv('receiptContainer');
   });
 </script>

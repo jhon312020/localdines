@@ -504,7 +504,6 @@ class pjAdminPosOrders extends pjAdmin {
           pjUtil::redirect(PJ_INSTALL_URL . "index.php?controller=pjAdminPosOrders&action=pjActionCreate");
         }
       }
-      
     }
     $id = $this->_get->toInt('id');
     $arr = pjOrderModel::factory()->join('pjClient', "t2.id=t1.client_id", 'left outer')
@@ -1701,7 +1700,7 @@ class pjAdminPosOrders extends pjAdmin {
       $this->set('categories', $category_arr);
       $printBrowser = false;
       $printMessage = 'failed';
-      $data = $this->getOrderItems($id, $printBrowser, true);
+      $data = $this->getOrderItems($id, $printBrowser, false);
 
       $client_arr = pjClientModel::factory()->select("t1.*, t2.email as c_email, t2.name as c_name, t2.phone as c_phone")
         ->join("pjAuthUser", "t2.id=t1.foreign_id", 'left outer')
@@ -3093,6 +3092,11 @@ class pjAdminPosOrders extends pjAdmin {
         ->orderBy("name ASC")
         ->findAll()
         ->getData();
+      $special_instructions = pjSpecialInstructionModel::factory()->join('pjMultiLang', "t2.foreign_id = t1.id AND t2.model = 'pjSpecialInstruction' AND t2.locale = '" . $this->getLocaleId() . "' AND t2.field = 'name'", 'left')
+        ->select("t1.*, t2.content AS instruction")
+        ->findAll()
+        ->getData();
+      $this->set('special_instructions', $special_instructions);
       $this->set('location_arr', $location_arr);
       $timezone = $this->option_arr['o_timezone'] ? $this->option_arr['o_timezone'] : ADMIN_TIME_ZONE;
       $this->set('timezone', $timezone);

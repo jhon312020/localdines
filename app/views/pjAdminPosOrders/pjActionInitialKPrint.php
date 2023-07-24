@@ -25,14 +25,14 @@
 			<?php
 			  $i = 0;
 			  //echo '<pre>'; print_r($tpl['product_arr']); echo '</pre>';
-			  //echo '<pre>'; print_r($tpl['oi_arr']); echo '</pre>';
+			  // echo '<pre>'; print_r($tpl['oi_arr']); echo '</pre>';
 			  // echo '<pre>'; print_r($tpl['oi_extras']); echo '</pre>';
 			  // echo "<pre>"; print_r($tpl['special_instructions']); echo "</pre>";
 			  //foreach ($tpl['product_arr'] as $product) {
 			    foreach ($tpl['oi_arr'] as $k => $oi) {
-			    	if (!$oi['is_kitchen']) {
-			    		continue;
-			    	}
+			    	// if (!$oi['is_kitchen']) {
+			    	// 	continue;
+			    	// }
 			    	$strikeThroughStart = '';
 			  		$strikeThroughEnd = '';
 			        $i = $i + 1;
@@ -51,10 +51,10 @@
 				       	<tr>
 				          <td class="kitchen" style="font-size: 18pt;">
 				          	<?php
+				          	// echo '<pre>'; print_r($oi); echo '</pre>';
 				          	echo $strikeThroughStart;
 				          	if ($oi['special_instruction'] || array_key_exists($oi['hash'], $tpl['oi_extras'])) {
-					          	for ($i = 0, $counter = 0; $i < $oi['cnt'] ; $i++, $counter++) {
-
+					          	for ($i = 0, $counter = 0; $i < $oi['cnt'] ; $i++) {
 					          		if ($oi['type'] == 'custom') {
 					          			echo 1 . " x ";
 					          			echo strtoupper($oi['custom_name']);
@@ -63,8 +63,13 @@
 						          		echo strtoupper($oi['product_name'])." ".$oi['size']." ";
 					          		}
 					          		if (array_key_exists($oi['hash'], $tpl['oi_extras']) && isset($tpl['oi_extras'][$oi['hash']][$counter])) { 
-					          			$extra = $tpl['oi_extras'][$oi['hash']][$counter]; //echo 'came here';
-					          			echo '<br/><span style="margin-left: 20px">'.$extra->extra_name ." x ".$extra->extra_count.'</span>';
+					          			$extras_counter = 0;
+					          			$extras_count = count($tpl['oi_extras'][$oi['hash']]);
+									        while($extras_counter < $extras_count) {
+									          $extra = $tpl['oi_extras'][$oi['hash']][$extras_counter]; //echo 'came here';
+									          echo '<br/><span style="margin-left: 20px">'.$extra->extra_name ." x ".$extra->extra_count.'</span>';
+									          $extras_counter++;
+									        }
 					          		}
 					          		if ($oi['special_instruction']) {
 					          			$obj = json_decode($oi['special_instruction'], true);
@@ -93,7 +98,6 @@
 					          		//echo $oi['hash'];
 					          	}
 				          	} else {
-
 				          		if ($oi['type'] == 'custom') {
 				          			echo $oi['cnt'] . " x ";
 				          			echo strtoupper($oi['custom_name']);
