@@ -406,6 +406,9 @@ $messages = json_encode(array('PRESENT_CARD'=>'Present the Card', 'PLEASE_WAIT'=
 
 if (!defined("DOJO_NOTIFICATION_MESSAGES")) define("DOJO_NOTIFICATION_MESSAGES", $messages);
 
+ALTER TABLE `food_delivery_incomes` ADD `income_date` DATE NULL AFTER `amount`;
+ALTER TABLE `food_delivery_expenses` ADD `expense_date` DATE NULL AFTER `amount`;
+
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 

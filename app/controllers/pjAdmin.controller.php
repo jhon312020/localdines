@@ -126,6 +126,9 @@ class pjAdmin extends pjAppController {
 			'pjAdminReports::pjActionPOSXPrint' => 'pjAdminReports::pjActionIndex',	
 			'pjAdminReports::pjActionPOSZPrint' => 'pjAdminReports::pjActionIndex',	
 			'pjAdminReports::pjActionUpdateZViewReport' => 'pjAdminReports::pjActionIndex',
+			'pjAdminReports::pjActionTopProductsReport' => 'pjAdminReports::pjActionIndex',
+			'pjAdminReports::pjActionCheckOrderTime' => 'pjAdminReports::pjActionIndex',
+			'pjAdminReports::pjActionGetTopProductsReport' => 'pjAdminReports::pjActionIndex',
 			//Expense
 			'pjAdminExpense::pjActionIndex' => 'pjAdminPosOrders::pjActionIndex',
 			'pjAdminExpense::pjActionGetExpense' => 'pjAdminPosOrders::pjActionIndex',
