@@ -120,6 +120,7 @@ class pjAdminExpense extends pjAdmin {
                 $data['description'] = $post['description'];
                 $data['amount'] = $post['amount'];
                 $data['created_at'] = date("Y-m-d H:i:s");
+                $data['expense_date'] = date('Y-m-d',strtotime($post['expense_date']));
                 $data['updated_at'] = date("Y-m-d H:i:s");
 
                 $err = 'AP09';
@@ -154,6 +155,8 @@ class pjAdminExpense extends pjAdmin {
             $this->appendJs('jquery.tipsy.js', PJ_THIRD_PARTY_PATH . 'tipsy/');
             $this->appendCss('jquery.tipsy.css', PJ_THIRD_PARTY_PATH . 'tipsy/');
             $this->appendJs('jquery.datagrid.js', PJ_FRAMEWORK_LIBS_PATH . 'pj/js/');
+            $this->appendCss('datepicker3.css', PJ_THIRD_PARTY_PATH . 'bootstrap_datepicker/');
+            $this->appendJs('bootstrap-datepicker.js', PJ_THIRD_PARTY_PATH . 'bootstrap_datepicker/');
             $this->appendJs('pjAdminExpense.js');
             $this->appendJs('VirtualKeyboard/jquery.keyboard.js');
             $this->appendCss('VirtualKeyboard/custom_ui/jquery-ui.min.css');
@@ -261,6 +264,8 @@ class pjAdminExpense extends pjAdmin {
             $this->appendJs('jquery.tipsy.js', PJ_THIRD_PARTY_PATH . 'tipsy/');
             $this->appendCss('jquery.tipsy.css', PJ_THIRD_PARTY_PATH . 'tipsy/');
             $this->appendJs('jquery.datagrid.js', PJ_FRAMEWORK_LIBS_PATH . 'pj/js/');
+            $this->appendCss('datepicker3.css', PJ_THIRD_PARTY_PATH . 'bootstrap_datepicker/');
+            $this->appendJs('bootstrap-datepicker.js', PJ_THIRD_PARTY_PATH . 'bootstrap_datepicker/');
             $this->appendJs('pjAdminExpense.js');
             $this->appendJs('VirtualKeyboard/jquery.keyboard.js');
             $this->appendCss('VirtualKeyboard/custom_ui/jquery-ui.min.css');

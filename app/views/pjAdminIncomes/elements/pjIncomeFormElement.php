@@ -18,7 +18,7 @@
     <div class="form-group">
       <div class="input-group">
         <span class="input-group-addon"><i class="fa fa-calendar"></i></span> 
-        <input type="text" name="date_from" id="date_from" value="<?php echo date("d.m.Y");?>" class="form-control" readonly>
+        <input type="text" name="income_date" id="income_date" value="<?php echo date("m.d.Y");?>" class="form-control">
       </div>
     </div><!-- /.form-group -->
 

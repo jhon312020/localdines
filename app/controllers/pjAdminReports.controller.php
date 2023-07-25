@@ -347,10 +347,10 @@ class pjAdminReports extends pjAdmin {
     $pjOrderModel->where(sprintf("( (DATE(p_dt) BETWEEN '%1\$s' AND '%2\$s') OR (DATE(d_dt) BETWEEN '%1\$s' AND '%2\$s') )", $date_from, $date_to));
     $location_clause = "";
     $pjExpenseModel = pjExpenseModel::factory();
-    $pjExpenseModel->where(sprintf("( (DATE(created_at) BETWEEN '%1\$s' AND '%2\$s') )", $date_from, $date_to));
+    $pjExpenseModel->where(sprintf("( (DATE(expense_date) BETWEEN '%1\$s' AND '%2\$s') )", $date_from, $date_to));
 
     $pjIncomeModel = pjIncomeModel::factory();
-    $pjIncomeModel->where(sprintf("( (DATE(created_at) BETWEEN '%1\$s' AND '%2\$s') )", $date_from, $date_to));
+    $pjIncomeModel->where(sprintf("( (DATE(income_date) BETWEEN '%1\$s' AND '%2\$s') )", $date_from, $date_to));
 
     $pjOrderReturn = pjOrderReturnModel::factory();
     $pjOrderReturn->where(sprintf("( (DATE(created_at) BETWEEN '%1\$s' AND '%2\$s') )", $date_from, $date_to));

@@ -33,6 +33,13 @@
       </select>
     </div><!-- /.form-group -->
 
+     <div class="form-group">
+      <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-calendar"></i></span> 
+        <input type="text" name="expense_date" id="expense_date" value="<?php echo date("m.d.Y");?>" class="form-control">
+      </div>
+    </div><!-- /.form-group -->
+
     <div class="form-group">
       <label class="control-label">Amount</label>
       <div class="input-group pjFdProductAmount">

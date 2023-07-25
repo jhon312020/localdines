@@ -75,7 +75,20 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 	        	generateList.call(null);
 			});
 		}
-		
+		if ( '#income_date' ){
+		// $('#income_date').datepicker({
+			var d = new Date();
+			var currDate = d.getDate();
+           var currMonth = d.getMonth();
+           var currYear = d.getFullYear();
+           var startDate = new Date(currYear, currMonth, currDate);
+
+           $("#income_date").datepicker();
+           $("#income_date").datepicker("setDate", startDate);
+	        	// endDate: $('#date_to').val(),
+	            autoclose: true
+	        // });
+		}
 		if ($frmCreateIncome.length > 0 && validate) {
 			$frmCreateIncome.validate({
 				errorPlacement: function(error, element) {
