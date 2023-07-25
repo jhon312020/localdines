@@ -3365,12 +3365,9 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
         var saleAmount = $('#payment_modal_pay').val();
         $form.find('#customer_paid').val(saleAmount);
         $form.find('#cash_amount').val($('#payment_cash_amount').val());
-        
         var selPayType = $('#payment_method').val();
-
         if ((selPayType == "card" || selPayType == "split") && dojo_payment_active == "1") {
           saleAmount = $('#payment_card_amount').val();
-
           dojoPayment(saleAmount, $form);
         } else {
           $form.submit();
@@ -3384,66 +3381,108 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
         // VCMINVLSIS0 - simulates a signature payment
         // VCMINVLUIP0 - simulates an unsuccessful payment result
         // VCMINVLTIP0 - simulates a "TIMED_OUT" payment result
-        let socket = new WebSocket(dojo_host);
-        // let terminalID = "VCMINVLSIS0";
-        let terminalID = "97774431";
-        let saleID = 1;
-        amt = amt.replace(/\./g, "");
-        amt = parseFloat(amt);
-        socket.onopen = function(e) {
-          var transactionData = { "jsonrpc": "2.0", "method": "sale", "params": { "tid": terminalID, "currency": "GBP", "amount": amt }, "id": saleID };
-          transactionData = JSON.stringify(transactionData);
-          socket.send(transactionData);
-        };
+        // console.log('Messages', dojo_notification_messages.PRESENT_CARD);
+        try {
+          let connectionState = null;
+          let socket = new WebSocket(dojo_host);
+          let terminalID = "VCMINVLSIP0";
+          // let terminalID = "97774431";
+          let saleID = 1;
+          amt = amt.replace(/\./g, "");
+          amt = parseFloat(amt);
+          socket.onopen = function(e) {
+            var transactionData = { "jsonrpc": "2.0", "method": "sale", "params": { "tid": terminalID, "currency": "GBP", "amount": amt }, "id": saleID };
+            transactionData = JSON.stringify(transactionData);
+            connectionState = e.type;
+            socket.send(transactionData);
+          };
 
-        socket.onmessage = function(event) {
-          //alert(`[message] Data received from server: ${event.data}`);
-          console.log(`${event.data}`);
-          var eventMessage = JSON.parse(event.data);
-          if (eventMessage.hasOwnProperty('result')) {
-            var transactionResult = eventMessage.result.transactionResult;
-            if (transactionResult == "SUCCESSFUL") {
-              $("#api_payment_response").val(JSON.stringify(eventMessage));
-              //$('#paymentBtn').trigger('click');
-              sweetSuccessAlert("Transaction Success", transactionResult, formObj);
+          socket.onmessage = function(event) {
+            //alert(`[message] Data received from server: ${event.data}`);
+            // console.log(`${event.data}`);
+            connectionState = event.type;
+            var eventMessage = JSON.parse(event.data);
+            if (eventMessage.hasOwnProperty('result')) {
+              var transactionResult = eventMessage.result.transactionResult;
+              if (transactionResult == "SUCCESSFUL") {
+                $("#api_payment_response").val(JSON.stringify(eventMessage));
+                //$('#paymentBtn').trigger('click');
+                sweetSuccessAlert("Transaction Success", transactionResult, formObj);
+                socket.close();
+              } else {
+                sweetErrorAlert("Transaction Failed", transactionResult);
+                socket.close();
+              }
+              $("#paymentBtn").attr('disabled', false);
+            } else if (eventMessage.hasOwnProperty('error')) {
+              if (dojo_notification_messages.hasOwnProperty(eventMessage.error.message)) {
+                var loader_message = dojo_notification_messages[eventMessage.error.message];
+              } else {
+                var loader_message = eventMessage.error.message;
+              }
+              sweetErrorAlert("Transaction Failed", loader_message);
             } else {
-              sweetErrorAlert("Transaction Failed", transactionResult);
-              socket.close();
+              // console.log('Dojo notificationValue', eventMessage.params.notificationValue);
+              var loader_message = dojo_notification_messages[eventMessage.params.notificationValue];
+              if (loader_message !== undefined) {
+                $('#loader_text').html(loader_message+"...");
+              }
             }
-            $("#paymentBtn").attr('disabled', false);
+          };
+          socket.onclose = function(event) {
+            // console.log('Closed', event.type);
+            // console.log('Connection', connectionState);
+            if (connectionState === null || connectionState === 'open') {
+              // console.log('Connection failed');
+              sweetErrorAlert("Connection Error", "CONNECTION_ERROR");
+            }
+            // sweetErrorAlert("Transaction Failed", "Please contact the payment gateway provider");
+          };
+          socket.onerror = function(error) {
+            console.log('Error', error);
+            // if (connectionState === null) {
+            //   console.log('Connection failed');
+            // }
+            sweetErrorAlert("Transaction Failed", error);
           }
-          else if (eventMessage.hasOwnProperty('error')) {
-            sweetErrorAlert("Transaction Failed", eventMessage.error.message);
-          }
-        };
-        socket.onclose = function(event) {
-         console.log('Closed', event.data);
-        };
-
-        socket.onerror = function(error) {
-          console.log('error',error);
-          sweetErrorAlert("Transaction Failed", error);
+        } catch(e) {
+          console.log('Exception', e);
         }
       }
 
       function sweetSuccessAlert(title, transactionResult, formObj) {
+        var swalMessage = 'Transaction success';
+        if (dojo_notification_messages.hasOwnProperty(transactionResult)) {
+          var swalMessage = dojo_notification_messages[transactionResult];
+        } else {
+          var swalMessage = transactionResult;
+        }
         swal({
           title: title,
-          text: transactionResult,
+          html: true,
+          text: '<strong>'+swalMessage+'</strong>',
           // type: "warning",
           confirmButtonColor: "#337ab7",
-          
           confirmButtonText: "OK",
           closeOnConfirm: false,
         },function () {
           formObj.submit();
           swal.close();
+          $("#paymentBtn").attr("disabled",false);
+          $("#cover-spin").hide();
         });
       }
       function sweetErrorAlert(title, transactionResult) {
+        var swalMessage = 'Please try after sometimes!';
+        if (dojo_notification_messages.hasOwnProperty(transactionResult)) {
+          var swalMessage = dojo_notification_messages[transactionResult];
+        } else {
+          var swalMessage = transactionResult;
+        }
         swal({
           title: title,
-          text: transactionResult,
+          html: true,
+          text: '<strong>'+swalMessage+'</strong>',
           // type: "warning",
           confirmButtonColor: "#DD6B55",
           confirmButtonText: "OK",

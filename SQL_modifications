@@ -397,6 +397,14 @@ if (!defined("SUB_CATEGORY")) define("SUB_CATEGORY", 1);
 
 ALTER TABLE `food_delivery_plugin_base_sms` ADD `api_response` TEXT NULL DEFAULT NULL AFTER `status`;
 
+25-Jul-2023
+
+-----------------------------------------------------------
+
+//Dojo Processing Messages
+$messages = json_encode(array('PRESENT_CARD'=>'Present the Card', 'PLEASE_WAIT'=>'Please Wait', 'SIGNATURE_VERIFICATION_IN_PROGRESS'=>'Signature verification in progress','PIN_ENTRY'=>'Please enter pin', 'REMOVE_CARD'=>'Remove the Card', 'CONNECTING'=>'Connecting the Server', 'APPROVED'=>'Transaction Approved'));
+
+if (!defined("DOJO_NOTIFICATION_MESSAGES")) define("DOJO_NOTIFICATION_MESSAGES", $messages);
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 

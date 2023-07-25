@@ -1030,8 +1030,10 @@ td .btn-secondary:hover {
     content:'';
     display:block;
     position:absolute;
-    left:48%;top:40%;
-    width:40px;height:40px;
+    left:49%;
+    top:40%;
+    width:40px;
+    height:40px;
     border-style:solid;
     border-color:#337ab7;
     border-top-color:transparent;
@@ -1041,17 +1043,19 @@ td .btn-secondary:hover {
     animation: spin .8s linear infinite;
 }
 #loader_text {
-  left:46%;
+/*  left:45%;*/
   top:44%;  
   position:absolute;
   -moz-animation: loading-text-opacity 2s linear 0s infinite normal;
   -o-animation: loading-text-opacity 2s linear 0s infinite normal;
   -webkit-animation: loading-text-opacity 2s linear 0s infinite normal;
   animation: loading-text-opacity 2s linear 0s infinite normal;
-  font-size: 10px;
+  font-size: 16px;
   font-weight: bold;
-  margin-top:20px;
+  margin-top:25px;
   text-align: center;
+  color: black;
+  width: 100%;
 }
 
 .touchBigSelect {
@@ -1060,7 +1064,11 @@ td .btn-secondary:hover {
 }
 .product_desc, .tdProductName {
   color: black;
+  font-weight: bold;
 }
 .pos-list-button {
   min-width: 100px;
+}
+#fdOrderList_1 tbody {
+  color: black;
 }

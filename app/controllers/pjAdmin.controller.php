@@ -410,6 +410,8 @@ class pjAdmin extends pjAppController {
       ->getTable()))->find($productID)->getData();
 	}
 	public function saveOrderItems($post, $order_id, $delivered_return = false) {
+		// $this->pr($post);
+		// exit;
 		if (isset($post['product_id']) && count($post['product_id']) > 0) {
       $pjOrderItemModel = pjOrderItemModel::factory();
       $pjProductPriceModel = pjProductPriceModel::factory();

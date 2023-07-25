@@ -17,6 +17,7 @@
   var ideal_api_key = "<?php echo IDEAL_API_KEY;?>";
   var dojo_payment_active = "<?php echo DOJO_PAYMENT_ACTIVE;?>";
   var dojo_host = "<?php echo DOJO_PAYMENT_URL;?>"+"/"+"<?php echo DOJO_PAY_TYPE_PAC;?>"+"?token="+"<?php echo DOJO_TOKEN; ?>"+"&api-version=v1&software-house-id="+"<?php echo DOJO_SOFTWARE_HOUSE_ID;?>"+"&installer-id="+"<?php echo DOJO_INSTALLER_ID; ?>"+"&final-pos-receipt-request";
+  var dojo_notification_messages = JSON.parse('<?php echo DOJO_NOTIFICATION_MESSAGES; ?>');
   // wss://sd711b330000.test.connect.paymentsense.cloud/PAT?token=0247c27a-3e9d-41a5-bb20-a0c05db55f38&api-version=<connect-version>&software-house-id=SD711B33&installer-id=SD711B33&[final-pos-receipt-request]
 // URL - sd711b330000.test.connect.paymentsense.cloud
 // API key - 0247c27a-3e9d-41a5-bb20-a0c05db55f38
