@@ -4,7 +4,6 @@ if (!defined("ROOT_PATH")) {
 	exit;
 }
 class pjAdminExpense extends pjAdmin {
-
 	public function pjActionIndex() {
     $this->checkLogin();
     if (!pjAuth::factory()->hasAccess()) {
@@ -39,14 +38,16 @@ class pjAdminExpense extends pjAdmin {
       $from = $today . " " . "00:00:00";
       $to = $today . " " . "23:59:59";
       if ($this->_get->toString('date_from') && $this->_get->toString('date_to')) {
-        $date_from = DateTime::createFromFormat('d.m.Y', $this->_get->toString('date_from'));
-        $from = $date_from->format('Y-m-d'). " " . "00:00:00";
-        $date_to = DateTime::createFromFormat('d.m.Y', $this->_get->toString('date_to'));
-        $to = $date_to->format('Y-m-d'). " " . "23:59:59";
+        // $date_from = DateTime::createFromFormat('d.m.Y', $this->_get->toString('date_from'));
+        // $from = $date_from->format('Y-m-d'). " " . "00:00:00";
+        // $date_to = DateTime::createFromFormat('d.m.Y', $this->_get->toString('date_to'));
+        // $to = $date_to->format('Y-m-d'). " " . "23:59:59";
+        $from = date('Y-m-d', strtotime($this->_get->toString('date_from'))). " 00:00:00";
+        $to = date('Y-m-d', strtotime($this->_get->toString('date_to'))). " 23:59:59";
       }
       $pjExpenseModel = $pjExpenseModel
-        ->select("t1.*,date_format(t1.created_at, '%m-%d-%Y') as date,t1.expense_name as product_name, t2.name as c_name")
-        ->where("(t1.created_at >= '$from' AND t1.created_at <= '$to')")
+        ->select("t1.*,date_format(t1.expense_date, '%d-%m-%Y') as date,t1.expense_name as product_name, t2.name as c_name")
+        ->where("(t1.expense_date >= '$from' AND t1.expense_date <= '$to')")
         ->join('pjMaster', 't2.id=t1.master_id', 'left outer');
 
         if ($q = $this->_get->toString('q')) {
@@ -115,18 +116,18 @@ class pjAdminExpense extends pjAdmin {
     if (self::isGet()) {
       $this->setLocalesData();
       $this->set('masters', pjMasterModel::factory()
-          ->select('t1.*')
-          ->where('t1.is_active', '1')
-          ->where('t1.master_type_id', '1')
-          ->orderBy('`name` ASC')
-          ->findAll()
-          ->getData());
+        ->select('t1.*')
+        ->where('t1.is_active', '1')
+        ->where('t1.master_type_id', '1')
+        ->orderBy('`name` ASC')
+        ->findAll()
+        ->getData());
       $this->set('category_arr', pjExpenseCategoryModel::factory()
-          ->select('t1.*')
-          ->where('t1.is_active', '1')
-          ->orderBy('name ASC')
-          ->findAll()
-          ->getData());
+        ->select('t1.*')
+        ->where('t1.is_active', '1')
+        ->orderBy('name ASC')
+        ->findAll()
+        ->getData());
       $this->appendCss('bootstrap-chosen.css', PJ_THIRD_PARTY_PATH . 'chosen/');
       $this->appendJs('chosen.jquery.js', PJ_THIRD_PARTY_PATH . 'chosen/');
       $this->appendJs('jquery.validate.min.js', PJ_THIRD_PARTY_PATH . 'validate/');
@@ -186,19 +187,18 @@ class pjAdminExpense extends pjAdmin {
       $id = $this->_post->toInt('Expense_id');
 
       if ($post['master'] && $post['category'] && $post['amount']) {
-          $data['master_id'] = $post['master'];
-          $data['category_id'] = $post['category'];
-          $data['sub_category'] = $post['sub_category'];
-          $data['expense_name'] = $post['expense_name'];
-          $data['description'] = $post['description'];
-          $data['amount'] = $post['amount'];
-          $data['expense_date'] = date('Y-m-d',strtotime($post['expense_date']));
-          $data['updated_at'] = date("Y-m-d H:i:s");
-          $err = 'AP09';
-          $pjExpenseModel->reset()->where('id', $id)->limit(1)->modifyAll($data);
-
+        $data['master_id'] = $post['master'];
+        $data['category_id'] = $post['category'];
+        $data['sub_category'] = $post['sub_category'];
+        $data['expense_name'] = $post['expense_name'];
+        $data['description'] = $post['description'];
+        $data['amount'] = $post['amount'];
+        $data['expense_date'] = date('Y-m-d',strtotime($post['expense_date']));
+        $data['updated_at'] = date("Y-m-d H:i:s");
+        $err = 'AP09';
+        $pjExpenseModel->reset()->where('id', $id)->limit(1)->modifyAll($data);
       } else {
-          $err = 'AP01';
+        $err = 'AP01';
       }
       pjUtil::redirect($_SERVER['PHP_SELF'] . "?controller=pjAdminExpense&action=pjActionIndex&err=$err");
     }
@@ -211,18 +211,18 @@ class pjAdminExpense extends pjAdmin {
       $this->set('arr', $arr);
       $this->setLocalesData();
       $this->set('masters', pjMasterModel::factory()
-          ->select('t1.*')
-          ->where('t1.is_active', '1')
-          ->where('t1.master_type_id', '1')
-          ->orderBy('`name` ASC')
-          ->findAll()
-          ->getData());
+        ->select('t1.*')
+        ->where('t1.is_active', '1')
+        ->where('t1.master_type_id', '1')
+        ->orderBy('`name` ASC')
+        ->findAll()
+        ->getData());
       $this->set('category_arr', pjExpenseCategoryModel::factory()
-          ->select('t1.*')
-          ->where('t1.is_active', '1')
-          ->orderBy('name ASC')
-          ->findAll()
-          ->getData());
+        ->select('t1.*')
+        ->where('t1.is_active', '1')
+        ->orderBy('name ASC')
+        ->findAll()
+        ->getData());
       $this->appendCss('bootstrap-chosen.css', PJ_THIRD_PARTY_PATH . 'chosen/');
       $this->appendJs('chosen.jquery.js', PJ_THIRD_PARTY_PATH . 'chosen/');
       $this->appendJs('jquery.validate.min.js', PJ_THIRD_PARTY_PATH . 'validate/');

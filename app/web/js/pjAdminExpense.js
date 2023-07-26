@@ -12,8 +12,6 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 			validate = ($.fn.validate !== undefined),
 			datagrid = ($.fn.datagrid !== undefined),
 			remove_arr = new Array();
-		
-
 		var urlParams = new URLSearchParams(window.location.search);
 		var updated_category = urlParams.get('category'); 
 		var err_code = urlParams.get('err');
@@ -45,34 +43,33 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 			$grid.datagrid("load", "index.php?controller=pjAdminExpense&action=pjActionGetExpense", "c_name", "ASC", content.page, content.rowCount);
 			return false;
 			$('.ibox-content').removeClass('sk-loading');
-
 		}
 
 		if ($frmFindDate.length > 0) {
-			
 			if ($('#datePickerOptions').length) {
-	        	$.fn.datepicker.dates['en'] = {
-	        		days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-	    		    daysMin: $('#datePickerOptions').data('days').split("_"),
-	    		    daysShort: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-	    		    months: $('#datePickerOptions').data('months').split("_"),
-	    		    monthsShort: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-	    		    format: $('#datePickerOptions').data('format'),
-	            	weekStart: parseInt($('#datePickerOptions').data('wstart'), 10),
-	    		};
-	        };
-	        $('#date_from').datepicker({
-	        	// endDate: $('#date_to').val(),
-	            autoclose: true
-	        }).on('changeDate', function (e) {
-	        	generateList.call(null);
+      	$.fn.datepicker.dates['en'] = {
+      		days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+  		    daysMin: $('#datePickerOptions').data('days').split("_"),
+  		    daysShort: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+  		    months: $('#datePickerOptions').data('months').split("_"),
+  		    monthsShort: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+  		    format: $('#datePickerOptions').data('format'),
+        	weekStart: parseInt($('#datePickerOptions').data('wstart'), 10),
+  			};
+      };
+      $('#date_from').datepicker({
+      	// endDate: $('#date_to').val(),
+      	format: 'dd-mm-yyyy',
+        autoclose: true
+      }).on('changeDate', function (e) {
+      	generateList.call(null);
 			});
-	        $('#date_to').datepicker({
-	        	// startDate: $('#date_from').val(),
-	            autoclose: true
-	        }).on('changeDate', function (e) {
-
-	        	generateList.call(null);
+      $('#date_to').datepicker({
+      	// startDate: $('#date_from').val(),
+      	format: 'dd-mm-yyyy',
+        autoclose: true
+      }).on('changeDate', function (e) {
+      	generateList.call(null);
 			});
 		}
 		
@@ -80,121 +77,99 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 			$frmCreateExpense.validate({
 				errorPlacement: function(error, element) {
 					if (element.hasClass('select2-hidden-accessible')) {
-                        error.insertAfter(element.next('.chosen-container'));
-                    } else if (element.parent('.input-group').length) {
+            error.insertAfter(element.next('.chosen-container'));
+          } else if (element.parent('.input-group').length) {
 						error.insertAfter(element.parent());
 					} else if (element.parent().parent('.btn-group').length) {
-                        error.insertAfter(element.parent().parent());
-                    } else {
+          	error.insertAfter(element.parent().parent());
+          } else {
 						error.insertAfter(element);
 					}
-			    },
+		    },
 				ignore: "",
 				invalidHandler: function (event, validator) {
-				    $(".pj-multilang-wrap").each(function( index ) {
-						if($(this).attr('data-index') == myLabel.localeId)
-						{
+		    	$(".pj-multilang-wrap").each(function( index ) {
+						if ($(this).attr('data-index') == myLabel.localeId) {
 							$(this).css('display','block');
-						}else{
+						} else {
 							$(this).css('display','none');
 						}
 					});
 					$(".pj-form-langbar-item").each(function( index ) {
-						if($(this).attr('data-index') == myLabel.localeId)
-						{
+						if($(this).attr('data-index') == myLabel.localeId) {
 							$(this).addClass('btn-primary');
-						}else{
+						} else {
 							$(this).removeClass('btn-primary');
 						}
 					});
 				},
-				submitHandler: function(form){
+				submitHandler: function(form) {
 					var ladda_buttons = $(form).find('.ladda-button');
-				    if(ladda_buttons.length > 0)
-                    {
-                        var l = ladda_buttons.ladda();
-                        l.ladda('start');
-                    }
-                    form.submit();
+			    if (ladda_buttons.length > 0) {
+            var l = ladda_buttons.ladda();
+            l.ladda('start');
+          }
+          form.submit();
 					return false;
 				}
 			});
-
 			if ($('#expense_date').length) {
-			    var d = new Date();
-			    var currDate = d.getDate();
-			    var currMonth = d.getMonth();
-			    var currYear = d.getFullYear();
-			    var startDate = new Date(currYear, currMonth, currDate);
-
-			    $("#expense_date").datepicker({
-			        dateFormat: 'dd/mm/yyyy',
-			        autoclose: true
-			    });
-
-			    $("#expense_date").datepicker("setDate", startDate);
+			  intializeDatePicker("#expense_date");
 			}
 		}
 		if ($frmUpdateExpense.length > 0 && validate) {
 			$frmUpdateExpense.validate({
 				errorPlacement: function(error, element) {
 					if (element.hasClass('select2-hidden-accessible')) {
-                        error.insertAfter(element.next('.chosen-container'));
-                    } else if (element.parent('.input-group').length) {
+            error.insertAfter(element.next('.chosen-container'));
+          } else if (element.parent('.input-group').length) {
 						error.insertAfter(element.parent());
 					} else if (element.parent().parent('.btn-group').length) {
-                        error.insertAfter(element.parent().parent());
-                    } else {
+            error.insertAfter(element.parent().parent());
+          } else {
 						error.insertAfter(element);
 					}
-			    },
+		    },
 				ignore: "",
 				invalidHandler: function (event, validator) {
-				    $(".pj-multilang-wrap").each(function( index ) {
-						if($(this).attr('data-index') == myLabel.localeId)
-						{
+			    $(".pj-multilang-wrap").each(function( index ) {
+						if ($(this).attr('data-index') == myLabel.localeId) {
 							$(this).css('display','block');
-						}else{
+						} else {
 							$(this).css('display','none');
 						}
 					});
 					$(".pj-form-langbar-item").each(function( index ) {
-						if($(this).attr('data-index') == myLabel.localeId)
-						{
+						if($(this).attr('data-index') == myLabel.localeId) {
 							$(this).addClass('btn-primary');
-						}else{
+						} else {
 							$(this).removeClass('btn-primary');
 						}
 					});
 				},
-				submitHandler: function(form){
+				submitHandler: function(form) {
 					var ladda_buttons = $(form).find('.ladda-button');
-				    if(ladda_buttons.length > 0)
-                    {
-                        var l = ladda_buttons.ladda();
-                        l.ladda('start');
-                    }
+			    if (ladda_buttons.length > 0) {
+            var l = ladda_buttons.ladda();
+            l.ladda('start');
+          }
 					form.submit();
 					return false;
 				}
 			});
 
 			if ($('#expense_date').length) {
-			    $("#expense_date").datepicker({
-			        dateFormat: 'dd/mm/yyyy',
-			        autoclose: true
-			    });
+	    	intializeDatePicker("#expense_date");
 			}
 		}
 
 		if ($("#grid").length > 0 && datagrid) {
 			var $grid = $("#grid").datagrid({
 				buttons: [{type: "edit", url: "index.php?controller=pjAdminExpense&action=pjActionUpdate&id={:id}"},
-				          {type: "delete", url: "index.php?controller=pjAdminExpense&action=pjActionDeleteExpense&id={:id}"}
-				          ],
+				          {type: "delete", url: "index.php?controller=pjAdminExpense&action=pjActionDeleteExpense&id={:id}"}],
 				columns: [{text: myLabel.date, type: "text", sortable: false, editable: false},
-						  {text: myLabel.company, type: "text", sortable: false, editable: false},
-				          {text: myLabel.product_name, type: "text", sortable: true, editable: true},
+						  		{text: myLabel.supplier_name, type: "text", sortable: false, editable: false},
+				          {text: myLabel.expense_name, type: "text", sortable: true, editable: true},
 				          {text: myLabel.amount, type: "text", sortable: false, editable: false}],
 				dataUrl: "index.php?controller=pjAdminExpense&action=pjActionGetExpense" + pjGrid.queryString,
 				dataType: "json",
@@ -246,5 +221,11 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 				return false;
 			}
 		})
+		function intializeDatePicker($fieldName) {
+			$($fieldName).datepicker({
+        format: 'dd-mm-yyyy',
+        autoclose: true
+	    });
+		}
 	});
 })(jQuery_1_8_2);

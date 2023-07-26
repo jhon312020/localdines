@@ -1765,7 +1765,6 @@ class pjAdminPosOrders extends pjAdmin {
         $ed_dt = explode(" ", $ed);
         $ed_dt_items = explode('-', $ed_dt[0]);
         $ed_dt[0] = $ed_dt_items[2] . '-' . $ed_dt_items[1] . '-' . $ed_dt_items[0];
-
         $printer = new SunmiCloudPrinter(384);
         $printer->selectAsciiCharFont(0x80);
         $printer->setLineSpacing(80);

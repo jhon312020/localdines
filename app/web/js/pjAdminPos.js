@@ -3385,7 +3385,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
         try {
           let connectionState = null;
           let socket = new WebSocket(dojo_host);
-          let terminalID = "VCMINVLSIP0";
+          let terminalID = "VCMINVLDIP0";
           // let terminalID = "97774431";
           let saleID = 1;
           amt = amt.replace(/\./g, "");

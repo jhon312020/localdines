@@ -14,14 +14,19 @@
         ?>                                
       </select>
     </div><!-- /.form-group -->
-
-    <?php $income_date = array_key_exists('arr', $tpl) && $tpl['arr']['income_date'] ? $tpl['arr']['income_date'] : '' ?>
-
+    <?php 
+      $income_date = array_key_exists('arr', $tpl) && $tpl['arr']['income_date'] ? $tpl['arr']['income_date'] : '';
+      if ($income_date) {
+        $income_date = date('d-m-Y',strtotime($income_date));
+      } else {
+        $income_date = date('d-m-Y',strtotime('today'));
+      }
+    ?>
     <div class="form-group" id="dateField">
-        <div class="input-group">
-            <span class="input-group-addon"><i class="fa fa-calendar"></i></span> 
-            <input type="text" name="income_date" data-date-format="dd/mm/yyyy" id="income_date" value="<?php echo date('d/m/Y',strtotime($income_date)); ?>" class="form-control">
-        </div>
+      <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-calendar"></i></span> 
+        <input type="text" name="income_date" data-date-format="dd-mm-yyyy" id="income_date" value="<?php echo $income_date; ?>" class="form-control">
+      </div>
     </div><!-- /.form-group --> 
 
     <div class="form-group">
@@ -45,16 +50,13 @@
 <div class="hr-line-dashed"></div>
 <div class="row">
   <div class="col-sm-12">
-
     <div class="clearfix">
       <button type="submit" class="ladda-button btn btn-primary btn-lg btn-phpjabbers-loader pull-left" data-style="zoom-in" style="margin-right: 15px;">
         <span class="ladda-label"><?php __('btnSave'); ?></span>
           <?php include $controller->getConstant('pjBase', 'PLUGIN_VIEWS_PATH') . 'pjLayouts/elements/button-animation.php'; ?>
       </button>
-
       <a class="btn btn-white btn-lg pull-right" href="<?php echo PJ_INSTALL_URL; ?>index.php?controller=pjAdminIncome&action=pjActionIndex"><?php __('btnCancel'); ?></a>
     </div><!-- /.clearfix -->
-
   </div>
 </div>
 <div class="hr-line-dashed"></div>

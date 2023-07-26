@@ -39,15 +39,17 @@ class pjAdminIncomes extends pjAdmin {
       $from = $today . " " . "00:00:00";
       $to = $today . " " . "23:59:59";
       if ($this->_get->toString('date_from') && $this->_get->toString('date_to')) {
-        $date_from = DateTime::createFromFormat('d.m.Y', $this->_get->toString('date_from'));
-        $from = $date_from->format('Y-m-d'). " " . "00:00:00";
-        $date_to = DateTime::createFromFormat('d.m.Y', $this->_get->toString('date_to'));
-        $to = $date_to->format('Y-m-d'). " " . "23:59:59";
+        // $date_from = DateTime::createFromFormat('d.m.Y', $this->_get->toString('date_from'));
+        // $from = $date_from->format('Y-m-d'). " " . " 00:00:00";
+        // $date_to = DateTime::createFromFormat('d.m.Y', $this->_get->toString('date_to'));
+        // $to = $date_to->format('Y-m-d'). " " . "23:59:59";
+        $from = date('Y-m-d', strtotime($this->_get->toString('date_from'))). " 00:00:00";
+        $to = date('Y-m-d', strtotime($this->_get->toString('date_to'))). " 23:59:59";
       }
 
       $pjIncomeModel = $pjIncomeModel
-      ->select("t1.*,date_format(t1.created_at, '%m-%d-%Y') as date, t2.name as c_name")
-      ->where("(t1.created_at >= '$from' AND t1.created_at <= '$to')")
+      ->select("t1.*,date_format(t1.income_date, '%d-%m-%Y') as date, t2.name as c_name")
+      ->where("(t1.income_date >= '$from' AND t1.income_date <= '$to')")
       ->join('pjMaster', 't2.id=t1.master_id', 'left outer');
 
       if ($q = $this->_get->toString('q')) {
@@ -101,11 +103,13 @@ class pjAdminIncomes extends pjAdmin {
       $data = array();
       $post = $this->_post->raw();
       if ($post['master']  && $post['amount']) {
+        $incomeDate = $post['income_date'];
+        // $incomeDate = str_replace('/','-', $incomeDate);
         $data['master_id'] = $post['master'];
         $data['description'] = $post['description'];
         $data['amount'] = $post['amount'];
         $data['created_at'] = date("Y-m-d H:i:s");
-        $data['income_date'] = date('Y-m-d',strtotime($post['income_date']));
+        $data['income_date'] = date('Y-m-d', strtotime($post['income_date']));
         $data['updated_at'] = date("Y-m-d H:i:s");
         $err = 'AP09';
         $pjIncomeModel->setAttributes($data)->insert()->getInsertId();

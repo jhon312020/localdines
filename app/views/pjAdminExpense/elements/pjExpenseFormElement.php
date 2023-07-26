@@ -3,7 +3,7 @@
     
     <div class="form-group">
       <label class="control-label">Supplier</label>
-      <select name="master" id="master" class="form-control select-voucher required" data-msg-required="This field is required.">
+      <select name="master" id="master" class="form-control select-voucher required touchBigSelect" data-msg-required="This field is required.">
         <option value="">-- Choose --</option>
         <?php
           if(!empty($tpl['masters'])) {
@@ -12,14 +12,13 @@
                <?php echo array_key_exists('arr', $tpl) && $tpl['arr']['master_id']== $master['id'] ? "selected" : '' ?>><?php echo $master['name'] ?></option><?php 
             }
           }
-          
         ?>                                
       </select>
     </div><!-- /.form-group -->
 
     <div class="form-group">
       <label class="control-label">Category</label>
-      <select name="category" id="category" class="form-control select-voucher required" data-msg-required="This field is required.">
+      <select name="category" id="category" class="form-control select-voucher required touchBigSelect" data-msg-required="This field is required.">
         <option value="">-- Choose --</option>
         <?php
           if(!empty($tpl['category_arr'])) {
@@ -34,12 +33,18 @@
     </div><!-- /.form-group -->
 
     <?php $expense_date =  array_key_exists('arr',  $tpl) &&  $tpl['arr']['expense_date'] ? $tpl['arr']['expense_date'] : '' ?>
-
-
+     <?php 
+      $expense_date = array_key_exists('arr', $tpl) && $tpl['arr']['expense_date'] ? $tpl['arr']['expense_date'] : '';
+      if ($expense_date) {
+        $expense_date = date('d-m-Y',strtotime($expense_date));
+      } else {
+        $expense_date = date('d-m-Y',strtotime('today'));
+      }
+    ?>
     <div class="form-group">
       <div class="input-group">
         <span class="input-group-addon"><i class="fa fa-calendar"></i></span> 
-        <input type="text" name="expense_date" id="expense_date" data-date-format="dd/mm/yyyy" value="<?php echo date('d/m/Y',strtotime($expense_date)); ?>" class="form-control">
+        <input type="text" name="expense_date" id="expense_date" data-date-format="dd-mm-yyyy" value="<?php echo $expense_date; ?>" class="form-control">
       </div>
     </div><!-- /.form-group -->
 
@@ -50,19 +55,17 @@
         <span class="input-group-addon"><?php echo pjCurrency::getCurrencySign($tpl['option_arr']['o_currency']); ?></span> 
       </div>
     </div><!-- /.form-group -->
-
   </div>
 
   <div class="col-sm-6">
-
     <div class="form-group">
       <label class="control-label">Expense Name</label>
-      <input type="text" name="expense_name" id="exp_name" value=" <?php echo array_key_exists('arr', $tpl) && $tpl['arr']['expense_name'] ? $tpl['arr']['expense_name'] : '' ?>" class="jsVK-normal form-control " data-msg-required="This field is required." />
+      <input type="text" name="expense_name" id="exp_name" value="<?php echo array_key_exists('arr', $tpl) && $tpl['arr']['expense_name'] ? $tpl['arr']['expense_name'] : '' ?>" class="jsVK-normal form-control " data-msg-required="This field is required." />
     </div><!-- /.form-group -->
 
     <div class="form-group">
       <label class="control-label">Sub category</label>
-      <input type="text" name="sub_category" id="sub_cat" value=" <?php echo array_key_exists('arr', $tpl) && $tpl['arr']['sub_category'] ? $tpl['arr']['sub_category'] : '' ?>" class="jsVK-normal form-control " data-msg-required="This field is required." />
+      <input type="text" name="sub_category" id="sub_cat" value="<?php echo array_key_exists('arr', $tpl) && $tpl['arr']['sub_category'] ? $tpl['arr']['sub_category'] : '' ?>" class="jsVK-normal form-control " data-msg-required="This field is required." />
     </div><!-- /.form-group -->
 
     <div class="form-group">
