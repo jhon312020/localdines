@@ -75,21 +75,6 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 	        	generateList.call(null);
 			});
 		}
-
-		if ( '#expense_date' ){
-		// $('#expense_date').datepicker({
-			var d = new Date();
-			var currDate = d.getDate();
-           var currMonth = d.getMonth();
-           var currYear = d.getFullYear();
-           var startDate = new Date(currYear, currMonth, currDate);
-
-           $("#expense_date").datepicker();
-           $("#expense_date").datepicker("setDate", startDate);
-	        	// endDate: $('#date_to').val(),
-	            autoclose: true
-	        // });
-		}
 		
 		if ($frmCreateExpense.length > 0 && validate) {
 			$frmCreateExpense.validate({
@@ -134,6 +119,21 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 					return false;
 				}
 			});
+
+			if ($('#expense_date').length) {
+			    var d = new Date();
+			    var currDate = d.getDate();
+			    var currMonth = d.getMonth();
+			    var currYear = d.getFullYear();
+			    var startDate = new Date(currYear, currMonth, currDate);
+
+			    $("#expense_date").datepicker({
+			        dateFormat: 'dd/mm/yyyy',
+			        autoclose: true
+			    });
+
+			    $("#expense_date").datepicker("setDate", startDate);
+			}
 		}
 		if ($frmUpdateExpense.length > 0 && validate) {
 			$frmUpdateExpense.validate({
@@ -178,6 +178,13 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 					return false;
 				}
 			});
+
+			if ($('#expense_date').length) {
+			    $("#expense_date").datepicker({
+			        dateFormat: 'dd/mm/yyyy',
+			        autoclose: true
+			    });
+			}
 		}
 
 		if ($("#grid").length > 0 && datagrid) {

@@ -33,10 +33,13 @@
       </select>
     </div><!-- /.form-group -->
 
-     <div class="form-group">
+    <?php $expense_date =  array_key_exists('arr',  $tpl) &&  $tpl['arr']['expense_date'] ? $tpl['arr']['expense_date'] : '' ?>
+
+
+    <div class="form-group">
       <div class="input-group">
         <span class="input-group-addon"><i class="fa fa-calendar"></i></span> 
-        <input type="text" name="expense_date" id="expense_date" value="<?php echo date("m.d.Y");?>" class="form-control">
+        <input type="text" name="expense_date" id="expense_date" data-date-format="dd/mm/yyyy" value="<?php echo date('d/m/Y',strtotime($expense_date)); ?>" class="form-control">
       </div>
     </div><!-- /.form-group -->
 

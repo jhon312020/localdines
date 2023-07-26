@@ -75,20 +75,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 	        	generateList.call(null);
 			});
 		}
-		if ( '#income_date' ){
-		// $('#income_date').datepicker({
-			var d = new Date();
-			var currDate = d.getDate();
-           var currMonth = d.getMonth();
-           var currYear = d.getFullYear();
-           var startDate = new Date(currYear, currMonth, currDate);
 
-           $("#income_date").datepicker();
-           $("#income_date").datepicker("setDate", startDate);
-	        	// endDate: $('#date_to').val(),
-	            autoclose: true
-	        // });
-		}
 		if ($frmCreateIncome.length > 0 && validate) {
 			$frmCreateIncome.validate({
 				errorPlacement: function(error, element) {
@@ -132,6 +119,21 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 					return false;
 				}
 			});
+
+			if ($('#income_date').length) {
+			    var d = new Date();
+			    var currDate = d.getDate();
+			    var currMonth = d.getMonth();
+			    var currYear = d.getFullYear();
+			    var startDate = new Date(currYear, currMonth, currDate);
+
+			    $("#income_date").datepicker({
+			        dateFormat: 'dd/mm/yyyy',
+			        autoclose: true
+			    });
+
+			    $("#income_date").datepicker("setDate", startDate);
+			}
 		}
 		if ($frmUpdateIncome.length > 0 && validate) {
 			$frmUpdateIncome.validate({
@@ -176,6 +178,13 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 					return false;
 				}
 			});
+
+			if ($('#income_date').length) {
+			    $("#income_date").datepicker({
+			        dateFormat: 'dd/mm/yyyy',
+			        autoclose: true
+			    });
+			}
 		}
 
 		if ($("#grid").length > 0 && datagrid) {
@@ -183,13 +192,13 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 				buttons: [{type: "edit", url: "index.php?controller=pjAdminIncomes&action=pjActionUpdate&id={:id}"},
 				          {type: "delete", url: "index.php?controller=pjAdminIncomes&action=pjActionDeleteIncome&id={:id}"}
 				          ],
-				columns: [{text: myLabel.date, type: "text", sortable: false, editable: false},
+				columns: [{text: myLabel.income_date, type: "text", sortable: false, editable: false},
 						  {text: myLabel.company, type: "text", sortable: false, editable: false},
 				          {text: myLabel.amount, type: "text", sortable: false, editable: false},
 						{text: myLabel.address, type: "text", sortable: true, editable: true}],
 				dataUrl: "index.php?controller=pjAdminIncomes&action=pjActionGetIncome" + pjGrid.queryString,
 				dataType: "json",
-				fields: ['date','c_name', 'amount','address'],
+				fields: ['income_date','c_name', 'amount','address'],
 				paginator: {
 					actions: [
 					   {text: myLabel.delete_selected, url: "index.php?controller=pjAdminIncomes&action=pjActionDeleteIncomeBulk", render: true, confirmation: myLabel.delete_confirmation}

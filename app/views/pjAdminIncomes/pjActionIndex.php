@@ -69,7 +69,7 @@
     var pjGrid = pjGrid || {};
     pjGrid.queryString = "";
 var myLabel = myLabel || {};
-myLabel.date = "Date";
+myLabel.income_date = "Date";
 myLabel.company = "Partner";
 myLabel.amount = "Amount";
 myLabel.address = "Description";

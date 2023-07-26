@@ -192,6 +192,7 @@ class pjAdminExpense extends pjAdmin {
           $data['expense_name'] = $post['expense_name'];
           $data['description'] = $post['description'];
           $data['amount'] = $post['amount'];
+          $data['expense_date'] = date('Y-m-d',strtotime($post['expense_date']));
           $data['updated_at'] = date("Y-m-d H:i:s");
           $err = 'AP09';
           $pjExpenseModel->reset()->where('id', $id)->limit(1)->modifyAll($data);

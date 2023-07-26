@@ -15,12 +15,14 @@
       </select>
     </div><!-- /.form-group -->
 
-    <div class="form-group">
-      <div class="input-group">
-        <span class="input-group-addon"><i class="fa fa-calendar"></i></span> 
-        <input type="text" name="income_date" id="income_date" value="<?php echo date("m.d.Y");?>" class="form-control">
-      </div>
-    </div><!-- /.form-group -->
+    <?php $income_date = array_key_exists('arr', $tpl) && $tpl['arr']['income_date'] ? $tpl['arr']['income_date'] : '' ?>
+
+    <div class="form-group" id="dateField">
+        <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-calendar"></i></span> 
+            <input type="text" name="income_date" data-date-format="dd/mm/yyyy" id="income_date" value="<?php echo date('d/m/Y',strtotime($income_date)); ?>" class="form-control">
+        </div>
+    </div><!-- /.form-group --> 
 
     <div class="form-group">
       <label class="control-label">Amount</label>

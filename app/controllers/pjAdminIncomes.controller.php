@@ -185,6 +185,7 @@ class pjAdminIncomes extends pjAdmin {
         $data['master_id'] = $post['master'];
         $data['description'] = $post['description'];
         $data['amount'] = $post['amount'];
+        $data['income_date'] = date('Y-m-d',strtotime($post['income_date']));
         $data['updated_at'] = date("Y-m-d H:i:s");
         $err = 'AP09';
         $pjIncomeModel->reset()->where('id', $id)->limit(1)->modifyAll($data);
