@@ -99,6 +99,7 @@
   <a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminPosOrders&amp;action=<?php echo $tpl['action']; ?>" class="btn btn-primary nextbutton"><i class="fa fa-plus"></i> <?php echo "Close" ?></a>
 </div>
 <script type="text/javascript">
+  var autoRPrint = '<?php echo AUTO_RECEIPT_PRINT; ?>';
   function printDivLocal(divName) {
     $("#btn-openDrawer").trigger("click");
     //  var printContents = document.getElementById(divName).innerHTML;
@@ -120,6 +121,9 @@
         },
       });
     });
+    if (autoRPrint == 1) {
+      printDivLocal();
+    }
   });
  
 </script>

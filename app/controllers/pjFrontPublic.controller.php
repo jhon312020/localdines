@@ -1045,7 +1045,6 @@ class pjFrontPublic extends pjFront {
 			if ($response === false) {
 				self::jsonResponse(array('status' => 'Error', 'text' => array("sms"=>"0", "mms"=>"0")));
 			} else {
-				echo "came here";
 				$balance = json_decode($response);
 				self::jsonResponse(array('status' => 'OK', 'text' => $balance->balance));
 			}

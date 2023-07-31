@@ -55,7 +55,7 @@
         <span class="ladda-label"><?php __('btnSave'); ?></span>
           <?php include $controller->getConstant('pjBase', 'PLUGIN_VIEWS_PATH') . 'pjLayouts/elements/button-animation.php'; ?>
       </button>
-      <a class="btn btn-white btn-lg pull-right" href="<?php echo PJ_INSTALL_URL; ?>index.php?controller=pjAdminIncome&action=pjActionIndex"><?php __('btnCancel'); ?></a>
+      <a class="btn btn-white btn-lg pull-right" href="<?php echo PJ_INSTALL_URL; ?>index.php?controller=pjAdminIncomes&action=pjActionIndex"><?php __('btnCancel'); ?></a>
     </div><!-- /.clearfix -->
   </div>
 </div>
