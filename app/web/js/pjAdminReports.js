@@ -174,6 +174,106 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 			});
 		}
 
+    if ($("#gridIncome").length > 0 && datagrid) {
+      var $gridIncome = $("#gridIncome").datagrid({
+          columns: [
+            { text: myLabel.id, type: "text", sortable: false ,editable: false},
+            {
+              text: myLabel.master_name,
+              type: "text",
+              sortable: false,
+              editable: false,
+            },
+            {
+              text: myLabel.amount,
+              type: "text",
+              sortable: false,
+              editable: false,
+            },
+            {
+              text: myLabel.description,
+              type: "text",
+              sortable: false,
+              editable: false,
+            },
+            {
+              text: myLabel.income_date,
+              type: "text",
+              sortable: false,
+              editable: false,
+            },
+          ],
+        dataUrl: "index.php?controller=pjAdminReports&action=pjActionGetIncomeReport" + pjGrid.queryString,
+        dataType: "json",
+        fields: ["id", "master_name", "amount", "description", "income_date"],
+        paginator: {
+          actions: [
+             {text: myLabel.delete_selected, url: "index.php?controller=pjAdminReports&action=pjActionDeleteExpenseBulk", render: true, confirmation: myLabel.delete_confirmation}
+          ],
+          gotoPage: true,
+          paginate: true,
+          total: true,
+          rowCount: true
+        },
+        saveUrl: "index.php?controller=pjAdminReports&action=pjActionSaveProduct&id={:id}",
+        select: {
+          field: "id",
+          name: "record[]",
+          cellClass: 'cell-width-2'
+        }
+      });
+    }
+
+    if ($("#gridExpense").length > 0 && datagrid) {
+      var $gridExpense = $("#gridExpense").datagrid({
+          columns: [
+            { text: myLabel.id, type: "text", sortable: false, editable: false},
+            {
+              text: myLabel.master_name,
+              type: "text",
+              sortable: false,
+              editable: false,
+            },
+            {
+              text: myLabel.amount,
+              type: "text",
+              sortable: false,
+              editable: false,
+            },
+            {
+              text: myLabel.description,
+              type: "text",
+              sortable: false,
+              editable: false,
+            },
+            {
+              text: myLabel.expense_date,
+              type: "text",
+              sortable: false,
+              editable: false,
+            },
+          ],
+        dataUrl: "index.php?controller=pjAdminReports&action=pjActionGetExpenseReport" + pjGrid.queryString,
+        dataType: "json",
+        fields: ["id", "master_name","amount", "description", "expense_date"],
+        paginator: {
+          actions: [
+             {text: myLabel.delete_selected, url: "index.php?controller=pjAdminReports&action=pjActionDeleteExpenseBulk", render: true, confirmation: myLabel.delete_confirmation}
+          ],
+          gotoPage: true,
+          paginate: true,
+          total: true,
+          rowCount: true
+        },
+        saveUrl: "index.php?controller=pjAdminReports&action=pjActionSaveProduct&id={:id}",
+        select: {
+          field: "id",
+          name: "record[]",
+          cellClass: 'cell-width-2'
+        }
+      });
+    }
+
     function formatImage(val, obj) {
       var src = val ? val : 'app/web/img/backend/no_image.png';
       return ['<img src="', src, '" style="width: 84px" />'].join("");
@@ -246,6 +346,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 			var from = $('#date_from').val();
 			var to = $('#date_to').val();
 			var q = $('#query').val();
+      if($grid) {
 			var content = $grid.datagrid("option", "content"),
 			cache = $grid.datagrid("option", "cache");
 			$.extend(cache, {
@@ -260,26 +361,96 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 			$grid.datagrid("load", "index.php?controller=pjAdminReports&action=pjActionGetCancelReturnOrders", "order_date", "ASC", content.page, content.rowCount);
 			return false;
 			$('.ibox-content').removeClass('sk-loading');
+      } 
+
+      if($gridIncome) {
+        var content = $gridIncome.datagrid("option", "content"),
+      cache = $gridIncome.datagrid("option", "cache");
+      $.extend(cache, {
+        date_to: to,
+        date_from: from,
+        q: q,
+        type: type,
+        category_id: updated_category,
+        page: page
+      });
+      $gridIncome.datagrid("option", "cache", cache);
+      $gridIncome.datagrid("load", "index.php?controller=pjAdminReports&action=pjActionGetIncomeReport", "order_date", "ASC", content.page, content.rowCount);
+      return false;
+      $('.ibox-content').removeClass('sk-loading');
+      }
+
+      if($gridExpense) {
+      var content = $gridExpense.datagrid("option", "content"),
+      cache = $gridExpense.datagrid("option", "cache");
+      $.extend(cache, {
+        date_to: to,
+        date_from: from,
+        q: q,
+        type: type,
+        category_id: updated_category,
+        page: page
+      });
+      $gridExpense.datagrid("option", "cache", cache);
+      $gridExpense.datagrid("load", "index.php?controller=pjAdminReports&action=pjActionGetExpenseReport", "order_date", "ASC", content.page, content.rowCount);
+      return false;
+      $('.ibox-content').removeClass('sk-loading');
+      }
 		}
 
     function setTotalCount() {
-      var type = $('#gridType').val();
-      var from = $('#date_from').val();
-      var to = $('#date_to').val();
-      var q = $('#query').val();
-      $.ajax({
-        type: "GET",
-        async: false,
-        global: false,
-        url: "index.php?controller=pjAdminReports&action=getReturnOrdersCount&type="+type+"&date_from="+from+"&date_to="+to+"&q="+q+"&page="+page,
-        success: function (data) {
-          // console.log(data);
-          $("#returnOrder span").html(data.dailyReturnOrderTotal);
-          $("#adminOrder span").html(data.adminReturnOrderTotal);
-          $("#totalOfReturnOrder span").html(data.overAllReturnOrderTotal)
-        },
-      });
-      
+      if ($('#gridType').length > 0) {
+        var type = $('#gridType').val();
+        var from = $('#date_from').val();
+        var to = $('#date_to').val();
+        var q = $('#query').val();
+        $.ajax({
+          type: "GET",
+          async: false,
+          global: false,
+          url: "index.php?controller=pjAdminReports&action=getReturnOrdersCount&type="+type+"&date_from="+from+"&date_to="+to+"&q="+q+"&page="+page,
+          success: function (data) {
+            // console.log(data);
+            $("#returnOrder span").html(data.dailyReturnOrderTotal);
+            $("#adminOrder span").html(data.adminReturnOrderTotal);
+            $("#totalOfReturnOrder span").html(data.overAllReturnOrderTotal)
+          },
+        });  
+      } 
+
+      if ($('#gridTypeIncome').length > 0) {
+        var type = $('#gridTypeIncome').val();
+        var from = $('#date_from').val();
+        var to = $('#date_to').val();
+        var q = $('#query').val();
+        $.ajax({
+          type: "GET",
+          async: false,
+          global: false,
+          url: "index.php?controller=pjAdminReports&action=getIncomeCount&type="+type+"&date_from="+from+"&date_to="+to+"&q="+q+"&page="+page,
+          success: function (data) {
+            // console.log(data);
+            $("#overAllIncomeTotal span").html(data.overAllIncomeTotal)
+          },
+        });
+      }
+
+      if ($('#gridTypeExpense').length > 0) {
+        var type = $('#gridTypeExpense').val();
+        var from = $('#date_from').val();
+        var to = $('#date_to').val();
+        var q = $('#query').val();
+        $.ajax({
+          type: "GET",
+          async: false,
+          global: false,
+          url: "index.php?controller=pjAdminReports&action=getExpenseCount&type="+type+"&date_from="+from+"&date_to="+to+"&q="+q+"&page="+page,
+          success: function (data) {
+            console.log(data);
+            $("#overAllExpenseTotal span").html(data.overAllExpenseTotal)
+          },
+        });
+      }
     }
 
     function viewProductList(action) {
@@ -385,6 +556,12 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
               $("#heading-Product-list").html("Non Selling Products");
               viewProductList('pjActionGetNonProductsReport');
               break;
+            case 'income-Report': 
+              window.location.replace(app_url+"index.php?controller=pjAdminReports&action=pjActionIncomeReport");
+              break;
+            case 'expense-Report': 
+              window.location.replace(app_url+"index.php?controller=pjAdminReports&action=pjActionExpenseReport");
+              break;
             case 'cancel-return-Report': 
               window.location.replace(app_url+"index.php?controller=pjAdminReports&action=pjActionCancelReturnReport");
               break;
@@ -405,6 +582,12 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
             case 'non-selling': 
               window.location.replace(app_url+"index.php?controller=pjAdminReports&action=pjActionTopProductsReport&loadData=pjActionGetNonProductsReport");
               break;
+            case 'income-Report': 
+              window.location.replace(app_url+"index.php?controller=pjAdminReports&action=pjActionIncomeReport");
+              break;
+            case 'expense-Report': 
+              window.location.replace(app_url+"index.php?controller=pjAdminReports&action=pjActionExpenseReport");
+              break;  
             case 'cancel-return-Report': 
               window.location.replace(app_url+"index.php?controller=pjAdminReports&action=pjActionCancelReturnReport");
               break;
@@ -419,6 +602,14 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           let type = $(this).attr('data-type');
           if($("#gridType").val() != type) {
             $("#gridType").val(type);
+            generateList.call(null);
+          }
+          if($("#gridTypeIncome").val() != type) {
+            $("#gridTypeIncome").val(type);
+            generateList.call(null);
+          }
+          if($("#gridTypeExpense").val() != type) {
+            $("#gridTypeExpense").val(type);
             generateList.call(null);
           }
           setTotalCount.call(null);

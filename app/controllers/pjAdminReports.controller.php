@@ -493,12 +493,153 @@ class pjAdminReports extends pjAdmin {
     $this->appendJs('pjAdminReports.js');
   }
 
+  public function pjActionIncomeReport() {
+    $this->checkLogin();
+    if (!pjAuth::factory()->hasAccess()) {
+      $this->sendForbidden();
+      return;
+    }
+    $today = date('Y-m-d');
+    $from = $today . " " . "00:00:00";
+    $to = $today . " " . "23:59:59";
+    $res = $this->getIncomeOrders($from, $to, "IR", "", 10, 1);
+
+    $this->set('overAllIncomeTotal', $res['overAllIncomeTotal']);
+    $this->set('loadData', "Income");
+    $this->appendJs('jquery.datagrid.js', PJ_FRAMEWORK_LIBS_PATH . 'pj/js/');
+    $this->appendCss('datepicker3.css', PJ_THIRD_PARTY_PATH . 'bootstrap_datepicker/');
+    $this->appendJs('bootstrap-datepicker.js', PJ_THIRD_PARTY_PATH . 'bootstrap_datepicker/');
+    $this->appendJs('pjAdminReports.js');
+  }
+
+  public function pjActionGetIncomeReport() {
+    $this->setAjax(true);
+   
+    if ($this->isXHR()) {
+
+        $today = date('Y-m-d');
+        $from = $today . " " . "00:00:00";
+        $to = $today . " " . "23:59:59";
+        
+        if ($this->_get->toString('date_from') && $this->_get->toString('date_to')) {
+            $date_from = DateTime::createFromFormat('d.m.Y', $this->_get->toString('date_from'));
+            $from = $date_from->format('Y-m-d'). " " . "00:00:00";
+            $date_to = DateTime::createFromFormat('d.m.Y', $this->_get->toString('date_to'));
+            $to = $date_to->format('Y-m-d'). " " . "23:59:59";
+        }
+        
+        $res = $this->getIncomeOrders($from, $to, $q = $this->_get->toString('q'), $this->_get->toInt('rowCount'), $this->_get->toInt('page'));
+        $data = $res['data'];
+        $total = $res['total'];
+        $pages = $res['pages'];
+        $page = $res['page'];
+        $rowCount = $res['rowCount'];
+        $column = $res['column'];
+        $direction = $res['direction'];
+
+        pjAppController::jsonResponse(compact('data', 'total', 'pages', 'page', 'rowCount', 'column', 'direction'));
+    }
+    exit;
+  }
+
+  public function getIncomeCount() {
+    $this->setAjax(true);
+   
+    if ($this->isXHR()) {
+      $today = date('Y-m-d');
+      $from = $today . " " . "00:00:00";
+      $to = $today . " " . "23:59:59";
+      if ($this->_get->toString('date_from') && $this->_get->toString('date_to')) {
+        $date_from = DateTime::createFromFormat('d.m.Y', $this->_get->toString('date_from'));
+        $from = $date_from->format('Y-m-d'). " " . "00:00:00";
+        $date_to = DateTime::createFromFormat('d.m.Y', $this->_get->toString('date_to'));
+        $to = $date_to->format('Y-m-d'). " " . "23:59:59";
+      }
+      $res = $this->getIncomeOrders($from, $to, $q = $this->_get->toString('q'), $this->_get->toInt('rowCount'), $this->_get->toInt('page'));
+
+      $overAllIncomeTotal = $res['overAllIncomeTotal'];
+
+      pjAppController::jsonResponse(compact('overAllIncomeTotal'));
+    }
+  }
+
+  public function pjActionExpenseReport() {
+    $this->checkLogin();
+    if (!pjAuth::factory()->hasAccess()) {
+      $this->sendForbidden();
+      return;
+    }
+    $today = date('Y-m-d');
+    $from = $today . " " . "00:00:00";
+    $to = $today . " " . "23:59:59";
+    $res = $this->getExpenseOrders($from, $to, "IR", "", 10, 1);
+
+    $this->set('overAllExpenseTotal', $res['overAllExpenseTotal']);
+    $this->set('loadData', "Expense");
+    $this->appendJs('jquery.datagrid.js', PJ_FRAMEWORK_LIBS_PATH . 'pj/js/');
+    $this->appendCss('datepicker3.css', PJ_THIRD_PARTY_PATH . 'bootstrap_datepicker/');
+    $this->appendJs('bootstrap-datepicker.js', PJ_THIRD_PARTY_PATH . 'bootstrap_datepicker/');
+    $this->appendJs('pjAdminReports.js');
+  }
+
+  public function pjActionGetExpenseReport() {
+    $this->setAjax(true);
+   
+    if ($this->isXHR()) {
+
+        $today = date('Y-m-d');
+        $from = $today . " " . "00:00:00";
+        $to = $today . " " . "23:59:59";
+        
+        if ($this->_get->toString('date_from') && $this->_get->toString('date_to')) {
+            $date_from = DateTime::createFromFormat('d.m.Y', $this->_get->toString('date_from'));
+            $from = $date_from->format('Y-m-d'). " " . "00:00:00";
+            $date_to = DateTime::createFromFormat('d.m.Y', $this->_get->toString('date_to'));
+            $to = $date_to->format('Y-m-d'). " " . "23:59:59";
+        }
+        
+        $res = $this->getExpenseOrders($from, $to, $q = $this->_get->toString('q'), $this->_get->toInt('rowCount'), $this->_get->toInt('page'));
+        $data = $res['data'];
+        $total = $res['total'];
+        $pages = $res['pages'];
+        $page = $res['page'];
+        $rowCount = $res['rowCount'];
+        $column = $res['column'];
+        $direction = $res['direction'];
+
+        pjAppController::jsonResponse(compact('data', 'total', 'pages', 'page', 'rowCount', 'column', 'direction'));
+    }
+    exit;
+  }
+
+  public function getExpenseCount() {
+    $this->setAjax(true);
+   
+    if ($this->isXHR()) {
+      $today = date('Y-m-d');
+      $from = $today . " " . "00:00:00";
+      $to = $today . " " . "23:59:59";
+      if ($this->_get->toString('date_from') && $this->_get->toString('date_to')) {
+        $date_from = DateTime::createFromFormat('d.m.Y', $this->_get->toString('date_from'));
+        $from = $date_from->format('Y-m-d'). " " . "00:00:00";
+        $date_to = DateTime::createFromFormat('d.m.Y', $this->_get->toString('date_to'));
+        $to = $date_to->format('Y-m-d'). " " . "23:59:59";
+      }
+      $res = $this->getExpenseOrders($from, $to, $q = $this->_get->toString('q'), $this->_get->toInt('rowCount'), $this->_get->toInt('page'));
+
+      $overAllExpenseTotal = $res['overAllExpenseTotal'];
+
+      pjAppController::jsonResponse(compact('overAllExpenseTotal'));
+    }
+  }
+
   public function pjActionTopProductsReport() {
 
     $this->checkLogin();
     if (!pjAuth::factory()->hasAccess()) {
       $this->sendForbidden();
       return;
+
     }
     $date_to = date('Y-m-d');
     $date_from = date('Y-m-d', strtotime('-3 month'));
@@ -927,6 +1068,121 @@ class pjAdminReports extends pjAdmin {
     $response['direction'] = $direction;
 
     return $response;
+  }
+
+  protected function getIncomeOrders($date_from, $date_to, $query, $rowCount, $page) {
+      $pjIncomeModel = pjIncomeModel::factory();
+      if ($query) {
+          $pjIncomeModel->where("(t1.id LIKE '%$query%' OR t1.description LIKE '%$query%' OR t1.amount LIKE '%$query%')");
+      }
+      $overAllIncomeTotal = 0;
+      
+      $pjIncomeModel->select("t1.id ,t1.id as income_id, t1.description, t1.income_date, t1.amount, t1.amount as total, t1.created_at as created, t1.master_id")
+          ->where("(t1.income_date >= '$date_from' AND t1.income_date <= '$date_to')");
+
+      $column = 't1.id';
+      $direction = 'desc';
+      $total = $pjIncomeModel->findCount()->getData();
+      $rowCount = $rowCount ?: 10;
+      $pages = ceil($total / $rowCount);
+      $page = $page ? max(1, intval($page)) : 1;
+      $offset = ($page - 1) * $rowCount;
+      $offset = max(0, $offset);
+      $pjIncomeResults = $pjIncomeModel
+          ->orderBy("$column $direction")
+          ->limit($rowCount, $offset)
+          ->findAll()
+          ->getData();
+
+      // Fetch the pjMaster data separately
+      $pjMasterData = array();
+      $totalAmount = 0;
+      $serialNumber = 1;
+      foreach ($pjIncomeResults as $incomeResult) {
+          $income_id = $incomeResult['income_id'];
+          $pjIncomeModel->find($income_id);
+          $incomeData = $pjIncomeModel->getData();
+          $incomeResult['income_date'] = date("d-m-Y", strtotime($incomeData['income_date']));
+          $amount = $incomeResult['amount'];
+          $totalAmount += $amount;
+          $incomeResult['id'] = $serialNumber;
+          $serialNumber++;
+          $master_id = $incomeResult['master_id'];
+          $pjMasterModel = pjMasterModel::factory();
+          $pjMasterModel->find($master_id);
+          $masterData = $pjMasterModel->getData();
+          $incomeResult['master_name'] = $masterData['name'];
+          $pjMasterData[] = $incomeResult;
+      }
+      $overAllIncomeTotal = "<strong>" . pjCurrency::formatPrice($totalAmount) . "</strong>";
+
+      $response = array();
+      $response['data'] = $pjMasterData; // Use the modified data with 'master_name'
+      $response['overAllIncomeTotal'] = $overAllIncomeTotal;
+      $response['total'] = $total;
+      $response['pages'] = $pages;
+      $response['page'] = $page;
+      $response['rowCount'] = $rowCount;
+      $response['column'] = $column;
+      $response['direction'] = $direction;
+      return $response;
+  }
+
+  protected function getExpenseOrders($date_from, $date_to, $query, $rowCount, $page) {
+      $pjExpenseModel = pjExpenseModel::factory();
+      if ($query) {
+          $pjExpenseModel->where("(t1.id LIKE '%$query%' OR t1.description LIKE '%$query%' OR t1.amount LIKE '%$query%')");
+      }
+      $overAllExpenseTotal = 0;
+      
+      $pjExpenseModel->select("t1.id ,t1.id as expense_id, t1.description, t1.expense_date, t1.amount, t1.amount as total, t1.created_at as created, t1.master_id")
+          ->where("(t1.expense_date >= '$date_from' AND t1.expense_date <= '$date_to')");
+
+      $column = 't1.id';
+      $direction = 'desc';
+      $total = $pjExpenseModel->findCount()->getData();
+      $rowCount = $rowCount ?: 10;
+      $pages = ceil($total / $rowCount);
+      $page = $page ? max(1, intval($page)) : 1;
+      $offset = ($page - 1) * $rowCount;
+      $offset = max(0, $offset);
+      $pjExpenseResults = $pjExpenseModel
+          ->orderBy("$column $direction")
+          ->limit($rowCount, $offset)
+          ->findAll()
+          ->getData();
+
+      $pjMasterData = array();
+      $totalAmount = 0;
+      $serialNumber = 1;
+      foreach ($pjExpenseResults as $expenseResult) {
+          $expense_id = $expenseResult['expense_id'];
+          $pjExpenseModel->find($expense_id);
+          $expenseData = $pjExpenseModel->getData();
+          $expenseResult['expense_date'] = date("d-m-Y", strtotime($expenseData['expense_date']));
+          $amount = $expenseResult['amount'];
+          $totalAmount += $amount;
+          $expenseResult['id'] = $serialNumber;
+          $serialNumber++;
+          $master_id = $expenseResult['master_id'];
+          $pjMasterModel = pjMasterModel::factory();
+          $pjMasterModel->find($master_id);
+          $masterData = $pjMasterModel->getData();
+          $expenseResult['master_name'] = $masterData['name'];
+          $pjMasterData[] = $expenseResult;
+      }
+
+      $overAllExpenseTotal = "<strong>" . pjCurrency::formatPrice($totalAmount) . "</strong>";
+      $response = array();
+      $response['data'] = $pjMasterData;
+      $response['overAllExpenseTotal'] = $overAllExpenseTotal;
+      $response['total'] = $total;
+      $response['pages'] = $pages;
+      $response['page'] = $page;
+      $response['rowCount'] = $rowCount;
+      $response['column'] = $column;
+      $response['direction'] = $direction;
+      return $response;
   }
 
 

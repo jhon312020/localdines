@@ -17,6 +17,8 @@
             <select name="type" id="filter_reports2" class="form-control">
               <option value="top-selling">Top Selling Products</option>
               <option value="non-selling">Non Selling Products</option>
+              <option value="income-Report">Income Reports</option>
+              <option  value="expense-Report">Expense Reports</option>
               <option <?php if($tpl['loadData'] == "CancelRetrun") { echo "selected"; } ?> value="cancel-return-Report">Cancel and Return Reports</option>
             </select>
           </div><!-- /.col-md-6 -->

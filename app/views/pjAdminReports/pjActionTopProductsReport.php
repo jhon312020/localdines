@@ -20,6 +20,8 @@ $updated_category = $controller->_get->toString('category');
             <select name="type" id="filter_reports" class="form-control">
               <option <?php if($tpl['loadData'] == "pjActionGetTopProductsReport") { echo "selected";} ?> value="top-selling">Top Selling Products</option>
               <option <?php if($tpl['loadData'] == "pjActionGetNonProductsReport") { echo "selected";} ?> value="non-selling">Non Selling Products</option>
+              <option value="income-Report">Income Reports</option>
+              <option  value="expense-Report">Expense Reports</option>
               <option value="cancel-return-Report">Cancel and Return Reports</option>
             </select>
           </div><!-- /.col-md-6 -->
