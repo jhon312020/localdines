@@ -179,13 +179,13 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           columns: [
             { text: myLabel.id, type: "text", sortable: false ,editable: false},
             {
-              text: myLabel.master_name,
+              text: myLabel.income_date,
               type: "text",
               sortable: false,
               editable: false,
             },
             {
-              text: myLabel.amount,
+              text: myLabel.master_name,
               type: "text",
               sortable: false,
               editable: false,
@@ -197,7 +197,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
               editable: false,
             },
             {
-              text: myLabel.income_date,
+              text: myLabel.amount,
               type: "text",
               sortable: false,
               editable: false,
@@ -205,7 +205,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           ],
         dataUrl: "index.php?controller=pjAdminReports&action=pjActionGetIncomeReport" + pjGrid.queryString,
         dataType: "json",
-        fields: ["id", "master_name", "amount", "description", "income_date"],
+        fields: ["id", "income_date", "master_name", "description", "amount"],
         paginator: {
           actions: [
              {text: myLabel.delete_selected, url: "index.php?controller=pjAdminReports&action=pjActionDeleteExpenseBulk", render: true, confirmation: myLabel.delete_confirmation}
@@ -229,13 +229,13 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           columns: [
             { text: myLabel.id, type: "text", sortable: false, editable: false},
             {
-              text: myLabel.master_name,
+              text: myLabel.expense_date,
               type: "text",
               sortable: false,
               editable: false,
             },
             {
-              text: myLabel.amount,
+              text: myLabel.master_name,
               type: "text",
               sortable: false,
               editable: false,
@@ -247,7 +247,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
               editable: false,
             },
             {
-              text: myLabel.expense_date,
+              text: myLabel.amount,
               type: "text",
               sortable: false,
               editable: false,
@@ -255,7 +255,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
           ],
         dataUrl: "index.php?controller=pjAdminReports&action=pjActionGetExpenseReport" + pjGrid.queryString,
         dataType: "json",
-        fields: ["id", "master_name","amount", "description", "expense_date"],
+        fields: ["id", "expense_date", "master_name", "description", "amount"],
         paginator: {
           actions: [
              {text: myLabel.delete_selected, url: "index.php?controller=pjAdminReports&action=pjActionDeleteExpenseBulk", render: true, confirmation: myLabel.delete_confirmation}

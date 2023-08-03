@@ -82,9 +82,9 @@
   ?>
   var myLabel = myLabel || {};
   myLabel.id = '<?php echo 'S.No'; ?>';
-  myLabel.master_name = '<?php echo 'Name'; ?>';
-  myLabel.amount = '<?php echo 'Amount'; ?>';
-  myLabel.description = '<?php echo 'Description'; ?>';
   myLabel.income_date = '<?php echo 'Date'; ?>';
+  myLabel.master_name = '<?php echo 'Name'; ?>';
+  myLabel.description = '<?php echo 'Description'; ?>';
+  myLabel.amount = '<?php echo 'Amount'; ?>';
   var app_url = "<?php echo APP_URL;?>";
 </script>

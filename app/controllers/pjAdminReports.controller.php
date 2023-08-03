@@ -502,7 +502,7 @@ class pjAdminReports extends pjAdmin {
     $today = date('Y-m-d');
     $from = $today . " " . "00:00:00";
     $to = $today . " " . "23:59:59";
-    $res = $this->getIncomeOrders($from, $to, "IR", "", 10, 1);
+    $res = $this->getIncomeOrders($from, $to, "", 10, 1);
 
     $this->set('overAllIncomeTotal', $res['overAllIncomeTotal']);
     $this->set('loadData', "Income");
@@ -572,7 +572,7 @@ class pjAdminReports extends pjAdmin {
     $today = date('Y-m-d');
     $from = $today . " " . "00:00:00";
     $to = $today . " " . "23:59:59";
-    $res = $this->getExpenseOrders($from, $to, "IR", "", 10, 1);
+    $res = $this->getExpenseOrders($from, $to, "", 10, 1);
 
     $this->set('overAllExpenseTotal', $res['overAllExpenseTotal']);
     $this->set('loadData', "Expense");
@@ -1072,8 +1072,10 @@ class pjAdminReports extends pjAdmin {
 
   protected function getIncomeOrders($date_from, $date_to, $query, $rowCount, $page) {
       $pjIncomeModel = pjIncomeModel::factory();
+      $pjMasterModel = pjMasterModel::factory();
       if ($query) {
           $pjIncomeModel->where("(t1.id LIKE '%$query%' OR t1.description LIKE '%$query%' OR t1.amount LIKE '%$query%')");
+          $pjMasterModel->where("(t1.id LIKE '%$query%' OR t1.name LIKE '%$query%')");
       }
       $overAllIncomeTotal = 0;
       
@@ -1093,20 +1095,23 @@ class pjAdminReports extends pjAdmin {
           ->limit($rowCount, $offset)
           ->findAll()
           ->getData();
-
+      $overAllIncomeTotal = $pjIncomeModel
+          ->select("SUM(amount)as totalAmount")
+          ->findAll()
+          ->getData();
+      //$this->pr($overAllIncomeTotal);
       // Fetch the pjMaster data separately
       $pjMasterData = array();
       $totalAmount = 0;
-      $serialNumber = 1;
+      $serialNumber = ($page - 1) * $rowCount;
       foreach ($pjIncomeResults as $incomeResult) {
           $income_id = $incomeResult['income_id'];
           $pjIncomeModel->find($income_id);
           $incomeData = $pjIncomeModel->getData();
           $incomeResult['income_date'] = date("d-m-Y", strtotime($incomeData['income_date']));
           $amount = $incomeResult['amount'];
-          $totalAmount += $amount;
-          $incomeResult['id'] = $serialNumber;
-          $serialNumber++;
+          //$totalAmount += $amount;
+          $incomeResult['id'] = ++$serialNumber;
           $master_id = $incomeResult['master_id'];
           $pjMasterModel = pjMasterModel::factory();
           $pjMasterModel->find($master_id);
@@ -1114,10 +1119,14 @@ class pjAdminReports extends pjAdmin {
           $incomeResult['master_name'] = $masterData['name'];
           $pjMasterData[] = $incomeResult;
       }
+      if ($overAllIncomeTotal) {
+        $totalAmount = $overAllIncomeTotal[0]['totalAmount'];
+      } 
       $overAllIncomeTotal = "<strong>" . pjCurrency::formatPrice($totalAmount) . "</strong>";
 
+
       $response = array();
-      $response['data'] = $pjMasterData; // Use the modified data with 'master_name'
+      $response['data'] = $pjMasterData;
       $response['overAllIncomeTotal'] = $overAllIncomeTotal;
       $response['total'] = $total;
       $response['pages'] = $pages;
@@ -1151,27 +1160,34 @@ class pjAdminReports extends pjAdmin {
           ->limit($rowCount, $offset)
           ->findAll()
           ->getData();
+      $overAllExpenseTotal = $pjExpenseModel
+          ->select("SUM(amount)as totalAmount")
+          ->findAll()
+          ->getData();
 
       $pjMasterData = array();
       $totalAmount = 0;
       $serialNumber = 1;
+      $serialNumber = ($page - 1) * $rowCount;
       foreach ($pjExpenseResults as $expenseResult) {
-          $expense_id = $expenseResult['expense_id'];
-          $pjExpenseModel->find($expense_id);
-          $expenseData = $pjExpenseModel->getData();
-          $expenseResult['expense_date'] = date("d-m-Y", strtotime($expenseData['expense_date']));
-          $amount = $expenseResult['amount'];
-          $totalAmount += $amount;
-          $expenseResult['id'] = $serialNumber;
-          $serialNumber++;
-          $master_id = $expenseResult['master_id'];
-          $pjMasterModel = pjMasterModel::factory();
-          $pjMasterModel->find($master_id);
-          $masterData = $pjMasterModel->getData();
-          $expenseResult['master_name'] = $masterData['name'];
-          $pjMasterData[] = $expenseResult;
+        $expense_id = $expenseResult['expense_id'];
+        $pjExpenseModel->find($expense_id);
+        $expenseData = $pjExpenseModel->getData();
+        $expenseResult['expense_date'] = date("d-m-Y", strtotime($expenseData['expense_date']));
+        $amount = $expenseResult['amount'];
+        //$totalAmount += $amount;
+        $expenseResult['id'] = ++$serialNumber;
+        $master_id = $expenseResult['master_id'];
+        $pjMasterModel = pjMasterModel::factory();
+        $pjMasterModel->find($master_id);
+        $masterData = $pjMasterModel->getData();
+        $expenseResult['master_name'] = $masterData['name'];
+        $pjMasterData[] = $expenseResult;
       }
 
+      if ($overAllExpenseTotal) {
+        $totalAmount = $overAllExpenseTotal[0]['totalAmount'];
+      } 
       $overAllExpenseTotal = "<strong>" . pjCurrency::formatPrice($totalAmount) . "</strong>";
       $response = array();
       $response['data'] = $pjMasterData;
