@@ -2760,14 +2760,14 @@ http://www.opensource.org/licenses/mit-license.php
 				'{tab} q w e r t y u i o p [ ] \\',
 				'a s d f g h j k l ; \' {enter}',
 				'{shift} z x c v b n m , . / {shift}',
-				'{accept} {space} {cancel}'
+				'{cancel} {space} {accept}'
 			],
 			'shift': [
 				'~ ! @ # $ % ^ & * ( ) _ + {bksp}',
 				'{tab} Q W E R T Y U I O P { } |',
 				'A S D F G H J K L : " {enter}',
 				'{shift} Z X C V B N M < > ? {shift}',
-				'{accept} {space} {cancel}'
+				'{cancel} {space} {accept}'
 			]
 		},
 		'international': {

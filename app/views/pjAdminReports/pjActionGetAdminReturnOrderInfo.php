@@ -12,6 +12,8 @@
   fieldset  {
     background-color: #eeeeee;
     margin: 10px 0px;
+    width: 90%;
+    margin: auto;
   }
   legend {
     background-color: grey;
@@ -19,7 +21,8 @@
     padding-left: 10px
   }
   .swal-medium {
-    width: 30%;
+    width: 70%;
+    left: 36%;
   }
 </style>
 <div>

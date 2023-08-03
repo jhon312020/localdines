@@ -999,12 +999,10 @@ td .btn-secondary:hover {
 }
 
 .swal-width {
-  width: 50%;
-  left: 25%;
-  margin: auto;
+  width: 70%;
+  left: 36%;
+/*  margin: auto;*/
 }
-
-
 
 /* Center the loader */
 #cover-spin {

@@ -12,6 +12,8 @@
 	fieldset  {
 		background-color: #eeeeee;
     margin: 10px 0px;
+    width: 90%;
+    margin: auto;
 	}
 	legend {
 		background-color: grey;
@@ -19,13 +21,14 @@
     padding-left: 10px
 	}
 	.swal-medium {
-		width: 30%;
+		width: 70%;
+		left: 36%;
 	}
 </style>
 <div>
 	<?php if (strtolower($order_details["origin"]) != "pos") { ?>
 	<h2>Customer Info</h2>
-	<table style='width: 100%;'>
+	<table style='margin: auto; width: 90%;'>
 		<tbody>
 			<tr>
 				<th>Name:</th>
@@ -68,7 +71,7 @@
 <?php } ?>
 	<fieldset>
 		<legend>Order Items</legend>
-		<table style='margin: auto; width: 100%;'>
+		<table style='width: 100%;'>
 			<tbody>
 				<tr>
 					<th style="text-align: center;">Product</th>

@@ -3539,7 +3539,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             'normal' : 'ABC',
             'meta1'  : '.?123',
             'meta2'  : '#+=',
-            'accept' : '\u21d3'
+            'accept' : 'Accept'
           },
 
           layout: 'custom',
@@ -3584,7 +3584,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
               '4 5 6',
               '7 8 9',
               '{clear} 0 {b}',
-              '{a} 00 {c}'
+              '{c} 00 {a}'
             ]
           },
           maxLength: length,

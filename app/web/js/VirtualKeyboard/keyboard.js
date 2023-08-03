@@ -26,7 +26,7 @@
         'normal' : 'ABC',
         'meta1'  : '.?123',
         'meta2'  : '#+=',
-        'accept' : '\u21d3'
+        'accept' : 'Accept'
       },
 
       layout: 'custom',
@@ -71,7 +71,7 @@
           '4 5 6',
           '7 8 9',
           '{clear} 0 {b}',
-          '{a} 00 {c}'
+          '{c} 00 {a}'
         ]
       },
       maxLength: length,
