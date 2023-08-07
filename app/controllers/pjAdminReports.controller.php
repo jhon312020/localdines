@@ -481,7 +481,7 @@ class pjAdminReports extends pjAdmin {
     $today = date('Y-m-d');
     $from = $today . " " . "00:00:00";
     $to = $today . " " . "23:59:59";
-    $res = $this->getReturnOrders($from, $to, "RO", "", 10, 1);
+    $res = $this->getReturnOrdersTotal($from, $to, '');
     
     $this->set('adminReturnOrderTotal', $res['adminReturnOrderTotal']);
     $this->set('dailyReturnOrderTotal', $res['dailyReturnOrderTotal']);
@@ -819,7 +819,7 @@ class pjAdminReports extends pjAdmin {
         $date_to = DateTime::createFromFormat('d.m.Y', $this->_get->toString('date_to'));
         $to = $date_to->format('Y-m-d'). " " . "23:59:59";
       }
-      $res = $this->getReturnOrders($from, $to, $this->_get->toString('type'), $q = $this->_get->toString('q'), $this->_get->toInt('rowCount'), $this->_get->toInt('page'));
+      $res = $this->getReturnOrdersTotal($from, $to, $q = $this->_get->toString('q'));
 
       $adminReturnOrderTotal = $res['adminReturnOrderTotal'];
       $dailyReturnOrderTotal = $res['dailyReturnOrderTotal'];
@@ -1018,14 +1018,15 @@ class pjAdminReports extends pjAdmin {
 
     $dailyReturnOrderTotal = 0;
     $adminReturnOrderTotal = 0;
-
+    $table_list = $this->getRestaurantTables();
+    
     foreach($data as $k => $v) {
-      $data[$k]['table_name'] = "<strong class='list-pos-type'>".$data[$k]['table_name']."</strong>";
       $data[$k]['order_date'] = date("d-m-Y", strtotime($v['created']));
       $data[$k]['total'] = "<strong class='list-pos-type'>".pjCurrency::formatPrice($v['total'])."</strong>";
       if($v['type'] == "AR") {
         $data[$k]['cancel_amount'] = "<strong class='list-pos-type'>".pjCurrency::formatPrice($v['cancel_amount'])."</strong>";
         $adminReturnOrderTotal += $v['cancel_amount'];
+        $orderType = '';
       } else {
         if ($data[$k]['is_paid'] == 1) {
           if (strtolower($data[$k]['payment_method']) == 'bank') {
@@ -1038,9 +1039,21 @@ class pjAdminReports extends pjAdmin {
         }
         $data[$k]['cancel_amount'] = "<strong class='list-pos-type'>".pjCurrency::formatPrice($groupedOrderItems[$v['id']]['cancel_amount'])."</strong>";
         $dailyReturnOrderTotal += $groupedOrderItems[$v['id']]['cancel_amount'];
+        if ($v['origin'] == 'Pos') {
+          if (array_key_exists($v['table_name'], $table_list)) {
+            $orderType = $table_list[$v['table_name']];
+          } else {
+            $orderType = 'Take Away';
+          }
+        } else if ($v['origin'] == 'Telephone') {
+          $orderType = 'Telephone';
+        } else {
+          $orderType = 'Web';
+        }
       }
+      $data[$k]['table_name'] = "<strong class='list-pos-type'>".$orderType."</strong>";
     }
-
+    // $this->pr($data);
 
     $returnTypeData = array();
 
@@ -1050,7 +1063,7 @@ class pjAdminReports extends pjAdmin {
       }
     }
 
-
+    // $this->pr($returnTypeData);
     $overAllReturnOrderTotal = "<strong>".pjCurrency::formatPrice($dailyReturnOrderTotal+$adminReturnOrderTotal)."</strong>";
     $dailyReturnOrderTotal = "<strong class='list-pos-type'>".pjCurrency::formatPrice($dailyReturnOrderTotal)."</strong>";
     $adminReturnOrderTotal = "<strong class='list-pos-type'>".pjCurrency::formatPrice($adminReturnOrderTotal)."</strong>";
@@ -1067,6 +1080,75 @@ class pjAdminReports extends pjAdmin {
     $response['column'] = $column;
     $response['direction'] = $direction;
 
+    return $response;
+  }
+  protected function getReturnOrdersTotal($date_from, $date_to, $query) {
+    $pjOrderModel = pjOrderModel::factory();
+    $pjOrderReturn = pjOrderReturnModel::factory();
+
+    if ($query) {
+      // MEGAMIND
+      $pjOrderModel->where("(t1.order_id LIKE '%$query%' OR t1.uuid LIKE '%$query%' OR t1.table_name LIKE '%$query%')");
+      $pjOrderReturn->where("(t1.order_id LIKE '%$query%' OR t1.product_name LIKE '%$query%')");
+      // !MEGAMIND
+    }
+
+    $return_types = implode("','", RETURN_TYPES);
+    $pjOrderModel = $pjOrderModel
+      ->select("t1.*, 'RO' as type")
+      ->where("((t1.p_dt >= '$date_from' AND t1.p_dt <= '$date_to') OR (t1.d_dt >= '$date_from' AND t1.d_dt <= '$date_to'))")
+      ->where('t1.deleted_order', 0)
+      ->where("t1.id IN (SELECT ORDITEM.order_id FROM `" . pjOrderItemModel::factory()
+      ->getTable() . "` AS ORDITEM WHERE ORDITEM.STATUS IN ('".$return_types."'))")->orderBy("name ASC")
+      ->where('status', 'delivered');
+
+    $pjOrderReturn = $pjOrderReturn
+      // ->select("id, order_id, 'Return Order' as table_name, amount as cancel_amount, amount as total, created_at as created, 'delivered' as status, '-' as payment_method, 'AR' as type")
+      ->select("SUM(amount)as cancel_amount")
+      ->where("created_at >= '$date_from' OR updated_at >= '$date_from'");
+
+    $column = 'id';
+    $direction = 'desc';
+
+    $pjOrderModel = $pjOrderModel
+    ->orderBy("$column $direction")
+    ->findAll()
+    ->getData();
+
+    $pjOrderReturn = $pjOrderReturn
+    ->orderBy("$column $direction")
+    ->findAll()
+    ->getData();
+    
+    $order_ids = array_column($pjOrderModel, 'id');
+    $pjOrderData = "";
+    $pjOrderItems = pjOrderItemModel::factory();
+    $dailyReturnOrderTotal = 0;
+    if ($order_ids) {
+      $pjOrderData = $pjOrderItems->whereIn('order_id', $order_ids)
+      ->whereIn('status', RETURN_TYPES)
+      ->findAll()
+      ->getData();
+      $price = array_column($pjOrderData, 'price');
+      $quantity = array_column($pjOrderData, 'cnt');
+      $dailyReturnOrderTotal = array_map(function($x, $y) { return $x * $y; },
+                     $price, $quantity);
+      $dailyReturnOrderTotal = array_sum($dailyReturnOrderTotal);
+    }
+
+    $adminReturnOrderTotal = 0;
+    if ($pjOrderReturn) {
+      $adminReturnOrderTotal = $pjOrderReturn[0]['cancel_amount'];
+    }
+
+    $overAllReturnOrderTotal = "<strong>".pjCurrency::formatPrice($dailyReturnOrderTotal+$adminReturnOrderTotal)."</strong>";
+    $dailyReturnOrderTotal = "<strong class='list-pos-type'>".pjCurrency::formatPrice($dailyReturnOrderTotal)."</strong>";
+    $adminReturnOrderTotal = "<strong class='list-pos-type'>".pjCurrency::formatPrice($adminReturnOrderTotal)."</strong>";
+
+    $response = array();
+    $response['adminReturnOrderTotal'] = $adminReturnOrderTotal;
+    $response['dailyReturnOrderTotal'] = $dailyReturnOrderTotal;
+    $response['overAllReturnOrderTotal'] = $overAllReturnOrderTotal;
     return $response;
   }
 

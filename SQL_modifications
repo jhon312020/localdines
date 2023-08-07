@@ -413,6 +413,11 @@ ALTER TABLE `food_delivery_expenses` ADD `expense_date` DATE NULL AFTER `amount`
 31-July2023
 if (!defined("AUTO_RECEIPT_PRINT")) define("AUTO_RECEIPT_PRINT", 1);
 
+--------------------------RoyalChef field changes to be updated (3-August-2023)-------------------
+ALTER TABLE `food_delivery_order_returns` CHANGE `created_date` `created_at` DATETIME NULL DEFAULT NULL, CHANGE `updated_date` `updated_at` DATETIME NULL DEFAULT NULL;
+---------------------------------------------------------------------------------------------------
+07-August-2023
+ALTER TABLE `food_delivery_order_returns`  ADD `return_date` DATE NULL  AFTER `purchase_date`;
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 

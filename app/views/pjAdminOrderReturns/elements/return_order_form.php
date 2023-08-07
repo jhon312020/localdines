@@ -45,7 +45,7 @@
 
     <div class="row">
 
-      <div class="col-sm-3">
+      <div class="col-sm-3 col-lg-2">
         <div class="form-group">
           <label class="control-label">Quantity</label>
           <input type="number" name="quantity" id="quantity" value="<?php echo array_key_exists('arr', $tpl) && $tpl['arr']['qty'] ? $tpl['arr']['qty'] : '1' ?>" class="form-control pj-field-count required number" data-msg-required="This field is required." readonly/>
@@ -100,7 +100,7 @@
       ?>
       <div id="datePickerOptions" style="display:none;" data-wstart="<?php echo (int) $tpl['option_arr']['o_week_start']; ?>" data-format="<?php echo pjUtil::toBootstrapDate($tpl['option_arr']['o_date_format']); ?>" data-months="<?php echo implode("_", $months);?>" data-days="<?php echo implode("_", $short_days);?>"></div>
 
-      <div class="col-sm-6">
+      <div class="col-sm-6 col-lg-3">
         <div class="form-group">
           <label class="control-label">Purchase Date</label>
           <div class="input-group">
@@ -109,7 +109,7 @@
           </div>
         </div>
       </div>
-      <div class="col-sm-6">
+      <div class="col-sm-6 col-lg-3">
         <div class="form-group">
           <label class="control-label">Return Date</label>
           <div class="input-group">

@@ -15,7 +15,6 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
       remove_arr = new Array(),
       submited = false;
     
-
     var urlParams = new URLSearchParams(window.location.search);
     var updated_category = urlParams.get('category'); 
     var err_code = urlParams.get('err');
@@ -34,18 +33,20 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 
     if ($("#grid").length > 0 && datagrid) {
       var $grid = $("#grid").datagrid({
-        buttons: [{type: "edit", url: "index.php?controller=pjAdminOrderReturns&action=pjActionUpdate&id={:id}"},
-                  {type: "delete", url: "index.php?controller=pjAdminOrderReturns&action=pjActionDelete&id={:id}"}
-                  ],
+        buttons: [
+          {type: "edit", url: "index.php?controller=pjAdminOrderReturns&action=pjActionUpdate&id={:id}"},
+          {type: "delete", url: "index.php?controller=pjAdminOrderReturns&action=pjActionDelete&id={:id}"}
+        ],
         columns: [
-              {text: myLabel.product_name, type: "text", sortable: false, editable: false},
-              {text: myLabel.return_date, type: "text", sortable: true, editable: true},
-              {text: myLabel.total_amount, type: "text", sortable: true, editable: true},
-              {text: myLabel.purchase_date, type: "text", sortable: false, editable: false},
-              {text: myLabel.product_qty, type: "text", sortable: false, editable: false}],
+          {text: myLabel.product_name, type: "text", sortable: false, editable: false},
+          {text: myLabel.return_date, type: "text", sortable: true, editable: true},
+          {text: myLabel.total_amount, type: "text", sortable: true, editable: true},
+          {text: myLabel.purchase_date, type: "text", sortable: false, editable: false},
+          {text: myLabel.product_qty, type: "text", sortable: false, editable: false}
+        ],
         dataUrl: "index.php?controller=pjAdminOrderReturns&action=pjActionGetReturnOrderList" + pjGrid.queryString,
         dataType: "json",
-        fields: ['product_name','created_date', 'amount', 'purchase_date', 'qty'],
+        fields: ['product_name','return_date', 'amount', 'purchase_date', 'qty'],
         paginator: {
           actions: [
              {text: myLabel.delete_selected, url: "index.php?controller=pjAdminSuppliers&action=pjActionDeleteCompanyBulk", render: true, confirmation: myLabel.delete_confirmation}
@@ -91,24 +92,30 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
       });
 
       $('#purchase_date').datepicker({
-        autoclose: true
+        autoclose: true,
+        todayHighlight: true,
+        todayBtn: 'linked',
+        todayTxt: 'Today',
       });
       $('#return_date').datepicker({
-        autoclose: true
+        autoclose: true,
+        todayHighlight: true,
+        todayBtn: 'linked',
+        todayTxt: 'Today',
       });
 
       $frmReturnOrder.validate({
         errorPlacement: function(error, element) {
           if (element.hasClass('select2-hidden-accessible')) {
-                        error.insertAfter(element.next('.chosen-container'));
-                    } else if (element.parent('.input-group').length) {
+            error.insertAfter(element.next('.chosen-container'));
+          } else if (element.parent('.input-group').length) {
             error.insertAfter(element.parent());
           } else if (element.parent().parent('.btn-group').length) {
-                        error.insertAfter(element.parent().parent());
-                    } else {
+            error.insertAfter(element.parent().parent());
+          } else {
             error.insertAfter(element);
           }
-          },
+        },
         ignore: "",
         invalidHandler: function (event, validator) {
             $(".pj-multilang-wrap").each(function( index ) {
@@ -128,14 +135,13 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
             }
           });
         },
-        submitHandler: function(form){
+        submitHandler: function(form) {
           var ladda_buttons = $(form).find('.ladda-button');
-            if(ladda_buttons.length > 0)
-              {
-                var l = ladda_buttons.ladda();
-                l.ladda('start');
-              }
-              form.submit();
+          if (ladda_buttons.length > 0) {
+            var l = ladda_buttons.ladda();
+            l.ladda('start');
+          }
+          form.submit();
           return false;
         }
       });
@@ -186,8 +192,8 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
             product_id : product_id
           },
           success: function (data) {
-            if(data.status) {
-              if(data.res[0].set_different_sizes == 'T') {
+            if (data.status) {
+              if (data.res[0].set_different_sizes == 'T') {
                 var div = $('#js-select');
                 var label = $('<label>').addClass('control-label').text('Size').appendTo(div);
                 var sel = $('<select>').attr('id', 'cus-select').addClass('form-control change-size').appendTo(div);
@@ -231,7 +237,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
     }).on('click', '#main_form', function () {
       submited = true;
     }).on('change', '#custom', function () {
-      if($('#custom').prop('checked')) {
+      if ($('#custom').prop('checked')) {
         emptyForm.call(null);
         $('#product_id').val('0');
         $('#product_name').removeClass('d-none');

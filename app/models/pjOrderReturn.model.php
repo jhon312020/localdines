@@ -19,7 +19,8 @@ class pjOrderReturnModel extends pjAppModel {
     array('name' => 'size', 'type' => 'varchar', 'default' => ':NULL'),
     array('name' => 'qty', 'type' => 'int', 'default' => ':NULL'),
     array('name' => 'amount', 'type' => 'decimal', 'default' => ':NULL'),
-    array('name' => 'purchase_date', 'type' => 'datetime', 'default' => ':NULL'),
+    array('name' => 'purchase_date', 'type' => 'date', 'default' => ':NULL'),
+    array('name' => 'return_date', 'type' => 'date', 'default' => ':NULL'),
     array('name' => 'is_z_viewed', 'type' => 'tinyint', 'default' => '0'),
     array('name' => 'created_at', 'type' => 'datetime', 'default' => ':NULL'),
     array('name' => 'updated_at', 'type' => 'datetime', 'default' => ':NULL')

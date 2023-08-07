@@ -9,7 +9,7 @@
   </div><!-- /.col-md-12 -->
 </div>
 <div class="row wrapper wrapper-content animated fadeInRight">
-  <div class="col-sm-12 col-lg-offset-3 col-lg-6 ">
+  <div class="col-sm-12 col-lg-offset-2 col-lg-8 ">
     <div class="ibox float-e-margins">
       <div class="ibox-content">
         <form action="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminOrderReturns&amp;action=pjActionUpdate" method="post" id="frmReturnOrder" autocomplete="off">

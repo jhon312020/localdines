@@ -80,7 +80,7 @@ class pjAdminOrderReturns extends pjAdmin {
       $data = array_merge($pjOrderReturnCustom, $pjOrderReturn);
       foreach ($data as $k => $value) {
         $data[$k]['purchase_date'] = date('d-m-Y', strtotime($data[$k]['purchase_date']));
-        $data[$k]['created_at'] = date('d-m-Y', strtotime($data[$k]['created_at']));
+        $data[$k]['return_date'] = date('d-m-Y', strtotime($data[$k]['return_date']));
       }
       pjAppController::jsonResponse(compact('data', 'total', 'pages', 'page', 'rowCount', 'column', 'direction'));
     }
@@ -115,6 +115,7 @@ class pjAdminOrderReturns extends pjAdmin {
         $data['qty'] = $post['quantity'];
         $data['amount'] = $post['amount'];
         $data['purchase_date'] = date('Y-m-d', strtotime($post['purchase_date']));
+        $data['return_date'] = date('Y-m-d', strtotime($post['return_date']));
         $data['created_at'] = date("Y-m-d H:i:s");
         $data['updated_at'] = date("Y-m-d H:i:s");
         if ($post['product_id'] == 0) {
@@ -198,6 +199,7 @@ class pjAdminOrderReturns extends pjAdmin {
         $data['qty'] = $post['quantity'];
         $data['amount'] = $post['amount'];
         $data['purchase_date'] = date('Y-m-d', strtotime($post['purchase_date']));
+        $data['return_date'] = date('Y-m-d', strtotime($post['return_date']));
         $data['updated_at'] = date("Y-m-d H:i:s");
         if ($post['product_id'] == 0) {
           $data['product_name'] = $post['product_name'];
@@ -234,7 +236,7 @@ class pjAdminOrderReturns extends pjAdmin {
       
 
       $this->set('purchase_date', $arr['purchase_date']);
-      $this->set('return_date', $arr['created_at']);
+      $this->set('return_date', $arr['return_date']);
 
       $this->appendCss('bootstrap-chosen.css', PJ_THIRD_PARTY_PATH . 'chosen/');
       $this->appendJs('chosen.jquery.js', PJ_THIRD_PARTY_PATH . 'chosen/');
