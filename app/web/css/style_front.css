@@ -644,130 +644,130 @@ a[data-toggle='tab']:hover {
 }
 
 /* ==========================================================================
-	OVERRIDING THEME COLOR AND FONT STYLE
+  OVERRIDING THEME COLOR AND FONT STYLE
 ========================================================================== */
 body #pjWrapper {
   font-family: "Poppins", sans-serif;
 }
 @media only screen and (max-width: 768px) {
   #pjWrapper .nav-next i, #pjWrapper .nav-prev i {
-    color: #ffb03b;
+    color: #B29754;
  }
 }
 #pjWrapper .site-button {
-  background-color: #ffb03b;
+  background-color: #B29754;
 }
 #pjWrapper .site-button:active, #pjWrapper .site-button:hover, #pjWrapper .site-button:focus, #pjWrapper .active > .site-button {
-  background-color: #ffb03b;
+  background-color: #B29754;
 }
 #pjWrapper #voucher-btn {
-  background-color: #ffb03b !important;
+  background-color: #B29754 !important;
 }
 #pjWrapper #search-addon {
-  border: 1px solid #ffb03b !important;
+  border: 1px solid #B29754 !important;
 }
 #pjWrapper #topBtn {
-  background-color: #ffb03b;
+  background-color: #B29754;
 }
 #pjWrapper #radiodelivery:checked {
-  background-color: #ffb03b;
+  background-color: #B29754;
 }
 #pjWrapper .checkBox input:checked ~ label::before {
-  border: 2px solid #ffb03b;
-  background-color: #ffb03b;
+  border: 2px solid #B29754;
+  background-color: #B29754;
 }
 #pjWrapper .btn-show.active, #pjWrapper .btn-hide.active {
-  background-color: #ffb03b !important;
+  background-color: #B29754 !important;
   color: #fff;
 }
 #pjWrapper .btn-terms {
-  background: #ffb03b !important;
+  background: #B29754 !important;
 }
 .btn-terms:hover {
-  background: #ffb03b;
+  background: #B29754;
 }
 #pjWrapper #pjFdTermsAndConditions a {
-  color: #ffb03b !important;
+  color: #B29754 !important;
 }
 #pjWrapper .food-review-text, #pjWrapper .food-review-text:hover {
-  color: #ffb03b !important;
+  color: #B29754 !important;
 }
 #pjWrapper .btn-review {
-  background: #ffb03b !important;
+  background: #B29754 !important;
 }
 #pjWrapper .menu-list li.active {
-  border-bottom: 3px solid #ffb03b;
+  border-bottom: 3px solid #B29754;
 }
 #pjWrapper .foode-item-box ul li.active a {
-  color: #ffb03b !important;
+  color: #B29754 !important;
 }
 #pjWrapper .foode-item-box-mob ul li.active a {
-  color: #ffb03b !important;
+  color: #B29754 !important;
 }
 #pjWrapper .digit-group input {
-  color: #ffb03b;
+  color: #B29754;
 }
 #pjWrapper .digit-group input:focus {
-  border-bottom: 1px solid #ffb03b;
+  border-bottom: 1px solid #B29754;
 }
 #pjWrapper .clickCategory a:hover {
-  color: #ffb03b;
+  color: #B29754;
 }
 #pjWrapper button[type="submit"] {
-  background: #ffb03b;
+  background: #B29754;
 }
 #pjWrapper button[type="submit"]:hover {
-  background: #ffb03b;
+  background: #B29754;
 }
 #pjWrapper #btn-checkout, #pjWrapper .fdButtonLogin, #pjWrapper .fdButtonGetCategories, #pjWrapper .fdButtonPostPrice, #pjWrapper .fdButtonBackTypes, #pjWrapper .fdButtonPayment, #pjWrapper .fdButtonGetVouchers, #pjWrapper .fdButtonGetPreview, #pjWrapper .fdButtonGetCheckout, #pjWrapper .fdButtonConfirm, #pjWrapper .fdButtonProfile, #pjWrapper .fdButtonGetLogin, #pjWrapper .fdButtonSend, #pjWrapper .fdButtonOtp, #pjWrapper .fdButtonOtpResend, #pjWrapper .fdStartOver {
-  background: #ffb03b !important;
+  background: #B29754 !important;
 }
 #pjWrapper .fdButtonCheckout:hover, #pjWrapper .fdButtonLogin:hover, #pjWrapper .fdButtonGetCategories:hover, #pjWrapper .fdButtonPostPrice:hover, #pjWrapper .fdButtonBackTypes:hover, #pjWrapper .fdButtonPayment:hover, #pjWrapper .fdButtonGetVouchers:hover, #pjWrapper .fdButtonGetPreview:hover, #pjWrapper .fdButtonGetCheckout:hover, #pjWrapper .fdButtonConfirm:hover, #pjWrapper .fdButtonProfile:hover, #pjWrapper .fdButtonGetLogin:hover, #pjWrapper .fdButtonSend:hover, #pjWrapper .fdButtonOtp:hover, #pjWrapper .fdButtonOtpResend:hover {
-  background: #ffb03b !important;
+  background: #B29754 !important;
 }
 #pjWrapper .fdBtnOrderTotal, #pjWrapper .fdProductOrder, #pjWrapper .btn-postcode, #pjWrapper .btn-postcode-edit {
-  background-color: #ffb03b !important;
+  background-color: #B29754 !important;
 }
 #pjWrapper .fdTabOuter.active .fdTypeTab {
-  background-color: #ffb03b !important;
+  background-color: #B29754 !important;
 }
 #pjWrapper .fdTabOuter.active .fdTypeTab:hover {
-  background-color: #ffb03b !important;
+  background-color: #B29754 !important;
 }
 #pjWrapper .fdForogtPassword:hover {
   text-decoration: none !important;
-  color: #ffb03b !important;
+  color: #B29754 !important;
 }
 #pjWrapper .fdContinueGuest {
-  color: #ffb03b !important;
+  color: #B29754 !important;
 }
 #pjWrapper .fdContinue {
-  background-color: #ffb03b;
+  background-color: #B29754;
 }
 #terms {
-  color: #ffb03b;
+  color: #B29754;
 }
 #pjWrapper .toggle.orderType .toggle-off, #pjWrapper .orderType.btn-success, #pjWrapper .orderType.btn-success:hover, #pjWrapper .toggle.imageToggle .toggle-off, #pjWrapper .imageToggle.btn-success, #pjWrapper .imageToggle.btn-success:hover {
-  background-color: #ffb03b;
-  border-color: #ffb03b;
+  background-color: #B29754;
+  border-color: #B29754;
 }
 #pjWrapper #btn-cart {
-  background-color: #ffb03b;
+  background-color: #B29754;
 }
 #pjWrapper .search-btn {
-  background-color: #ffb03b;
+  background-color: #B29754;
 }
 #pjWrapper .pjFdProductPrice {
-  color: #ffb03b !important;
+  color: black !important;
 }
 #pjWrapper .rdx-separator.style-liner {
-  background-color: #ffb03b;
+  background-color: #B29754;
 }
 #pjWrapper .review_cnt {
-  color: #ffb03b;
+  color: #B29754;
 }
 #topbar .nav-profile {
-  color: #ffb03b !important;
+  color: #B29754 !important;
 }
 
 /**********************  AHAADOSA OVERRIDING STYLES *************************/

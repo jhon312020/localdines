@@ -22,7 +22,7 @@
 
       display: {
         'bksp'   : '\u2190',
-        'enter'  : 'return',
+        'enter'  : 'Return',
         'normal' : 'ABC',
         'meta1'  : '.?123',
         'meta2'  : '#+=',

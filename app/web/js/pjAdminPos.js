@@ -3381,15 +3381,17 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
         // VCMINVLSIS0 - simulates a signature payment
         // VCMINVLUIP0 - simulates an unsuccessful payment result
         // VCMINVLTIP0 - simulates a "TIMED_OUT" payment result
-        // console.log('Messages', dojo_notification_messages.PRESENT_CARD);
+        console.log('Messages', dojo_notification_messages);
         try {
           let connectionState = null;
           let socket = new WebSocket(dojo_host);
-          let terminalID = "VCMINVLDIP0";
+          // let terminalID = "VCMINVLSIS0";
+          let terminalID = "VCMINVLTIP0";
           // let terminalID = "97774431";
           let saleID = 1;
           amt = amt.replace(/\./g, "");
           amt = parseFloat(amt);
+          $('#loader_text').html("Please wait processing...");
           socket.onopen = function(e) {
             var transactionData = { "jsonrpc": "2.0", "method": "sale", "params": { "tid": terminalID, "currency": "GBP", "amount": amt }, "id": saleID };
             transactionData = JSON.stringify(transactionData);
@@ -3399,7 +3401,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
 
           socket.onmessage = function(event) {
             //alert(`[message] Data received from server: ${event.data}`);
-            // console.log(`${event.data}`);
+          console.log(`${event.data}`);
             connectionState = event.type;
             var eventMessage = JSON.parse(event.data);
             if (eventMessage.hasOwnProperty('result')) {
@@ -3415,6 +3417,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
               }
               $("#paymentBtn").attr('disabled', false);
             } else if (eventMessage.hasOwnProperty('error')) {
+              // console.log(eventMessage.error.message);
               if (dojo_notification_messages.hasOwnProperty(eventMessage.error.message)) {
                 var loader_message = dojo_notification_messages[eventMessage.error.message];
               } else {
@@ -3423,9 +3426,34 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
               sweetErrorAlert("Transaction Failed", loader_message);
             } else {
               // console.log('Dojo notificationValue', eventMessage.params.notificationValue);
-              var loader_message = dojo_notification_messages[eventMessage.params.notificationValue];
+              var notificationType = eventMessage.params.notificationValue;
+              var loader_message = dojo_notification_messages[notificationType];
               if (loader_message !== undefined) {
                 $('#loader_text').html(loader_message+"...");
+                if (notificationType ==='SIGNATURE_VERIFICATION_IN_PROGRESS') {
+                  swal({
+                    title: "Are you sure?",
+                    text: "Is signature verified",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: '#DD6B55',
+                    confirmButtonText: 'Yes, I am sure!',
+                    cancelButtonText: "No, cancel it!",
+                    closeOnConfirm: false,
+                    closeOnCancel: false
+                  },
+                  function(isConfirm) {
+                    var signatureConfirmation = '';
+                    if (isConfirm) {
+                       signatureConfirmation = { "jsonrpc": "2.0", "id": saleID,  "result": { "accepted": true }};
+                    } else {
+                      signatureConfirmation = { "jsonrpc": "2.0", "id": saleID,  "result": { "accepted": false }};
+                    }
+                    signatureConfirmation = JSON.stringify(signatureConfirmation);
+                    socket.send(signatureConfirmation);
+                    swal.close();
+                  });
+                }
               }
             }
           };
@@ -3466,7 +3494,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           confirmButtonText: "OK",
           closeOnConfirm: false,
         },function () {
-          formObj.submit();
+          // formObj.submit();
           swal.close();
           $("#paymentBtn").attr("disabled",false);
           $("#cover-spin").hide();

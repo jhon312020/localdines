@@ -1,43 +1,32 @@
 <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
-
 <!-- <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css"> -->
   <!-- ======= Top Bar ======= -->
-
   <section id="topbar" class="d-flex align-items-center fixed-top bg-black">
   <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
-
     <div class="container-fluid container-xl d-flex align-items-center justify-content-center justify-content-lg-start">
-
       <i class="bi bi-phone d-flex align-items-center"><span><?php echo WEB_CONTACT_NO; ?></span></i>
-
       <!-- <i class="bi bi-clock ms-4 d-none d-lg-flex align-items-center"><span>Mon-Sat: 11:00 AM - 23:00 PM</span></i> -->
-
     </div>
     <?php
-      			if($controller->isFrontLogged() && !isset($_SESSION['guest']))
-      			{ 
-      				?>
-            <!-- <div class="container-fluid container-xl d-flex align-items-center justify-content-end">
+			if($controller->isFrontLogged() && !isset($_SESSION['guest']))
+			{ 
+				?>
+      <!-- <div class="container-fluid container-xl d-flex align-items-center justify-content-end">
 
-            <a href="#!/loadProfile" class="bi bi-person nav-profile" aria-hidden="true"></a>
-            </div> -->
-            <div class="dropdown">
-              <a role="button" class="bi bi-person nav-profile dropdown-toggle" data-bs-toggle="dropdown" id="dropdownMenuLink">
-                
-              </a>
-              <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                <li><a class="dropdown-item" href="#!/loadProfile">Profile</a></li>
-                <li><a class="dropdown-item" href="#!/loadMyOrders">My Orders</a></li>
-              </ul>
-            </div>
-            
-    <?php
-      			} 
-      			?>
+      <a href="#!/loadProfile" class="bi bi-person nav-profile" aria-hidden="true"></a>
+      </div> -->
+      <div class="dropdown">
+        <a role="button" class="bi bi-person nav-profile dropdown-toggle" data-bs-toggle="dropdown" id="dropdownMenuLink">
+          
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+          <li><a class="dropdown-item" href="#!/loadProfile">Profile</a></li>
+          <li><a class="dropdown-item" href="#!/loadMyOrders">My Orders</a></li>
+        </ul>
+      </div>  
+    <?php } ?>
   </div>
   </section>
-
-
 
   <!-- ======= Header ======= -->
 
@@ -45,15 +34,13 @@
 
     <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
 
-
-
       <div class="logo me-auto">
 
-        <h1><a href="<?php echo APP_HOME_URL;?>index.php"><?php __('script_name') ?> </a></h1>
+        <!-- <h1><a href="<?php //echo APP_HOME_URL;?>index.php"><?php //__('script_name') ?> </a></h1> -->
 
         <!-- Uncomment below if you prefer to use an image logo -->
 
-        <!-- <a href="index.html"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
+         <a href="<?php echo APP_HOME_URL.'index.php';?>"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>
 
       </div>
 
@@ -111,8 +98,10 @@
             </ul>-->
 
           </li>
-
+          <li><a class="nav-link scrollto d-block d-sm-none" href="<?php echo APP_HOME_URL.'index.php#events';?>">Book An Event</a></li>
+          <li><a class="nav-link scrollto d-block d-sm-none" href="<?php echo APP_HOME_URL.'index.php#book-a-table';?>">Book a Table</a></li>
           <li><a class="nav-link scrollto" href="<?php echo APP_HOME_URL. 'index.php#contact';?>">Contact</a></li>
+
           <?php
       			if($controller->isFrontLogged())
       			{ 
