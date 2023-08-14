@@ -307,7 +307,8 @@ td .btn-secondary:hover {
   font-weight:bold;
   /* padding:13px 32px; */
   text-decoration:none;
-  text-shadow:0px 1px 0px #494d0c;
+/*  text-shadow:0px 1px 0px #494d0c;*/
+  text-shadow:0px 1px 0px #000000;
 }
 .main-category-container {
   cursor:pointer;
@@ -643,12 +644,14 @@ td .btn-secondary:hover {
 .confirm_payment_method .btn {
   margin-left: 5px;
   margin-right: 5px;
-  width: 18%;
+  min-width: 18%;
+  width:auto;
   font-size: 15px;
 }
 .confirm_table_name .btn {
   margin-bottom: 25px;
-  width: 17%;
+  min-width: 17%;
+  width: auto;
   margin-left: 10px;
   margin-right: 10px;
   font-size: 17px;
@@ -939,11 +942,13 @@ td .btn-secondary:hover {
 #jsHotItems button {
   font-size: 14px;
   height: 40px;
-  width: 15%;
+  min-width: 15%;
+  width: auto;
   padding: 0px;
   margin-left: 5px;
   color: #000;
   font-weight: bold;
+  margin-bottom: 5px;
 }
 #order_welcome_header {
   height: 25px; 
@@ -1069,4 +1074,8 @@ td .btn-secondary:hover {
 }
 #fdOrderList_1 tbody {
   color: black;
+}
+ 
+.padding-0px {
+  padding: 0px;
 }

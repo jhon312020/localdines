@@ -15,9 +15,11 @@
     });
   }
   function keyboard_normal(cls) {
+    console.log(cls);
     $(cls).keyboard({ layout: 'qwerty' });
   }
   function keyboard_email(cls) {
+   
     $(cls).keyboard({
 
       display: {
@@ -58,7 +60,7 @@
           '{normal} {space} ! ? {accept}'
         ]
 
-      }
+      },
 
     });
   }
@@ -79,14 +81,14 @@
     });
   }
   function load_keyboard() {
+    keyboard_email(".jsVK-email");
     keyboard_normal(".jsVK-normal");
     keyboard_price(".jsVK-price", 8);
-    keyboard_email(".jsVK-email");
     keyboard_numpad(".jsVK-numpad", 11);
     keyboard_numpad(".jsVK-numpad-table", 2);
   }
   $(document).ready(function() {
-    load_keyboard();;;
+    load_keyboard();
   });
  
 })(jQuery);

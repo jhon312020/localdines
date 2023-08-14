@@ -2990,6 +2990,27 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             })
           } 
         })
+        .on("click", "#jsBtnCancelReturnAll", function (e) {
+          console.log('called me');
+          var rowsIDS = [];
+          if ($("#fdOrderList_1").find("tbody.main-body > tr").length != 0) {
+            var rows = $("#fdOrderList_1").find("tbody.main-body > tr");        
+            rows.each(function() {
+              var rowID = $(this).data("index");
+              console.log(rowID);
+              rowsIDS.push(rowID);
+              var curQtyID = '#fdProductQty_'+rowID;
+              var curExtraID = '#extra-'+rowID;
+              var curQty = $(curQtyID).val()
+              $("#cancelReturnQty").val(curQty);
+              $("#cancelReturnQty").attr('max',curQty);
+              var strikeThroughRow = '#productReturn_'+rowID;
+              $(strikeThroughRow).parent().parent().parent().addClass('strikethrough');
+            })
+            $("#CancelReturnID").val(JSON.stringify(rowsIDS));
+          }
+          $("#cancelReturnModal").modal("show");
+        })
         .on("click", ".jsBtnCancelReturn", function (e) {
           var rowID = $(this).attr("data-index");
           $("#CancelReturnID").val(rowID);
@@ -3385,8 +3406,8 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
         try {
           let connectionState = null;
           let socket = new WebSocket(dojo_host);
-          // let terminalID = "VCMINVLSIS0";
-          let terminalID = "VCMINVLTIP0";
+          let terminalID = "VCMINVLSIS0";
+          // let terminalID = "VCMINVLTIP0";
           // let terminalID = "97774431";
           let saleID = 1;
           amt = amt.replace(/\./g, "");
@@ -3494,7 +3515,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           confirmButtonText: "OK",
           closeOnConfirm: false,
         },function () {
-          // formObj.submit();
+          formObj.submit();
           swal.close();
           $("#paymentBtn").attr("disabled",false);
           $("#cover-spin").hide();

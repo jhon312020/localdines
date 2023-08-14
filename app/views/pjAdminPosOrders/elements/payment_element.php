@@ -23,7 +23,7 @@ if(isset($tpl['arr']['total'])) {
 
   <div class="row">
     <div class="col-lg-6 col-sm-7 text-left">
-      <div class="money-container">
+      <div class="money-container" style="padding:0px">
         <a href="javascript:;" data-rs = "50.00" class="btn"><?php echo $si; ?>50</a>
         <a href="javascript:;" data-rs = "20.00" class="btn"><?php echo $si; ?>20</a>
         <a href="javascript:;" data-rs = "10.00" class="btn"><?php echo $si; ?>10</a>
@@ -35,8 +35,8 @@ if(isset($tpl['arr']['total'])) {
         </span>
       </div>
     </div>
-    <div class="col-lg-3 col-sm-3 text-right jsCash"><b>Cash: </b> <span id="" class="payment_bal"></span></div>
-    <div class="col-lg-3 col-sm-2 text-right jsCash">
+    <div class="col-lg-3 col-sm-2 text-right jsCash padding-0px"><b>Cash:&nbsp; &nbsp;</b> <span id="" class="payment_bal"></span></div>
+    <div class="col-lg-3 col-sm-3 text-right jsCash padding-0px">
       <div class="input-group money-container" >
         <input type="text" id="payment_cash_amount" name="payment_cash_amount" class="jsVK-price form-control pull-right input cus-w-150" value="0.00" />
         <span class="input-group-addon"><?php echo pjCurrency::getCurrencySign($tpl['option_arr']['o_currency'], false) ?></span> 
@@ -46,9 +46,9 @@ if(isset($tpl['arr']['total'])) {
   </div>
 
   <div class="row">
-     <div class="col-lg-5 col-sm-4 text-right"> <b>Balance: </b> <span id="payment_modal_bal" class="payment_bal"></span></div>
-    <div class="col-lg-4 col-sm-4 text-right d-none jsCard"> <b>Card: </b> <span id="payment_modal_bal" class="payment_bal"></span></div>
-    <div class="col-lg-3 col-sm-3 text-right d-none jsCard">
+     <div class="col-lg-5 col-sm-5 text-right"> <b>Balance: </b> <span id="payment_modal_bal" class="payment_bal"></span></div>
+    <div class="col-lg-4 col-sm-3 text-right d-none jsCard padding-0px"> <b>Card:&nbsp; &nbsp; </b> <span id="payment_modal_bal" class="payment_bal"></span></div>
+    <div class="col-lg-3 col-sm-4 text-right d-none jsCard">
       <div class="input-group money-container" >
         <input type="text" id="payment_card_amount" class="jsVK-price form-control pull-right input cus-w-150" value="0.00">
         <span class="input-group-addon"><?php echo pjCurrency::getCurrencySign($tpl['option_arr']['o_currency'], false) ?></span> 

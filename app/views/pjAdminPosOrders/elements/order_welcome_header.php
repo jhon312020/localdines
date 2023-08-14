@@ -66,9 +66,9 @@
     <div class="row">
       <div class="col-sm-8"><?php echo "Date: ". date($tpl['option_arr']['o_date_format']);  ?>
       <span style="margin-left: 5px; margin-right: 5px;">-</span><?php echo  date("D"); ?>
-      <span style="margin-left: 22%;"><strong>Hot Keys</strong></span>
+      <span style="float: right;" class="hidden-sm"><strong>Hot Keys</strong></span>
     </div>
-      <div id="currentTimeUpdate" class="col-sm-4 text-right"></div>
+      <div id="currentTimeUpdate" class="text-right"></div>
     </div>
   </div>
   <div class="col-sm-7">

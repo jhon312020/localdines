@@ -41,7 +41,8 @@
   <div class="row cus-pb-2 cus-pt-2 bottom_row">
     <div class="col-lg-12 col-sm-12 text-right">
         <span style="padding-left:10px">
-           <button type="submit" id="returnBtn" data-valid = "false" data-phone="" class="btn btn-primary">&nbsp;&nbsp;Return&nbsp;&nbsp;</button>
+          <button type="button" id="jsBtnCancelReturnAll" data-valid = "false" data-phone="" class="btn btn-primary">&nbsp;&nbsp;Return All&nbsp;&nbsp;</button>
+           <!-- <button type="submit" id="returnBtn" data-valid = "false" data-phone="" class="btn btn-primary">&nbsp;&nbsp;Submit&nbsp;&nbsp;</button> -->
           <a class="btn btn-secondary" id="btn-cancel" href="<?php echo PJ_INSTALL_URL; ?>index.php?controller=pjAdminPosOrders&action=pjActionIndex"><?php __('btnCancel'); ?></a>
         </span>
       </div>
