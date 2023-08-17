@@ -1,6 +1,6 @@
 <div id="paymentModal">
   <div class="row">
-    <div class="col-lg-6 col-sm-6 text-left">
+    <div class="col-lg-6 col-sm-6 text-left" style="padding: 2px">
       <div>
         <?php if ($_SESSION[$controller->defaultUser]['role_id'] != WAITER_R0LE_ID) { ?>
           <a href="#" class="btn btn-primary" id="btn-openDrawer"><i class="fa fa-unlock" aria-hidden="true"> TOpen</i></a>
@@ -12,7 +12,7 @@
         </span>
       </div>
     </div>
-    <div class="col-lg-6 col-sm-6 text-right">
+    <div class="col-lg-6 col-sm-6 text-right" style="padding: 2px">
       <div>
         <span style="padding-left:10px">
           <a href="#" class="btn btn-primary" id="btn-pause">

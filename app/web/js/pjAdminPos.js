@@ -3574,6 +3574,9 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           },
           maxLength : length,
           restrictInput : true,
+          visible: function(e, keyboard, el) {
+            keyboard.$preview[0].select();
+          }
         });
       }
       function keyboard_normal(cls) {

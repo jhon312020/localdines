@@ -181,6 +181,7 @@ class pjAdminPosOrders extends pjAdmin {
       $data['uuid'] = time();
       $data['ip'] = pjUtil::getClientIp();
       $data['locale_id'] = $this->getLocaleId();
+      $data['logged_user_id'] =  $_SESSION[$this->defaultUser]['id'];
       $data['call_start'] = $this->_post->toString('call_start');
       $data['call_end'] = date('h:i:s A');
       if ($this->_post->toString('override_postcode')) {
@@ -421,6 +422,7 @@ class pjAdminPosOrders extends pjAdmin {
       }
       $data = array();
       $data['ip'] = pjUtil::getClientIp();
+      $data['updated_user_id'] =  $_SESSION[$this->defaultUser]['id'];
       if ($this->_post->check('is_paid')) {
         $data['is_paid'] = 1;
         $data['payment_method'] = $post['payment_method'];
@@ -2863,6 +2865,7 @@ class pjAdminPosOrders extends pjAdmin {
       $data['uuid'] = time();
       $data['ip'] = pjUtil::getClientIp();
       $data['locale_id'] = $this->getLocaleId();
+      $data['logged_user_id'] =  $_SESSION[$this->defaultUser]['id'];
       $data['origin'] = 'Pos';
       $data['is_paid'] = $post['is_paused'] == "1" ? 0 : 1;
       $data['status'] = $post['is_paused'] == "1" ? "pending" : "delivered";
@@ -2972,6 +2975,7 @@ class pjAdminPosOrders extends pjAdmin {
       $data['is_paid'] = $post['is_paid'];
       $data['type'] = $post['origin'] == 'web' ? 'pickup & call' : 'pickup';
       $data['status'] = $post['is_paused'] == 0 ? 'delivered' : 'pending';
+      $data['updated_user_id'] =  $_SESSION[$this->defaultUser]['id'];
       if(strtolower($post['payment_method']) == "cash") {
         $data['payment_method']= 'cash';
       } elseif(strtolower($post['payment_method']) == "split") {

@@ -96,11 +96,13 @@
               <li><a href="#">Drop Down 4</a></li> 
 
             </ul>-->
-
           </li>
-          <li><a class="nav-link scrollto d-block d-sm-none" href="<?php echo APP_HOME_URL.'index.php#events';?>">Book An Event</a></li>
+          <li><a class="nav-link scrollto d-block d-sm-none" href="<?php echo APP_HOME_URL.'index.php#why-us';?>">What we offer</a></li>
+          <li><a class="nav-link scrollto d-block d-sm-none" href="<?php echo APP_HOME_URL.'index.php#gallery';?>">Gallery</a></li>
+          <li><a class="nav-link scrollto d-block d-sm-none" href="<?php echo APP_HOME_URL.'index.php#specials';?>">Signature Dishes</a></li>
           <li><a class="nav-link scrollto d-block d-sm-none" href="<?php echo APP_HOME_URL.'index.php#book-a-table';?>">Book a Table</a></li>
-          <li><a class="nav-link scrollto" href="<?php echo APP_HOME_URL. 'index.php#contact';?>">Contact</a></li>
+          <li><a class="nav-link scrollto d-block d-sm-none" href="<?php echo APP_HOME_URL.'index.php#events';?>">Book An Event</a></li>
+          <li><a class="nav-link scrollto" href="<?php echo APP_HOME_URL. 'index.php#contact';?>">Contact Us</a></li>
 
           <?php
       			if($controller->isFrontLogged())

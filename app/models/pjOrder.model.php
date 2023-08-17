@@ -14,6 +14,8 @@ class pjOrderModel extends pjAppModel
 		array('name' => 'id', 'type' => 'int', 'default' => ':NULL'),
 		array('name' => 'uuid', 'type' => 'int', 'default' => ':NULL'),
 		array('name' => 'client_id', 'type' => 'int', 'default' => ':NULL'),
+		array('name' => 'logged_user_id', 'type' => 'int', 'default' => ':NULL'),
+		array('name' => 'updated_user_id', 'type' => 'int', 'default' => ':NULL'),
 		array('name' => 'location_id', 'type' => 'int', 'default' => ':NULL'),
     array('name' => 'locale_id', 'type' => 'int', 'default' => ':NULL'),
 		array('name' => 'type', 'type' => 'enum', 'default' => ':NULL'),
