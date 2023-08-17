@@ -142,6 +142,9 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
 			$("#jsClientMessage").html(message[0].message);
       $("#jsClientMessageModal").modal("show");
 		}
+
+
+
 		$("#orderViewed-btn").on("click", function() {
 			audio.loop = false;
       audio.currentTime = 0;
@@ -211,3 +214,22 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
 		};
 	});
 })(jQuery_1_8_2);
+function confirmLogout() {
+  swal({
+      title: 'Are you sure?',
+      text: "You will be logged out.",
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#DD6B55',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Log out'
+  }, function(result) {
+      if (result) {
+          var actionUrl = document.getElementById('logoutLink').getAttribute('data-action');
+          window.location.href = actionUrl;
+      } 
+  });
+
+  return false;
+}
+
