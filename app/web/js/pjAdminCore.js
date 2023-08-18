@@ -77,13 +77,12 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
     					$('.blink').fadeIn(500);
     					$('#blink').text('WEB ORDER - '+data.orders);
     					$('#blink').css({
-	        		'background-color': '#ed5565',
-	        		'color': 'white',
+	        		'color': '#ed5565',
 	        		})
 						}
 						$('#blink').show();
 	          blink_text();
-	          setInterval(blink_text, 1000);
+	          setInterval(blink_text, 5000);
 	        }
 	      },
 	    });
