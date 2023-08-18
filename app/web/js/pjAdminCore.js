@@ -144,7 +144,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
 			$("#c_name").text(newOrder[0].surname);
 			$("#c_phone").text(newOrder[0].phone_no)
 			$("#o_id").val(newOrder[0].id);
-			$("#order_id").text("Web - "+newOrder[0].type+" - "+newOrder[0].order_id);
+			$("#order_id").html("Web - "+newOrder[0].type+"<div>"+newOrder[0].order_id)+"</div>";
 
       $("#newOrderNotif").modal("show");
 		}
