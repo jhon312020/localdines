@@ -78,7 +78,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
     					$('#blink').text('WEB ORDER - '+data.orders);
     					$('#blink').css({
 	        		'background-color': '#ed5565',
-	        		'color': 'white'
+	        		'color': 'white',
 	        		})
 						}
 						$('#blink').show();
@@ -166,7 +166,23 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
       $("#jsClientMessageModal").modal("show");
 		}
 
-
+		$('#logoutLink').on('click', function(event) {
+			event.preventDefault();
+			swal({
+	      title: 'Are you sure?',
+	      text: "You will be logged out.",
+	      type: 'warning',
+	      showCancelButton: true,
+	      confirmButtonColor: '#DD6B55',
+	      cancelButtonColor: '#d33',
+	      confirmButtonText: 'Log out'
+		  }, function(result) {
+	      if (result) {
+      		window.location.href = $('#logoutLink').attr('href');
+	      } 
+		  });
+			return false;
+		});
 
 		$("#orderViewed-btn").on("click", function() {
 			audio.loop = false;
@@ -237,22 +253,3 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
 		};
 	});
 })(jQuery_1_8_2);
-function confirmLogout() {
-  swal({
-      title: 'Are you sure?',
-      text: "You will be logged out.",
-      type: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#DD6B55',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Log out'
-  }, function(result) {
-      if (result) {
-          var actionUrl = document.getElementById('logoutLink').getAttribute('data-action');
-          window.location.href = actionUrl;
-      } 
-  });
-
-  return false;
-}
-

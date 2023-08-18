@@ -1386,14 +1386,16 @@ class pjFrontEnd extends pjFront {
 		$pjSmsApi = new tlSmsApi();
 		if (ENVIRONMENT != 'production') {
       $phone = TESTMOBILENUMBER;
+      return true;
     }
+
 		$response = $pjSmsApi
 			->setApiKey($this->option_arr['plugin_sms_api_key'])
 			->setNumber($phone)
 			->setText($msg)
 			->setSender(DOMAIN)
 			->send();
-		if($response == '1') { $sts = '1'; } else { $sts = '0'; }
+		if ($response == '1') { $sts = '1'; } else { $sts = '0'; }
         pjBaseSmsModel::factory()
 		->reset()
 		->setAttributes(array(
