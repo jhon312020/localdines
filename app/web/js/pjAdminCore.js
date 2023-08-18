@@ -35,44 +35,67 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
 			});
 			//getClientMessage();
 		})
-		setInterval(function() {
-			//alert("new order");
-			//$(document).off("ajaxStart.dg");
-			// $(document).off('ajaxStart.dg');
-            // $(document).off('ajaxStop.dg');
-			// $(document).on("ajaxStart.dg", function () {
-			// 	$('.ibox-content.sk-loading > .sk-spinner').hide();
-			//global: false, });
-			//$(".sk-spinner-double-bounce.sk-spinner").css("width", "0px");
-			// $.post(
-			//   "index.php?controller=pjFrontPublic&action=pjActionCheckNewOrder",
-			// ).done(function (data) {
-			//   if(data.status == 'true') {
-			// 	//console.log(data.orders)
-			// 	$("#notify_count").text(data.orders);
-            //     GetNewOrder();
 
-			//   } 
-			//   //$(".sk-spinner-double-bounce.sk-spinner").css("width", "40px");
-			// });
-			$.ajax({
-				type: "POST",
-				async: false,
-				global: false,
-				url: "index.php?controller=pjFrontPublic&action=pjActionCheckNewOrder",
-				success: function (data) {
-				  
-					if(data.status == 'true') {
-						//console.log(data.orders)
-						$("#notify_count").text(data.orders);
-						GetNewOrder();
-		
-					} 
-				 
-				},
-			  });
-			
-		  }, 20000);
+		let isBlinking = false;
+	  let blinkInterval;
+
+	  function toggleBlink() {
+	    if (isBlinking) {
+	      $('#blinkButton').css({
+	        'background-color': 'transparent',
+	        'color': 'black'
+	      });
+	      isBlinking = false;
+	      clearInterval(blinkInterval);
+	    } else {
+	      $('#blinkButton').css({
+	        'background-color': 'red',
+	        'color': 'white'
+	      });
+	      isBlinking = true;
+	      blinkInterval = setInterval(function() {
+	        $('#blinkButton').toggleClass('blinking');
+	      }, 500);
+	    }
+	  }
+
+	  function startBlinking() {
+	    // Your AJAX request and logic here
+	    $.ajax({
+	      type: "POST",
+	      async: false,
+	      global: false,
+	      url: "index.php?controller=pjFrontPublic&action=pjActionCheckNewOrder",
+	      success: function(data) {
+	        if (data.status == 'true') {
+	          $("#notify_count").text(data.orders);
+	          GetNewOrder();
+	          $('#blinkButton').show();
+	          toggleBlink();
+	          function blink_text() {
+    					$('.blink').fadeOut(500);
+    					$('.blink').fadeIn(500);
+    					$('#blink').text('WEB ORDER - '+data.orders);
+    					$('#blink').css({
+	        		'background-color': '#ed5565',
+	        		'color': 'white'
+	        		})
+						}
+						$('#blink').show();
+	          blink_text();
+	          setInterval(blink_text, 1000);
+	        }
+	      },
+	    });
+	  }
+
+	  startBlinking();
+
+	  setInterval(function() {
+	    startBlinking();
+	  }, 20000);
+
+
 		setInterval(getClientMessage(), 10000);
 		$('#showTerms').on("click",function() {
 			$.ajax({
@@ -104,7 +127,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
 			});
 		}
 		function showNotification(newOrder) {
-			//console.log(newOrder);
+			// console.log(newOrder);
 			audio.loop = true;
       audio.play();
 			$("#o_type").text(newOrder[0].type);

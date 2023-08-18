@@ -85,8 +85,12 @@
             <a href="javascript:;" id="btn-listpos" class="btn btn-primary pos-list-button <?php if($tpl['origin_type'] == 'Pos') { ?> selected <?php }  ?>"><i class="fa fa-calculator"></i> <?php echo "POS" ?><span id="pending-pos" class="pending-sup"> - <?php echo $tpl['posCount'];?> </span></a>
             <a href="javascript:;" id="btn-listtelephone" class="btn btn-primary pos-list-button <?php if($tpl['origin_type'] == 'Telephone') { ?> selected <?php }  ?>"><i class="fa fa-phone"></i> <?php echo "TEL" ?> <span id="pending-telephone" class="pending-sup"> - <?php echo $tpl['telCount'];?> </span></a>
             <a href="javascript:;" id="btn-listweb" class="btn btn-primary pos-list-button <?php if($tpl['origin_type'] == 'Web') { ?> selected <?php }  ?>"><i class="fa fa-shopping-cart"></i> <?php echo "WEB" ?> <span id="pending-web" class="pending-sup"> - <?php echo $tpl['webCount'];?> </span></a>
+                <span class="btn btn-primary blink" id="blink" style="display: none;margin-left: 150px; font-size: 15px;">WEB ORDER</span>
           </div><!-- /.col-md-6 -->
           <!-- <input type="text" name="order_info" value="<?php //echo $tpl['order_info']; ?>"> -->
+          <!-- <div class="col-md-6">
+            <span class="blink" id="blink" style="display: none;">WEB ORDER</span>
+          </div> -->
 	        <form action="" method="get" class="form-horizontal frm-filter">
             <div class="col-md-4">
               <div class="input-group">
