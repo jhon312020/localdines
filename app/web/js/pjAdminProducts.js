@@ -199,6 +199,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 				columns: [{text: myLabel.image, type: "text", sortable: false, editable: false, renderer: formatImage},
 				          {text: myLabel.name, type: "text", sortable: true, editable: true},
 				          {text: myLabel.price, type: "text", sortable: false, editable: false},
+				          {text: myLabel.status, type: "text", sortable: false, editable: false},
 				          {text: myLabel.is_featured, type: "toggle", sortable: true, editable: true, 
 				        	  editableRenderer: function () {
 				        		  return 0;
@@ -208,7 +209,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 				        	  cellClass: "text-center"}],
 				dataUrl: "index.php?controller=pjAdminProducts&action=pjActionGetProduct" + pjGrid.queryString,
 				dataType: "json",
-				fields: ['image', 'name', 'price', 'is_featured'],
+				fields: ['image', 'name', 'price', 'status', 'is_featured'],
 				paginator: {
 					actions: [
 					   {text: myLabel.delete_selected, url: "index.php?controller=pjAdminProducts&action=pjActionDeleteProductBulk", render: true, confirmation: myLabel.delete_confirmation}
@@ -240,6 +241,19 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 			$grid.datagrid("option", "cache", cache);
 			$grid.datagrid("load", "index.php?controller=pjAdminProducts&action=pjActionGetProduct", "is_featured", "DESC", content.page, content.rowCount);
 			return false;
+
+		}).on("click", '.jsBtnStatus', function(e){
+			console.log("hi");
+			var $this = $(this),
+				content = $grid.datagrid("option", "content"),
+				cache = $grid.datagrid("option", "cache");
+			$.extend(cache, {
+				status: $this.val()
+			});
+			$grid.datagrid("option", "cache", cache);
+			$grid.datagrid("load", "index.php?controller=pjAdminProducts&action=pjActionGetProduct", "is_featured", "DESC", content.page, content.rowCount);
+			return false;
+
 		}).on("change", '#filter_category', function(e){
 
 			var $this = $(this),
@@ -419,5 +433,18 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 				return false;
 			}
 		})
+
+		$(document).ready(function() {
+			$('#all').not(this).addClass('btn-primary');
+	  		$('.jsBtnStatus').click(function() {
+	  		$('.jsBtnStatus').removeClass('btn-primary');
+	    	$('.jsBtnStatus').removeClass('active');
+	    	$(this).addClass('active');
+	    	$(this).css('color', 'white');
+	    	$(this).addClass('btn-primary');
+	    	$('.jsBtnStatus').not(this).css('color', '');
+	    	$('#all').not(this).addClass('btn-default');
+		  });
+		});
 	});
 })(jQuery_1_8_2);

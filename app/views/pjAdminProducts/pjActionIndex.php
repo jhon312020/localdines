@@ -45,10 +45,10 @@
     <div class="ibox float-e-margins">
       <div class="ibox-content">
         <div class="row m-b-md">
-          <div class="col-md-4">
+          <div class="col-md-2">
           	<a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminProducts&amp;action=pjActionCreate" class="btn btn-primary"><i class="fa fa-plus"></i> <?php __('btnAddProduct') ?></a>
           </div><!-- /.col-md-6 -->
-          <div class="col-md-4 col-sm-8">
+          <div class="col-md-3 col-sm-3">
             <form action="" method="get" class="form-horizontal frm-filter">
               <div class="input-group">
                 <input type="text" name="q" placeholder="<?php __('plugin_base_btn_search', false, true); ?>" class="form-control">
@@ -60,6 +60,15 @@
               </div>
             </form>
           </div><!-- /.col-md-3 -->
+
+          <div class="col-md-3">
+            <div class="btn-group" role="group" aria-label="...">
+              <button type="submit" class="btn btn-default jsBtnStatus" id="all" value="all"><?php echo "All"; ?></button>
+              <button type="submit" class="btn btn-default jsBtnStatus" id="active" value="active"><?php echo "Active"; ?></button>
+              <button type="submit" class="btn btn-default jsBtnStatus" id="inactive" value="inactive"></i><?php echo "InActive"; ?></button>
+            </div>
+          </div><!-- /.col-md-6 -->
+
           <div class="col-md-2 col-md-offset-2 text-right">
             <select name="type" id="filter_category" class="form-control">
               <option value="all">-- <?php echo "All"; ?> --</option>
@@ -89,6 +98,7 @@
   myLabel.image = <?php x__encode('lblImage'); ?>;
   myLabel.name = <?php x__encode('lblName'); ?>;
   myLabel.price = <?php x__encode('lblPrice'); ?>;
+  myLabel.status = <?php x__encode('lblStatus'); ?>;
   myLabel.is_featured = "Hot Keys";
   //myLabel.is_featured = <?php echo "Hot Keys"; ?>;
   myLabel.yes = <?php x__encode('_yesno_ARRAY_T'); ?>;
