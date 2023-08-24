@@ -325,7 +325,7 @@ class pjAdminProducts extends pjAdmin {
     if ($this->isXHR()) {
       $pjProductModel = pjProductModel::factory()->join('pjMultiLang', "t2.foreign_id = t1.id AND t2.model = 'pjProduct' AND t2.locale = '" . $this->getLocaleId() . "' AND t2.field = 'name'", 'left');
 
-      if ($this->_get->toString('status') !== '') {
+      if ($this->_get->toString('status') != '') {
         $status = $this->_get->toString('status');
         if (in_array($status, array(1, 0))) {
           $pjProductModel->where('t1.status', $status);
