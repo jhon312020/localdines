@@ -325,29 +325,28 @@ class pjAdminProducts extends pjAdmin {
     if ($this->isXHR()) {
       $pjProductModel = pjProductModel::factory()->join('pjMultiLang', "t2.foreign_id = t1.id AND t2.model = 'pjProduct' AND t2.locale = '" . $this->getLocaleId() . "' AND t2.field = 'name'", 'left');
 
-      // if ($this->_get->toString('status')) {
-      //   $status =$this->_get->toString('status');
-
-      //   if (in_array($status, array('T', 'F'))) {
-      //     $pjProductModel->where('t1.status', $status);
-      //   }
-      // }
+      if ($this->_get->toString('status') !== '') {
+        $status = $this->_get->toString('status');
+        if (in_array($status, array(1, 0))) {
+          $pjProductModel->where('t1.status', $status);
+        }
+      }
 
       if ($q = trim($this->_get->toString('q'))) {
         $pjProductModel->where("(t2.content LIKE '%$q%')");
       }
 
-      if ($status = $this->_get->toString('status')) {
-        $status = strtolower($status);
-        switch($status) {
-          case 'active':
-            $pjProductModel->where('t1.status', 1);
-          break;
-          case 'inactive':
-            $pjProductModel->where('t1.status', 0);
-          break;
-        }
-      }
+      // if ($status = $this->_get->toString('status')) {
+      //   $status = strtolower($status);
+      //   switch($status) {
+      //     case 'active':
+      //       $pjProductModel->where('t1.status', 1);
+      //     break;
+      //     case 'inactive':
+      //       $pjProductModel->where('t1.status', 0);
+      //     break;
+      //   }
+      // }
       if ($category_id =$this->_get->toInt('category_id')) {
         $pjProductModel->where("(t1.id IN (SELECT TPC.product_id FROM `" . pjProductCategoryModel::factory()->getTable() . "` AS TPC WHERE TPC.category_id='" . $category_id . "'))");
       }
@@ -389,11 +388,11 @@ class pjAdminProducts extends pjAdmin {
           $v['price'] = pjCurrency::formatPrice($v['price']);
         }
 
-        if ($v['status'] == 1) {
-            $v['status'] = 'Active';
-        } elseif ($v['status'] == 0) {
-            $v['status'] = 'InActive';
-        }
+        // if ($v['status'] == 1) {
+        //     $v['status'] = 'Active';
+        // } elseif ($v['status'] == 0) {
+        //     $v['status'] = 'Inactive';
+        // }
 
         $data[$k]=$v;
       }

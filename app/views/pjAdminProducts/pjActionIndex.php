@@ -48,7 +48,7 @@
           <div class="col-md-2">
           	<a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminProducts&amp;action=pjActionCreate" class="btn btn-primary"><i class="fa fa-plus"></i> <?php __('btnAddProduct') ?></a>
           </div><!-- /.col-md-6 -->
-          <div class="col-md-3 col-sm-3">
+          <div class="col-md-3 col-md-offset-2 col-sm-3">
             <form action="" method="get" class="form-horizontal frm-filter">
               <div class="input-group">
                 <input type="text" name="q" placeholder="<?php __('plugin_base_btn_search', false, true); ?>" class="form-control">
@@ -60,17 +60,19 @@
               </div>
             </form>
           </div><!-- /.col-md-3 -->
-
-          <div class="col-md-3">
+          <?php
+            $filter = __('filter', true);
+          ?>
+          <div class="col-md-5 text-right">
             <div class="btn-group" role="group" aria-label="...">
-              <button type="submit" class="btn btn-default jsBtnStatus" id="all" value="all"><?php echo "All"; ?></button>
-              <button type="submit" class="btn btn-default jsBtnStatus" id="active" value="active"><?php echo "Active"; ?></button>
-              <button type="submit" class="btn btn-default jsBtnStatus" id="inactive" value="inactive"></i><?php echo "InActive"; ?></button>
+              <!-- <button type="submit" class="btn btn-default jsBtnStatus" id="all" value="all"><?php echo "All"; ?></button>
+              <button type="submit" class="btn btn-default btn-filter jsBtnStatus" id="active" value="active" data-column="status" data-value="T"><i class="fa fa-check m-r-xs"></i><?php echo "Active"; ?></button>
+              <button type="submit" class="btn btn-default btn-filter jsBtnStatus" id="inactive" value="inactive" data-column="status" data-value="F"><i class="fa fa-times m-r-xs"></i><?php echo "InActive"; ?></button> -->
+              <button type="button" class="btn btn-primary btn-all active"><?php __('lblAll'); ?></button>
+              <button type="button" class="btn btn-default btn-filter" data-column="status" data-value="1"><i class="fa fa-check m-r-xs"></i><?php echo $filter['active']; ?></button>
+              <button type="button" class="btn btn-default btn-filter" data-column="status" data-value="0"><i class="fa fa-times m-r-xs"></i><?php echo $filter['inactive']; ?></button>
             </div>
-          </div><!-- /.col-md-6 -->
-
-          <div class="col-md-2 col-md-offset-2 text-right">
-            <select name="type" id="filter_category" class="form-control">
+            <select name="type" id="filter_category" class="form-control" style="width:auto; display: inline-block;">
               <option value="all">-- <?php echo "All"; ?> --</option>
               <?php 
               foreach($tpl['categories'] as $category) { ?>
@@ -99,6 +101,8 @@
   myLabel.name = <?php x__encode('lblName'); ?>;
   myLabel.price = <?php x__encode('lblPrice'); ?>;
   myLabel.status = <?php x__encode('lblStatus'); ?>;
+  myLabel.active = <?php x__encode('filter_ARRAY_active'); ?>;
+  myLabel.inactive = <?php x__encode('filter_ARRAY_inactive'); ?>;
   myLabel.is_featured = "Hot Keys";
   //myLabel.is_featured = <?php echo "Hot Keys"; ?>;
   myLabel.yes = <?php x__encode('_yesno_ARRAY_T'); ?>;

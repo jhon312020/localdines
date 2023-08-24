@@ -199,11 +199,11 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 				columns: [{text: myLabel.image, type: "text", sortable: false, editable: false, renderer: formatImage},
 				          {text: myLabel.name, type: "text", sortable: true, editable: true},
 				          {text: myLabel.price, type: "text", sortable: false, editable: false},
-				          {text: myLabel.status, type: "text", sortable: false, editable: false},
+				          {text: myLabel.status, type:"toggle", sortable: true, editable: true, positiveLabel: myLabel.active, positiveValue: "1", negativeLabel: myLabel.inactive, negativeValue: "0"},
 				          {text: myLabel.is_featured, type: "toggle", sortable: true, editable: true, 
-				        	  editableRenderer: function () {
-				        		  return 0;
-				        	  },
+				        	  // editableRenderer: function () {
+				        		//   return 0;
+				        	  // },
 				        	  saveUrl: "index.php?controller=pjAdminProducts&action=pjActionSaveFeatured&id={:id}",
 				        	  positiveLabel: myLabel.yes, positiveValue: "1", negativeLabel: myLabel.no, negativeValue: "0", 
 				        	  cellClass: "text-center"}],
@@ -227,7 +227,38 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 				}
 			});
 		}
-		
+
+		$(document).on("click", ".btn-all", function (e) {
+			if (e && e.preventDefault) {
+				e.preventDefault();
+			}
+			$(this).addClass("btn-primary active").removeClass("btn-default")
+				.siblings(".btn").removeClass("btn-primary active").addClass("btn-default");
+			var content = $grid.datagrid("option", "content"),
+				cache = $grid.datagrid("option", "cache");
+			$.extend(cache, {
+				status: "",
+				q: ""
+			});
+			$grid.datagrid("option", "cache", cache);
+			$grid.datagrid("load", "index.php?controller=pjAdminProducts&action=pjActionGetProduct", "is_featured", "DESC", content.page, content.rowCount);
+			
+		}).on("click", ".btn-filter", function (e) {
+			if (e && e.preventDefault) {
+				e.preventDefault();
+			}
+			var $this = $(this),
+				content = $grid.datagrid("option", "content"),
+				cache = $grid.datagrid("option", "cache"),
+				obj = {};
+			$this.addClass("btn-primary active").removeClass("btn-default")
+				.siblings(".btn").removeClass("btn-primary active").addClass("btn-default");
+			obj.status = "";
+			obj[$this.data("column")] = $this.data("value");
+			$.extend(cache, obj);
+			$grid.datagrid("option", "cache", cache);
+			$grid.datagrid("load", "index.php?controller=pjAdminProducts&action=pjActionGetProduct", "is_featured", "DESC", content.page, content.rowCount);
+		})
 		$(document).on("submit", ".frm-filter", function (e) {
 			if (e && e.preventDefault) {
 				e.preventDefault();
@@ -242,17 +273,17 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 			$grid.datagrid("load", "index.php?controller=pjAdminProducts&action=pjActionGetProduct", "is_featured", "DESC", content.page, content.rowCount);
 			return false;
 
-		}).on("click", '.jsBtnStatus', function(e){
-			console.log("hi");
-			var $this = $(this),
-				content = $grid.datagrid("option", "content"),
-				cache = $grid.datagrid("option", "cache");
-			$.extend(cache, {
-				status: $this.val()
-			});
-			$grid.datagrid("option", "cache", cache);
-			$grid.datagrid("load", "index.php?controller=pjAdminProducts&action=pjActionGetProduct", "is_featured", "DESC", content.page, content.rowCount);
-			return false;
+		// }).on("click", '.jsBtnStatus', function(e){
+		// 	console.log("hi");
+		// 	var $this = $(this),
+		// 		content = $grid.datagrid("option", "content"),
+		// 		cache = $grid.datagrid("option", "cache");
+		// 	$.extend(cache, {
+		// 		status: $this.val()
+		// 	});
+		// 	$grid.datagrid("option", "cache", cache);
+		// 	$grid.datagrid("load", "index.php?controller=pjAdminProducts&action=pjActionGetProduct", "is_featured", "DESC", content.page, content.rowCount);
+		// 	return false;
 
 		}).on("change", '#filter_category', function(e){
 
@@ -434,17 +465,17 @@ var jQuery_1_8_2 = jQuery_1_8_2 || $.noConflict();
 			}
 		})
 
-		$(document).ready(function() {
-			$('#all').not(this).addClass('btn-primary');
-	  		$('.jsBtnStatus').click(function() {
-	  		$('.jsBtnStatus').removeClass('btn-primary');
-	    	$('.jsBtnStatus').removeClass('active');
-	    	$(this).addClass('active');
-	    	$(this).css('color', 'white');
-	    	$(this).addClass('btn-primary');
-	    	$('.jsBtnStatus').not(this).css('color', '');
-	    	$('#all').not(this).addClass('btn-default');
-		  });
-		});
+		// $(document).ready(function() {
+		// 	$('#all').not(this).addClass('btn-primary');
+	  // 		$('.jsBtnStatus').click(function() {
+	  // 		$('.jsBtnStatus').removeClass('btn-primary');
+	  //   	$('.jsBtnStatus').removeClass('active');
+	  //   	$(this).addClass('active');
+	  //   	$(this).css('color', 'white');
+	  //   	$(this).addClass('btn-primary');
+	  //   	$('.jsBtnStatus').not(this).css('color', '');
+	  //   	$('#all').not(this).addClass('btn-default');
+		//   });
+		// });
 	});
 })(jQuery_1_8_2);
