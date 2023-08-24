@@ -1664,9 +1664,9 @@
 							"index": this.opts.index,
 							"type": ""
 						 };
-			$("#previewModal").modal("hide"); 
+			console.log('test', this.opts);
+			pjQ.$("#previewModal").modal("hide"); 
 			pjQ.$.get([this.opts.folder, "index.php?controller=pjFrontPublic&action=pjActionMain", "&session_id=", self.opts.session_id].join(""), params).done(function (data) {
-				
 				self.$container.html(data);
 				pjQ.$('.fdLoader').css('display', 'none');
 				pjQ.$('.pjFdBtnHome').parent().addClass('active');

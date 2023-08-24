@@ -2990,14 +2990,32 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             })
           } 
         })
-        .on("click", "#jsBtnCancelReturnAll", function (e) {
-          console.log('called me');
+        .on("click","#jsReturnSelectAll", function() {
+          if ($(this).is(':checked')) {
+            console.log('checked');
+            $('.jsReturnItems').prop('checked', true);
+          } else {
+            console.log('not checked');
+            $('.jsReturnItems').prop('checked', false);
+          }
+        })
+        .on("click", ".jsReturnItems", function() {
+          let isAllItemsSelected = true;
+          $('.jsReturnItems').each(function() { 
+            if (!$(this).is(':checked')) {
+              isAllItemsSelected = false;
+              return;
+            }
+          });
+          console.log('Selected '+isAllItemsSelected);
+          $('#jsReturnSelectAll').prop('checked', isAllItemsSelected);
+        })
+        .on("click", "#jsBtnCancelReturnAll", function() {
           var rowsIDS = [];
           if ($("#fdOrderList_1").find("tbody.main-body > tr").length != 0) {
             var rows = $("#fdOrderList_1").find("tbody.main-body > tr");        
             rows.each(function() {
               var rowID = $(this).data("index");
-              console.log(rowID);
               rowsIDS.push(rowID);
               var curQtyID = '#fdProductQty_'+rowID;
               var curExtraID = '#extra-'+rowID;

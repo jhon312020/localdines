@@ -26,7 +26,7 @@
   <input type="hidden" id="total_persons" name="total_persons" value="<?php echo $tpl['arr']['total_persons'];?>" />
   <div class="row">
     <div class="col-sm-12">
-      <?php include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/order_inventory_table.php';  ?> 
+      <?php include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/order_inventory_return_table.php';  ?> 
       <?php //include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/voucher_code.php';  ?>
       <div class="clearfix" id="btns-epos">
         <!-- <a class="btn btn-white btn-lg pull-left" href="<?php echo PJ_INSTALL_URL; ?>index.php?controller=pjAdminPosOrders&action=pjActionIndex"><?php __('btnCancel'); ?></a> -->

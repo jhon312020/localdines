@@ -622,6 +622,7 @@ class pjAdminPosOrders extends pjAdmin {
           ->getTable() . '` AS TPE WHERE TPE.product_id=t1.id) as cnt_extras')
           ->join('pjMultiLang', "t2.foreign_id = t1.id AND t2.model = 'pjProduct' AND t2.locale = '" . $this->getLocaleId() . "' AND t2.field = 'name'", 'left')
           ->whereIn("t1.id", $category_arr)->groupBy('t1.id, t1.set_different_sizes, t1.price')
+          ->orderBy("counter_number ASC")
           ->findAll()
           ->getData();
       }

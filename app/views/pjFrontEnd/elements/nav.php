@@ -53,7 +53,9 @@
 
           <li><a class="nav-link scrollto" href="index.php#about">About</a></li> -->
 
-          <li><a class="nav-link active" href="menu.php">Menu</a></li>
+          <!-- <li><a class="nav-link active" href="menu.php">Menu</a></li> -->
+          <li><a class="nav-link active" href="menu.php?cat_id=39">KABAB AND GRILL</a></li>
+          <li><a class="nav-link active" href="menu.php?cat_id=40">FRIED CHICKEN</a></li>
 
          <!--  <li><a class="nav-link scrollto" href="index.php#specials">Specials</a></li>
 
