@@ -95,6 +95,9 @@ $isScriptQrCodeController = in_array($controller_name, array('pjAdminQrCode'));
 $isScripQrCodeIndex = $isScriptQrCodeController && in_array($action_name, array('pjActionFrontEnd'));
 
 // Settings
+$isScriptOptionsController = in_array($controller_name, array('pjAdminOptions', 'pjAdminMasters')) && !in_array($action_name, array('pjActionPreview', 'pjActionInstall'));
+
+// Settings
 $isScriptOptionsController = in_array($controller_name, array('pjAdminOptions', 'pjAdminPostalcode')) && !in_array($action_name, array('pjActionPreview', 'pjActionInstall'));
 
 $isScriptOptionsBooking         = $isScriptOptionsController && in_array($action_name, array('pjActionOrders'));
@@ -243,13 +246,6 @@ $hasAccessScriptOptionsPrintOrder       = pjAuth::factory('pjAdminOptions', 'pjA
     </a></li>
 <?php endif; ?>
 
-<?php if($hasAccessScriptMasters): ?>
-    <li <?php echo $isScriptMastersController ? ' class="active"' : NULL; ?>><a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminMasters&amp;action=pjActionIndex">
-        <i class="fa fa-building-o" aria-hidden="true"></i>
-        <span class="nav-label"><?php echo "Masters";?></span>
-    </a></li>
-<?php endif; ?>
-
 <?php if($hasAccessScriptIncomes): ?>
     <li <?php echo $isScriptIncomesController ? ' class="active"' : NULL; ?>><a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminIncomes&amp;action=pjActionIndex">
         <i class="fa fa-handshake-o" aria-hidden="true"></i>
@@ -340,6 +336,11 @@ $hasAccessScriptOptionsPrintOrder       = pjAuth::factory('pjAdminOptions', 'pjA
             
             <?php if ($hasAccessScriptOptionsPrintOrder): ?>
                 <li<?php echo $isScriptOptionsPrintOrder ? ' class="active"' : NULL; ?>><a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminOptions&amp;action=pjActionPrintOrder"><?php __('menuPrintOrder');?></a></li>
+            <?php endif; ?>
+            <?php if($hasAccessScriptMasters): ?>
+                <li <?php echo $isScriptMastersController ? ' class="active"' : NULL; ?>><a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminMasters&amp;action=pjActionIndex">
+                    <?php echo "Masters";?>
+                </a></li>
             <?php endif; ?>
             <?php if($hasAccessScriptPostalcode): ?>
                 <li <?php echo $isScriptPostalcodeController ? ' class="active"' : NULL; ?>><a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminPostalcode&amp;action=pjActionIndex">
