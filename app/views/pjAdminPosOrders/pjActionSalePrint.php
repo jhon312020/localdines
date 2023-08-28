@@ -8,7 +8,7 @@
     <span style="font-size:15px">OrderID : <?php echo $tpl['arr']['order_id']; ?></span><br/>
     <span style="margin-top: 0px;margin-bottom: 0px; font-size:14px">DATE : <?php echo date('d-m-Y H:i:s', time()); ?></span>
 	</div>
-	<table class="table table-borderless" style="width: <?php echo $paperWidth;?>;">
+	<table class="table table-borderless" style="width: <?php echo $paperWidth;?>; text-align: center;">
 		<thead>
       <tr>
         <td colspan="2"><hr/></td>

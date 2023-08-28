@@ -3012,10 +3012,11 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
         })
         .on("click", "#jsBtnCancelReturnAll", function() {
           var rowsIDS = [];
-          if ($("#fdOrderList_1").find("tbody.main-body > tr").length != 0) {
-            var rows = $("#fdOrderList_1").find("tbody.main-body > tr");        
-            rows.each(function() {
-              var rowID = $(this).data("index");
+          let isItemSelected = false;
+          $('.jsReturnItems').each(function() { 
+            if ($(this).is(':checked')) {
+              isItemSelected = true;
+              var rowID = $(this).parent().parent().data('index');
               rowsIDS.push(rowID);
               var curQtyID = '#fdProductQty_'+rowID;
               var curExtraID = '#extra-'+rowID;
@@ -3024,10 +3025,19 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
               $("#cancelReturnQty").attr('max',curQty);
               var strikeThroughRow = '#productReturn_'+rowID;
               $(strikeThroughRow).parent().parent().parent().addClass('strikethrough');
-            })
+            } else {
+              var rowID = $(this).parent().parent().data('index');
+              var strikeThroughRow = '#productReturn_'+rowID;
+              $(strikeThroughRow).parent().parent().parent().removeClass('strikethrough');
+            }
+          })
+          if (isItemSelected) {
             $("#CancelReturnID").val(JSON.stringify(rowsIDS));
+            $("#cancelReturnModal").modal("show");
+          } else {
+            alert('Please select atleast one item to refund');
           }
-          $("#cancelReturnModal").modal("show");
+          
         })
         .on("click", ".jsBtnCancelReturn", function (e) {
           var rowID = $(this).attr("data-index");

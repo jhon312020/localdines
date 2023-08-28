@@ -7,8 +7,8 @@
       </div>
       <div class="modal-body" id="modalBody">
         <form name="ProductCancelReturnForm" id="ProductCancelReturnForm">
-          <input type="hidden" class="form-control" name="return" value="return" id="CancelOrReturn" readonly required />
-          <input type="hidden" class="form-control" name="row_id" value="" id="CancelReturnID" readonly  />
+          <input type="text" class="form-control" name="return" value="return" id="CancelOrReturn" readonly required />
+          <input type="text" class="form-control" name="row_id" value="" id="CancelReturnID" readonly  />
           <div class="form-group">
             <label for="product" class="control-label">Type:</label>
             <span class="btn_container">
@@ -24,6 +24,11 @@
           <div class="form-group">
             <label for="reason" class="control-label">Reason:</label>
             <textarea class="form-control jsVK-normal" id="CancelOrReturnReason" name="reason" required></textarea>
+          </div>
+           <div class="form-group">
+            <label for="reason" class="control-label">Transaction Type:</label>
+            <h3><?php echo $tpl['arr']['payment_type']; ?></h3>
+            <label id="jsTransactionType"></label>
           </div>
         </form>
       </div>

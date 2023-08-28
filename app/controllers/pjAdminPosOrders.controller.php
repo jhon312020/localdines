@@ -3238,6 +3238,17 @@ class pjAdminPosOrders extends pjAdmin {
       if (count($arr) <= 0) {
         pjUtil::redirect(PJ_INSTALL_URL . "index.php?controller=pjAdminPosOrders&action=pjActionIndex&err=AR08&type=Telephone");
       }
+    $api_payment_response = pjPaymentResponseModel::factory()->where('order_id', $id)->findAll()->getData();
+    if ($api_payment_response) {
+      // $this->pr($api_payment_response);
+      $response = json_decode($api_payment_response[0]['response']);
+      // $this->pr($response);
+      $arr['card_transaction_id'] = $response->result->transactionId; 
+      $arr['payment_type'] = 'Card';
+    } else {
+      $arr['card_transaction_id'] = '';
+      $arr['payment_type'] = 'Cash';
+    }
     $this->set('arr', $arr);
     $this->getInculdeData();
     $pjProductPriceModel = pjProductPriceModel::factory();

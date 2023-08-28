@@ -1,3 +1,9 @@
+
+<?php
+  // echo '<pre>';
+  // print_r($tpl['arr']);
+  // echo '</pre>';
+?>
 <form action="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminPosOrders&amp;action=pjActionReturnOrderItem"  method="post" id="frmUpdateOrder_epos">
   <input type="hidden" name="order_update" value="1" />
   <input type="hidden" id="min_amt" value="<?php echo $tpl['option_arr']['o_minimum_order']; ?>" />
@@ -19,11 +25,12 @@
   <input type="hidden" id="vouchercode" name="vouchercode" value="<?php echo  stripslashes($tpl['arr']['voucher_code']);?>" />
   <input type="hidden" id="is_paused" name="is_paused" value = "<?php echo $tpl['arr']['status'] == PENDING_STATUS ? '1' : '0'; ?>">
   <input type="hidden" id="res_table_name" name="res_table_name" value="<?php echo $tpl['arr']['table_name'];?>" />
-  <input type="hidden" id="pos_payment_method" name="pos_payment_method" value="Cash" />
+  <input type="text" id="pos_payment_method" name="pos_payment_method" value="<?php echo $tpl['arr']['payment_type'];?>" />
   <input type="hidden" id="is_paid" name="is_paid" value = "<?php echo $tpl['arr']['is_paid']; ?>">
   <input type="hidden" id="customer_paid" name="customer_paid" value="0" />
   <input type="hidden" id="item_return" name="item_return" value="1" />
   <input type="hidden" id="total_persons" name="total_persons" value="<?php echo $tpl['arr']['total_persons'];?>" />
+  <input type="text" id="card_transaction_id" name="card_transaction_id" value="<?php echo $tpl['arr']['card_transaction_id'];?>" />
   <div class="row">
     <div class="col-sm-12">
       <?php include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/order_inventory_return_table.php';  ?> 
@@ -41,7 +48,7 @@
   <div class="row cus-pb-2 cus-pt-2 bottom_row">
     <div class="col-lg-12 col-sm-12 text-right">
         <span style="padding-left:10px">
-          <button type="button" id="jsBtnCancelReturnAll" data-valid = "false" data-phone="" class="btn btn-primary">&nbsp;&nbsp;Return All&nbsp;&nbsp;</button>
+          <button type="button" id="jsBtnCancelReturnAll" data-valid = "false" data-phone="" class="btn btn-primary">&nbsp;&nbsp;Refund&nbsp;&nbsp;</button>
            <!-- <button type="submit" id="returnBtn" data-valid = "false" data-phone="" class="btn btn-primary">&nbsp;&nbsp;Submit&nbsp;&nbsp;</button> -->
           <a class="btn btn-secondary" id="btn-cancel" href="<?php echo PJ_INSTALL_URL; ?>index.php?controller=pjAdminPosOrders&action=pjActionIndex"><?php __('btnCancel'); ?></a>
         </span>
