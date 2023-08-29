@@ -3220,6 +3220,8 @@ class pjAdminPosOrders extends pjAdmin {
       $post_total = $this->getTotal();
       $post = $this->_post->raw();
       $id = $this->_post->toInt('id');
+      $this->pr($post);
+      exit;
       if ($this->saveOrderItems($post, $id, true)) {
         $rows =  pjOrderModel::factory()->where('id', $id)->modifyAll(array('total' => $post_total['total']))->getAffectedRows();
       }

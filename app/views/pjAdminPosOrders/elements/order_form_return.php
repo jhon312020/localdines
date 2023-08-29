@@ -1,10 +1,9 @@
-
 <?php
   // echo '<pre>';
   // print_r($tpl['arr']);
   // echo '</pre>';
 ?>
-<form action="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminPosOrders&amp;action=pjActionReturnOrderItem"  method="post" id="frmUpdateOrder_epos">
+<form action="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminPosOrders&amp;action=pjActionReturnOrderItem"  method="post" id="frmReturnOrder">
   <input type="hidden" name="order_update" value="1" />
   <input type="hidden" id="min_amt" value="<?php echo $tpl['option_arr']['o_minimum_order']; ?>" />
   <input type="hidden" name="id" value="<?php echo $tpl['arr']['id']?>" />
@@ -19,6 +18,7 @@
   <input type="hidden" id="subtotal" name="subtotal" value="<?php echo $tpl['arr']['subtotal']; ?>" />
   <input type="hidden" id="tax" name="tax" value="<?php echo $tpl['arr']['tax']; ?>" />
   <input type="hidden" id="total" name="total" value="<?php echo $tpl['arr']['total']; ?>" />
+  <input type="hidden" id="cart_total" name="cart_total" value="<?php echo $tpl['arr']['total']; ?>" />
   <input type="hidden" id="origin" name="origin" value="<?php print_r($tpl['arr']['origin']); ?>" />
   <input type="hidden" id="p_date" name="p_date" value="<?php echo date('d.m.Y'); ?>" />
   <input type="hidden" id="pickup_time" name="pickup_time" value="<?php echo date('H:i'); ?>" />

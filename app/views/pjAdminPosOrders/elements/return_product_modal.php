@@ -6,7 +6,7 @@
         <h2 class="modal-title" id="modalTitle">Return Product <i class="fa fa-info-circle" aria-hidden="true"></i></h2>
       </div>
       <div class="modal-body" id="modalBody">
-        <form name="ProductCancelReturnForm" id="ProductCancelReturnForm">
+        <form name="ProductReturnForm" id="ProductReturnForm">
           <input type="text" class="form-control" name="return" value="return" id="CancelOrReturn" readonly required />
           <input type="text" class="form-control" name="row_id" value="" id="CancelReturnID" readonly  />
           <div class="form-group">
@@ -33,7 +33,7 @@
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary btn-w-m-75 btn-h-m-40" id="jsBtnCancelOrReturnProduct">Save</button>
+        <button type="button" class="btn btn-primary btn-w-m-75 btn-h-m-40" id="jsBtnReturnProduct">Save</button>
         <button type="button" class="btn btn-default btn-w-m-75 btn-h-m-40" data-dismiss="modal">Close</button>
       </div>
     </div>

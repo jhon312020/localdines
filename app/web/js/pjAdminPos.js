@@ -28,6 +28,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
       $frmCreatePosOrder = $("#frmCreateOrder_epos"),
       $frmUpdateOrder = $("#frmUpdateOrder_pos"),
       $frmUpdatePosOrder = $("#frmUpdateOrder_epos"),
+      $frmReturnOrder = $("#frmReturnOrder"),
       $dialogReminderEmail = $("#dialogReminderEmail"),
       $dialogConfirm = $("#dialogConfirm"),
       dialog = $.fn.dialog !== undefined,
@@ -1060,6 +1061,10 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
         if ($frmUpdatePosOrder.length > 0) {
           //$frm = $frmUpdatePosOrder;
           active_frm = "#frmUpdateOrder_epos";
+        }
+        if ($frmReturnOrder.length > 0) {
+          //$frm = $frmUpdatePosOrder;
+          active_frm = "#frmReturnOrder";
         }
         return active_frm;
       }
@@ -3056,7 +3061,211 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             $('.jsDecreaseCanRetQty').show();
           }
           $("#cancelReturnModal").modal("show");
-        }).on("click", "#jsBtnCancelOrReturnProduct", function() {
+        }).on("click","#jsReturnSelectAll", function() {
+          if ($(this).is(':checked')) {
+            $('.jsReturnItems').prop('checked', true);
+          } else {
+            $('.jsReturnItems').prop('checked', false);
+          }
+          updateRefundItems();
+        })
+        .on("click", ".jsReturnItems", function() {
+          let isAllItemsSelected = true;
+          $('.jsReturnItems').each(function() { 
+            if (!$(this).is(':checked')) {
+              isAllItemsSelected = false;
+              // return;
+            } 
+          });
+          console.log('Selected '+isAllItemsSelected);
+          updateRefundItems();
+          $('#jsReturnSelectAll').prop('checked', isAllItemsSelected);
+
+        })
+        .on("click", "#jsBtnCancelReturnAll", function() {
+          var rowsIDS = [];
+          let isItemSelected = false;
+          $('.jsReturnItems').each(function() { 
+            if ($(this).is(':checked')) {
+              isItemSelected = true;
+              var rowID = $(this).parent().parent().data('index');
+              rowsIDS.push(rowID);
+              var curQtyID = '#fdProductQty_'+rowID;
+              var curExtraID = '#extra-'+rowID;
+              var curQty = $(curQtyID).val()
+              $("#cancelReturnQty").val(curQty);
+              $("#cancelReturnQty").attr('max',curQty);
+              // var strikeThroughRow = '#productReturn_'+rowID;
+              // $(strikeThroughRow).parent().parent().parent().addClass('strikethrough');
+            } else {
+              var rowID = $(this).parent().parent().data('index');
+              // var strikeThroughRow = '#productReturn_'+rowID;
+              // $(strikeThroughRow).parent().parent().parent().removeClass('strikethrough');
+            }
+          })
+          if (isItemSelected) {
+            $("#CancelReturnID").val(JSON.stringify(rowsIDS));
+            $("#cancelReturnModal").modal("show");
+          } else {
+            alert('Please select atleast one item to refund');
+          }
+          
+        })
+        .on("click", "#jsBtnReturnProduct", function() {
+          let cancelReturnProductValidator = $("#ProductReturnForm").validate({
+            rules: {
+             reason: {
+              required: true,
+             }
+            },
+            messages: {
+              reason: {
+                required: "This field is requried",
+             }
+            }
+          });
+          //addProductValidator.validate();
+
+          if ($("#ProductReturnForm").valid()) {
+            var rowIDS = $("#CancelReturnID").val();
+            rowIDS = JSON.parse(rowIDS);
+            console.log(rowIDS);
+            rowIDS.forEach(function(rowID) {
+              var newRowID = rowID + '_RC';
+              var cancelID = "#fdProdRetOrCancel_"+rowID;
+              var cancelReturnReasonID = "#fdProdRetOrCancelReason_"+rowID;
+              // var strikeThroughRow = '#productReturn_'+rowID;
+              var strikeThroughRow = '#fdProdRetOrCancelReason_'+rowID;
+              //$(cancelID).val($('#CancelOrReturn').val());
+              //$(cancelReturnReasonID).val($('#CancelOrReturnReason').val());
+              var curValue = parseInt($('#cancelReturnQty').val());
+              var maxValue = parseInt($('#cancelReturnQty').attr('max'));
+              var curRowObj = $(strikeThroughRow).parent().parent().parent();
+              // var curRowObj = $(this).parent().parent().parent();
+              var productReturnID = '#productReturn_'+rowID;
+              var btnCanOrRetObj = curRowObj.find(productReturnID).children('a');
+              if (curValue < maxValue) {
+                var productPriceID = '#fdPrice_'+rowID;
+                var productCurPriceObj = curRowObj.find(productPriceID);
+                var pricePerQty = parseFloat(productCurPriceObj.val());
+
+                var productQtyID = '#fdProductQty_'+rowID;
+                var productCurQtyObj = curRowObj.find(productQtyID);
+                var curPrdQty = (maxValue - curValue);
+                productCurQtyObj.val(curPrdQty);
+                productCurQtyObj.next("span").text(curPrdQty);
+
+                var productTotalPriceID = '#fdTotalPrice_'+rowID;
+                var productCurPriceObj = curRowObj.find(productPriceID);
+                var totalPrice = pricePerQty * curPrdQty;
+                productCurPriceObj.text(totalPrice);
+
+                //var newRowObj = $(strikeThroughRow).parent().parent().parent().clone();
+                var newRowObj = curRowObj.clone();
+                btnCanOrRetObj.attr('disabled', true);
+                btnCanOrRetObj.removeClass('jsBtnCancelReturn btn-outline');
+                // $(newRowObj).find('td').each(function(column, td) {
+                  
+                // }); 
+                newRowObj.addClass('strikethrough');
+                newRowObj.attr('data-index', newRowID);
+                var concatName = 'CanOrReturn_';
+                var productID = '#fdProduct_'+rowID;
+                var productNewObj = newRowObj.find(productID);
+
+                var productNewName = 'product_id['+newRowID+']'; ;
+                //newRowObj.find(productID).attr('name', productName);
+                productNewObj.attr('name', productNewName);
+                productNewObj.attr('id', 'fdProduct_'+newRowID);
+                productNewObj.attr('data-index', newRowID);
+
+
+                var productNewQtyID = 'fdProductQty_'+newRowID;
+                var productNewQtyObj = newRowObj.find(productQtyID);
+                var productNewQtyName = 'cnt['+newRowID+']';
+                productNewQtyObj.attr('name', productNewQtyName);
+                productNewQtyObj.attr('id', productNewQtyID);
+                productNewQtyObj.attr('data-index', newRowID);
+                productNewQtyObj.val(curValue);
+                productNewQtyObj.next("span").text(curValue);
+
+
+                var productInfoID = '#prdInfo_'+rowID;
+                var productNewInfoObj = newRowObj.find(productInfoID);
+                var productNewInfoName = 'prdInfo_['+newRowID+']';
+                productNewInfoObj.attr('name', productNewInfoName);
+                productNewInfoObj.attr('id', 'prdInfo_'+newRowID);
+                productNewInfoObj.attr('data-index', newRowID);
+              
+
+                var productPriceID = '#fdPrice_'+rowID;
+                var productNewPriceObj = newRowObj.find(productPriceID);
+                var productNewPriceName = 'price_id['+newRowID+']';
+                productNewPriceObj.attr('name', productNewPriceName);
+                productNewPriceObj.attr('id', 'fdPrice_'+newRowID);
+               
+                var productNewTotalPriceObj = newRowObj.find(productTotalPriceID);
+                var totalPrice = pricePerQty * curValue;
+                productNewTotalPriceObj.text(totalPrice);
+                productNewTotalPriceObj.attr('id', 'fdTotalPrice_'+newRowID);
+
+                var productNewCancelObj = newRowObj.find(cancelID);
+                productNewCancelObj.val($('#CancelOrReturn').val());
+                productNewCancelObj.attr('id', 'fdProdRetOrCancel_'+newRowID);
+                productNewCancelObj.attr('name', 'return_or_cancel['+newRowID+']');
+                productNewCancelObj.attr('data-index', newRowID);
+
+                var productNewCancelResObj = newRowObj.find(cancelReturnReasonID);
+                productNewCancelResObj.val($('#CancelOrReturnReason').val());
+                productNewCancelResObj.attr('id', 'fdProdRetOrCancelReason_'+newRowID);
+                productNewCancelResObj.attr('name', 'return_or_cancel_reason['+newRowID+']');
+                productNewCancelResObj.attr('data-index', newRowID);
+                
+                // var productReturnID = '#productReturn_'+rowID;
+                // var productReturnObj = newRowObj.find(productReturnID);
+                // productReturnObj.attr('id', 'productReturn_'+newRowID);
+                // productReturnObj.children("a").removeClass('jsBtnCancelReturn pj-return-product').addClass('jsBtnUndoCancelReturn');
+                // productReturnObj.children("a").attr('data-index', newRowID);
+                // productReturnObj.children("a").children('i').removeClass('fa-strikethrough').addClass('fa-undo');
+                // updateCanRetButtonToRedo(newRowObj, rowID, newRowID );
+                $('#fdOrderList_1').find('tr:last').after(newRowObj);
+              } else {
+                // $(strikeThroughRow).parent().parent().parent().addClass('strikethrough');
+                $(cancelID).val($('#CancelOrReturn').val());
+                $(cancelReturnReasonID).val($('#CancelOrReturnReason').val());
+                // updateCanRetButtonToRedo(curRowObj, rowID, null );
+              }
+            })
+            calPrice(1);
+            $("#cancelReturnModal").modal("hide");
+            
+            // var $form = $('#frmReturnOrder');
+            // var paymentType = $('#pos_payment_method').val().toLowerCase();
+            // if ((paymentType == "card") && dojo_payment_active == "1") {
+            //   var refundAmount = parseFloat($('#cart_total').val()) - parseFloat($('#total').val());
+            //   alert(refundAmount);
+            //   // dojoRefund(saleAmount, $form);
+            // } else {
+            //   // $form.submit();
+            // }
+            
+            return; 
+          } 
+        })
+        $("#cancelReturnModal").on("hidden.bs.modal", function () {
+          // put your default event here
+          var $form = $('#frmReturnOrder');
+          var paymentType = $('#pos_payment_method').val().toLowerCase();
+          if ((paymentType == "card") && dojo_payment_active == "1") {
+            var refundAmount = parseFloat($('#cart_total').val()) - parseFloat($('#total').val());
+            var transactionID = parseInt($('#card_transaction_id').val());
+            dojoRefund(refundAmount, transactionID, $form);
+            $("#cover-spin").show(0);
+          } else {
+            $form.submit();
+          }
+        })
+        .on("click", "#jsBtnCancelOrReturnProduct", function() {
           let cancelReturnProductValidator = $("#ProductCancelReturnForm").validate({
             rules: {
              reason: {
@@ -3388,6 +3597,25 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
         
       // });
       // $(document).ready()
+      function updateRefundItems() {
+        console.log('updateReund');
+        $('.jsReturnItems').each(function() { 
+          var rowID = $(this).parent().parent().data('index');
+          var strikeThroughRow = '#productReturn_'+rowID;
+          if ($(this).is(':checked')) {
+            $(this).parent().parent().addClass('strikethrough');
+          } else {
+            $(this).parent().parent().removeClass('strikethrough');
+            var cancelID = "#fdProdRetOrCancel_"+rowID;
+            var cancelReturnReasonID = "#fdProdRetOrCancelReason_"+rowID;
+            // rowObj.removeClass('strikethrough');
+            $(cancelID).val('');
+            $(cancelReturnReasonID).val('');
+            // updateRedoButtonToCanRet(rowObj, rowID);
+          }
+        })
+        calPrice(1);
+      }
       function displayFormErrors(payment_method, errorMessage) {
         $("#payment_modal_pay").removeClass("cus-input-valid");
         $("#payment_modal_pay").addClass("cus-input-err");
@@ -3422,6 +3650,108 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           $form.submit();
         }
       }
+      function dojoRefund(amt, transactionID, formObj) {
+        console.log('Messages', dojo_notification_messages);
+        console.log('amt', amt);
+        try {
+          let connectionState = null;
+          let socket = new WebSocket(dojo_host);
+          let terminalID = "VCMINVLSIP0";
+          // let terminalID = "VCMINVLTIP0";
+          // let terminalID = "97774431";
+          // let saleID = transactionID;
+          let saleID = 1;
+          // amt = amt.replace(/\./g, "");
+          amt = parseFloat(amt);
+          $('#loader_text').html("Please wait processing...");
+
+          socket.onopen = function(e) {
+            var transactionData = { "jsonrpc": "2.0", "method": "refund", "params": { "tid": terminalID, "currency": "GBP", "amount": amt }, "id": saleID };
+            transactionData = JSON.stringify(transactionData);
+            console.log(transactionData);
+            connectionState = e.type;
+            socket.send(transactionData);
+          };
+
+          socket.onmessage = function(event) {
+            //alert(`[message] Data received from server: ${event.data}`);
+            console.log(`${event.data}`);
+            connectionState = event.type;
+            var eventMessage = JSON.parse(event.data);
+            if (eventMessage.hasOwnProperty('result')) {
+              var transactionResult = eventMessage.result.transactionResult;
+              if (transactionResult == "SUCCESSFUL") {
+                $("#api_payment_response").val(JSON.stringify(eventMessage));
+                //$('#paymentBtn').trigger('click');
+                sweetSuccessAlert("Transaction Success", transactionResult, formObj);
+                socket.close();
+              } else {
+                sweetErrorAlert("Transaction Failed", transactionResult);
+                socket.close();
+              }
+              $("#paymentBtn").attr('disabled', false);
+            } else if (eventMessage.hasOwnProperty('error')) {
+              // console.log(eventMessage.error.message);
+              if (dojo_notification_messages.hasOwnProperty(eventMessage.error.message)) {
+                var loader_message = dojo_notification_messages[eventMessage.error.message];
+              } else {
+                var loader_message = eventMessage.error.message;
+              }
+              sweetErrorAlert("Transaction Failed", loader_message);
+            } else {
+              // console.log('Dojo notificationValue', eventMessage.params.notificationValue);
+              var notificationType = eventMessage.params.notificationValue;
+              var loader_message = dojo_notification_messages[notificationType];
+              if (loader_message !== undefined) {
+                $('#loader_text').html(loader_message+"...");
+                if (notificationType ==='SIGNATURE_VERIFICATION_IN_PROGRESS') {
+                  swal({
+                    title: "Are you sure?",
+                    text: "Is signature verified",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: '#DD6B55',
+                    confirmButtonText: 'Yes, I am sure!',
+                    cancelButtonText: "No, cancel it!",
+                    closeOnConfirm: false,
+                    closeOnCancel: false
+                  },
+                  function(isConfirm) {
+                    var signatureConfirmation = '';
+                    if (isConfirm) {
+                       signatureConfirmation = { "jsonrpc": "2.0", "id": saleID,  "result": { "accepted": true }};
+                    } else {
+                      signatureConfirmation = { "jsonrpc": "2.0", "id": saleID,  "result": { "accepted": false }};
+                    }
+                    signatureConfirmation = JSON.stringify(signatureConfirmation);
+                    socket.send(signatureConfirmation);
+                    swal.close();
+                  });
+                }
+              }
+            }
+            
+          };
+          socket.onclose = function(event) {
+            // console.log('Closed', event.type);
+            // console.log('Connection', connectionState);
+            if (connectionState === null || connectionState === 'open') {
+              // console.log('Connection failed');
+              sweetErrorAlert("Connection Error", "CONNECTION_ERROR");
+            }
+            // sweetErrorAlert("Transaction Failed", "Please contact the payment gateway provider");
+          };
+          socket.onerror = function(error) {
+            console.log('Error', error);
+            // if (connectionState === null) {
+            //   console.log('Connection failed');
+            // }
+            sweetErrorAlert("Transaction Failed", error);
+          }
+        } catch(e) {
+          console.log('Exception', e);
+        }
+      }
       function dojoPayment(amt, formObj) {
         //return;
         // VCMINVLSIP0 - simulates a successful chip and pin payment
@@ -3434,7 +3764,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
         try {
           let connectionState = null;
           let socket = new WebSocket(dojo_host);
-          let terminalID = "VCMINVLSIS0";
+          let terminalID = "VCMINVLSIP0";
           // let terminalID = "VCMINVLTIP0";
           // let terminalID = "97774431";
           let saleID = 1;
