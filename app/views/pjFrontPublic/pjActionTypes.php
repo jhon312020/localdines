@@ -172,6 +172,7 @@ $jqDateFormat = pjUtil::jqDateFormat($tpl['option_arr']['o_date_format']);
 						
 						<div role="tabpanel">
 							<ul class="nav nav-pills" role="tablist">
+								<?php if(FRONT_END_PICKUP == 1) { ?>
 								<li role="presentation" class="fdTabOuter<?php echo $isPickup ? ' active' : NULL; ?>">
 									<a href="#" class="text-uppercase fdTypeTab fdTabPickup" aria-controls="pickup" role="tab">
 										<i class="fa fa-suitcase"></i>
@@ -180,6 +181,8 @@ $jqDateFormat = pjUtil::jqDateFormat($tpl['option_arr']['o_date_format']);
 										<?php __('front_pickup');?>
 									</a>
 								</li>
+								<?php } else {} ?>
+								<?php if(FRONT_END_DELIVERY == 1) { ?>
 								<li role="presentation" class="fdTabOuter<?php echo $isDelivery ? ' active' : NULL; ?>">
 									<a href="#" class="text-uppercase fdTypeTab fdTabDelivery" aria-controls="delivery" role="tab">
 										<i class="fa fa-taxi"></i>
@@ -187,6 +190,7 @@ $jqDateFormat = pjUtil::jqDateFormat($tpl['option_arr']['o_date_format']);
 										<?php __('front_delivery');?>
 									</a>
 								</li>
+								<?php } else {} ?>
 							</ul>
 							<span style="overflow: hidden; height: 0; display: none;">
 								<input type="radio" name="type" id="fdTypePickup_<?php echo $index; ?>" value="pickup"<?php echo $isPickup ? ' checked="checked"' : NULL; ?> />

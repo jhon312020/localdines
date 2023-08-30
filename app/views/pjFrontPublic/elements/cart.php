@@ -318,6 +318,7 @@ $action = $controller->_get->toString('action');
 					<div class="row">
 					    <div class="col-md-12 col-sm-12 col-xs-12" id="orderType">
 							<div class="row">
+								<?php if(FRONT_END_PICKUP == 1) { ?>
 								<div class="col-xs-12 d-flex justify-content-between">
 									<label><h5>PICKUP</h5></label>
 									<div class="checkBox">
@@ -325,14 +326,16 @@ $action = $controller->_get->toString('action');
 										<label for="radiopickup"></label>
                   </div>
 								</div>
+								<?php } else {} ?>
+								<?php if(FRONT_END_DELIVERY == 1) { ?>
 								<div class="col-xs-12 d-flex justify-content-between">
 									<label><h5>DELIVERY</h5></label>
 									<div class="checkBox">
 									    <input type="radio" id="radiodelivery" class="radio d-none" value="delivery" name="type"/>
 										<label for="radiodelivery"></label>
 									</div>
-									
 								</div>
+								<?php } else {} ?>
 							</div>
 						</div>
 						<div class="row" id="postCodeSec">

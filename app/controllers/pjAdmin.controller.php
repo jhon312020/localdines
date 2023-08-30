@@ -156,6 +156,12 @@ class pjAdmin extends pjAppController {
 			'pjAdminIncomes::pjActionGetIncome' => 'pjAdminPosOrders::pjActionIndex',
 			'pjAdminIncomes::pjActionDeleteIncome' => 'pjAdminPosOrders::pjActionIndex',
 			'pjAdminIncomes::pjActionUpdate' => 'pjAdminPosOrders::pjActionIndex',
+			//Configs
+			'pjAdminConfigs::pjActionIndex' => 'pjAdminPosOrders::pjActionIndex',
+			'pjAdminConfigs::pjActionCreate' => 'pjAdminPosOrders::pjActionIndex',
+			'pjAdminConfigs::pjActionGetConfig' => 'pjAdminPosOrders::pjActionIndex',
+			'pjAdminConfigs::pjActionDeleteConfig' => 'pjAdminPosOrders::pjActionIndex',
+			'pjAdminConfigs::pjActionUpdate' => 'pjAdminPosOrders::pjActionIndex',
 			//
 		);
 		

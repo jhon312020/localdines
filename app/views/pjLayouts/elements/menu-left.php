@@ -44,6 +44,13 @@ $isScriptMastersIndex = $isScriptMastersController && in_array($action_name, arr
 // Permissions Master
 $hasAccessScriptMasters = 1;
 
+// Config Controller
+$isScriptConfigsController = in_array($controller_name, array('pjAdminConfigs'));
+$isScriptConfigsIndex = $isScriptConfigsController && in_array($action_name, array('pjActionIndex', 'pjActionCreate', 'pjActionUpdate'));
+
+// Permissions Master
+$hasAccessScriptConfigs = 1;
+
 // Postalcode Controller
 $isScriptPostalcodeController = in_array($controller_name, array('pjAdminPostalcode'));
 $isScriptPostalcodeIndex = $isScriptPostalcodeController && in_array($action_name, array('pjActionIndex', 'pjActionCreate', 'pjActionUpdate'));
@@ -94,8 +101,11 @@ $isScriptTopProductsReportIndex = $isScriptReportsController && in_array($action
 $isScriptQrCodeController = in_array($controller_name, array('pjAdminQrCode'));
 $isScripQrCodeIndex = $isScriptQrCodeController && in_array($action_name, array('pjActionFrontEnd'));
 
-// Settings
+// Masters
 $isScriptOptionsController = in_array($controller_name, array('pjAdminOptions', 'pjAdminMasters')) && !in_array($action_name, array('pjActionPreview', 'pjActionInstall'));
+
+// Configs
+$isScriptOptionsController = in_array($controller_name, array('pjAdminOptions', 'pjAdminConfigs')) && !in_array($action_name, array('pjActionPreview', 'pjActionInstall'));
 
 // Settings
 $isScriptOptionsController = in_array($controller_name, array('pjAdminOptions', 'pjAdminPostalcode')) && !in_array($action_name, array('pjActionPreview', 'pjActionInstall'));
@@ -340,6 +350,11 @@ $hasAccessScriptOptionsPrintOrder       = pjAuth::factory('pjAdminOptions', 'pjA
             <?php if($hasAccessScriptMasters): ?>
                 <li <?php echo $isScriptMastersController ? ' class="active"' : NULL; ?>><a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminMasters&amp;action=pjActionIndex">
                     <?php echo "Masters";?>
+                </a></li>
+            <?php endif; ?>
+            <?php if($hasAccessScriptConfigs): ?>
+                <li <?php echo $isScriptConfigsController ? ' class="active"' : NULL; ?>><a href="<?php echo $_SERVER['PHP_SELF']; ?>?controller=pjAdminConfigs&amp;action=pjActionIndex">
+                    <?php echo "Configs";?>
                 </a></li>
             <?php endif; ?>
             <?php if($hasAccessScriptPostalcode): ?>
