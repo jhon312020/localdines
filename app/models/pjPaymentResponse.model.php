@@ -13,7 +13,8 @@ class pjPaymentResponseModel extends pjAppModel {
 		array('name' => 'id', 'type' => 'int','default' => 'none'),
 		array('name' => 'order_id', 'type' => 'varchar','default' => 'none'),
 		array('name' => 'response', 'type' => 'text','default' => 'none'),
-		array('name' => 'method', 'type' => 'varchar','default' => 'none'),
+		array('name' => 'method', 'type' => 'varchar','default' => 'null'),
+		array('name' => 'payment_vendor', 'type' => 'varchar','default' => 'null'),
     array('name' => 'is_active', 'type' => 'boolean','default' => 'none'),
 	);
 

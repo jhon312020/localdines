@@ -687,12 +687,13 @@ class pjAdmin extends pjAppController {
     return $dt;
   }
 
-  public function savePaymentResponse($post, $order_id) {
+  public function savePaymentResponse($post, $order_id, $method='sale', $payment_vendor='dojo') {
   	$pjPaymentResponseModel = pjPaymentResponseModel::factory();
   	$paymentID = $pjPaymentResponseModel->reset()
       ->setAttributes(array(
       'order_id' => $order_id,
-      'method' => "dojo",
+      'method' => $method,
+      'payment_vendor' => $payment_vendor,
       'response' => $post['response'],
       'is_active' => 1,
     ))->insert()

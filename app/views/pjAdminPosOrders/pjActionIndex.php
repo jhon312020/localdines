@@ -212,7 +212,7 @@
     },
     {
       type: "return",
-      text: " Return",
+      text: " Refund",
       url: "index.php?controller=pjAdminPosOrders&action=pjActionReturnOrderItem&id={:id}",
     },
     {

@@ -265,7 +265,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
       }   
     })
    
-      if ($frmCreateOrder.length > 0 || $frmUpdateOrder.length > 0 || $frmUpdatePosOrder.length > 0) {
+      if ($frmCreateOrder.length > 0 || $frmUpdateOrder.length > 0 || $frmUpdatePosOrder.length > 0 || $frmReturnOrder.length > 0) {
         if($frmCreateOrder.length > 0) {
           deliveryTime(40);
         }
@@ -835,6 +835,12 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           }
         }
         if ($frmUpdatePosOrder.length > 0) {
+          if ($("#fdOrderList_1").find("tbody.main-body > tr").length > 0) {
+            calPrice(0);
+            $("#fdOrderList_1").show();
+          }
+        }
+        if ($frmReturnOrder.length > 0) {
           if ($("#fdOrderList_1").find("tbody.main-body > tr").length > 0) {
             calPrice(0);
             $("#fdOrderList_1").show();
@@ -2997,10 +3003,8 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
         })
         .on("click","#jsReturnSelectAll", function() {
           if ($(this).is(':checked')) {
-            console.log('checked');
             $('.jsReturnItems').prop('checked', true);
           } else {
-            console.log('not checked');
             $('.jsReturnItems').prop('checked', false);
           }
         })
@@ -3012,12 +3016,12 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
               return;
             }
           });
-          console.log('Selected '+isAllItemsSelected);
           $('#jsReturnSelectAll').prop('checked', isAllItemsSelected);
         })
         .on("click", "#jsBtnCancelReturnAll", function() {
           var rowsIDS = [];
           let isItemSelected = false;
+          let refundAmount = 0;
           $('.jsReturnItems').each(function() { 
             if ($(this).is(':checked')) {
               isItemSelected = true;
@@ -3040,9 +3044,8 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             $("#CancelReturnID").val(JSON.stringify(rowsIDS));
             $("#cancelReturnModal").modal("show");
           } else {
-            alert('Please select atleast one item to refund');
-          }
-          
+            sweetErrorAlert('Error','Please select atleast one item to refund');
+          }   
         })
         .on("click", ".jsBtnCancelReturn", function (e) {
           var rowID = $(this).attr("data-index");
@@ -3077,40 +3080,39 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
               // return;
             } 
           });
-          console.log('Selected '+isAllItemsSelected);
           updateRefundItems();
           $('#jsReturnSelectAll').prop('checked', isAllItemsSelected);
 
         })
-        .on("click", "#jsBtnCancelReturnAll", function() {
-          var rowsIDS = [];
-          let isItemSelected = false;
-          $('.jsReturnItems').each(function() { 
-            if ($(this).is(':checked')) {
-              isItemSelected = true;
-              var rowID = $(this).parent().parent().data('index');
-              rowsIDS.push(rowID);
-              var curQtyID = '#fdProductQty_'+rowID;
-              var curExtraID = '#extra-'+rowID;
-              var curQty = $(curQtyID).val()
-              $("#cancelReturnQty").val(curQty);
-              $("#cancelReturnQty").attr('max',curQty);
-              // var strikeThroughRow = '#productReturn_'+rowID;
-              // $(strikeThroughRow).parent().parent().parent().addClass('strikethrough');
-            } else {
-              var rowID = $(this).parent().parent().data('index');
-              // var strikeThroughRow = '#productReturn_'+rowID;
-              // $(strikeThroughRow).parent().parent().parent().removeClass('strikethrough');
-            }
-          })
-          if (isItemSelected) {
-            $("#CancelReturnID").val(JSON.stringify(rowsIDS));
-            $("#cancelReturnModal").modal("show");
-          } else {
-            alert('Please select atleast one item to refund');
-          }
+        // .on("click", "#jsBtnCancelReturnAll", function() {
+        //   var rowsIDS = [];
+        //   let isItemSelected = false;
+        //   $('.jsReturnItems').each(function() { 
+        //     if ($(this).is(':checked')) {
+        //       isItemSelected = true;
+        //       var rowID = $(this).parent().parent().data('index');
+        //       rowsIDS.push(rowID);
+        //       var curQtyID = '#fdProductQty_'+rowID;
+        //       var curExtraID = '#extra-'+rowID;
+        //       var curQty = $(curQtyID).val()
+        //       $("#cancelReturnQty").val(curQty);
+        //       $("#cancelReturnQty").attr('max',curQty);
+        //       // var strikeThroughRow = '#productReturn_'+rowID;
+        //       // $(strikeThroughRow).parent().parent().parent().addClass('strikethrough');
+        //     } else {
+        //       var rowID = $(this).parent().parent().data('index');
+        //       // var strikeThroughRow = '#productReturn_'+rowID;
+        //       // $(strikeThroughRow).parent().parent().parent().removeClass('strikethrough');
+        //     }
+        //   })
+        //   if (isItemSelected) {
+        //     $("#CancelReturnID").val(JSON.stringify(rowsIDS));
+        //     $("#cancelReturnModal").modal("show");
+        //   } else {
+        //     alert('Please select atleast one item to refund');
+        //   }
           
-        })
+        // })
         .on("click", "#jsBtnReturnProduct", function() {
           let cancelReturnProductValidator = $("#ProductReturnForm").validate({
             rules: {
@@ -3238,33 +3240,34 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             })
             calPrice(1);
             $("#cancelReturnModal").modal("hide");
-            
-            // var $form = $('#frmReturnOrder');
-            // var paymentType = $('#pos_payment_method').val().toLowerCase();
-            // if ((paymentType == "card") && dojo_payment_active == "1") {
-            //   var refundAmount = parseFloat($('#cart_total').val()) - parseFloat($('#total').val());
-            //   alert(refundAmount);
-            //   // dojoRefund(saleAmount, $form);
-            // } else {
-            //   // $form.submit();
-            // }
-            
+            var $form = $('#frmReturnOrder');
+            var paymentType = $('#pos_payment_method').val().toLowerCase();
+            if ((paymentType == "card") && dojo_payment_active == "1") {
+              var refundAmount = $('#jsRefundAmt').text();
+              var transactionID = parseInt($('#card_transaction_id').val());
+              dojoRefund(refundAmount, transactionID, $form);
+              $("#cover-spin").show(0);
+            } else {
+              $form.submit();
+            }
             return; 
           } 
         })
-        $("#cancelReturnModal").on("hidden.bs.modal", function () {
-          // put your default event here
-          var $form = $('#frmReturnOrder');
-          var paymentType = $('#pos_payment_method').val().toLowerCase();
-          if ((paymentType == "card") && dojo_payment_active == "1") {
-            var refundAmount = parseFloat($('#cart_total').val()) - parseFloat($('#total').val());
-            var transactionID = parseInt($('#card_transaction_id').val());
-            dojoRefund(refundAmount, transactionID, $form);
-            $("#cover-spin").show(0);
-          } else {
-            $form.submit();
-          }
-        })
+        // $("#cancelReturnModal").on("hidden.bs.modal", function (e) {
+        //   console.log(e);
+        //   return;
+        //   // put your default event here
+        //   var $form = $('#frmReturnOrder');
+        //   var paymentType = $('#pos_payment_method').val().toLowerCase();
+        //   if ((paymentType == "card") && dojo_payment_active == "1") {
+        //     var refundAmount = parseFloat($('#cart_total').val()) - parseFloat($('#total').val());
+        //     var transactionID = parseInt($('#card_transaction_id').val());
+        //     dojoRefund(refundAmount, transactionID, $form);
+        //     $("#cover-spin").show(0);
+        //   } else {
+        //     $form.submit();
+        //   }
+        // })
         .on("click", "#jsBtnCancelOrReturnProduct", function() {
           let cancelReturnProductValidator = $("#ProductCancelReturnForm").validate({
             rules: {
@@ -3438,8 +3441,8 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           $(this).addClass('selected');
           var cancelOrReturnVal = $(this).text();
           $('#CancelOrReturn').val(cancelOrReturnVal);
-          if (cancelOrReturnVal == 'Return') {
-            $('#CancelOrReturnReason').val('Return');
+          if (cancelOrReturnVal == 'Refund') {
+            $('#CancelOrReturnReason').val('Refund for returned product.');
           } else {
             $('#CancelOrReturnReason').val('Cancel');
           }
@@ -3598,12 +3601,19 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
       // });
       // $(document).ready()
       function updateRefundItems() {
-        console.log('updateReund');
+        var currency = null;
+        var total = 0.00;
         $('.jsReturnItems').each(function() { 
           var rowID = $(this).parent().parent().data('index');
           var strikeThroughRow = '#productReturn_'+rowID;
           if ($(this).is(':checked')) {
             $(this).parent().parent().addClass('strikethrough');
+            var itemTotalPriceStr = $('#fdTotalPrice_'+rowID).text();
+            var itemTotalPrice = Number(itemTotalPriceStr.replace(/[^0-9\.-]+/g,""));
+            if (!currency) {
+              currency = itemTotalPriceStr[0];
+            }
+            total += parseFloat(itemTotalPrice);
           } else {
             $(this).parent().parent().removeClass('strikethrough');
             var cancelID = "#fdProdRetOrCancel_"+rowID;
@@ -3615,6 +3625,9 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           }
         })
         calPrice(1);
+        total = parseFloat(total).toFixed(2);
+        $('#jsRefundCur').text(currency+' ');
+        $('#jsRefundAmt').text(total); 
       }
       function displayFormErrors(payment_method, errorMessage) {
         $("#payment_modal_pay").removeClass("cus-input-valid");
@@ -3661,7 +3674,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           // let terminalID = "97774431";
           // let saleID = transactionID;
           let saleID = 1;
-          // amt = amt.replace(/\./g, "");
+          amt = amt.replace(/\./g, "");
           amt = parseFloat(amt);
           $('#loader_text').html("Please wait processing...");
 
@@ -3774,6 +3787,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           socket.onopen = function(e) {
             var transactionData = { "jsonrpc": "2.0", "method": "sale", "params": { "tid": terminalID, "currency": "GBP", "amount": amt }, "id": saleID };
             transactionData = JSON.stringify(transactionData);
+            // console.log(transactionData)
             connectionState = e.type;
             socket.send(transactionData);
           };

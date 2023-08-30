@@ -1,3 +1,8 @@
 ALTER TABLE `food_delivery_orders` ADD `logged_user_id` INT NULL AFTER `client_id`;
 ALTER TABLE `food_delivery_orders` ADD `updated_user_id` INT NULL AFTER `logged_user_id`;
 ALTER TABLE `food_delivery_orders` ADD `dojo_api_result` TEXT NULL DEFAULT NULL AFTER `api_result_print`;
+ALTER TABLE `food_delivery_api_payment_responses` ADD `payment_vendor` VARCHAR(100) NULL DEFAULT NULL AFTER `method`;
+ALTER TABLE `food_delivery_orders_items` CHANGE `status` `status` ENUM('cancel','return','refund') CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;
+
+/config.inc.php
+if (!defined("RETURN_TYPES")) define("RETURN_TYPES", array('return', 'cancel', 'refund'));

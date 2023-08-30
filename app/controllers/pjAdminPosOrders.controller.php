@@ -413,7 +413,7 @@ class pjAdminPosOrders extends pjAdmin {
         if ($id !== false && (int)$id > 0) {
           $this->saveOrderItems($post, $id, false);
           if ($post['response']) {
-            $this->savePaymentResponse($post, $id);
+            $this->savePaymentResponse($post, $id, 'sale', 'dojo');
           }
           $err = 'AR07';
         } else {
@@ -2907,7 +2907,7 @@ class pjAdminPosOrders extends pjAdmin {
       if ($id !== false && (int)$id > 0) {
         $this->saveOrderItems($post, $id, false);
         if ($post['response']) {
-          $this->savePaymentResponse($post, $id);
+          $this->savePaymentResponse($post, $id, 'sale', 'dojo');
         }
         $err = 'AR07';
       } else {
@@ -2964,7 +2964,7 @@ class pjAdminPosOrders extends pjAdmin {
         if ($id !== false && (int)$id > 0) {
           $this->saveOrderItems($post, $id, false);
           if ($post['response']) {
-            $this->savePaymentResponse($post, $id);
+            $this->savePaymentResponse($post, $id, 'sale', 'dojo');
           }
         $err = 'AR07';
         } else {
@@ -3220,10 +3220,12 @@ class pjAdminPosOrders extends pjAdmin {
       $post_total = $this->getTotal();
       $post = $this->_post->raw();
       $id = $this->_post->toInt('id');
-      $this->pr($post);
-      exit;
+      $card_transaction_id = $this->_post->toInt('card_transaction_id');
       if ($this->saveOrderItems($post, $id, true)) {
         $rows =  pjOrderModel::factory()->where('id', $id)->modifyAll(array('total' => $post_total['total']))->getAffectedRows();
+        if ($card_transaction_id) {
+          $this->savePaymentResponse($post, $id, 'refund', 'dojo');
+        }
       }
       pjUtil::redirect(PJ_INSTALL_URL . "index.php?controller=pjAdminPosOrders&action=pjActionIndex");
     }
@@ -3240,7 +3242,7 @@ class pjAdminPosOrders extends pjAdmin {
       if (count($arr) <= 0) {
         pjUtil::redirect(PJ_INSTALL_URL . "index.php?controller=pjAdminPosOrders&action=pjActionIndex&err=AR08&type=Telephone");
       }
-    $api_payment_response = pjPaymentResponseModel::factory()->where('order_id', $id)->findAll()->getData();
+    $api_payment_response = pjPaymentResponseModel::factory()->where('order_id', $id)->where('method', 'sale')->findAll()->getData();
     if ($api_payment_response) {
       // $this->pr($api_payment_response);
       $response = json_decode($api_payment_response[0]['response']);

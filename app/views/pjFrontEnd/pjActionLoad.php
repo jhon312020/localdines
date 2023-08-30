@@ -7,18 +7,8 @@ $forgot_messages = __('forgot_messages', true, false);
 $month_arr = __('months', true, false);
 ksort($month_arr);
 $layout = $controller->_get->check('layout') ? $controller->_get->toString('layout') : $tpl['option_arr']['o_theme'];
-$ip = ['127.0.0.1', '::1'];
-
-if (in_array($_SERVER['REMOTE_ADDR'], $ip)) {
-    $required_url = "http://localhost:8000/";
-	$front_url = "http://localhost:8000/frontend/";
-} else {
-    $full_url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]";
-    $request_url = $_SERVER['REQUEST_URI'];
-    $folder = explode("/", $request_url);
-    $required_url = $full_url."/".$folder[1]."/";
-	$front_url = $required_url."front_localdines/";
-}
+$required_url = APP_URL;
+$front_url = APP_WEB_URL;
 //echo $required_url;
 ?>
 <?php include_once dirname(__FILE__) . '/elements/nav.php';?>

@@ -25,12 +25,13 @@
   <input type="hidden" id="vouchercode" name="vouchercode" value="<?php echo  stripslashes($tpl['arr']['voucher_code']);?>" />
   <input type="hidden" id="is_paused" name="is_paused" value = "<?php echo $tpl['arr']['status'] == PENDING_STATUS ? '1' : '0'; ?>">
   <input type="hidden" id="res_table_name" name="res_table_name" value="<?php echo $tpl['arr']['table_name'];?>" />
-  <input type="text" id="pos_payment_method" name="pos_payment_method" value="<?php echo $tpl['arr']['payment_type'];?>" />
+  <input type="hidden" id="pos_payment_method" name="pos_payment_method" value="<?php echo $tpl['arr']['payment_type'];?>" />
   <input type="hidden" id="is_paid" name="is_paid" value = "<?php echo $tpl['arr']['is_paid']; ?>">
   <input type="hidden" id="customer_paid" name="customer_paid" value="0" />
   <input type="hidden" id="item_return" name="item_return" value="1" />
   <input type="hidden" id="total_persons" name="total_persons" value="<?php echo $tpl['arr']['total_persons'];?>" />
-  <input type="text" id="card_transaction_id" name="card_transaction_id" value="<?php echo $tpl['arr']['card_transaction_id'];?>" />
+  <input type="hidden" id="card_transaction_id" name="card_transaction_id" value="<?php echo $tpl['arr']['card_transaction_id'];?>" />
+  <input type="hidden" id="api_payment_response" name="response" value="" />
   <div class="row">
     <div class="col-sm-12">
       <?php include PJ_VIEWS_PATH . 'pjAdminPosOrders/elements/order_inventory_return_table.php';  ?> 
