@@ -6,3 +6,41 @@ ALTER TABLE `food_delivery_orders_items` CHANGE `status` `status` ENUM('cancel',
 
 /config.inc.php
 if (!defined("RETURN_TYPES")) define("RETURN_TYPES", array('return', 'cancel', 'refund'));
+
+
+30-08-2023
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `food_delivery_configs`
+--
+
+CREATE TABLE `food_delivery_configs` (
+  `config_id` int(11) NOT NULL,
+  `key` varchar(255) NOT NULL,
+  `value` varchar(255) NOT NULL,
+  `is_active` tinyint(1) NOT NULL DEFAULT 0,
+  `created_at` datetime NOT NULL,
+  `updated_at` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `food_delivery_configs`
+--
+ALTER TABLE `food_delivery_configs`
+  ADD PRIMARY KEY (`config_id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `food_delivery_configs`
+--
+ALTER TABLE `food_delivery_configs`
+  MODIFY `config_id` int(11) NOT NULL AUTO_INCREMENT;
+COMMIT;
