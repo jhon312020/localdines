@@ -25,6 +25,57 @@ CREATE TABLE `food_delivery_configs` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
+-- Dumping data for table `food_delivery_configs`
+--
+
+INSERT INTO `food_delivery_configs` (`config_id`, `key`, `value`, `is_active`, `created_at`, `updated_at`) VALUES
+(2, 'ADMIN_TIME_ZONE', 'Europe/London', 1, '2023-08-29 11:58:58', '2023-08-31 15:42:25'),
+(3, 'APP_URL', '//localhost:8000/', 1, '2023-08-29 12:22:59', '2023-08-31 15:44:23'),
+(4, 'UPLOAD_URL', '//localhost:8000/app/web/upload/', 1, '2023-08-29 12:23:25', '2023-08-31 16:04:49'),
+(5, 'APP_WEB_URL', '//localhost:8000/frontend/', 1, '2023-08-29 12:23:56', '2023-08-31 15:44:42'),
+(6, 'WEB_CONTACT_NO', '+44 (0) 207 195 1818', 1, '2023-08-29 12:24:29', '2023-08-31 16:08:02'),
+(7, 'WEB_CONTACT_EMAIL', 'info@ahaadosa.co.uk', 1, '2023-08-29 12:25:01', '2023-08-31 16:07:27'),
+(8, 'KITCHEN_SN', 'N411224N00616-000', 1, '2023-08-29 12:25:34', '2023-08-31 15:53:26'),
+(9, 'RECEIPT_SN', 'N411224N00620-000', 1, '2023-08-29 12:26:05', '2023-08-31 15:58:20'),
+(10, 'WAITER_R0LE_ID', '6', 1, '2023-08-29 12:26:35', '2023-08-31 16:07:00'),
+(11, 'ADMIN_R0LE_ID', '1', 1, '2023-08-29 12:27:03', '2023-08-31 15:40:32'),
+(12, 'ROLES_ARRAY', ' 4, 6', 0, '2023-08-29 12:27:41', '2023-08-29 16:15:05'),
+(13, 'PENDING_STATUS', 'pending', 1, '2023-08-29 12:28:21', '2023-08-31 15:56:51'),
+(14, 'ENVIRONMENT', 'local', 1, '2023-08-29 12:28:46', '2023-08-31 15:51:23'),
+(15, 'TESTMOBILENUMBER', '7792995419', 1, '2023-08-29 12:29:13', '2023-08-31 16:03:37'),
+(16, 'DOMAIN', 'Localdines', 1, '2023-08-29 12:29:46', '2023-08-31 15:50:58'),
+(17, 'PICKUP_DESPATCHED', 'Your order id  %ORDER_ID% is ready for collection.', 1, '2023-08-29 12:30:22', '2023-08-31 15:57:20'),
+(18, 'DELIVERY_DESPATCHED', 'Your order id %ORDER_ID% has been despatched, it will reach soon.', 1, '2023-08-29 12:30:51', '2023-08-31 15:46:19'),
+(19, 'THANKS_ORDER', 'Thank you for your order!', 1, '2023-08-29 12:31:20', '2023-08-31 16:04:11'),
+(20, 'ORDER_SUBMITTED', 'Your order has been submitted successfully once accepted Confirmation message will be sent to you. [STAG]Close[ETAG]', 1, '2023-08-29 12:31:48', '2023-08-31 15:55:39'),
+(21, 'PICKUP_RES_DESPATCHED', 'Pickup message Sent to %s successfully!', 1, '2023-08-29 12:32:19', '2023-08-31 15:57:54'),
+(22, 'DELIVERY_RES_DESPATCHED', 'Despatch message Sent to %s successfully!', 1, '2023-08-29 12:33:05', '2023-08-31 15:47:08'),
+(23, 'OTP_MESSAGE', '%s is passcode to verify your %s Login. Not expecting this? Call tel: %s', 1, '2023-08-29 12:33:39', '2023-08-31 15:56:20'),
+(24, 'ORDER_ACCEPT_MESSAGE_PICKUP', 'Your order has been accepted. We will send you an SMS when it\'s ready for collection.', 1, '2023-08-29 12:34:13', '2023-08-31 15:55:04'),
+(25, 'ORDER_ACCEPT_MESSAGE_DELIVERY', 'Your order has been accepted, It will be delivered in 40 mins. once ready for collection will text you.', 1, '2023-08-29 12:34:43', '2023-08-31 15:54:21'),
+(26, 'HAS_TABLE_SELECTION', 'eat in', 0, '2023-08-29 12:35:24', '2023-08-29 16:12:24'),
+(27, 'SERVICE_PROVIDER', 'Eposplus', 1, '2023-08-29 12:37:34', '2023-08-31 15:58:50'),
+(28, 'SERVICE_PROVIDER_URL', 'http://eposplus.uk/', 1, '2023-08-29 12:38:06', '2023-08-31 15:59:25'),
+(29, 'IMAGE_BACKEND_URL', '/app/web/img/backend/', 1, '2023-08-29 12:38:41', '2023-08-31 15:52:23'),
+(30, 'IDEAL_API_KEY', 'iddqd', 1, '2023-08-29 12:39:10', '2023-08-31 15:51:56'),
+(31, 'PRODUCT_TYPES', 'custom , product', 0, '2023-08-29 12:39:49', '2023-08-29 16:13:00'),
+(32, 'RETURN_TYPES', 'return , cancel', 0, '2023-08-29 12:41:01', '2023-08-29 16:13:51'),
+(33, 'DOJO_PAYMENT_ACTIVE', '1', 1, '2023-08-29 12:41:42', '2023-08-31 15:47:45'),
+(34, 'DOJO_PAYMENT_URL', 'wss://sd711b330000.test.connect.paymentsense.cloud', 1, '2023-08-29 12:42:20', '2023-08-31 15:48:13'),
+(35, 'DOJO_PAY_TYPE_PAC', 'pac', 1, '2023-08-29 12:42:49', '2023-08-31 15:49:31'),
+(36, 'DOJO_PAY_TYPE_PAT', 'pat', 1, '2023-08-29 12:43:18', '2023-08-31 15:49:52'),
+(37, 'DOJO_TOKEN', '0247c27a-3e9d-41a5-bb20-a0c05db55f38', 1, '2023-08-29 12:43:48', '2023-08-31 15:50:40'),
+(38, 'DOJO_SOFTWARE_HOUSE_ID', 'SD711B33', 1, '2023-08-29 12:44:30', '2023-08-31 15:50:12'),
+(39, 'DOJO_INSTALLER_ID', 'SD711B33', 1, '2023-08-29 12:45:07', '2023-08-31 15:46:45'),
+(40, 'KITCHEN_PRINT', '0', 1, '2023-08-29 12:45:37', '2023-08-31 15:52:49'),
+(41, 'CAFE_MODEL', '0', 1, '2023-08-29 12:46:05', '2023-08-30 11:51:33'),
+(42, 'APP_HOME_URL', '//localhost:8000/frontend/', 1, '2023-08-29 12:46:31', '2023-08-31 15:42:54'),
+(43, 'SUB_CATEGORY', '1', 1, '2023-08-29 12:46:57', '2023-08-31 16:21:41'),
+(44, 'AUTO_RECEIPT_PRINT', '1', 1, '2023-08-29 12:47:37', '2023-08-31 15:45:47'),
+(45, 'FRONT_END_PICKUP', '1', 1, '2023-08-30 08:23:29', '2023-08-30 08:31:27'),
+(46, 'FRONT_END_DELIVERY', '0', 1, '2023-08-30 08:24:25', '2023-08-30 09:18:23');
+
+--
 -- Indexes for dumped tables
 --
 
@@ -42,5 +93,5 @@ ALTER TABLE `food_delivery_configs`
 -- AUTO_INCREMENT for table `food_delivery_configs`
 --
 ALTER TABLE `food_delivery_configs`
-  MODIFY `config_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `config_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 COMMIT;
