@@ -3658,10 +3658,47 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
         var selPayType = $('#payment_method').val();
         if ((selPayType == "card" || selPayType == "split") && dojo_payment_active == "1") {
           saleAmount = $('#payment_card_amount').val();
-          dojoPayment(saleAmount, $form);
+          // dojoPayment(saleAmount, $form);
+         swaggerPair(saleAmount, $form);
         } else {
           $form.submit();
         }
+      }
+
+      function swaggerPair(amt, formObj) {
+        console.log('swagger_pay_url', swagger_pay_url);
+        var pairingCode = 1234;
+        var tid = 1851234567;
+        var pairURL = swagger_pay_url+'pair?pairingCode='+pairingCode+'&tid='+tid;
+        $.ajax({
+          url: pairURL,
+          type: "GET",
+          dataType: "json"
+        }).done(function(res) {
+          var token = res[0].authToken
+          swaggerPayment(amt, formObj, token);
+        });
+      }
+      function swaggerPayment(amt, formObj, token) {
+        console.log('token', token);
+        // return;
+        amt = amt.replace(/\./g, "");
+        amt = parseFloat(amt);
+        var tid = 1851234567;
+        var transactionData = {"transType": "SALE", "amountTrans": amt, "amountGratuity": amt, "amountCashback": amt };
+            transactionData = JSON.stringify(transactionData);
+        var transactionURL = swagger_pay_url+'transaction?tid='+tid;
+        $.ajax({
+          url: transactionURL,
+          type: "POST",
+          data: transactionData,
+          dataType: "json",
+          beforeSend: function (xhr) {
+            xhr.setRequestHeader('Authorization', 'Bearer '+token);
+          },
+        }).done(function(res) {
+          console.log(res);
+        });
       }
       function dojoRefund(amt, transactionID, formObj) {
         console.log('Messages', dojo_notification_messages);
@@ -3669,7 +3706,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
         try {
           let connectionState = null;
           let socket = new WebSocket(dojo_host);
-          let terminalID = "VCMINVLSIP0";
+          let terminalID = "VCMINVLSIS0";
           // let terminalID = "VCMINVLTIP0";
           // let terminalID = "97774431";
           // let saleID = transactionID;
@@ -3766,7 +3803,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
         }
       }
       function dojoPayment(amt, formObj) {
-        //return;
+        // return;
         // VCMINVLSIP0 - simulates a successful chip and pin payment
         // VCMINVLDIP0 - simulates a declined chip and pin payment
         // VCMINVLSCD0 - simulates a contactless payment with device verification
@@ -3777,8 +3814,8 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
         try {
           let connectionState = null;
           let socket = new WebSocket(dojo_host);
-          let terminalID = "VCMINVLSIP0";
-          // let terminalID = "VCMINVLTIP0";
+          // let terminalID = "VCMINVLSIP0";
+          let terminalID = "VCMINVLTIP0";
           // let terminalID = "97774431";
           let saleID = 1;
           amt = amt.replace(/\./g, "");
@@ -3789,6 +3826,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             transactionData = JSON.stringify(transactionData);
             // console.log(transactionData)
             connectionState = e.type;
+            // socket.close();
             socket.send(transactionData);
           };
 
