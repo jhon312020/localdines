@@ -3244,8 +3244,8 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             var paymentType = $('#pos_payment_method').val().toLowerCase();
             if ((paymentType == "card") && dojo_payment_active == "1") {
               var refundAmount = $('#jsRefundAmt').text();
-              var transactionID = parseInt($('#card_transaction_id').val());
-              dojoRefund(refundAmount, transactionID, $form);
+              // var transactionID = parseInt($('#card_transaction_id').val());
+              dojoProcess(refundAmount, $form, 'refund');
               $("#cover-spin").show(0);
             } else {
               $form.submit();
@@ -3253,21 +3253,6 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             return; 
           } 
         })
-        // $("#cancelReturnModal").on("hidden.bs.modal", function (e) {
-        //   console.log(e);
-        //   return;
-        //   // put your default event here
-        //   var $form = $('#frmReturnOrder');
-        //   var paymentType = $('#pos_payment_method').val().toLowerCase();
-        //   if ((paymentType == "card") && dojo_payment_active == "1") {
-        //     var refundAmount = parseFloat($('#cart_total').val()) - parseFloat($('#total').val());
-        //     var transactionID = parseInt($('#card_transaction_id').val());
-        //     dojoRefund(refundAmount, transactionID, $form);
-        //     $("#cover-spin").show(0);
-        //   } else {
-        //     $form.submit();
-        //   }
-        // })
         .on("click", "#jsBtnCancelOrReturnProduct", function() {
           let cancelReturnProductValidator = $("#ProductCancelReturnForm").validate({
             rules: {
@@ -3282,7 +3267,6 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             }
           });
           //addProductValidator.validate();
-
           if ($("#ProductCancelReturnForm").valid()) {
             var rowID = $("#CancelReturnID").val();
             var newRowID = rowID + '_RC';
@@ -3658,8 +3642,8 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
         var selPayType = $('#payment_method').val();
         if ((selPayType == "card" || selPayType == "split") && dojo_payment_active == "1") {
           saleAmount = $('#payment_card_amount').val();
-          // dojoPayment(saleAmount, $form);
-         swaggerPair(saleAmount, $form);
+          dojoProcess(saleAmount, $form, 'sale');
+          // swaggerPair(saleAmount, $form);
         } else {
           $form.submit();
         }
@@ -3700,109 +3684,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           console.log(res);
         });
       }
-      function dojoRefund(amt, transactionID, formObj) {
-        console.log('Messages', dojo_notification_messages);
-        console.log('amt', amt);
-        try {
-          let connectionState = null;
-          let socket = new WebSocket(dojo_host);
-          let terminalID = "VCMINVLSIS0";
-          // let terminalID = "VCMINVLTIP0";
-          // let terminalID = "97774431";
-          // let saleID = transactionID;
-          let saleID = 1;
-          amt = amt.replace(/\./g, "");
-          amt = parseFloat(amt);
-          $('#loader_text').html("Please wait processing...");
-
-          socket.onopen = function(e) {
-            var transactionData = { "jsonrpc": "2.0", "method": "refund", "params": { "tid": terminalID, "currency": "GBP", "amount": amt }, "id": saleID };
-            transactionData = JSON.stringify(transactionData);
-            console.log(transactionData);
-            connectionState = e.type;
-            socket.send(transactionData);
-          };
-
-          socket.onmessage = function(event) {
-            //alert(`[message] Data received from server: ${event.data}`);
-            console.log(`${event.data}`);
-            connectionState = event.type;
-            var eventMessage = JSON.parse(event.data);
-            if (eventMessage.hasOwnProperty('result')) {
-              var transactionResult = eventMessage.result.transactionResult;
-              if (transactionResult == "SUCCESSFUL") {
-                $("#api_payment_response").val(JSON.stringify(eventMessage));
-                //$('#paymentBtn').trigger('click');
-                sweetSuccessAlert("Transaction Success", transactionResult, formObj);
-                socket.close();
-              } else {
-                sweetErrorAlert("Transaction Failed", transactionResult);
-                socket.close();
-              }
-              $("#paymentBtn").attr('disabled', false);
-            } else if (eventMessage.hasOwnProperty('error')) {
-              // console.log(eventMessage.error.message);
-              if (dojo_notification_messages.hasOwnProperty(eventMessage.error.message)) {
-                var loader_message = dojo_notification_messages[eventMessage.error.message];
-              } else {
-                var loader_message = eventMessage.error.message;
-              }
-              sweetErrorAlert("Transaction Failed", loader_message);
-            } else {
-              // console.log('Dojo notificationValue', eventMessage.params.notificationValue);
-              var notificationType = eventMessage.params.notificationValue;
-              var loader_message = dojo_notification_messages[notificationType];
-              if (loader_message !== undefined) {
-                $('#loader_text').html(loader_message+"...");
-                if (notificationType ==='SIGNATURE_VERIFICATION_IN_PROGRESS') {
-                  swal({
-                    title: "Are you sure?",
-                    text: "Is signature verified",
-                    type: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: '#DD6B55',
-                    confirmButtonText: 'Yes, I am sure!',
-                    cancelButtonText: "No, cancel it!",
-                    closeOnConfirm: false,
-                    closeOnCancel: false
-                  },
-                  function(isConfirm) {
-                    var signatureConfirmation = '';
-                    if (isConfirm) {
-                       signatureConfirmation = { "jsonrpc": "2.0", "id": saleID,  "result": { "accepted": true }};
-                    } else {
-                      signatureConfirmation = { "jsonrpc": "2.0", "id": saleID,  "result": { "accepted": false }};
-                    }
-                    signatureConfirmation = JSON.stringify(signatureConfirmation);
-                    socket.send(signatureConfirmation);
-                    swal.close();
-                  });
-                }
-              }
-            }
-            
-          };
-          socket.onclose = function(event) {
-            // console.log('Closed', event.type);
-            // console.log('Connection', connectionState);
-            if (connectionState === null || connectionState === 'open') {
-              // console.log('Connection failed');
-              sweetErrorAlert("Connection Error", "CONNECTION_ERROR");
-            }
-            // sweetErrorAlert("Transaction Failed", "Please contact the payment gateway provider");
-          };
-          socket.onerror = function(error) {
-            console.log('Error', error);
-            // if (connectionState === null) {
-            //   console.log('Connection failed');
-            // }
-            sweetErrorAlert("Transaction Failed", error);
-          }
-        } catch(e) {
-          console.log('Exception', e);
-        }
-      }
-      function dojoPayment(amt, formObj) {
+      function dojoProcess(amt, formObj, method) {
         // return;
         // VCMINVLSIP0 - simulates a successful chip and pin payment
         // VCMINVLDIP0 - simulates a declined chip and pin payment
@@ -3810,7 +3692,7 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
         // VCMINVLSIS0 - simulates a signature payment
         // VCMINVLUIP0 - simulates an unsuccessful payment result
         // VCMINVLTIP0 - simulates a "TIMED_OUT" payment result
-        console.log('Messages', dojo_notification_messages);
+        // console.log('Messages', dojo_notification_messages);
         try {
           let connectionState = null;
           let socket = new WebSocket(dojo_host);
@@ -3822,25 +3704,23 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           amt = parseFloat(amt);
           $('#loader_text').html("Please wait processing...");
           socket.onopen = function(e) {
-            var transactionData = { "jsonrpc": "2.0", "method": "sale", "params": { "tid": terminalID, "currency": "GBP", "amount": amt }, "id": saleID };
+            var transactionData = { "jsonrpc": "2.0", "method": method, "params": { "tid": terminalID, "currency": "GBP", "amount": amt }, "id": saleID };
             transactionData = JSON.stringify(transactionData);
-            // console.log(transactionData)
             connectionState = e.type;
-            // socket.close();
             socket.send(transactionData);
           };
-
           socket.onmessage = function(event) {
-            //alert(`[message] Data received from server: ${event.data}`);
-          console.log(`${event.data}`);
             connectionState = event.type;
             var eventMessage = JSON.parse(event.data);
             if (eventMessage.hasOwnProperty('result')) {
               var transactionResult = eventMessage.result.transactionResult;
               if (transactionResult == "SUCCESSFUL") {
                 $("#api_payment_response").val(JSON.stringify(eventMessage));
-                //$('#paymentBtn').trigger('click');
                 sweetSuccessAlert("Transaction Success", transactionResult, formObj);
+                socket.close();
+              } else if(transactionResult == "TIMED_OUT") {
+                var swalMessage = dojo_notification_messages[transactionResult];
+                sweetTimedOutAlert("Timed out", swalMessage, formObj, eventMessage);
                 socket.close();
               } else {
                 sweetErrorAlert("Transaction Failed", transactionResult);
@@ -3848,7 +3728,6 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
               }
               $("#paymentBtn").attr('disabled', false);
             } else if (eventMessage.hasOwnProperty('error')) {
-              // console.log(eventMessage.error.message);
               if (dojo_notification_messages.hasOwnProperty(eventMessage.error.message)) {
                 var loader_message = dojo_notification_messages[eventMessage.error.message];
               } else {
@@ -3856,7 +3735,6 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
               }
               sweetErrorAlert("Transaction Failed", loader_message);
             } else {
-              // console.log('Dojo notificationValue', eventMessage.params.notificationValue);
               var notificationType = eventMessage.params.notificationValue;
               var loader_message = dojo_notification_messages[notificationType];
               if (loader_message !== undefined) {
@@ -3889,19 +3767,11 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
             }
           };
           socket.onclose = function(event) {
-            // console.log('Closed', event.type);
-            // console.log('Connection', connectionState);
             if (connectionState === null || connectionState === 'open') {
-              // console.log('Connection failed');
               sweetErrorAlert("Connection Error", "CONNECTION_ERROR");
             }
-            // sweetErrorAlert("Transaction Failed", "Please contact the payment gateway provider");
           };
           socket.onerror = function(error) {
-            console.log('Error', error);
-            // if (connectionState === null) {
-            //   console.log('Connection failed');
-            // }
             sweetErrorAlert("Transaction Failed", error);
           }
         } catch(e) {
@@ -3920,7 +3790,6 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           title: title,
           html: true,
           text: '<strong>'+swalMessage+'</strong>',
-          // type: "warning",
           confirmButtonColor: "#337ab7",
           confirmButtonText: "OK",
           closeOnConfirm: false,
@@ -3950,6 +3819,31 @@ var jQuery_1_8_2 = jQuery_1_8_2 || jQuery.noConflict();
           swal.close();
           $("#paymentBtn").attr("disabled",false);
           $("#cover-spin").hide();
+        });
+      }
+      function sweetTimedOutAlert(title, transMessage, formObj, eventMessage) {
+        swal({
+          title: "Timedout",
+          text: transMessage,
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonColor: '#337ab7',
+          cancelButtonColor: '#DD6B55',
+          confirmButtonText: 'Successful',
+          cancelButtonText: "Unsuccessful (Retry)",
+          closeOnConfirm: false,
+          closeOnCancel: false
+        },
+        function(isConfirm) {
+          if (isConfirm) {
+            eventMessage.manualDojoConfirmation = 1;
+            $("#api_payment_response").val(JSON.stringify(eventMessage));
+            formObj.submit();
+          } else {
+            $("#paymentBtn").attr("disabled",false);
+          }
+          $("#cover-spin").hide();
+          swal.close();
         });
       }
       function updateCanRetButtonToRedo(rowObj, rowID, newRowID) {
